@@ -1,0 +1,8 @@
+{
+  "name": "Blockchain Elearning",
+  "description": "Blockchain Elearning: An interactive laboratory and visualization platform exploring SHA-256 hashing, block structure, decentralization, Byzantine Generals Problem, Proof of Work, Proof of Stake, and consensus protocols.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

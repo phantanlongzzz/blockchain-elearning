@@ -1,0 +1,385 @@
+@import "tailwindcss";
+@import "katex/dist/katex.min.css";
+
+:root {
+  --bg-primary: #090A0F;
+  --bg-secondary: #0C0F14;
+  --bg-surface: #0F131A;
+  --bg-elevated: #11161E;
+  --bg-input: #0B0F15;
+
+  --border-default: #1C2430;
+  --border-subtle: #151C26;
+  --border-active: #24313D;
+  
+  --accent-primary: #00C98D;
+  --accent-hover: #00B982;
+  --accent-bright: #19E6A7;
+  --accent-muted: #087F63;
+  --accent-subtle: rgba(0, 201, 141, 0.08);
+  --accent-active: rgba(0, 201, 141, 0.12);
+  --accent-border: rgba(0, 201, 141, 0.35);
+
+  --text-primary: #F2F4F7;
+  --text-secondary: #A5AFBF;
+  --text-muted: #717B8C;
+  --text-disabled: #4D5665;
+  --text-code: #C8D0DB;
+
+  --success: #00C98D;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+  --track: #18202A;
+  
+  --radius-3xl: 24px;
+  --radius-2xl: 16px;
+  --radius-xl: 12px;
+  --radius-lg: 10px;
+  --radius-md: 8px;
+  --radius-sm: 6px;
+
+  /* Aliases & Compatibility tokens */
+  --bg-base: #090A0F;
+  --bg-canvas: #090A0F;
+  --bg-card: #0C0F14;
+  --border: #1C2430;
+  --border-strong: #24313D;
+
+  --brand-primary: #00C98D;
+  --brand-secondary: #00B982;
+  --state-success: #00C98D;
+  --state-warning: #F59E0B;
+  --state-danger: #EF4444;
+  --state-neutral: #717B8C;
+
+  --emerald: #00C98D;
+  --green: #00C98D;
+  --amber: #F59E0B;
+  --red: #EF4444;
+}
+
+@theme {
+  --color-bg-primary: #090A0F;
+  --color-bg-secondary: #0C0F14;
+  --color-bg-surface: #0F131A;
+  --color-bg-elevated: #11161E;
+  --color-bg-input: #0B0F15;
+
+  --color-bg-base: #090A0F;
+  --color-canvas: #090A0F;
+  --color-card: #0C0F14;
+  --color-surface: #0F131A;
+
+  --color-border-default: #1C2430;
+  --color-border-subtle: #151C26;
+  --color-border-active: #24313D;
+  --color-border-strong: #24313D;
+  --color-card-border: #1C2430;
+
+  --color-accent-primary: #00C98D;
+  --color-accent-hover: #00B982;
+  --color-accent-bright: #19E6A7;
+  --color-accent-muted: #087F63;
+  --color-brand-primary: #00C98D;
+  --color-brand-secondary: #00B982;
+  --color-state-success: #00C98D;
+  --color-state-warning: #F59E0B;
+  --color-state-danger: #EF4444;
+  --color-state-neutral: #717B8C;
+
+  --color-text-primary: #F2F4F7;
+  --color-text-secondary: #A5AFBF;
+  --color-text-muted: #717B8C;
+  --color-text-disabled: #4D5665;
+  --color-text-code: #C8D0DB;
+
+  --color-lab-emerald: #00C98D;
+  --color-lab-green: #00C98D;
+  --color-lab-amber: #F59E0B;
+  --color-lab-red: #EF4444;
+
+  --radius-3xl: 24px;
+  --radius-2xl: 16px;
+  --radius-xl: 12px;
+  --radius-lg: 10px;
+  --radius-md: 8px;
+  --radius-sm: 6px;
+
+  --font-sans: 'Be Vietnam Pro', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-display: 'Be Vietnam Pro', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+@layer base {
+  /* Default body typography - Clean sans-serif for human readability (Be Vietnam Pro) */
+  body {
+    background-color: #090A0F;
+    color: #F2F4F7;
+    font-family: 'Be Vietnam Pro', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 400;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    color: #F2F4F7;
+    font-family: 'Be Vietnam Pro', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    letter-spacing: -0.02em;
+  }
+
+  /* JetBrains Mono as Primary Technical & Cryptographic Typeface for blockchain hashes, hex, bits, bytes, indices & technical code */
+  code, pre, kbd, samp, .font-mono {
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+    letter-spacing: 0.03em;
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1, "zero" 1, "liga" 0;
+  }
+}
+
+/* Typography rules */
+html,
+html body,
+.font-sans {
+  font-family: 'Be Vietnam Pro', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.font-display {
+  font-family: 'Be Vietnam Pro', 'Space Grotesk', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+  letter-spacing: 0.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Dedicated Monospace formatting helper classes */
+.hex-tabular {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+  letter-spacing: 0.03em !important;
+  font-variant-numeric: tabular-nums !important;
+  font-feature-settings: "tnum" 1, "zero" 1, "liga" 0 !important;
+}
+
+/* Premium Crypto / Blockchain Learning Lab Utility Containers */
+.lab-card {
+  background-color: #0C0F14;
+  border: 1px solid #1C2430;
+  border-radius: 1rem; /* rounded-2xl */
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
+  transition: border-color 200ms ease, box-shadow 200ms ease, transform 200ms ease;
+}
+
+.lab-card:hover {
+  border-color: rgba(0, 201, 141, 0.35);
+  box-shadow: 0 0 25px rgba(0, 201, 141, 0.04);
+}
+
+.lab-card-inner {
+  background-color: #0F131A;
+  border: 1px solid #1C2430;
+  border-radius: 0.75rem; /* rounded-xl */
+}
+
+.lab-input {
+  background-color: #0B0F15;
+  border: 1px solid #1C2430;
+  color: #F2F4F7;
+  border-radius: 0.5rem; /* rounded-lg */
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.lab-input:focus-visible,
+.lab-input:focus {
+  border-color: #00C98D;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 201, 141, 0.2);
+}
+
+/* Primary Action Buttons */
+.btn-primary {
+  background-color: #00C98D;
+  color: #090A0F;
+  font-weight: 700;
+  border-radius: 0.75rem; /* rounded-xl */
+  transition: all 180ms ease;
+  box-shadow: 0 2px 10px rgba(0, 201, 141, 0.2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #00B982;
+  box-shadow: 0 4px 15px rgba(0, 201, 141, 0.3);
+}
+
+.btn-primary:focus-visible {
+  outline: 2px solid #00C98D;
+  outline-offset: 2px;
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Math Formula Protection (KaTeX & MathJax formatting) */
+.math-formula,
+.katex,
+.katex-html {
+  white-space: nowrap !important;
+}
+
+.math-formula-container,
+.katex-display {
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  max-width: 100% !important;
+  white-space: nowrap !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+.math-formula-container::-webkit-scrollbar,
+.katex-display::-webkit-scrollbar {
+  height: 4px;
+}
+
+.math-formula-container::-webkit-scrollbar-thumb,
+.katex-display::-webkit-scrollbar-thumb {
+  background: #00C98D;
+  border-radius: 2px;
+}
+
+/* Custom scrollbar for dark tech aesthetic */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #090A0F;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1C2430;
+  border-radius: 4px;
+  border: 1px solid #151C26;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00C98D;
+}
+
+/* Subtle tech grid background */
+.bg-tech-grid,
+.bg-grid-subtle {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+}
+
+.bg-tech-dots {
+  background-image: radial-gradient(rgba(0, 208, 132, 0.1) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Accessibility: Reduced Motion Preference (Section 28) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Academic & Minimalist Next-Step Guidance Subtle Pulse */
+@keyframes guidance-pulse-amber {
+  0% {
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.5), 0 2px 8px rgba(245, 158, 11, 0.15);
+    border-color: rgba(245, 158, 11, 0.85);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(245, 158, 11, 0), 0 4px 18px rgba(245, 158, 11, 0.35);
+    border-color: rgba(251, 191, 36, 1);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0), 0 2px 8px rgba(245, 158, 11, 0.15);
+    border-color: rgba(245, 158, 11, 0.85);
+  }
+}
+
+.guidance-amber-pulse {
+  animation: guidance-pulse-amber 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  border-color: rgba(245, 158, 11, 0.9) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .guidance-amber-pulse {
+    animation: none !important;
+    box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.7) !important;
+    border-color: rgba(245, 158, 11, 0.9) !important;
+  }
+}
+
+/* University Logo Isolation - Strict protection of original colors and assets */
+.university-logo-container {
+  filter: none !important;
+  -webkit-filter: none !important;
+  opacity: 1 !important;
+  mix-blend-mode: normal !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.university-logo-img,
+#nav-university-logo,
+#university-logo-image {
+  display: block;
+  width: auto;
+  max-height: 48px;
+  object-fit: contain;
+  filter: none !important;
+  -webkit-filter: none !important;
+  opacity: 1 !important;
+  mix-blend-mode: normal !important;
+  transform: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+/* Command Palette Minimal Modal Transition (Linear / Raycast Style) */
+@keyframes paletteModalIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.98) translateY(-4px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-palette-in {
+  animation: paletteModalIn 150ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-palette-in {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

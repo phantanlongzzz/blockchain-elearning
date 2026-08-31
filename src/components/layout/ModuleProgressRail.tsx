@@ -8,6 +8,7 @@ import { useLanguage } from '../../i18n/LanguageContext';
 import { useNavigation } from '../../context/NavigationContext';
 import { useProgressStore } from '../../stores/progressStore';
 import { CheckCircle2, Clock, ChevronRight } from 'lucide-react';
+import { AnimatedNumber } from '../AnimatedNumber';
 
 export const ModuleProgressRail: React.FC = () => {
   const { language } = useLanguage();
@@ -55,7 +56,7 @@ export const ModuleProgressRail: React.FC = () => {
                 />
               </div>
               <span className="text-[#A5AFBF] text-[10px]">
-                {totalProgress.completedCount}/{totalProgress.totalCount} ({totalProgress.percentage}%)
+                <AnimatedNumber value={totalProgress.completedCount} />/{totalProgress.totalCount} (<AnimatedNumber value={totalProgress.percentage} />%)
               </span>
             </div>
           </div>

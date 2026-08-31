@@ -18,6 +18,8 @@ import { NIST_TEST_VECTORS } from '../data/researchData';
 import { HashVisualizer } from './HashVisualizer';
 import { HashStatistics } from './HashStatistics';
 
+import { AnimatedHash } from './AnimatedHash';
+
 export const HashGenerator: React.FC = () => {
   const { strings } = useLanguage();
   const [inputMode, setInputMode] = useState<'text' | 'file' | 'hex'>('text');
@@ -30,7 +32,16 @@ export const HashGenerator: React.FC = () => {
   const calculate = useCallback(async (content: string | Uint8Array, label?: string) => {
     setIsCalculating(true);
     try {
+      const startTime = performance.now();
       const result = await hashSha256(content);
+      const elapsed = performance.now() - startTime;
+      
+      // Ensure at least 300ms processing state for visual feedback unless reduced motion
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!prefersReducedMotion && elapsed < 300) {
+        await new Promise(resolve => setTimeout(resolve, 300 - elapsed));
+      }
+      
       if (label) {
         result.input = label;
       }
@@ -304,7 +315,7 @@ export const HashGenerator: React.FC = () => {
                 id="sha256-output-hex"
                 className="font-mono text-base sm:text-xl lg:text-2xl font-bold tracking-[0.05em] tabular-nums text-[#00C98D] break-all select-all leading-relaxed"
               >
-                {hashResult?.hex || '...'}
+                <AnimatedHash hash={hashResult?.hex || '...'} isCalculating={isCalculating} />
               </p>
             </div>
 

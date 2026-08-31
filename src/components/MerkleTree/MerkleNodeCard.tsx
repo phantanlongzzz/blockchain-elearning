@@ -83,7 +83,7 @@ export const MerkleNodeCard: React.FC<MerkleNodeCardProps> = ({
   } else if (visualState === 'processing') {
     borderClass = 'border-[#00C98D]/60';
     bgClass = 'bg-[#00C98D]/10';
-    statusDotColor = 'bg-[#00C98D] animate-pulse';
+    statusDotColor = 'bg-[#00C98D]';
   } else if (visualState === 'idle') {
     borderClass = 'border-[#1C2430] hover:border-[#1C2430]/80 opacity-60';
     bgClass = 'bg-[#090A0F]';
@@ -118,7 +118,7 @@ export const MerkleNodeCard: React.FC<MerkleNodeCardProps> = ({
           handleClick();
         }
       }}
-      className={`relative w-full rounded-xl border p-3 text-left select-none transition-all duration-150 cursor-pointer shadow-sm ${borderClass} ${bgClass}`}
+      className={`relative w-full rounded-xl border p-3 text-left select-none transition-all duration-200 ease-in-out cursor-pointer shadow-sm hover:-translate-y-[1px] hover:shadow-md ${borderClass} ${bgClass}`}
     >
       {/* Line 1: Node Title + Status Dot */}
       <div className="flex items-center justify-between gap-2">
@@ -137,10 +137,10 @@ export const MerkleNodeCard: React.FC<MerkleNodeCardProps> = ({
             </span>
           )}
         </div>
-
         {/* Subtle Status Dot */}
         <span
-          className={`w-2 h-2 rounded-full shrink-0 ${statusDotColor}`}
+          key={`${visualState}-${isProofTarget}-${isProofSibling}`}
+          className={`w-2 h-2 rounded-full shrink-0 animate-status-pulse ${statusDotColor}`}
           title={
             visualState === 'tampered'
               ? 'Đã thay đổi'

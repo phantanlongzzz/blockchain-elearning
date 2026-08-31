@@ -659,11 +659,20 @@ export const MerkleTreeCanvas: React.FC<MerkleTreeCanvasProps> = ({
                   let strokeDasharray = conn.isDuplicated ? '3 3' : undefined;
 
                   if (v.strokeState === 'tampered') {
-                    stroke = '#f43f5e';
-                    strokeWidth = 2.5;
+                    stroke = 'rgba(244, 63, 94, 0.6)'; // subtle red/pink accent
+                    strokeWidth = 2;
                   } else if (v.strokeState === 'valid') {
-                    stroke = '#00C98D';
-                    strokeWidth = 2.5;
+                    // Once propagation completes, connection lines return to normal static state
+                    stroke = '#1C2430';
+                    strokeWidth = 1.5;
+                  }
+
+                  // If it's flowing, we can subtly highlight the path itself if desired, or just rely on the circle
+                  if (v.isFlowing && v.strokeState === 'valid') {
+                    stroke = 'rgba(0, 201, 141, 0.4)'; // subtle emerald trail while flowing
+                  }
+                  if (v.isFlowing && v.strokeState === 'tampered') {
+                    stroke = 'rgba(244, 63, 94, 0.8)'; 
                   }
 
                   return (
@@ -676,10 +685,11 @@ export const MerkleTreeCanvas: React.FC<MerkleTreeCanvasProps> = ({
                         strokeWidth={strokeWidth}
                         strokeDasharray={strokeDasharray}
                         strokeLinecap="round"
+                        className="transition-colors duration-300 ease-in-out"
                       />
                       {v.isFlowing && (
                         <circle r="4" fill={v.strokeState === 'tampered' ? '#f43f5e' : '#00C98D'}>
-                          <animateMotion dur="0.4s" repeatCount="1" fill="freeze">
+                          <animateMotion dur="0.3s" repeatCount="1" fill="freeze" keyTimes="0;1" calcMode="linear">
                             <mpath href={`#${conn.id}`} />
                           </animateMotion>
                         </circle>

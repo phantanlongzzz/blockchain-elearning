@@ -96,7 +96,7 @@ function AppContent() {
 
       {/* Main Dynamic Lesson Content (Only Active Lesson is Mounted) */}
       <main className="relative z-10 flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div id="lesson-workspace-canvas" className="animate-in fade-in duration-200">
+        <div id="lesson-workspace-canvas" className="animate-section-enter">
           <LessonContentRenderer />
         </div>
         <LessonFooter />

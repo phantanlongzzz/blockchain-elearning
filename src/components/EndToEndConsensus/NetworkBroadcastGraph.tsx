@@ -725,15 +725,6 @@ export const NetworkBroadcastGraph: React.FC<NetworkBroadcastGraphProps> = ({
           onMouseLeave={handleMouseUp}
           className="relative w-full h-[360px] sm:h-[400px] bg-[#060911] border border-zinc-800/80 rounded-xl overflow-hidden select-none"
         >
-          {/* Subtle Grid dots */}
-          <div
-            className="absolute inset-0 opacity-10 pointer-events-none"
-            style={{
-              backgroundImage: 'radial-gradient(#64748b 1px, transparent 1px)',
-              backgroundSize: '24px 24px',
-            }}
-          />
-
           <svg className="w-full h-full absolute inset-0 pointer-events-none">
             {/* Peer Edges */}
             {PEER_EDGES.map(([srcId, dstId], idx) => {

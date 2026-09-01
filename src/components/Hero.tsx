@@ -131,9 +131,6 @@ export const Hero: React.FC = () => {
       id="hero"
       className="relative min-h-[85vh] pt-6 sm:pt-10 pb-16 flex flex-col justify-center items-center overflow-hidden font-sans"
     >
-      {/* Background glow & subtle ambient accents */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-emerald-500/5 blur-[140px] pointer-events-none" />
-
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center font-sans">
         {/* Main Title */}
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#f5f5f5] mb-3 font-display">

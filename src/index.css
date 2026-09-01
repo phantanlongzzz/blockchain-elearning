@@ -2,11 +2,11 @@
 @import "katex/dist/katex.min.css";
 
 :root {
-  --bg-primary: #090A0F;
-  --bg-secondary: #0C0F14;
-  --bg-surface: #0F131A;
-  --bg-elevated: #11161E;
-  --bg-input: #0B0F15;
+  --bg-primary: #0A0D0F;
+  --bg-secondary: #0E1210;
+  --bg-surface: #121713;
+  --bg-elevated: #151C17;
+  --bg-input: #0B0F0D;
 
   --border-default: #1C2430;
   --border-subtle: #151C26;
@@ -39,9 +39,9 @@
   --radius-sm: 6px;
 
   /* Aliases & Compatibility tokens */
-  --bg-base: #090A0F;
-  --bg-canvas: #090A0F;
-  --bg-card: #0C0F14;
+  --bg-base: #0A0D0F;
+  --bg-canvas: #0A0D0F;
+  --bg-card: #0E1210;
   --border: #1C2430;
   --border-strong: #24313D;
 
@@ -59,16 +59,16 @@
 }
 
 @theme {
-  --color-bg-primary: #090A0F;
-  --color-bg-secondary: #0C0F14;
-  --color-bg-surface: #0F131A;
-  --color-bg-elevated: #11161E;
-  --color-bg-input: #0B0F15;
+  --color-bg-primary: #0A0D0F;
+  --color-bg-secondary: #0E1210;
+  --color-bg-surface: #121713;
+  --color-bg-elevated: #151C17;
+  --color-bg-input: #0B0F0D;
 
-  --color-bg-base: #090A0F;
-  --color-canvas: #090A0F;
-  --color-card: #0C0F14;
-  --color-surface: #0F131A;
+  --color-bg-base: #0A0D0F;
+  --color-canvas: #0A0D0F;
+  --color-card: #0E1210;
+  --color-surface: #121713;
 
   --color-border-default: #1C2430;
   --color-border-subtle: #151C26;
@@ -113,7 +113,7 @@
 @layer base {
   /* Default body typography - Clean sans-serif for human readability (Be Vietnam Pro) */
   body {
-    background-color: #090A0F;
+    background-color: #0A0D0F;
     color: #F2F4F7;
     font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
     font-weight: 400;
@@ -271,7 +271,7 @@ html body,
 }
 
 ::-webkit-scrollbar-track {
-  background: #090A0F;
+  background: #0A0D0F;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -284,24 +284,11 @@ html body,
   background: #00C98D;
 }
 
-/* Subtle tech grid background */
+/* Flat Dark Clean Background (No Grid / No Dots / No Pattern) */
 .bg-tech-grid,
-.bg-grid-subtle {
-  background-size: 32px 32px;
-  background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-  animation: grid-drift 90s linear infinite;
-}
-
-@keyframes grid-drift {
-  0% { background-position: 0 0; }
-  100% { background-position: 32px 32px; }
-}
-
+.bg-grid-subtle,
 .bg-tech-dots {
-  background-image: radial-gradient(rgba(0, 208, 132, 0.1) 1px, transparent 1px);
-  background-size: 24px 24px;
+  background-image: none !important;
 }
 
 /* Subtle Section/Page Entrance Animation */
@@ -335,11 +322,6 @@ html body,
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
-  }
-  
-  .bg-tech-grid,
-  .bg-grid-subtle {
-    animation: none !important;
   }
   
   .animate-section-enter,

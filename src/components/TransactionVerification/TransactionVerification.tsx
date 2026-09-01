@@ -151,10 +151,6 @@ export const TransactionVerification: React.FC = () => {
       id="verification"
       className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative scroll-mt-20 font-sans"
     >
-      {/* Glow Effects */}
-      <div className="absolute top-1/2 left-0 w-80 h-80 bg-emerald-500/5 rounded-full blur-[140px] pointer-events-none" />
-      <div className="absolute bottom-10 right-10 w-96 h-96 bg-purple-500/5 rounded-full blur-[160px] pointer-events-none" />
-
       {/* Section Header */}
       <div className="text-center max-w-3xl mx-auto mb-8 font-sans">
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-500/30 text-emerald-400 text-xs font-medium mb-3">

@@ -26,10 +26,7 @@ export const ResearcherProfile: React.FC = () => {
         </div>
 
         {/* Dedicated Researcher Profile Card */}
-        <div className="rounded-3xl bg-[#0c1017] border border-emerald-500/30 p-6 sm:p-10 shadow-[0_0_50px_rgba(0,0,0,0.8)] relative overflow-hidden backdrop-blur-xl font-sans">
-          {/* Subtle tech background accents */}
-          <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
-
+        <div className="rounded-3xl bg-[#0c1017] border border-emerald-500/30 p-6 sm:p-10 shadow-[0_0_50px_rgba(0,0,0,0.8)] relative overflow-hidden font-sans">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
             {/* University / Faculty Logo Container (Left Column) */}
             <div className="md:col-span-4 flex flex-col items-center justify-center p-6 rounded-2xl bg-slate-950/90 border border-slate-800 text-center font-sans">

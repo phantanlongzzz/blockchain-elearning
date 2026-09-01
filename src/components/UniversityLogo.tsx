@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { School } from 'lucide-react';
-import dluLogo from '../assets/dlu-logo.png';
 
 interface UniversityLogoProps {
   className?: string;
@@ -38,7 +37,7 @@ export const UniversityLogo: React.FC<UniversityLogoProps> = ({
         {!imageError ? (
           <img
             id="university-logo-image"
-            src={dluLogo}
+            src="/logo.png"
             alt="Dalat University"
             style={{ height: '100%', width: 'auto', objectFit: 'contain', filter: 'none', mixBlendMode: 'normal', opacity: 1 }}
             onError={() => setImageError(true)}

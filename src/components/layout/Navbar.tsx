@@ -36,7 +36,6 @@ import { useAuth } from '../../context/AuthContext';
 import { useNavigation, MODULES_REGISTRY, ModuleId, LessonId } from '../../context/NavigationContext';
 import { useProgressStore } from '../../stores/progressStore';
 import { LanguageToggle } from '../LanguageToggle';
-import dluLogo from '../../assets/dlu-logo.png';
 
 const ICON_MAP: Record<string, React.ElementType> = {
   Home,
@@ -148,7 +147,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <div className="relative flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-[#0C0F14] border border-[#1C2430] group-hover:border-[#00C98D]/40 transition-colors p-1.5 shadow-sm shrink-0">
                 <img
-                  src={dluLogo}
+                  src="/logo.png"
                   alt="Trường Đại học Đà Lạt"
                   className="w-full h-full object-contain"
                   style={{ filter: 'none', mixBlendMode: 'normal', opacity: 1 }}

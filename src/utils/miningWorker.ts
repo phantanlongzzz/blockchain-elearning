@@ -9,6 +9,7 @@ export interface MinerWorkerStartConfig {
   targetPrefix: string;
   speedThrottleMs?: number; // small delay between batches if needed
   batchSize?: number;
+  startAttempts?: number;
   continuous?: boolean;
 }
 
@@ -23,7 +24,8 @@ export type MinerWorkerOutgoingMessage =
       currentNonce: number;
       attempts: number;
       currentHash: string;
-      measuredHashrateKHz: number;
+      hashrate: number;
+      measuredHashrateKHz?: number;
     }
   | {
       type: 'VALID_HASH';
@@ -32,6 +34,9 @@ export type MinerWorkerOutgoingMessage =
       hash: string;
       attempts: number;
       timeMs: number;
+      batchAttempts?: number;
+      hashrate?: number;
+      measuredHashrateKHz?: number;
     }
   | {
       type: 'WINNER';
@@ -40,6 +45,9 @@ export type MinerWorkerOutgoingMessage =
       hash: string;
       attempts: number;
       timeMs: number;
+      batchAttempts?: number;
+      hashrate?: number;
+      measuredHashrateKHz?: number;
     };
 
 export function createMiningWorkerBlob(): string {
@@ -155,14 +163,16 @@ export function createMiningWorkerBlob(): string {
         const headerPrefix = config.headerPrefix;
         const targetPrefix = config.targetPrefix;
         const step = config.step || 1;
-        const batchSize = config.batchSize || 600;
+        const batchSize = Math.max(10, config.batchSize || 200);
         const continuous = !!config.continuous;
 
-        let nonce = config.startNonce;
-        let attempts = 0;
-        let lastReportTime = performance.now();
-        let lastReportAttempts = 0;
+        let nonce = config.startNonce || 0;
+        let attempts = config.startAttempts || 0;
+        const startAttempts = attempts;
         const startTime = performance.now();
+        let lastReportTime = startTime;
+        let lastReportAttempts = attempts;
+        let hasReportedInitial = false;
 
         function mineBatch() {
           if (!isRunning) return;
@@ -175,6 +185,9 @@ export function createMiningWorkerBlob(): string {
             lastHash = sha256Hex(headerString);
 
             if (lastHash.startsWith(targetPrefix)) {
+              const elapsedSec = (performance.now() - startTime) / 1000;
+              const finalHashrate = Math.round((attempts - startAttempts) / Math.max(elapsedSec, 0.001));
+
               if (continuous) {
                 self.postMessage({
                   type: 'VALID_HASH',
@@ -182,7 +195,9 @@ export function createMiningWorkerBlob(): string {
                   nonce: nonce,
                   hash: lastHash,
                   attempts: attempts,
-                  timeMs: performance.now() - startTime
+                  timeMs: performance.now() - startTime,
+                  hashrate: finalHashrate,
+                  measuredHashrateKHz: finalHashrate / 1000
                 });
               } else {
                 isRunning = false;
@@ -192,7 +207,10 @@ export function createMiningWorkerBlob(): string {
                   nonce: nonce,
                   hash: lastHash,
                   attempts: attempts,
-                  timeMs: performance.now() - startTime
+                  timeMs: performance.now() - startTime,
+                  batchAttempts: attempts - startAttempts,
+                  hashrate: finalHashrate,
+                  measuredHashrateKHz: finalHashrate / 1000
                 });
                 return;
               }
@@ -200,10 +218,14 @@ export function createMiningWorkerBlob(): string {
           }
 
           const now = performance.now();
-          if (now - lastReportTime >= 120) {
+          // Emit telemetry periodically (every 120ms) or after the very first batch
+          if (!hasReportedInitial || (now - lastReportTime >= 120)) {
+            hasReportedInitial = true;
             const deltaSec = (now - lastReportTime) / 1000;
             const deltaAttempts = attempts - lastReportAttempts;
-            const measuredHashrateKHz = Number(((deltaAttempts / Math.max(deltaSec, 0.001)) / 1000).toFixed(1));
+            const hashrate = deltaSec > 0.02
+              ? Math.round(deltaAttempts / deltaSec)
+              : Math.round((attempts - startAttempts) / Math.max((now - startTime) / 1000, 0.001));
 
             lastReportTime = now;
             lastReportAttempts = attempts;
@@ -214,12 +236,15 @@ export function createMiningWorkerBlob(): string {
               currentNonce: nonce,
               attempts: attempts,
               currentHash: lastHash,
-              measuredHashrateKHz: measuredHashrateKHz
+              hashrate: hashrate,
+              measuredHashrateKHz: hashrate / 1000
             });
           }
 
-          // Next tick
-          setTimeout(mineBatch, 0);
+          // Schedule next batch
+          if (isRunning) {
+            setTimeout(mineBatch, config.speedThrottleMs || 0);
+          }
         }
 
         mineBatch();

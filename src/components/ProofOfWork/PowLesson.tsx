@@ -82,6 +82,54 @@ export const MINER_THEMES: Record<string, MinerTheme> = {
     badge: 'bg-amber-500/10 text-amber-400 border-amber-500/25',
     progressBar: 'bg-amber-500'
   },
+  eve: {
+    name: 'Eve',
+    text: 'text-teal-400',
+    border: 'border-teal-500/40',
+    bg: 'bg-teal-500/5',
+    badge: 'bg-teal-500/10 text-teal-400 border-teal-500/25',
+    progressBar: 'bg-teal-500'
+  },
+  frank: {
+    name: 'Frank',
+    text: 'text-lime-400',
+    border: 'border-lime-500/40',
+    bg: 'bg-lime-500/5',
+    badge: 'bg-lime-500/10 text-lime-400 border-lime-500/25',
+    progressBar: 'bg-lime-500'
+  },
+  grace: {
+    name: 'Grace',
+    text: 'text-pink-400',
+    border: 'border-pink-500/40',
+    bg: 'bg-pink-500/5',
+    badge: 'bg-pink-500/10 text-pink-400 border-pink-500/25',
+    progressBar: 'bg-pink-500'
+  },
+  hannah: {
+    name: 'Hannah',
+    text: 'text-indigo-400',
+    border: 'border-indigo-500/40',
+    bg: 'bg-indigo-500/5',
+    badge: 'bg-indigo-500/10 text-indigo-400 border-indigo-500/25',
+    progressBar: 'bg-indigo-500'
+  },
+  ian: {
+    name: 'Ian',
+    text: 'text-cyan-400',
+    border: 'border-cyan-500/40',
+    bg: 'bg-cyan-500/5',
+    badge: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/25',
+    progressBar: 'bg-cyan-500'
+  },
+  jack: {
+    name: 'Jack',
+    text: 'text-orange-400',
+    border: 'border-orange-500/40',
+    bg: 'bg-orange-500/5',
+    badge: 'bg-orange-500/10 text-orange-400 border-orange-500/25',
+    progressBar: 'bg-orange-500'
+  },
   'charlie-pool': {
     name: '51% Attacker Pool',
     text: 'text-rose-400',
@@ -107,6 +155,24 @@ export const MINER_THEMES: Record<string, MinerTheme> = {
     progressBar: 'bg-slate-600'
   }
 };
+
+export const ALPHABET_MINER_POOL = [
+  { name: 'Alice', type: 'CPU' as const, power: 10 },
+  { name: 'Bob', type: 'GPU' as const, power: 40 },
+  { name: 'Charlie', type: 'ASIC' as const, power: 80 },
+  { name: 'Dave', type: 'Quantum' as const, power: 100 },
+  { name: 'Eve', type: 'CPU' as const, power: 25 },
+  { name: 'Frank', type: 'GPU' as const, power: 55 },
+  { name: 'Grace', type: 'ASIC' as const, power: 75 },
+  { name: 'Hannah', type: 'Quantum' as const, power: 90 },
+  { name: 'Ian', type: 'CPU' as const, power: 30 },
+  { name: 'Jack', type: 'GPU' as const, power: 65 },
+  { name: 'Kevin', type: 'ASIC' as const, power: 85 },
+  { name: 'Leo', type: 'Quantum' as const, power: 95 },
+  { name: 'Maya', type: 'CPU' as const, power: 35 },
+  { name: 'Noah', type: 'GPU' as const, power: 60 },
+  { name: 'Olivia', type: 'ASIC' as const, power: 80 },
+];
 
 const EXTRA_THEMES: MinerTheme[] = [
   { name: 'Teal', text: 'text-teal-400', border: 'border-teal-500/40', bg: 'bg-teal-500/5', badge: 'bg-teal-500/10 text-teal-400 border-teal-500/25', progressBar: 'bg-teal-500' },
@@ -178,10 +244,7 @@ export const PowLesson: React.FC = () => {
   const [showCodeModal, setShowCodeModal] = useState(false);
   const [selectedBlock, setSelectedBlock] = useState<BlockRecord | null>(null);
   
-  const [showAddMiner, setShowAddMiner] = useState(false);
-  const [newMinerName, setNewMinerName] = useState('');
-  const [newMinerType, setNewMinerType] = useState<'CPU'|'GPU'|'ASIC'|'Quantum'>('GPU');
-  const [newMinerPower, setNewMinerPower] = useState(50);
+  const usedNamesRef = useRef<Set<string>>(new Set(['Alice', 'Bob', 'Charlie', 'Dave']));
 
   const workersRef = useRef<Record<string, Worker>>({});
   const blobUrlRef = useRef<string | null>(null);
@@ -245,6 +308,7 @@ export const PowLesson: React.FC = () => {
     }]);
     setLogs([]);
     addLog(isVi ? 'Đã khởi tạo lại hệ thống.' : 'System reset.');
+    usedNamesRef.current = new Set(['Alice', 'Bob', 'Charlie', 'Dave']);
     setMiners(prev => prev.map(m => ({ 
       ...m, 
       hashrate: 0, 
@@ -259,6 +323,7 @@ export const PowLesson: React.FC = () => {
 
   useEffect(() => {
     if (scenario === 'normal') {
+      usedNamesRef.current = new Set(['Alice', 'Bob', 'Charlie', 'Dave']);
       setMiners([
         { id: 'alice', name: 'Alice', type: 'CPU', colorClass: 'emerald', power: 10, hashrate: 0, attempts: 0, blocksWon: 0, currentNonce: Math.floor(Math.random() * 10000), currentHash: '----------------------------------------------------------------', status: 'idle' },
         { id: 'bob', name: 'Bob', type: 'GPU', colorClass: 'blue', power: 40, hashrate: 0, attempts: 0, blocksWon: 0, currentNonce: 20000 + Math.floor(Math.random() * 10000), currentHash: '----------------------------------------------------------------', status: 'idle' },
@@ -266,12 +331,14 @@ export const PowLesson: React.FC = () => {
         { id: 'dave', name: 'Dave', type: 'Quantum', colorClass: 'amber', power: 100, hashrate: 0, attempts: 0, blocksWon: 0, currentNonce: 90000 + Math.floor(Math.random() * 10000), currentHash: '----------------------------------------------------------------', status: 'idle' },
       ]);
     } else if (scenario === 'attack51') {
+      usedNamesRef.current = new Set(['Alice', 'Bob', '51% Attacker Pool']);
       setMiners([
         { id: 'alice', name: 'Alice', type: 'CPU', colorClass: 'emerald', power: 5, hashrate: 0, attempts: 0, blocksWon: 0, currentNonce: Math.floor(Math.random() * 10000), currentHash: '----------------------------------------------------------------', status: 'idle' },
         { id: 'bob', name: 'Bob', type: 'GPU', colorClass: 'blue', power: 10, hashrate: 0, attempts: 0, blocksWon: 0, currentNonce: 20000 + Math.floor(Math.random() * 10000), currentHash: '----------------------------------------------------------------', status: 'idle' },
         { id: 'charlie-pool', name: '51% Attacker Pool', type: 'ASIC', colorClass: 'rose', power: 95, hashrate: 0, attempts: 0, blocksWon: 0, currentNonce: 50000 + Math.floor(Math.random() * 10000), currentHash: '----------------------------------------------------------------', status: 'idle' },
       ]);
     } else if (scenario === 'hashrate') {
+      usedNamesRef.current = new Set(['Custom Miner 1', 'Custom Miner 2']);
       setMiners([
         { id: 'miner-1', name: 'Custom Miner 1', type: 'ASIC', colorClass: 'emerald', power: 50, hashrate: 0, attempts: 0, blocksWon: 0, currentNonce: Math.floor(Math.random() * 10000), currentHash: '----------------------------------------------------------------', status: 'idle' },
         { id: 'miner-2', name: 'Custom Miner 2', type: 'ASIC', colorClass: 'blue', power: 50, hashrate: 0, attempts: 0, blocksWon: 0, currentNonce: 30000 + Math.floor(Math.random() * 10000), currentHash: '----------------------------------------------------------------', status: 'idle' },
@@ -522,39 +589,57 @@ export const PowLesson: React.FC = () => {
     addLog(isVi ? 'Đã tạm dừng mô phỏng.' : 'Simulation paused.');
   };
   
-  const handleAddMinerSubmit = () => {
-    if (!newMinerName.trim()) return;
-    const id = `miner-${Date.now()}`;
+  const handleQuickAddMiner = () => {
+    if (miners.length >= 8) return;
+    
+    // Find next unused name from alphabetical pool
+    let template = ALPHABET_MINER_POOL.find(p => !usedNamesRef.current.has(p.name));
+    
+    if (!template) {
+      const count = usedNamesRef.current.size + 1;
+      const types: ('CPU' | 'GPU' | 'ASIC' | 'Quantum')[] = ['CPU', 'GPU', 'ASIC', 'Quantum'];
+      const powers = [25, 50, 75, 95];
+      template = {
+        name: `Node-${count}`,
+        type: types[count % types.length],
+        power: powers[count % powers.length]
+      };
+    }
+    
+    usedNamesRef.current.add(template.name);
+    
+    const id = `miner-${template.name.toLowerCase()}-${Date.now()}`;
+    const isRunning = appState === 'mining' || appState === 'animating_win';
+    
     const newMiner: MinerVisual = {
       id,
-      name: newMinerName,
-      type: newMinerType,
-      colorClass: newMinerType === 'Quantum' ? 'rose' : newMinerType === 'ASIC' ? 'amber' : newMinerType === 'GPU' ? 'blue' : 'slate',
-      power: newMinerPower,
+      name: template.name,
+      type: template.type,
+      colorClass: template.type === 'Quantum' ? 'rose' : template.type === 'ASIC' ? 'amber' : template.type === 'GPU' ? 'blue' : 'slate',
+      power: template.power,
       hashrate: 0,
       attempts: 0,
       blocksWon: 0,
       currentNonce: Math.floor(Math.random() * 50000),
       currentHash: '----------------------------------------------------------------',
-      status: appState === 'mining' ? 'mining' : 'idle'
+      status: isRunning ? 'mining' : 'idle'
     };
 
     setMiners(prev => [...prev, newMiner]);
-    setShowAddMiner(false);
-    setNewMinerName('');
-    setNewMinerPower(50);
-    addLog(`${isVi ? 'Đã thêm thợ đào' : 'Added miner'}: ${newMinerName}`);
+    addLog(`${newMiner.name} ${isVi ? 'tham gia cuộc đua khai thác.' : 'joined the mining race.'}`);
 
-    // If currently mining, immediately spawn worker for new miner
-    if (appState === 'mining') {
+    // If currently mining, immediately spawn worker for new miner without resetting existing state
+    if (isRunning) {
       setTimeout(() => {
         launchWorkerForMiner(newMiner, blockchainRef.current.length);
-      }, 50);
+      }, 30);
     }
   };
 
   const handleRemoveMiner = (id: string) => {
     if (miners.length <= 1) return;
+    
+    const minerToRemove = miners.find(m => m.id === id);
     
     // Terminate worker if running
     if (workersRef.current[id]) {
@@ -567,7 +652,9 @@ export const PowLesson: React.FC = () => {
     }
 
     setMiners(prev => prev.filter(m => m.id !== id));
-    addLog(isVi ? 'Đã xóa thợ đào.' : 'Miner removed.');
+    if (minerToRemove) {
+      addLog(`${minerToRemove.name} ${isVi ? 'rời khỏi cuộc đua khai thác.' : 'left the mining race.'}`);
+    }
   };
 
   const getMinerAvatar = (type: string) => {
@@ -868,24 +955,29 @@ export const PowLesson: React.FC = () => {
               <span className="w-2 h-2 rounded-full bg-emerald-400" />
               {isVi ? 'CUỘC ĐUA KHAI THÁC' : 'MINING RACE ARENA'}
             </h3>
-            {miners.length < 6 && (
-              <button 
-                onClick={() => setShowAddMiner(true)} 
-                className="flex items-center gap-1.5 text-xs font-bold text-emerald-400 hover:text-emerald-300 font-sans px-3 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20 transition-all cursor-pointer"
-              >
-                <Plus size={14} /> {isVi ? 'Thêm Thợ Đào' : 'Add Miner'}
-              </button>
-            )}
+            <button 
+              onClick={handleQuickAddMiner}
+              disabled={miners.length >= 8}
+              className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-all select-none ${
+                miners.length >= 8
+                  ? 'bg-slate-900/60 text-slate-600 border-slate-800 cursor-not-allowed'
+                  : 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20 hover:text-emerald-300 active:scale-[0.98] cursor-pointer'
+              }`}
+            >
+              {miners.length >= 8 
+                ? (isVi ? 'Đã đạt tối đa (8)' : 'Max reached (8)')
+                : (isVi ? 'Thêm Thợ Đào' : 'Add Miner')}
+            </button>
           </div>
 
           {miners.length === 0 ? (
             <div className="p-8 border border-dashed border-slate-800 rounded-2xl flex flex-col items-center text-slate-500 bg-[#0C0F14]">
               <p className="mb-3 text-sm">{isVi ? 'Không có thợ đào nào.' : 'No miners available.'}</p>
               <button 
-                onClick={() => setShowAddMiner(true)} 
+                onClick={handleQuickAddMiner} 
                 className="px-4 py-2 bg-emerald-500 text-black font-bold text-xs rounded-lg flex items-center gap-2 hover:bg-emerald-400 cursor-pointer"
               >
-                <Plus size={15}/> {isVi ? 'Thêm Thợ Đào' : 'Add Miner'}
+                {isVi ? 'Thêm Thợ Đào' : 'Add Miner'}
               </button>
             </div>
           ) : miners.map(m => (
@@ -1263,75 +1355,6 @@ export const PowLesson: React.FC = () => {
                 className="w-full py-2 bg-[#11161D] hover:bg-slate-800 text-slate-300 hover:text-white rounded-xl text-xs font-semibold border border-slate-700 transition-all cursor-pointer"
               >
                 {isVi ? 'Đóng' : 'Close'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Add Miner Modal */}
-      {showAddMiner && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in zoom-in-95 duration-200">
-          <div className="bg-[#0C0F14] border border-slate-800 rounded-2xl p-6 sm:p-7 w-full max-w-md shadow-2xl">
-            <div className="flex justify-between items-center mb-5">
-              <h3 className="text-lg font-display font-bold text-white">{isVi ? 'Thêm Thợ Đào Mới' : 'Add New Miner'}</h3>
-              <button onClick={() => setShowAddMiner(false)} className="text-slate-500 hover:text-white cursor-pointer"><X size={18}/></button>
-            </div>
-            
-            <div className="space-y-4">
-              <div>
-                <label className="text-xs font-display font-bold text-slate-400 uppercase tracking-wider mb-1.5 block">{isVi ? 'Tên thợ đào' : 'Miner Name'}</label>
-                <input 
-                  type="text" 
-                  value={newMinerName} 
-                  onChange={e => setNewMinerName(e.target.value)} 
-                  placeholder="e.g. David, Node-X" 
-                  className="w-full bg-[#11161D] border border-slate-700 rounded-xl px-3.5 py-2.5 text-white text-sm focus:outline-none focus:border-emerald-500 transition-colors" 
-                />
-              </div>
-              
-              <div>
-                <label className="text-xs font-display font-bold text-slate-400 uppercase tracking-wider mb-1.5 block">{isVi ? 'Loại phần cứng' : 'Hardware Type'}</label>
-                <div className="flex gap-2">
-                  {(['CPU', 'GPU', 'ASIC', 'Quantum'] as const).map(t => (
-                    <button 
-                      key={t} 
-                      onClick={() => setNewMinerType(t)} 
-                      className={`flex-1 py-2 rounded-xl font-bold text-xs transition-colors cursor-pointer ${
-                        newMinerType === t 
-                          ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30' 
-                          : 'bg-[#11161D] text-slate-400 border border-slate-700 hover:border-slate-600'
-                      }`}
-                    >
-                      {t}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              
-              <div>
-                <div className="flex justify-between mb-1.5">
-                  <label className="text-xs font-display font-bold text-slate-400 uppercase tracking-wider">{isVi ? 'Sức mạnh (Hashpower)' : 'Hashpower'}</label>
-                  <span className="text-xs font-mono tabular-nums text-emerald-400 font-bold">{newMinerPower}%</span>
-                </div>
-                <input 
-                  type="range" 
-                  min="1" 
-                  max="100" 
-                  value={newMinerPower} 
-                  onChange={e => setNewMinerPower(parseInt(e.target.value))} 
-                  className="w-full h-2 bg-slate-800 rounded-full appearance-none cursor-pointer accent-emerald-500" 
-                />
-              </div>
-            </div>
-            
-            <div className="mt-6">
-              <button 
-                onClick={handleAddMinerSubmit} 
-                disabled={!newMinerName.trim()} 
-                className="w-full py-2.5 bg-emerald-500 hover:bg-emerald-400 text-black font-display font-bold text-sm rounded-xl transition-all disabled:opacity-50 cursor-pointer"
-              >
-                {isVi ? 'Thêm Vào Cuộc Đua' : 'Add to Race'}
               </button>
             </div>
           </div>

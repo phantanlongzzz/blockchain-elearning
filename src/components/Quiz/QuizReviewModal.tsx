@@ -50,38 +50,38 @@ export const QuizReviewModal: React.FC = () => {
     >
       <div
         id="quiz-review-modal-container"
-        className="relative w-full max-w-3xl bg-slate-900 border border-slate-700/80 rounded-2xl shadow-2xl overflow-hidden p-6 sm:p-8 max-h-[90vh] flex flex-col"
+        className="relative w-full max-w-3xl bg-[#0C0F14] border border-[#1C2430] rounded-2xl shadow-2xl overflow-hidden p-6 sm:p-8 max-h-[90vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
         <button
           id="btn-close-review-modal"
           onClick={() => setReviewAttempt(null)}
-          className="absolute top-4 right-4 p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition-colors"
+          className="absolute top-4 right-4 p-2 text-[#717B8C] hover:text-[#F2F4F7] rounded-lg hover:bg-[#11161E] transition-colors cursor-pointer"
           aria-label="Close modal"
         >
           <X className="w-5 h-5" />
         </button>
 
         {/* Modal Header */}
-        <div className="pb-4 border-b border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div className="pb-4 border-b border-[#1C2430] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-mono px-2 py-0.5 rounded bg-slate-800 text-amber-400 border border-amber-500/30">
+              <span className="text-xs font-mono px-2 py-0.5 rounded bg-[#11161E] text-[#00C98D] border border-[#00C98D]/30">
                 v{reviewAttempt.quizVersion}
               </span>
-              <h3 className="text-lg font-bold text-white tracking-tight">
+              <h3 className="text-lg font-bold text-[#F2F4F7] tracking-tight">
                 {language === 'vi'
                   ? reviewAttempt.quizTitle.vi
                   : reviewAttempt.quizTitle.en}
               </h3>
             </div>
-            <p className="text-xs text-slate-400 mt-0.5">
+            <p className="text-xs text-[#717B8C] mt-0.5">
               {strings.quiz.yourScore}:{' '}
               <span
                 className={`font-mono font-bold ${
                   reviewAttempt.score >= 70
-                    ? 'text-emerald-400'
+                    ? 'text-[#00C98D]'
                     : 'text-rose-400'
                 }`}
               >
@@ -95,10 +95,10 @@ export const QuizReviewModal: React.FC = () => {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setFilterOnlyIncorrect(!filterOnlyIncorrect)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors cursor-pointer ${
                 filterOnlyIncorrect
                   ? 'bg-rose-500/20 text-rose-300 border-rose-500/40'
-                  : 'bg-slate-800 text-slate-400 border-slate-700 hover:text-white'
+                  : 'bg-[#11161E] text-[#A5AFBF] border-[#1C2430] hover:text-[#F2F4F7]'
               }`}
             >
               <Filter className="w-3.5 h-3.5" />
@@ -125,14 +125,14 @@ export const QuizReviewModal: React.FC = () => {
                 key={q.id}
                 className={`p-4 rounded-xl border transition-colors ${
                   isCorrect
-                    ? 'bg-slate-800/30 border-slate-700/60'
+                    ? 'bg-[#11161E]/50 border-[#1C2430]'
                     : 'bg-rose-950/10 border-rose-500/30'
                 }`}
               >
                 {/* Question Header */}
                 <div className="flex items-start justify-between gap-3 mb-3">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300">
+                    <span className="text-xs font-bold font-mono px-2 py-0.5 rounded bg-[#11161E] text-[#F2F4F7] border border-[#1C2430]">
                       #{idx + 1}
                     </span>
                     <span
@@ -150,7 +150,7 @@ export const QuizReviewModal: React.FC = () => {
 
                   <div className="flex items-center gap-1.5 text-xs font-semibold">
                     {isCorrect ? (
-                      <span className="flex items-center gap-1 text-emerald-400">
+                      <span className="flex items-center gap-1 text-[#00C98D]">
                         <CheckCircle2 className="w-4 h-4" />
                         <span>{strings.quiz.passedBadge}</span>
                       </span>
@@ -163,7 +163,7 @@ export const QuizReviewModal: React.FC = () => {
                   </div>
                 </div>
 
-                <p className="text-sm font-semibold text-white mb-4">
+                <p className="text-sm font-semibold text-[#F2F4F7] mb-4">
                   {qText}
                 </p>
 
@@ -176,10 +176,10 @@ export const QuizReviewModal: React.FC = () => {
                     const isCorrectAnswer = q.correctOptionId === opt.id;
 
                     let optClass =
-                      'bg-slate-900/60 border-slate-800 text-slate-400';
+                      'bg-[#080C10] border-[#1C2430] text-[#717B8C]';
                     if (isCorrectAnswer) {
                       optClass =
-                        'bg-emerald-950/30 border-emerald-500/50 text-emerald-300 font-semibold';
+                        'bg-[#00C98D]/10 border-[#00C98D]/50 text-[#00C98D] font-semibold';
                     } else if (isUserSelected && !isCorrect) {
                       optClass =
                         'bg-rose-950/30 border-rose-500/50 text-rose-300 line-through';
@@ -191,7 +191,7 @@ export const QuizReviewModal: React.FC = () => {
                         className={`p-3 rounded-lg border text-xs flex items-center justify-between gap-3 ${optClass}`}
                       >
                         <div className="flex items-center gap-2.5">
-                          <span className="w-5 h-5 rounded flex items-center justify-center bg-slate-800 text-slate-300 font-mono text-[10px] flex-shrink-0">
+                          <span className="w-5 h-5 rounded flex items-center justify-center bg-[#11161E] text-[#A5AFBF] font-mono text-[10px] flex-shrink-0">
                             {String.fromCharCode(65 + optIdx)}
                           </span>
                           <span>{language === 'vi' ? opt.vi : opt.en}</span>
@@ -199,7 +199,7 @@ export const QuizReviewModal: React.FC = () => {
 
                         <div className="flex-shrink-0 text-[10px] uppercase font-bold tracking-wider">
                           {isCorrectAnswer ? (
-                            <span className="text-emerald-400 flex items-center gap-1">
+                            <span className="text-[#00C98D] flex items-center gap-1">
                               <CheckCircle2 className="w-3.5 h-3.5" />
                               <span>{strings.quiz.correctAnswerLabel}</span>
                             </span>
@@ -216,12 +216,12 @@ export const QuizReviewModal: React.FC = () => {
                 </div>
 
                 {/* Explanation Card */}
-                <div className="p-3.5 bg-slate-900/90 border border-slate-800 rounded-xl text-xs space-y-1">
-                  <div className="flex items-center gap-1.5 text-amber-400 font-semibold">
+                <div className="p-3.5 bg-[#080C10] border border-[#1C2430] rounded-xl text-xs space-y-1">
+                  <div className="flex items-center gap-1.5 text-[#00C98D] font-semibold">
                     <BookOpen className="w-3.5 h-3.5" />
                     <span>{strings.quiz.explanationLabel}</span>
                   </div>
-                  <p className="text-slate-300 leading-relaxed pl-5">
+                  <p className="text-[#A5AFBF] leading-relaxed pl-5">
                     {explanation}
                   </p>
                 </div>
@@ -231,10 +231,10 @@ export const QuizReviewModal: React.FC = () => {
         </div>
 
         {/* Modal Footer */}
-        <div className="pt-3 border-t border-slate-800 flex justify-end">
+        <div className="pt-3 border-t border-[#1C2430] flex justify-end">
           <button
             onClick={() => setReviewAttempt(null)}
-            className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium rounded-xl transition-colors"
+            className="px-4 py-2 bg-[#11161E] hover:bg-[#161D26] text-[#F2F4F7] text-xs font-medium rounded-xl border border-[#1C2430] transition-colors cursor-pointer"
           >
             {strings.profile.cancel}
           </button>

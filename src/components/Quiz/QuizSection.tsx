@@ -80,36 +80,36 @@ export const QuizSection: React.FC = () => {
     >
       {/* Section Header */}
       <div className="text-center max-w-3xl mx-auto mb-12">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-semibold uppercase tracking-wider mb-4 shadow-sm">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#00C98D]/10 border border-[#00C98D]/30 text-[#00C98D] text-xs font-semibold uppercase tracking-wider mb-4 shadow-sm">
           <GraduationCap className="w-3.5 h-3.5" />
           <span>{strings.quiz.badge}</span>
-          <span className="w-1 h-1 rounded-full bg-amber-400"></span>
+          <span className="w-1 h-1 rounded-full bg-[#00C98D]"></span>
           <span className="font-mono">v1.0</span>
         </div>
 
-        <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+        <h2 className="text-3xl sm:text-4xl font-extrabold text-[#F2F4F7] tracking-tight">
           {strings.quiz.title}
         </h2>
 
-        <p className="text-base text-slate-400 mt-3 leading-relaxed">
+        <p className="text-base text-[#A5AFBF] mt-3 leading-relaxed">
           {strings.quiz.subtitle}
         </p>
 
         {/* User quick status & actions */}
         <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
           {isAuthenticated ? (
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-800/80 border border-slate-700 text-xs text-slate-300">
-              <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-[#0C0F14] border border-[#1C2430] text-xs text-[#A5AFBF]">
+              <span className="w-2 h-2 rounded-full bg-[#00C98D]"></span>
               <span>
                 {strings.auth.welcomeBack}{' '}
-                <strong className="text-white">{user?.name}</strong> (
+                <strong className="text-[#F2F4F7]">{user?.name}</strong> (
                 {user?.class})
               </span>
             </div>
           ) : (
             <button
               onClick={() => setAuthModalOpen(true)}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-xs text-amber-300 font-semibold transition-colors"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#00C98D]/10 hover:bg-[#00C98D]/20 border border-[#00C98D]/30 text-xs text-[#00C98D] font-semibold transition-colors cursor-pointer"
             >
               <ShieldCheck className="w-3.5 h-3.5" />
               <span>{strings.auth.signIn}</span>
@@ -118,9 +118,9 @@ export const QuizSection: React.FC = () => {
 
           <button
             onClick={() => setQuizHistoryModalOpen(true)}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium border border-slate-700 transition-colors"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#11161E] hover:bg-[#161D26] text-[#F2F4F7] text-xs font-medium border border-[#1C2430] transition-colors cursor-pointer"
           >
-            <History className="w-3.5 h-3.5 text-sky-400" />
+            <History className="w-3.5 h-3.5 text-[#00C98D]" />
             <span>
               {strings.quizHistory.title} ({pastAttempts.length})
             </span>
@@ -128,9 +128,9 @@ export const QuizSection: React.FC = () => {
 
           <button
             onClick={() => setCertificatesModalOpen(true)}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium border border-slate-700 transition-colors"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#11161E] hover:bg-[#161D26] text-[#F2F4F7] text-xs font-medium border border-[#1C2430] transition-colors cursor-pointer"
           >
-            <Award className="w-3.5 h-3.5 text-amber-400" />
+            <Award className="w-3.5 h-3.5 text-[#00C98D]" />
             <span>{strings.certificates.title}</span>
           </button>
         </div>
@@ -159,36 +159,36 @@ export const QuizSection: React.FC = () => {
             <div
               key={mod.quizId}
               id={`quiz-card-${mod.quizId}`}
-              className="relative p-6 sm:p-8 bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 border-2 border-amber-500/40 hover:border-amber-500/80 rounded-2xl shadow-2xl transition-all flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 overflow-hidden group"
+              className="relative p-6 sm:p-8 bg-[#0C0F14] border border-[#00C98D]/40 hover:border-[#00C98D]/80 rounded-2xl shadow-xl transition-all flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 overflow-hidden group"
             >
               <div className="space-y-3 flex-1 relative z-10">
                 <div className="flex items-center gap-2">
-                  <span className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/40">
+                  <span className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#00C98D]/15 text-[#00C98D] border border-[#00C98D]/30">
                     ★ {language === 'vi' ? 'Đề Đánh Giá Tổng Hợp' : 'Comprehensive Certification'}
                   </span>
-                  <span className="text-xs font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300">
+                  <span className="text-xs font-mono px-2 py-0.5 rounded bg-[#11161E] text-[#A5AFBF] border border-[#1C2430]">
                     v{mod.version}
                   </span>
-                  <span className="text-xs font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300">
+                  <span className="text-xs font-mono px-2 py-0.5 rounded bg-[#11161E] text-[#A5AFBF] border border-[#1C2430]">
                     {mod.questions.length} {strings.quiz.questionCount}
                   </span>
                 </div>
 
-                <h3 className="text-xl sm:text-2xl font-black text-white group-hover:text-amber-300 transition-colors">
+                <h3 className="text-xl sm:text-2xl font-bold text-[#F2F4F7] group-hover:text-[#00C98D] transition-colors">
                   {language === 'vi' ? mod.title.vi : mod.title.en}
                 </h3>
 
-                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-2xl">
+                <p className="text-xs sm:text-sm text-[#A5AFBF] leading-relaxed max-w-2xl">
                   {language === 'vi' ? mod.description.vi : mod.description.en}
                 </p>
 
-                <div className="flex flex-wrap items-center gap-4 text-xs text-slate-400 font-mono pt-1">
+                <div className="flex flex-wrap items-center gap-4 text-xs text-[#717B8C] font-mono pt-1">
                   <span className="flex items-center gap-1.5">
-                    <Clock className="w-3.5 h-3.5 text-amber-400" />
+                    <Clock className="w-3.5 h-3.5 text-[#00C98D]" />
                     <span>{strings.quiz.timeEstimate}</span>
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#00C98D]" />
                     <span>
                       {strings.quiz.passingScoreReq}: ≥ {mod.passingScore}%
                     </span>
@@ -200,7 +200,7 @@ export const QuizSection: React.FC = () => {
                 <button
                   id={`btn-start-${mod.quizId}`}
                   onClick={() => handleStartQuiz(mod)}
-                  className="px-6 py-3.5 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-bold text-sm rounded-xl shadow-lg transition-all flex items-center gap-2 active:scale-95"
+                  className="px-6 py-3.5 bg-[#00C98D] hover:bg-[#00C98D]/90 text-slate-950 font-bold text-sm rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer active:scale-95"
                 >
                   <span>{strings.quiz.startQuiz}</span>
                   <ArrowRight className="w-4 h-4" />
@@ -215,38 +215,38 @@ export const QuizSection: React.FC = () => {
               <div
                 key={mod.quizId}
                 id={`quiz-card-${mod.quizId}`}
-                className="p-5 bg-slate-900/90 hover:bg-slate-900 border border-slate-700/80 hover:border-amber-500/50 rounded-2xl transition-all flex flex-col justify-between space-y-4 group"
+                className="p-5 bg-[#0C0F14] hover:bg-[#11161E] border border-[#1C2430] hover:border-[#00C98D]/40 rounded-2xl transition-all flex flex-col justify-between space-y-4 group"
               >
                 <div className="space-y-2">
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-slate-800 text-amber-400 border border-slate-700">
+                    <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-[#11161E] text-[#00C98D] border border-[#1C2430]">
                       v{mod.version}
                     </span>
-                    <span className="text-xs text-slate-400 font-mono">
+                    <span className="text-xs text-[#717B8C] font-mono">
                       {mod.questions.length} {strings.quiz.questionCount}
                     </span>
                   </div>
 
-                  <h4 className="text-base font-bold text-white group-hover:text-amber-400 transition-colors">
+                  <h4 className="text-base font-bold text-[#F2F4F7] group-hover:text-[#00C98D] transition-colors">
                     {language === 'vi' ? mod.title.vi : mod.title.en}
                   </h4>
 
-                  <p className="text-xs text-slate-400 leading-relaxed">
+                  <p className="text-xs text-[#A5AFBF] leading-relaxed">
                     {language === 'vi'
                       ? mod.description.vi
                       : mod.description.en}
                   </p>
                 </div>
 
-                <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between">
-                  <span className="text-[11px] text-slate-500 font-mono">
+                <div className="pt-2 border-t border-[#1C2430] flex items-center justify-between">
+                  <span className="text-[11px] text-[#717B8C] font-mono">
                     {strings.quiz.passingScoreReq}: ≥ {mod.passingScore}%
                   </span>
 
                   <button
                     id={`btn-start-${mod.quizId}`}
                     onClick={() => handleStartQuiz(mod)}
-                    className="px-4 py-2 bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-slate-200 text-xs font-semibold rounded-xl border border-slate-700 transition-all flex items-center gap-1.5"
+                    className="px-4 py-2 bg-[#11161E] hover:bg-[#00C98D] hover:text-slate-950 text-[#F2F4F7] text-xs font-semibold rounded-xl border border-[#1C2430] transition-all flex items-center gap-1.5 cursor-pointer"
                   >
                     <span>{strings.quiz.startQuiz}</span>
                     <ArrowRight className="w-3.5 h-3.5" />

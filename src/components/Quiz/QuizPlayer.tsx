@@ -150,42 +150,42 @@ export const QuizPlayer: React.FC<QuizPlayerProps> = ({
   return (
     <div
       id="quiz-player-container"
-      className="bg-slate-900 border border-slate-700/80 rounded-2xl shadow-2xl p-6 sm:p-8 relative"
+      className="bg-[#0C0F14] border border-[#1C2430] rounded-2xl shadow-xl p-6 sm:p-8 relative"
     >
       {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#1C2430]">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-mono px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/30">
+            <span className="text-xs font-mono px-2 py-0.5 rounded bg-[#00C98D]/10 text-[#00C98D] border border-[#00C98D]/30">
               v{module.version}
             </span>
-            <h3 className="text-lg font-bold text-white tracking-tight">
+            <h3 className="text-lg font-bold text-[#F2F4F7] tracking-tight">
               {language === 'vi' ? module.title.vi : module.title.en}
             </h3>
           </div>
-          <p className="text-xs text-slate-400 mt-0.5">
+          <p className="text-xs text-[#717B8C] mt-0.5">
             {strings.quiz.questionOf} {currentIndex + 1} / {totalQuestions} ·{' '}
             {answeredCount} {strings.quiz.answered}
           </p>
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-800 rounded-lg border border-slate-700 text-xs font-mono text-slate-300">
-            <Clock className="w-3.5 h-3.5 text-amber-400" />
+          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-[#11161E] rounded-xl border border-[#1C2430] text-xs font-mono text-[#F2F4F7]">
+            <Clock className="w-3.5 h-3.5 text-[#00C98D]" />
             <span>{formatTime(elapsedSeconds)}</span>
           </div>
 
           <button
             onClick={() => setShowNavigator(!showNavigator)}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg border border-slate-700 text-xs font-medium transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-[#11161E] hover:bg-[#161D26] text-[#A5AFBF] hover:text-[#F2F4F7] rounded-xl border border-[#1C2430] text-xs font-medium transition-colors cursor-pointer"
           >
-            <List className="w-3.5 h-3.5 text-sky-400" />
+            <List className="w-3.5 h-3.5 text-[#00C98D]" />
             <span>{strings.quiz.jumpToQuestion}</span>
           </button>
 
           <button
             onClick={onCancel}
-            className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition-colors"
+            className="p-1.5 text-[#717B8C] hover:text-[#F2F4F7] rounded-lg hover:bg-[#11161E] transition-colors cursor-pointer"
             aria-label="Exit quiz"
           >
             <X className="w-5 h-5" />
@@ -194,21 +194,21 @@ export const QuizPlayer: React.FC<QuizPlayerProps> = ({
       </div>
 
       {/* Progress Bar */}
-      <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden my-4">
+      <div className="w-full bg-[#11161E] h-1.5 rounded-full overflow-hidden my-4">
         <div
-          className="bg-gradient-to-r from-amber-500 to-emerald-400 h-full transition-all duration-300"
+          className="bg-[#00C98D] h-full transition-all duration-300"
           style={{ width: `${progressPercent}%` }}
         ></div>
       </div>
 
       {/* Question Navigator Drawer */}
       {showNavigator && (
-        <div className="p-4 mb-4 bg-slate-950/80 border border-slate-800 rounded-xl animate-fade-in">
+        <div className="p-4 mb-4 bg-[#080C10] border border-[#1C2430] rounded-xl animate-fade-in">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+            <span className="text-xs font-bold text-[#A5AFBF] uppercase tracking-wider">
               {strings.quiz.jumpToQuestion}
             </span>
-            <span className="text-xs text-slate-400 font-mono">
+            <span className="text-xs text-[#717B8C] font-mono">
               {answeredCount}/{totalQuestions} {strings.quiz.answered}
             </span>
           </div>
@@ -218,14 +218,14 @@ export const QuizPlayer: React.FC<QuizPlayerProps> = ({
               const isCurrent = idx === currentIndex;
 
               let btnClass =
-                'bg-slate-800/80 border-slate-700 text-slate-400 hover:text-white';
+                'bg-[#11161E] border-[#1C2430] text-[#717B8C] hover:text-[#F2F4F7]';
               if (isAnswered) {
                 btnClass =
-                  'bg-emerald-500/20 border-emerald-500/40 text-emerald-300 font-bold';
+                  'bg-[#00C98D]/15 border-[#00C98D]/30 text-[#00C98D] font-bold';
               }
               if (isCurrent) {
                 btnClass =
-                  'bg-amber-500 border-amber-400 text-slate-950 font-bold shadow-md';
+                  'bg-[#00C98D] border-[#00C98D] text-slate-950 font-bold shadow-md';
               }
 
               return (
@@ -235,7 +235,7 @@ export const QuizPlayer: React.FC<QuizPlayerProps> = ({
                     setCurrentIndex(idx);
                     setShowNavigator(false);
                   }}
-                  className={`p-2 rounded-lg border text-xs text-center font-mono transition-all ${btnClass}`}
+                  className={`p-2 rounded-lg border text-xs text-center font-mono transition-all cursor-pointer ${btnClass}`}
                 >
                   {idx + 1}
                 </button>
@@ -249,7 +249,7 @@ export const QuizPlayer: React.FC<QuizPlayerProps> = ({
       <div className="my-6 space-y-4">
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold font-mono px-2.5 py-0.5 rounded bg-slate-800 text-slate-200 border border-slate-700">
+            <span className="text-xs font-bold font-mono px-2.5 py-0.5 rounded bg-[#11161E] text-[#F2F4F7] border border-[#1C2430]">
               #{currentIndex + 1}
             </span>
             <span
@@ -263,13 +263,13 @@ export const QuizPlayer: React.FC<QuizPlayerProps> = ({
             >
               {currentQuestion.difficulty}
             </span>
-            <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-400 uppercase">
+            <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#11161E] text-[#717B8C] border border-[#1C2430] uppercase">
               {currentQuestion.topic}
             </span>
           </div>
         </div>
 
-        <h4 className="text-base sm:text-lg font-semibold text-white leading-relaxed">
+        <h4 className="text-base sm:text-lg font-semibold text-[#F2F4F7] leading-relaxed">
           {qText}
         </h4>
 
@@ -283,18 +283,18 @@ export const QuizPlayer: React.FC<QuizPlayerProps> = ({
               <button
                 key={opt.id}
                 onClick={() => handleSelectOption(opt.id)}
-                className={`w-full p-4 rounded-xl border text-left text-xs sm:text-sm transition-all flex items-center justify-between gap-4 active:scale-[0.99] ${
+                className={`w-full p-4 rounded-xl border text-left text-xs sm:text-sm transition-all flex items-center justify-between gap-4 cursor-pointer active:scale-[0.99] ${
                   isSelected
-                    ? 'bg-amber-500/15 border-amber-500 text-amber-300 font-semibold shadow-md'
-                    : 'bg-slate-800/40 hover:bg-slate-800/80 border-slate-700/60 text-slate-300 hover:border-slate-600'
+                    ? 'bg-[#00C98D]/10 border-[#00C98D] text-[#00C98D] font-semibold'
+                    : 'bg-[#11161E]/70 hover:bg-[#11161E] border-[#1C2430] text-[#A5AFBF] hover:border-[#1C2430] hover:text-[#F2F4F7]'
                 }`}
               >
                 <div className="flex items-center gap-3">
                   <span
                     className={`w-6 h-6 rounded-lg flex items-center justify-center font-mono text-xs flex-shrink-0 transition-colors ${
                       isSelected
-                        ? 'bg-amber-500 text-slate-950 font-bold'
-                        : 'bg-slate-700 text-slate-300'
+                        ? 'bg-[#00C98D] text-slate-950 font-bold'
+                        : 'bg-[#1C2430] text-[#A5AFBF]'
                     }`}
                   >
                     {String.fromCharCode(65 + optIdx)}
@@ -302,9 +302,9 @@ export const QuizPlayer: React.FC<QuizPlayerProps> = ({
                   <span className="leading-snug">{optText}</span>
                 </div>
                 {isSelected ? (
-                  <CheckCircle2 className="w-5 h-5 text-amber-400 flex-shrink-0" />
+                  <CheckCircle2 className="w-5 h-5 text-[#00C98D] flex-shrink-0" />
                 ) : (
-                  <div className="w-4 h-4 rounded-full border border-slate-600 flex-shrink-0"></div>
+                  <div className="w-4 h-4 rounded-full border border-[#1C2430] flex-shrink-0"></div>
                 )}
               </button>
             );
@@ -313,11 +313,11 @@ export const QuizPlayer: React.FC<QuizPlayerProps> = ({
       </div>
 
       {/* Action Footer */}
-      <div className="pt-6 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3">
+      <div className="pt-6 border-t border-[#1C2430] flex flex-wrap items-center justify-between gap-3">
         <button
           onClick={() => setCurrentIndex((i) => Math.max(0, i - 1))}
           disabled={currentIndex === 0}
-          className="flex items-center gap-1.5 px-4 py-2 bg-slate-800 hover:bg-slate-700 disabled:opacity-40 text-slate-300 text-xs font-semibold rounded-xl border border-slate-700 transition-colors"
+          className="flex items-center gap-1.5 px-4 py-2 bg-[#11161E] hover:bg-[#161D26] disabled:opacity-40 text-[#F2F4F7] text-xs font-semibold rounded-xl border border-[#1C2430] transition-colors cursor-pointer"
         >
           <ChevronLeft className="w-4 h-4" />
           <span>{strings.quiz.prevQuestion}</span>
@@ -327,7 +327,7 @@ export const QuizPlayer: React.FC<QuizPlayerProps> = ({
           {currentIndex < totalQuestions - 1 ? (
             <button
               onClick={() => setCurrentIndex((i) => i + 1)}
-              className="flex items-center gap-1.5 px-5 py-2 bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold rounded-xl border border-slate-700 transition-colors"
+              className="flex items-center gap-1.5 px-5 py-2 bg-[#11161E] hover:bg-[#161D26] text-[#F2F4F7] text-xs font-semibold rounded-xl border border-[#1C2430] transition-colors cursor-pointer"
             >
               <span>{strings.quiz.nextQuestion}</span>
               <ChevronRight className="w-4 h-4" />
@@ -335,7 +335,7 @@ export const QuizPlayer: React.FC<QuizPlayerProps> = ({
           ) : (
             <button
               onClick={() => setShowConfirmModal(true)}
-              className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-950 text-xs font-bold rounded-xl shadow-lg transition-all"
+              className="flex items-center gap-2 px-5 py-2.5 bg-[#00C98D] hover:bg-[#00C98D]/90 text-slate-950 text-xs font-bold rounded-xl shadow-md transition-all cursor-pointer"
             >
               <Sparkles className="w-4 h-4" />
               <span>{strings.quiz.finishQuiz}</span>
@@ -352,17 +352,17 @@ export const QuizPlayer: React.FC<QuizPlayerProps> = ({
         >
           <div
             id="confirm-submit-modal-container"
-            className="w-full max-w-md bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl p-6 text-center space-y-4"
+            className="w-full max-w-md bg-[#0C0F14] border border-[#1C2430] rounded-2xl shadow-2xl p-6 text-center space-y-4"
           >
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 mx-auto">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#00C98D]/10 border border-[#00C98D]/30 text-[#00C98D] mx-auto">
               <AlertCircle className="w-6 h-6" />
             </div>
 
-            <h4 className="text-lg font-bold text-white">
+            <h4 className="text-lg font-bold text-[#F2F4F7]">
               {strings.quiz.confirmSubmitTitle}
             </h4>
 
-            <p className="text-xs text-slate-300">
+            <p className="text-xs text-[#A5AFBF]">
               {strings.quiz.confirmSubmitDesc}
             </p>
 
@@ -376,7 +376,7 @@ export const QuizPlayer: React.FC<QuizPlayerProps> = ({
             <div className="flex gap-3 pt-2">
               <button
                 onClick={() => setShowConfirmModal(false)}
-                className="flex-1 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-xl transition-colors"
+                className="flex-1 px-4 py-2 bg-[#11161E] hover:bg-[#161D26] text-[#A5AFBF] hover:text-[#F2F4F7] text-xs font-semibold rounded-xl border border-[#1C2430] transition-colors cursor-pointer"
               >
                 {strings.quiz.cancelSubmit}
               </button>
@@ -385,7 +385,7 @@ export const QuizPlayer: React.FC<QuizPlayerProps> = ({
                   setShowConfirmModal(false);
                   handleSubmitQuiz();
                 }}
-                className="flex-1 px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold rounded-xl transition-all shadow-md"
+                className="flex-1 px-4 py-2 bg-[#00C98D] hover:bg-[#00C98D]/90 text-slate-950 text-xs font-bold rounded-xl transition-all shadow-md cursor-pointer"
               >
                 {strings.quiz.submitNow}
               </button>

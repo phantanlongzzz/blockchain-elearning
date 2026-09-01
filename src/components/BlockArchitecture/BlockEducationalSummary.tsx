@@ -5,19 +5,8 @@ import {
   ArrowRight,
   ArrowLeft,
   ArrowDown,
-  Boxes,
-  KeyRound,
   Layers,
-  GitFork,
-  Clock,
-  Zap,
-  Hash,
   FileCode2,
-  CheckCircle2,
-  ExternalLink,
-  HelpCircle,
-  Cpu,
-  BookOpen,
   FlaskConical,
 } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
@@ -30,7 +19,7 @@ interface BlockEducationalSummaryProps {
 }
 
 const PYTHON_BLOCK_SOURCE = `# ==========================================
-# BUỔI 2: CẤU TRÚC BLOCKCHAIN BLOCK & MERKLE ROOT
+# CẤU TRÚC BLOCKCHAIN BLOCK & MERKLE ROOT
 # ==========================================
 import hashlib
 import time
@@ -85,7 +74,7 @@ class Block:
 `;
 
 const TYPESCRIPT_BLOCK_SOURCE = `// ==========================================
-// LESSON 2: TYPESCRIPT BLOCK ARCHITECTURE
+// TYPESCRIPT BLOCK ARCHITECTURE
 // ==========================================
 import { sha256Sync } from './sha256';
 
@@ -154,11 +143,11 @@ export class BlockchainBlock {
 `;
 
 export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = ({
-  onInteracted,
   onPrevStage,
   onOpenHandsOnLab,
 }) => {
-  const { strings, language } = useLanguage();
+  const { language } = useLanguage();
+  const isVi = language === 'vi';
   const [codeLang, setCodeLang] = useState<'python' | 'typescript'>('python');
   const [showCode, setShowCode] = useState<boolean>(false);
 
@@ -170,72 +159,73 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 font-sans">
       {/* Top Banner Guide */}
-      <div className="p-4 sm:p-6 rounded-2xl bg-gradient-to-br from-blue-950/40 via-slate-900 to-slate-900 border border-blue-500/20 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="p-5 sm:p-6 rounded-xl bg-[#0c101c] border border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="space-y-1 max-w-2xl">
-          <div className="inline-flex items-center gap-2 text-xs font-mono text-blue-400 font-bold uppercase tracking-wider">
-            <GraduationCap className="w-3.5 h-3.5" />
+          <div className="inline-flex items-center gap-2 text-xs font-semibold text-emerald-400">
+            <GraduationCap className="w-4 h-4" />
             <span>
-              {language === 'vi'
-                ? 'PHẦN 6: SƠ ĐỒ TỔNG KẾT & CẦU NỐI KIẾN THỨC'
-                : 'PART 6: ARCHITECTURAL SUMMARY & NEXT STEPS'}
+              {isVi
+                ? 'Tổng kết kiến trúc & Vòng đời khối'
+                : 'Architectural Summary & Block Lifecycle'}
             </span>
           </div>
-          <h3 className="text-lg sm:text-xl font-bold text-white">
-            {language === 'vi'
-              ? 'Toàn Cảnh Kiến Trúc: Từ Transaction Đến Blockchain'
+          <h3 className="text-base sm:text-lg font-semibold text-white font-sans">
+            {isVi
+              ? 'Toàn Cảnh Kiến Trúc: Từ Giao Dịch Đến Chuỗi Khối'
               : 'End-to-End Architecture: From Transaction to Blockchain'}
           </h3>
-          <p className="text-xs sm:text-sm text-slate-300">
-            {language === 'vi'
-              ? 'Chúc mừng bạn! Bạn vừa đi qua toàn bộ quy trình cấu thành một Block. Dưới đây là sơ đồ tổng kết logic và các liên kết mở rộng để kiểm tra kiến thức.'
-              : 'Congratulations! You have completed the complete block creation flow. Below is the master architectural summary and knowledge bridge.'}
+          <p className="text-xs sm:text-sm text-slate-400 font-sans">
+            {isVi
+              ? 'Bạn đã hoàn thành các bước phân tích từng thành phần của một Block. Dưới đây là sơ đồ tổng kết luồng dữ liệu và mã nguồn chuẩn.'
+              : 'You have completed the module on Block components. Below is the master architecture flow and reference implementation.'}
           </p>
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
           <button
             type="button"
+            id="btn-summary-prev-stage"
             onClick={onPrevStage}
-            className="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-mono text-xs flex items-center gap-1.5 transition-all cursor-pointer"
+            className="px-3.5 py-2 rounded-md bg-slate-900 hover:bg-slate-800 text-slate-300 font-sans text-xs flex items-center gap-1.5 transition-colors cursor-pointer border border-slate-800"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
-            <span>{language === 'vi' ? 'Quay Lại Mô Phỏng' : 'Back to Simulation'}</span>
+            <span>{isVi ? 'Quay Lại Mô Phỏng' : 'Back to Simulation'}</span>
           </button>
         </div>
       </div>
 
       {/* Visual Architectural Master Flow Chart */}
-      <div className="p-6 sm:p-8 rounded-2xl bg-[#090d16] border border-slate-800 shadow-2xl space-y-6">
+      <div className="p-5 sm:p-6 rounded-xl bg-[#0c101c] border border-slate-800 space-y-6">
         <div className="text-center space-y-1">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-mono text-xs font-bold">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-medium">
             <Sparkles className="w-3.5 h-3.5" />
             <span>
-              {language === 'vi' ? 'SƠ ĐỒ HỆ THỐNG BUỔI 2' : 'LESSON 2 MASTER SYSTEM FLOW'}
+              {isVi ? 'Sơ Đồ Hệ Thống Kiến Trúc Khối' : 'Master System Architecture Flow'}
             </span>
           </div>
-          <h4 className="text-lg sm:text-xl font-bold text-white font-mono">
-            TRANSACTION → SIGNATURE → BODY → MERKLE TREE → HEADER → HASH → BLOCKCHAIN
+          <h4 className="text-sm sm:text-base font-semibold text-white font-mono">
+            Transaction → Signature → Body → Merkle Tree → Header → Hash → Blockchain
           </h4>
         </div>
 
         {/* Master Flow Diagram Nodes */}
-        <div className="max-w-3xl mx-auto space-y-3 font-mono text-xs">
-          {/* Node 1: Transaction & Signature */}
-          <div className="p-3.5 rounded-xl bg-[#0b101b] border border-slate-800 flex items-center justify-between">
+        <div className="max-w-2xl mx-auto space-y-3 font-sans text-xs">
+          {/* Node 1: Transaction */}
+          <div className="p-3.5 rounded-lg bg-[#080c16] border border-slate-800 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold">
+              <div className="w-7 h-7 rounded-md bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-semibold font-mono text-xs border border-emerald-500/20">
                 1
               </div>
               <div>
-                <span className="font-bold text-white">GIAO DỊCH</span>
+                <span className="font-semibold text-slate-200">Giao Dịch (Transaction)</span>
                 <p className="text-[11px] text-slate-400">
-                  Dữ liệu chuyển tiền (Alice → Bob : 10 BTC)
+                  Dữ liệu chuyển giá trị (Alice → Bob : 10 BTC)
                 </p>
               </div>
             </div>
-            <span className="text-[11px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+            <span className="text-[11px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30 font-mono">
               Raw Data
             </span>
           </div>
@@ -245,19 +235,19 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
           </div>
 
           {/* Node 2: Digital Signature */}
-          <div className="p-3.5 rounded-xl bg-[#0b101b] border border-purple-500/40 flex items-center justify-between">
+          <div className="p-3.5 rounded-lg bg-[#080c16] border border-slate-800 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-7 h-7 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center font-bold">
+              <div className="w-7 h-7 rounded-md bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-semibold font-mono text-xs border border-emerald-500/20">
                 2
               </div>
               <div>
-                <span className="font-bold text-purple-300">CHỮ KÝ SỐ</span>
+                <span className="font-semibold text-slate-200">Chữ Ký Số (Digital Signature)</span>
                 <p className="text-[11px] text-slate-400">
                   Ký bằng Alice Private Key & Xác minh bằng Public Key
                 </p>
               </div>
             </div>
-            <span className="text-[11px] text-purple-300 bg-purple-500/10 px-2 py-0.5 rounded border border-purple-500/20">
+            <span className="text-[11px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30 font-mono">
               ECDSA SECP256K1
             </span>
           </div>
@@ -267,19 +257,19 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
           </div>
 
           {/* Node 3: Block Body */}
-          <div className="p-3.5 rounded-xl bg-[#0b101b] border border-emerald-500/40 flex items-center justify-between">
+          <div className="p-3.5 rounded-lg bg-[#080c16] border border-slate-800 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold">
+              <div className="w-7 h-7 rounded-md bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-semibold font-mono text-xs border border-emerald-500/20">
                 3
               </div>
               <div>
-                <span className="font-bold text-emerald-300">BLOCK BODY (THÂN KHỐI)</span>
+                <span className="font-semibold text-slate-200">Block Body (Thân Khối)</span>
                 <p className="text-[11px] text-slate-400">
-                  Chứa danh sách hàng nghìn giao dịch đã xác thực (~1-4 MB)
+                  Chứa danh sách toàn bộ các giao dịch đã xác thực (~1-4 MB)
                 </p>
               </div>
             </div>
-            <span className="text-[11px] text-emerald-300 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+            <span className="text-[11px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30 font-mono">
               Transactions List
             </span>
           </div>
@@ -289,19 +279,19 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
           </div>
 
           {/* Node 4: Merkle Tree & Root */}
-          <div className="p-3.5 rounded-xl bg-[#0b101b] border border-indigo-500/40 flex items-center justify-between">
+          <div className="p-3.5 rounded-lg bg-[#080c16] border border-slate-800 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-7 h-7 rounded-lg bg-indigo-500/10 text-indigo-400 flex items-center justify-center font-bold">
+              <div className="w-7 h-7 rounded-md bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-semibold font-mono text-xs border border-emerald-500/20">
                 4
               </div>
               <div>
-                <span className="font-bold text-indigo-300">CÂY MERKLE & MERKLE ROOT</span>
+                <span className="font-semibold text-slate-200">Cây Merkle & Merkle Root</span>
                 <p className="text-[11px] text-slate-400">
                   Băm phân cấp tóm lược toàn bộ Body thành 1 mã băm 32 bytes duy nhất
                 </p>
               </div>
             </div>
-            <span className="text-[11px] text-indigo-300 bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20">
+            <span className="text-[11px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30 font-mono">
               32-byte Root Hash
             </span>
           </div>
@@ -311,30 +301,30 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
           </div>
 
           {/* Node 5: Block Header */}
-          <div className="p-4 rounded-xl bg-[#070a12] border-2 border-emerald-500/50 space-y-2">
+          <div className="p-4 rounded-lg bg-[#080c16] border border-emerald-500/40 space-y-2">
             <div className="flex items-center justify-between text-xs">
-              <span className="font-bold text-emerald-300 flex items-center gap-2">
-                <Layers className="w-4 h-4" />
-                5. BLOCK HEADER (~80 BYTES)
+              <span className="font-semibold text-slate-200 flex items-center gap-2">
+                <Layers className="w-4 h-4 text-emerald-400" />
+                5. Block Header (~80 Bytes)
               </span>
-              <span className="text-slate-500">Metadata Layer</span>
+              <span className="text-slate-500 font-mono text-[11px]">Metadata Layer</span>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px] pt-1">
-              <div className="p-2 rounded bg-black/40 border border-slate-800 text-center">
+              <div className="p-2 rounded bg-[#0c101c] border border-slate-800 text-center">
                 <span className="text-slate-500 block text-[10px]">1. Prev Hash</span>
-                <span className="text-emerald-300 font-semibold">Hash Pointer</span>
+                <span className="text-emerald-400 font-medium font-mono text-[10px]">Hash Pointer</span>
               </div>
-              <div className="p-2 rounded bg-black/40 border border-slate-800 text-center">
+              <div className="p-2 rounded bg-[#0c101c] border border-slate-800 text-center">
                 <span className="text-slate-500 block text-[10px]">2. Timestamp</span>
-                <span className="text-amber-300 font-semibold">Epoch Time</span>
+                <span className="text-slate-200 font-medium font-mono text-[10px]">Epoch Time</span>
               </div>
-              <div className="p-2 rounded bg-black/40 border border-slate-800 text-center">
+              <div className="p-2 rounded bg-[#0c101c] border border-slate-800 text-center">
                 <span className="text-slate-500 block text-[10px]">3. Merkle Root</span>
-                <span className="text-indigo-300 font-semibold">Body Digest</span>
+                <span className="text-emerald-400 font-medium font-mono text-[10px]">Body Digest</span>
               </div>
-              <div className="p-2 rounded bg-black/40 border border-slate-800 text-center">
+              <div className="p-2 rounded bg-[#0c101c] border border-slate-800 text-center">
                 <span className="text-slate-500 block text-[10px]">4. Nonce</span>
-                <span className="text-purple-300 font-semibold">PoW Trial</span>
+                <span className="text-slate-200 font-medium font-mono text-[10px]">PoW Trial</span>
               </div>
             </div>
           </div>
@@ -344,7 +334,7 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
           </div>
 
           {/* Node 6: SHA-256 Engine */}
-          <div className="p-3 rounded-xl bg-emerald-950/20 border border-emerald-500/40 text-center font-bold text-emerald-300">
+          <div className="p-3 rounded-lg bg-[#080c16] border border-slate-800 text-center font-semibold text-slate-300 font-mono">
             SHA-256( Block Header )
           </div>
 
@@ -353,27 +343,27 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
           </div>
 
           {/* Node 7: Final Block Hash & Blockchain Link */}
-          <div className="p-4 rounded-xl bg-emerald-950/30 border-2 border-emerald-500 text-center space-y-1">
-            <div className="font-bold text-emerald-300 text-sm">
+          <div className="p-4 rounded-lg bg-[#080c16] border border-emerald-500/50 text-center space-y-1">
+            <div className="font-semibold text-emerald-400 text-sm">
               ✓ BLOCK HASH (MÃ BĂM KHỐI HOÀN TẤT)
             </div>
-            <div className="text-[11px] text-slate-300">
-              Gắn kết thành công vào Blockchain phân tán toàn cầu!
+            <div className="text-[11px] text-slate-400">
+              Gắn kết an toàn vào sổ cái Blockchain phân tán toàn cầu.
             </div>
           </div>
         </div>
 
         {/* Master Takeaway Callout */}
-        <div className="p-5 rounded-2xl bg-gradient-to-r from-slate-900 via-emerald-950/30 to-slate-900 border border-emerald-500/30 text-center space-y-2">
-          <div className="text-base sm:text-lg font-bold text-white">
-            {language === 'vi'
-              ? '🎉 Bạn vừa đi qua toàn bộ quá trình từ một Transaction đơn lẻ đến một Block hoàn chỉnh!'
-              : '🎉 You have walked through the entire journey from a single Transaction to a complete Block!'}
+        <div className="p-5 rounded-lg bg-[#080c16] border border-slate-800 text-center space-y-2">
+          <div className="text-sm sm:text-base font-semibold text-white">
+            {isVi
+              ? 'Nguyên lý toàn vẹn dữ liệu trong Blockchain'
+              : 'Cryptographic Integrity in Blockchain'}
           </div>
-          <p className="text-xs sm:text-sm text-slate-400 max-w-2xl mx-auto">
-            {language === 'vi'
-              ? 'Bây giờ bạn đã hiểu rõ vì sao không thể thay đổi dữ liệu trong quá khứ mà không bị phát hiện, và cách mà mật mã học bảo vệ toàn bộ mạng lưới Blockchain.'
-              : 'You now understand why past data cannot be altered undetected, and how cryptography secures the entire distributed ledger.'}
+          <p className="text-xs text-slate-400 max-w-2xl mx-auto leading-relaxed font-sans">
+            {isVi
+              ? 'Bất kỳ thay đổi nào trong dữ liệu giao dịch ở quá khứ sẽ làm thay đổi Leaf Hash → Merkle Root → Block Header → Block Hash, ngay lập tức phá vỡ liên kết Hash Pointer của toàn bộ các khối tiếp theo.'
+              : 'Any alteration in historical transaction data mutates Leaf Hash → Merkle Root → Block Header → Block Hash, immediately invalidating the hash chain pointer of all downstream blocks.'}
           </p>
         </div>
 
@@ -382,20 +372,21 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <FileCode2 className="w-4 h-4 text-emerald-400" />
-              <span className="text-xs font-mono font-bold uppercase text-white">
-                {language === 'vi'
-                  ? 'MÃ NGUỒN CÀI ĐẶT CẤU TRÚC BLOCK'
-                  : 'BLOCK DATA STRUCTURE SOURCE CODE'}
+              <span className="text-xs font-semibold uppercase text-slate-200">
+                {isVi
+                  ? 'Mã nguồn cài đặt cấu trúc Block'
+                  : 'Block Data Structure Source Code'}
               </span>
             </div>
 
             <div className="flex items-center gap-2">
               <button
                 type="button"
+                id="btn-toggle-summary-code"
                 onClick={() => setShowCode((prev) => !prev)}
-                className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-mono text-xs font-bold cursor-pointer"
+                className="px-3 py-1.5 rounded-md bg-slate-900 hover:bg-slate-800 text-slate-300 font-sans text-xs border border-slate-800 cursor-pointer"
               >
-                {showCode ? 'Ẩn Mã Nguồn' : 'Xem Mã Nguồn (VS Code Dark)'}
+                {showCode ? (isVi ? 'Ẩn mã nguồn' : 'Hide Code') : (isVi ? 'Xem mã nguồn' : 'View Code')}
               </button>
             </div>
           </div>
@@ -406,9 +397,9 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
                 <button
                   type="button"
                   onClick={() => setCodeLang('python')}
-                  className={`px-3 py-1 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer ${
+                  className={`px-3 py-1 rounded-md text-xs font-sans transition-colors cursor-pointer ${
                     codeLang === 'python'
-                      ? 'bg-emerald-500 text-black'
+                      ? 'bg-emerald-500 text-slate-950 font-semibold'
                       : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
                   }`}
                 >
@@ -417,9 +408,9 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
                 <button
                   type="button"
                   onClick={() => setCodeLang('typescript')}
-                  className={`px-3 py-1 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer ${
+                  className={`px-3 py-1 rounded-md text-xs font-sans transition-colors cursor-pointer ${
                     codeLang === 'typescript'
-                      ? 'bg-emerald-500 text-black'
+                      ? 'bg-emerald-500 text-slate-950 font-semibold'
                       : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
                   }`}
                 >
@@ -438,39 +429,40 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
           )}
         </div>
 
-        {/* 27. HANDS-ON LAB CALL TO ACTION */}
+        {/* HANDS-ON LAB CALL TO ACTION */}
         {onOpenHandsOnLab && (
-          <div className="p-4 rounded-xl bg-gradient-to-r from-purple-950/40 via-[#070a12] to-emerald-950/40 border border-purple-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="p-4 rounded-lg bg-[#080c16] border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="space-y-1">
-              <div className="text-xs font-mono font-bold text-purple-300 flex items-center gap-1.5">
-                <FlaskConical className="w-4 h-4 text-purple-400" />
-                <span>{language === 'vi' ? '🧪 SẴN SÀNG TỰ TAY THỰC HÀNH?' : '🧪 READY FOR HANDS-ON LAB?'}</span>
+              <div className="text-xs font-semibold text-emerald-400 flex items-center gap-1.5">
+                <FlaskConical className="w-4 h-4" />
+                <span>{isVi ? 'Sẵn sàng tự tay thực hành?' : 'Ready for Hands-On Lab?'}</span>
               </div>
-              <p className="text-[11px] text-slate-300">
-                {language === 'vi'
+              <p className="text-xs text-slate-400">
+                {isVi
                   ? 'Chuyển sang chế độ "Tự tay thao tác" để tự nhập người gửi, ký số, phá vỡ liên kết chuỗi và đào Nonce.'
                   : 'Switch to Hands-On mode to create custom transactions, sign payloads, tamper with data, and mine nonces.'}
               </p>
             </div>
             <button
               type="button"
+              id="btn-summary-open-lab"
               onClick={onOpenHandsOnLab}
-              className="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-mono text-xs font-bold uppercase tracking-wider shrink-0 transition-all shadow-md cursor-pointer flex items-center justify-center gap-1.5"
+              className="px-4 py-2 rounded-md bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold text-xs transition-colors shadow-sm cursor-pointer flex items-center justify-center gap-1.5 shrink-0"
             >
               <FlaskConical className="w-3.5 h-3.5" />
-              <span>{language === 'vi' ? 'Mở Lab Tự Tay' : 'Open Hands-On Lab'}</span>
+              <span>{isVi ? 'Mở Chế Độ Thực Hành' : 'Open Hands-On Lab'}</span>
             </button>
           </div>
         )}
 
         {/* Knowledge Exploration Bridge Buttons */}
-        <div className="pt-4 border-t border-slate-800 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 font-mono text-xs">
+        <div className="pt-4 border-t border-slate-800 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 font-sans text-xs">
           <button
             type="button"
             onClick={() => handleScrollTo('foundations')}
-            className="p-3.5 rounded-xl bg-slate-900/80 hover:bg-slate-800/90 border border-slate-800 hover:border-slate-700 text-left space-y-1 transition-all cursor-pointer group"
+            className="p-3.5 rounded-lg bg-[#080c16] hover:bg-slate-900 border border-slate-800 text-left space-y-1 transition-colors cursor-pointer group"
           >
-            <span className="text-emerald-400 font-bold block flex items-center justify-between">
+            <span className="text-emerald-400 font-semibold flex items-center justify-between">
               <span>← Buổi 1: Nền Tảng</span>
               <ArrowLeft className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
             </span>
@@ -482,11 +474,11 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
           <button
             type="button"
             onClick={() => handleScrollTo('blockchain')}
-            className="p-3.5 rounded-xl bg-slate-900/80 hover:bg-slate-800/90 border border-slate-800 hover:border-slate-700 text-left space-y-1 transition-all cursor-pointer group"
+            className="p-3.5 rounded-lg bg-[#080c16] hover:bg-slate-900 border border-slate-800 text-left space-y-1 transition-colors cursor-pointer group"
           >
-            <span className="text-purple-400 font-bold block flex items-center justify-between">
+            <span className="text-slate-200 font-semibold flex items-center justify-between">
               <span>Proof of Work</span>
-              <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity text-emerald-400" />
             </span>
             <span className="text-[11px] text-slate-400 block">
               Cuộc Đua Khai Thác Nonce
@@ -496,23 +488,23 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
           <button
             type="button"
             onClick={() => handleScrollTo('proof-of-stake')}
-            className="p-3.5 rounded-xl bg-slate-900/80 hover:bg-slate-800/90 border border-slate-800 hover:border-slate-700 text-left space-y-1 transition-all cursor-pointer group"
+            className="p-3.5 rounded-lg bg-[#080c16] hover:bg-slate-900 border border-slate-800 text-left space-y-1 transition-colors cursor-pointer group"
           >
-            <span className="text-amber-400 font-bold block flex items-center justify-between">
+            <span className="text-slate-200 font-semibold flex items-center justify-between">
               <span>Proof of Stake</span>
-              <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity text-emerald-400" />
             </span>
             <span className="text-[11px] text-slate-400 block">
-              Proof of Stake
+              Cơ Chế Đặt Cọc Validator
             </span>
           </button>
 
           <button
             type="button"
             onClick={() => handleScrollTo('quiz-section')}
-            className="p-3.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-left space-y-1 transition-all cursor-pointer group"
+            className="p-3.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-left space-y-1 transition-colors cursor-pointer group"
           >
-            <span className="text-emerald-300 font-bold block flex items-center justify-between">
+            <span className="text-emerald-300 font-semibold flex items-center justify-between">
               <span>Kiểm Tra Kiến Thức</span>
               <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
             </span>

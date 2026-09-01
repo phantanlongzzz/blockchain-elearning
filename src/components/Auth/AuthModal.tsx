@@ -45,19 +45,19 @@ export const AuthModal: React.FC = () => {
   return (
     <div
       id="auth-modal-overlay"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-fade-in"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-sm animate-fade-in"
       onClick={() => setAuthModalOpen(false)}
     >
       <div
         id="auth-modal-container"
-        className="relative w-full max-w-md bg-slate-900 border border-slate-700/80 rounded-2xl shadow-2xl overflow-hidden p-6 sm:p-8"
+        className="relative w-full max-w-md bg-[#0C0F14] border border-[#1C2430] rounded-2xl shadow-2xl overflow-hidden p-6 sm:p-8"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
         <button
           id="btn-close-auth-modal"
           onClick={() => setAuthModalOpen(false)}
-          className="absolute top-4 right-4 p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition-colors"
+          className="absolute top-4 right-4 p-2 text-[#717B8C] hover:text-[#F2F4F7] rounded-lg hover:bg-[#11161E] transition-colors cursor-pointer"
           aria-label="Close modal"
         >
           <X className="w-5 h-5" />
@@ -65,13 +65,13 @@ export const AuthModal: React.FC = () => {
 
         {/* Modal Header */}
         <div className="text-center mb-6">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 mb-3 shadow-inner">
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-[#00C98D]/10 border border-[#00C98D]/30 text-[#00C98D] mb-3 shadow-inner">
             <ShieldCheck className="w-6 h-6" />
           </div>
-          <h3 className="text-xl font-bold text-white tracking-tight">
+          <h3 className="text-xl font-bold text-[#F2F4F7] tracking-tight">
             {strings.auth.signInPromptTitle}
           </h3>
-          <p className="text-sm text-slate-400 mt-1.5 max-w-xs mx-auto">
+          <p className="text-sm text-[#717B8C] mt-1.5 max-w-xs mx-auto">
             {strings.auth.signInPromptDesc}
           </p>
         </div>
@@ -83,7 +83,7 @@ export const AuthModal: React.FC = () => {
               id="btn-continue-with-google"
               onClick={handleQuickDemoLogin}
               disabled={isLoading}
-              className="w-full flex items-center justify-center gap-3 px-5 py-3.5 bg-white hover:bg-slate-100 text-slate-900 font-semibold rounded-xl transition-all shadow-md active:scale-[0.98] disabled:opacity-50"
+              className="w-full flex items-center justify-center gap-3 px-5 py-3.5 bg-white hover:bg-slate-100 text-slate-900 font-semibold rounded-xl transition-all shadow-md active:scale-[0.98] disabled:opacity-50 cursor-pointer"
             >
               {/* Google G SVG */}
               <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -110,39 +110,39 @@ export const AuthModal: React.FC = () => {
             {/* Quick Demo Researcher Profile Card */}
             <div className="pt-2">
               <div className="relative flex py-2 items-center">
-                <div className="flex-grow border-t border-slate-800"></div>
-                <span className="flex-shrink mx-3 text-xs uppercase tracking-wider text-slate-500 font-medium">
+                <div className="flex-grow border-t border-[#1C2430]"></div>
+                <span className="flex-shrink mx-3 text-xs uppercase tracking-wider text-[#717B8C] font-medium">
                   {language === 'vi' ? 'Tài khoản sinh viên mẫu' : 'Demo Student Account'}
                 </span>
-                <div className="flex-grow border-t border-slate-800"></div>
+                <div className="flex-grow border-t border-[#1C2430]"></div>
               </div>
 
               <div
                 id="demo-account-card"
                 onClick={handleQuickDemoLogin}
-                className="group cursor-pointer p-3.5 bg-slate-800/60 hover:bg-slate-800 border border-slate-700/60 hover:border-amber-500/40 rounded-xl transition-all flex items-center justify-between"
+                className="group cursor-pointer p-3.5 bg-[#11161E] hover:bg-[#151C26] border border-[#1C2430] hover:border-[#00C98D]/40 rounded-xl transition-all flex items-center justify-between"
               >
                 <div className="flex items-center gap-3">
                   <img
                     src={DEMO_USER_PROFILE.avatar}
                     alt={DEMO_USER_PROFILE.name}
-                    className="w-10 h-10 rounded-full border border-amber-500/40 object-cover"
+                    className="w-10 h-10 rounded-full border border-[#1C2430] group-hover:border-[#00C98D]/40 object-cover"
                   />
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-semibold text-white group-hover:text-amber-400 transition-colors">
+                      <span className="text-sm font-semibold text-[#F2F4F7] group-hover:text-[#00C98D] transition-colors">
                         {DEMO_USER_PROFILE.name}
                       </span>
-                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 font-medium border border-amber-500/20">
+                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#080C10] text-[#00C98D] font-medium border border-[#1C2430]">
                         {DEMO_USER_PROFILE.class}
                       </span>
                     </div>
-                    <p className="text-xs text-slate-400 font-mono">
+                    <p className="text-xs text-[#717B8C] font-mono">
                       MSSV: {DEMO_USER_PROFILE.studentId}
                     </p>
                   </div>
                 </div>
-                <ArrowRight className="w-4 h-4 text-slate-500 group-hover:text-amber-400 group-hover:translate-x-1 transition-all" />
+                <ArrowRight className="w-4 h-4 text-[#717B8C] group-hover:text-[#00C98D] group-hover:translate-x-1 transition-all" />
               </div>
             </div>
 
@@ -152,7 +152,7 @@ export const AuthModal: React.FC = () => {
                 id="btn-switch-custom-auth"
                 type="button"
                 onClick={() => setShowCustomForm(true)}
-                className="text-xs text-slate-400 hover:text-amber-400 transition-colors underline underline-offset-4"
+                className="text-xs text-[#717B8C] hover:text-[#00C98D] transition-colors underline underline-offset-4 cursor-pointer"
               >
                 {language === 'vi'
                   ? 'Đăng nhập với email / tài khoản khác'
@@ -163,8 +163,8 @@ export const AuthModal: React.FC = () => {
         ) : (
           <form onSubmit={handleCustomGoogleLogin} className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
-                {strings.profile.fullName} <span className="text-amber-400">*</span>
+              <label className="block text-xs font-semibold uppercase tracking-wider text-[#A5AFBF] mb-1.5">
+                {strings.profile.fullName} <span className="text-[#00C98D]">*</span>
               </label>
               <input
                 type="text"
@@ -172,13 +172,13 @@ export const AuthModal: React.FC = () => {
                 value={customName}
                 onChange={(e) => setCustomName(e.target.value)}
                 placeholder="Nguyen Van A"
-                className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:border-amber-500 transition-colors"
+                className="w-full px-3.5 py-2.5 bg-[#080C10] border border-[#1C2430] rounded-xl text-[#F2F4F7] text-sm focus:outline-none focus:border-[#00C98D] transition-colors"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
-                {strings.profile.email} <span className="text-amber-400">*</span>
+              <label className="block text-xs font-semibold uppercase tracking-wider text-[#A5AFBF] mb-1.5">
+                {strings.profile.email} <span className="text-[#00C98D]">*</span>
               </label>
               <input
                 type="email"
@@ -186,13 +186,13 @@ export const AuthModal: React.FC = () => {
                 value={customEmail}
                 onChange={(e) => setCustomEmail(e.target.value)}
                 placeholder="student@dlu.edu.vn"
-                className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:border-amber-500 transition-colors"
+                className="w-full px-3.5 py-2.5 bg-[#080C10] border border-[#1C2430] rounded-xl text-[#F2F4F7] text-sm focus:outline-none focus:border-[#00C98D] transition-colors"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-[#A5AFBF] mb-1.5">
                   {strings.profile.studentId}
                 </label>
                 <input
@@ -200,11 +200,11 @@ export const AuthModal: React.FC = () => {
                   value={customStudentId}
                   onChange={(e) => setCustomStudentId(e.target.value)}
                   placeholder="2312xxx"
-                  className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:border-amber-500 transition-colors"
+                  className="w-full px-3.5 py-2.5 bg-[#080C10] border border-[#1C2430] rounded-xl text-[#F2F4F7] text-sm focus:outline-none focus:border-[#00C98D] transition-colors"
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-[#A5AFBF] mb-1.5">
                   {strings.profile.class}
                 </label>
                 <input
@@ -212,7 +212,7 @@ export const AuthModal: React.FC = () => {
                   value={customClass}
                   onChange={(e) => setCustomClass(e.target.value)}
                   placeholder="CTK47B"
-                  className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:border-amber-500 transition-colors"
+                  className="w-full px-3.5 py-2.5 bg-[#080C10] border border-[#1C2430] rounded-xl text-[#F2F4F7] text-sm focus:outline-none focus:border-[#00C98D] transition-colors"
                 />
               </div>
             </div>
@@ -221,14 +221,14 @@ export const AuthModal: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setShowCustomForm(false)}
-                className="flex-1 px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-sm font-medium transition-colors"
+                className="flex-1 px-4 py-2.5 bg-[#11161E] hover:bg-[#151C26] text-[#A5AFBF] hover:text-[#F2F4F7] rounded-xl text-sm font-medium border border-[#1C2430] transition-colors cursor-pointer"
               >
                 {strings.profile.cancel}
               </button>
               <button
                 type="submit"
                 disabled={isLoading}
-                className="flex-1 px-4 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-semibold rounded-xl text-sm transition-all shadow-md disabled:opacity-50"
+                className="flex-1 px-4 py-2.5 bg-[#00C98D] hover:bg-[#00B982] text-[#090A0F] font-semibold rounded-xl text-sm transition-all shadow-md disabled:opacity-50 cursor-pointer"
               >
                 {strings.auth.signIn}
               </button>
@@ -237,9 +237,9 @@ export const AuthModal: React.FC = () => {
         )}
 
         {/* Security & Google Identity Notice */}
-        <div className="mt-6 pt-4 border-t border-slate-800 text-center">
-          <p className="text-[11px] text-slate-500 flex items-center justify-center gap-1.5">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+        <div className="mt-6 pt-4 border-t border-[#1C2430] text-center">
+          <p className="text-[11px] text-[#717B8C] flex items-center justify-center gap-1.5">
+            <ShieldCheck className="w-3.5 h-3.5 text-[#00C98D]" />
             <span>{strings.auth.googleAccountNotice}</span>
           </p>
         </div>

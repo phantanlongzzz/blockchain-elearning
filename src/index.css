@@ -371,6 +371,27 @@ html body,
   border-color: rgba(245, 158, 11, 0.9) !important;
 }
 
+/* 4-Side Subtle Border Pulse for New Block Highlight */
+@keyframes block-border-pulse {
+  0% {
+    border-color: rgba(245, 158, 11, 0.45);
+    box-shadow: 0 0 4px rgba(245, 158, 11, 0.15);
+  }
+  50% {
+    border-color: rgba(245, 158, 11, 1);
+    box-shadow: 0 0 16px rgba(245, 158, 11, 0.35);
+  }
+  100% {
+    border-color: rgba(245, 158, 11, 0.45);
+    box-shadow: 0 0 4px rgba(245, 158, 11, 0.15);
+  }
+}
+
+.animate-block-pulse {
+  animation: block-border-pulse 0.75s ease-in-out infinite;
+  border-color: #f59e0b !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .guidance-amber-pulse {
     animation: none !important;

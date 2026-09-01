@@ -146,6 +146,22 @@ export const MINER_THEMES: Record<string, MinerTheme> = {
     badge: 'bg-rose-500/10 text-rose-400 border-rose-500/25',
     progressBar: 'bg-rose-500'
   },
+  'miner-1': {
+    name: 'Custom Miner 1',
+    text: 'text-emerald-400',
+    border: 'border-emerald-500/40',
+    bg: 'bg-emerald-500/5',
+    badge: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/25',
+    progressBar: 'bg-emerald-500'
+  },
+  'miner-2': {
+    name: 'Custom Miner 2',
+    text: 'text-sky-400',
+    border: 'border-sky-500/40',
+    bg: 'bg-sky-500/5',
+    badge: 'bg-sky-500/10 text-sky-400 border-sky-500/25',
+    progressBar: 'bg-sky-500'
+  },
   genesis: {
     name: 'Genesis',
     text: 'text-slate-200',
@@ -211,13 +227,13 @@ export const formatHashrate = (hr: number): string => {
 
 function getWorkerConfig(power: number) {
   const norm = Math.max(1, Math.min(100, power));
-  // Batch size and speed throttles mapped to give realistic, distinct hardware speeds
-  // CPU (10%): ~4-8 KH/s
-  // GPU (40%): ~18-30 KH/s
-  // ASIC (80%): ~50-80 KH/s
-  // Quantum (100%): ~90-140 KH/s
-  const batchSize = Math.max(30, Math.round(norm * 16));
-  const speedThrottleMs = Math.max(1, Math.round(18 - (norm / 100) * 16));
+  // Batch size and speed throttles mapped to give realistic, distinct hardware speeds:
+  // Alice (CPU 10%): ~200 H/s
+  // Bob (GPU 40%): ~1.1 KH/s
+  // Charlie (ASIC 80%): ~5.0 KH/s
+  // Dave (Quantum 100%): ~11.6 KH/s
+  const batchSize = Math.max(3, Math.round(norm * 0.35));
+  const speedThrottleMs = Math.max(3, Math.round(16 - (norm / 100) * 13));
   return { batchSize, speedThrottleMs };
 }
 
@@ -252,6 +268,7 @@ export const PowLesson: React.FC = () => {
   const isHandlingWinnerRef = useRef(false);
   const timelineScrollRef = useRef<HTMLDivElement>(null);
   const timerEndedRef = useRef(false);
+  const currentBlockSaltRef = useRef<string>(Math.random().toString(36).substring(2, 9));
 
   const appStateRef = useRef(appState);
   useEffect(() => { appStateRef.current = appState; }, [appState]);
@@ -295,6 +312,7 @@ export const PowLesson: React.FC = () => {
     terminateWorkers();
     isHandlingWinnerRef.current = false;
     timerEndedRef.current = false;
+    currentBlockSaltRef.current = Math.random().toString(36).substring(2, 9);
     setAppState('idle');
     setRemainingTime(duration);
     setBlockchain([{ 
@@ -315,7 +333,7 @@ export const PowLesson: React.FC = () => {
       attempts: 0, 
       blocksWon: 0,
       lastWonBlock: undefined,
-      currentNonce: Math.floor(Math.random() * 50000), 
+      currentNonce: Math.floor(Math.random() * 0x7FFFFFFF), 
       currentHash: '----------------------------------------------------------------', 
       status: 'idle' 
     })));
@@ -325,29 +343,30 @@ export const PowLesson: React.FC = () => {
     if (scenario === 'normal') {
       usedNamesRef.current = new Set(['Alice', 'Bob', 'Charlie', 'Dave']);
       setMiners([
-        { id: 'alice', name: 'Alice', type: 'CPU', colorClass: 'emerald', power: 10, hashrate: 0, attempts: 0, blocksWon: 0, currentNonce: Math.floor(Math.random() * 10000), currentHash: '----------------------------------------------------------------', status: 'idle' },
-        { id: 'bob', name: 'Bob', type: 'GPU', colorClass: 'blue', power: 40, hashrate: 0, attempts: 0, blocksWon: 0, currentNonce: 20000 + Math.floor(Math.random() * 10000), currentHash: '----------------------------------------------------------------', status: 'idle' },
-        { id: 'charlie', name: 'Charlie', type: 'ASIC', colorClass: 'violet', power: 80, hashrate: 0, attempts: 0, blocksWon: 0, currentNonce: 50000 + Math.floor(Math.random() * 10000), currentHash: '----------------------------------------------------------------', status: 'idle' },
-        { id: 'dave', name: 'Dave', type: 'Quantum', colorClass: 'amber', power: 100, hashrate: 0, attempts: 0, blocksWon: 0, currentNonce: 90000 + Math.floor(Math.random() * 10000), currentHash: '----------------------------------------------------------------', status: 'idle' },
+        { id: 'alice', name: 'Alice', type: 'CPU', colorClass: 'emerald', power: 10, hashrate: 0, attempts: 0, blocksWon: 0, currentNonce: Math.floor(Math.random() * 0x7FFFFFFF), currentHash: '----------------------------------------------------------------', status: 'idle' },
+        { id: 'bob', name: 'Bob', type: 'GPU', colorClass: 'blue', power: 40, hashrate: 0, attempts: 0, blocksWon: 0, currentNonce: Math.floor(Math.random() * 0x7FFFFFFF), currentHash: '----------------------------------------------------------------', status: 'idle' },
+        { id: 'charlie', name: 'Charlie', type: 'ASIC', colorClass: 'violet', power: 80, hashrate: 0, attempts: 0, blocksWon: 0, currentNonce: Math.floor(Math.random() * 0x7FFFFFFF), currentHash: '----------------------------------------------------------------', status: 'idle' },
+        { id: 'dave', name: 'Dave', type: 'Quantum', colorClass: 'amber', power: 100, hashrate: 0, attempts: 0, blocksWon: 0, currentNonce: Math.floor(Math.random() * 0x7FFFFFFF), currentHash: '----------------------------------------------------------------', status: 'idle' },
       ]);
     } else if (scenario === 'attack51') {
       usedNamesRef.current = new Set(['Alice', 'Bob', '51% Attacker Pool']);
       setMiners([
-        { id: 'alice', name: 'Alice', type: 'CPU', colorClass: 'emerald', power: 5, hashrate: 0, attempts: 0, blocksWon: 0, currentNonce: Math.floor(Math.random() * 10000), currentHash: '----------------------------------------------------------------', status: 'idle' },
-        { id: 'bob', name: 'Bob', type: 'GPU', colorClass: 'blue', power: 10, hashrate: 0, attempts: 0, blocksWon: 0, currentNonce: 20000 + Math.floor(Math.random() * 10000), currentHash: '----------------------------------------------------------------', status: 'idle' },
-        { id: 'charlie-pool', name: '51% Attacker Pool', type: 'ASIC', colorClass: 'rose', power: 95, hashrate: 0, attempts: 0, blocksWon: 0, currentNonce: 50000 + Math.floor(Math.random() * 10000), currentHash: '----------------------------------------------------------------', status: 'idle' },
+        { id: 'alice', name: 'Alice', type: 'CPU', colorClass: 'emerald', power: 5, hashrate: 0, attempts: 0, blocksWon: 0, currentNonce: Math.floor(Math.random() * 0x7FFFFFFF), currentHash: '----------------------------------------------------------------', status: 'idle' },
+        { id: 'bob', name: 'Bob', type: 'GPU', colorClass: 'blue', power: 10, hashrate: 0, attempts: 0, blocksWon: 0, currentNonce: Math.floor(Math.random() * 0x7FFFFFFF), currentHash: '----------------------------------------------------------------', status: 'idle' },
+        { id: 'charlie-pool', name: '51% Attacker Pool', type: 'ASIC', colorClass: 'rose', power: 95, hashrate: 0, attempts: 0, blocksWon: 0, currentNonce: Math.floor(Math.random() * 0x7FFFFFFF), currentHash: '----------------------------------------------------------------', status: 'idle' },
       ]);
     } else if (scenario === 'hashrate') {
       usedNamesRef.current = new Set(['Custom Miner 1', 'Custom Miner 2']);
       setMiners([
-        { id: 'miner-1', name: 'Custom Miner 1', type: 'ASIC', colorClass: 'emerald', power: 50, hashrate: 0, attempts: 0, blocksWon: 0, currentNonce: Math.floor(Math.random() * 10000), currentHash: '----------------------------------------------------------------', status: 'idle' },
-        { id: 'miner-2', name: 'Custom Miner 2', type: 'ASIC', colorClass: 'blue', power: 50, hashrate: 0, attempts: 0, blocksWon: 0, currentNonce: 30000 + Math.floor(Math.random() * 10000), currentHash: '----------------------------------------------------------------', status: 'idle' },
+        { id: 'miner-1', name: 'Custom Miner 1', type: 'ASIC', colorClass: 'emerald', power: 50, hashrate: 0, attempts: 0, blocksWon: 0, currentNonce: Math.floor(Math.random() * 0x7FFFFFFF), currentHash: '----------------------------------------------------------------', status: 'idle' },
+        { id: 'miner-2', name: 'Custom Miner 2', type: 'ASIC', colorClass: 'blue', power: 50, hashrate: 0, attempts: 0, blocksWon: 0, currentNonce: Math.floor(Math.random() * 0x7FFFFFFF), currentHash: '----------------------------------------------------------------', status: 'idle' },
       ]);
     }
     
     terminateWorkers();
     isHandlingWinnerRef.current = false;
     timerEndedRef.current = false;
+    currentBlockSaltRef.current = Math.random().toString(36).substring(2, 9);
     setAppState('idle');
     setBlockchain([{ 
       index: 0, 
@@ -434,56 +453,63 @@ export const PowLesson: React.FC = () => {
     }
   };
 
-  const launchWorkerForMiner = useCallback((miner: MinerVisual, blockIdx: number) => {
+  const launchWorkerForMiner = useCallback((miner: MinerVisual, blockIdx: number, freshSalt?: string) => {
     if (!blobUrlRef.current) {
       blobUrlRef.current = createMiningWorkerBlob();
     }
     
-    // Terminate existing worker if any
-    if (workersRef.current[miner.id]) {
-      try {
-        workersRef.current[miner.id].terminate();
-      } catch (e) {
-        // ignore
-      }
-    }
-
-    const worker = new Worker(blobUrlRef.current);
-    workersRef.current[miner.id] = worker;
-
-    worker.onmessage = (e) => {
-      const msg = e.data;
-      if (msg.type === 'TELEMETRY') {
-        setMiners(prev => prev.map(prevM => prevM.id === msg.minerId ? {
-          ...prevM, 
-          hashrate: msg.hashrate || prevM.hashrate, 
-          attempts: msg.attempts, 
-          currentNonce: msg.currentNonce, 
-          currentHash: msg.currentHash,
-          status: prevM.status === 'winner' ? 'winner' : 'mining'
-        } : prevM));
-      } else if (msg.type === 'WINNER') {
-        handleWinner(msg);
-      }
-    };
-
     const config = getWorkerConfig(miner.power);
     const targetPrefix = '0'.repeat(difficultyRef.current);
+    const salt = freshSalt || currentBlockSaltRef.current;
+    const randomNonce = Math.floor(Math.random() * 0x7FFFFFFF);
 
-    worker.postMessage({
-      type: 'START',
-      config: {
-        minerId: miner.id,
-        headerPrefix: `block-${blockIdx}-${miner.id}:`,
-        startNonce: miner.currentNonce,
-        step: 1,
+    let worker = workersRef.current[miner.id];
+    if (!worker) {
+      worker = new Worker(blobUrlRef.current);
+      workersRef.current[miner.id] = worker;
+
+      worker.onmessage = (e) => {
+        const msg = e.data;
+        if (msg.type === 'TELEMETRY') {
+          setMiners(prev => prev.map(prevM => prevM.id === msg.minerId ? {
+            ...prevM, 
+            hashrate: msg.hashrate || prevM.hashrate, 
+            attempts: msg.attempts, 
+            currentNonce: msg.currentNonce, 
+            currentHash: msg.currentHash,
+            status: prevM.status === 'winner' ? 'winner' : 'mining'
+          } : prevM));
+        } else if (msg.type === 'WINNER') {
+          handleWinner(msg);
+        }
+      };
+
+      worker.postMessage({
+        type: 'START',
+        config: {
+          minerId: miner.id,
+          headerPrefix: `block-${blockIdx}-${salt}:`,
+          startNonce: randomNonce,
+          step: 1,
+          targetPrefix,
+          batchSize: config.batchSize,
+          speedThrottleMs: config.speedThrottleMs,
+          continuous: false,
+          startAttempts: miner.attempts
+        }
+      });
+    } else {
+      worker.postMessage({
+        type: 'UPDATE_BLOCK',
+        headerPrefix: `block-${blockIdx}-${salt}:`,
         targetPrefix,
+        startNonce: randomNonce,
+        startAttempts: miner.attempts,
         batchSize: config.batchSize,
         speedThrottleMs: config.speedThrottleMs,
-        continuous: false,
-        startAttempts: miner.attempts
-      }
-    });
+        resume: true
+      });
+    }
   }, []);
 
   const handleWinner = useCallback((msg: any) => { 
@@ -516,8 +542,8 @@ export const PowLesson: React.FC = () => {
         }
     ));
 
-    // 2. Exact event log sequence without redundant icons
-    addLog(`${minerName} ${isVi ? 'giải khối thành công' : 'solved block successfully'} (Nonce: ${msg.nonce.toLocaleString()})`);
+    // 2. Exact event log sequence with standardized academic terminology
+    addLog(`${minerName} ${isVi ? 'giải block thành công' : 'solved block successfully'} (Nonce: ${msg.nonce.toLocaleString()})`);
 
     const newBlock: BlockRecord = {
       index: nextBlockIndex,
@@ -546,16 +572,20 @@ export const PowLesson: React.FC = () => {
       isHandlingWinnerRef.current = false;
       
       if (appStateRef.current === 'mining' && remainingTimeRef.current > 0) {
+        const freshSalt = Math.random().toString(36).substring(2, 9);
+        currentBlockSaltRef.current = freshSalt;
+
         // Return winning miner to active mining state
         setMiners(prev => prev.map(m => ({
           ...m,
           status: 'mining',
-          currentNonce: m.currentNonce + 1
+          currentNonce: Math.floor(Math.random() * 0x7FFFFFFF)
         })));
 
-        // Restart/update workers for all active miners on the new block
-        minersRef.current.forEach(m => {
-          launchWorkerForMiner(m, nextBlockIndex + 1);
+        // Broadcast new block simultaneously to all active miners with fresh random nonces
+        const shuffled = [...minersRef.current].sort(() => Math.random() - 0.5);
+        shuffled.forEach(m => {
+          launchWorkerForMiner(m, nextBlockIndex + 1, freshSalt);
         });
       }
     }, 1200);
@@ -565,8 +595,12 @@ export const PowLesson: React.FC = () => {
   useEffect(() => {
     if (appState === 'mining') {
       const currentBlocks = blockchainRef.current.length;
-      minersRef.current.forEach(m => {
-        launchWorkerForMiner(m, currentBlocks);
+      const freshSalt = Math.random().toString(36).substring(2, 9);
+      currentBlockSaltRef.current = freshSalt;
+      
+      const shuffled = [...minersRef.current].sort(() => Math.random() - 0.5);
+      shuffled.forEach(m => {
+        launchWorkerForMiner(m, currentBlocks, freshSalt);
       });
     } else if (appState === 'paused' || appState === 'completed' || appState === 'idle') {
       terminateWorkers();
@@ -576,6 +610,7 @@ export const PowLesson: React.FC = () => {
   const handleStart = () => {
     intendedStateRef.current = 'mining';
     timerEndedRef.current = false;
+    currentBlockSaltRef.current = Math.random().toString(36).substring(2, 9);
     setAppState('mining');
     setMiners(prev => prev.map(m => ({ ...m, status: 'mining' })));
     addLog(isVi ? 'Bắt đầu cuộc đua khai thác...' : 'Mining race started...');
@@ -620,7 +655,7 @@ export const PowLesson: React.FC = () => {
       hashrate: 0,
       attempts: 0,
       blocksWon: 0,
-      currentNonce: Math.floor(Math.random() * 50000),
+      currentNonce: Math.floor(Math.random() * 0x7FFFFFFF),
       currentHash: '----------------------------------------------------------------',
       status: isRunning ? 'mining' : 'idle'
     };
@@ -628,10 +663,9 @@ export const PowLesson: React.FC = () => {
     setMiners(prev => [...prev, newMiner]);
     addLog(`${newMiner.name} ${isVi ? 'tham gia cuộc đua khai thác.' : 'joined the mining race.'}`);
 
-    // If currently mining, immediately spawn worker for new miner without resetting existing state
     if (isRunning) {
       setTimeout(() => {
-        launchWorkerForMiner(newMiner, blockchainRef.current.length);
+        launchWorkerForMiner(newMiner, blockchainRef.current.length, currentBlockSaltRef.current);
       }, 30);
     }
   };
@@ -641,7 +675,6 @@ export const PowLesson: React.FC = () => {
     
     const minerToRemove = miners.find(m => m.id === id);
     
-    // Terminate worker if running
     if (workersRef.current[id]) {
       try {
         workersRef.current[id].terminate();
@@ -657,38 +690,30 @@ export const PowLesson: React.FC = () => {
     }
   };
 
-  const getMinerAvatar = (type: string) => {
-    switch (type) {
-      case 'CPU': return '🧑‍💻';
-      case 'GPU': return '🥷';
-      case 'ASIC': return '🤖';
-      case 'Quantum': return '👽';
-      default: return '🧑';
-    }
-  };
-
   const getMinerStatusBadge = (miner: MinerVisual, currentAppState: AppState) => {
     if (miner.status === 'winner') {
       return (
         <span className="text-amber-400 font-semibold text-xs whitespace-nowrap">
           {isVi 
-            ? 'Giải khối thành công' 
+            ? 'Giải block thành công' 
             : 'Solved block successfully'}
         </span>
       );
     }
+    const lastBlock = blockchain.length > 1 ? blockchain[blockchain.length - 1] : null;
+    const isLastBlockSolver = lastBlock !== null && (lastBlock.minerName === miner.name || lastBlock.minerName === miner.id);
+
     if (currentAppState === 'completed') {
+      if (isLastBlockSolver) {
+        return (
+          <span className="text-amber-400 font-semibold text-xs whitespace-nowrap">
+            {isVi ? 'Người giải cuối' : 'Last block solver'}
+          </span>
+        );
+      }
       return (
         <span className="text-slate-400 text-xs font-mono">
           {isVi ? 'Đã dừng' : 'Stopped'}
-        </span>
-      );
-    }
-    if (currentAppState === 'mining') {
-      const blockNum = blockchain.length;
-      return (
-        <span className="text-emerald-400 font-medium text-xs font-mono">
-          {isVi ? `Đang đào Block #${blockNum}...` : `Mining Block #${blockNum}...`}
         </span>
       );
     }
@@ -696,6 +721,13 @@ export const PowLesson: React.FC = () => {
       return (
         <span className="text-amber-400 font-medium text-xs font-mono">
           {isVi ? 'Tạm dừng' : 'Paused'}
+        </span>
+      );
+    }
+    if (currentAppState === 'mining' || currentAppState === 'animating_win') {
+      return (
+        <span className="text-emerald-400 font-medium text-xs font-mono">
+          {isVi ? 'Đang giải block...' : 'Solving block...'}
         </span>
       );
     }
@@ -932,7 +964,7 @@ export const PowLesson: React.FC = () => {
                 </span>
                 {appState === 'mining' ? (
                   <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
-                    {isVi ? 'Đang đào' : 'Mining'}
+                    {isVi ? 'Đang giải block' : 'Solving block'}
                   </span>
                 ) : appState === 'paused' ? (
                   <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/30">
@@ -980,122 +1012,122 @@ export const PowLesson: React.FC = () => {
                 {isVi ? 'Thêm Thợ Đào' : 'Add Miner'}
               </button>
             </div>
-          ) : miners.map(m => (
-            <div 
-              key={m.id} 
-              className={`relative p-4 rounded-xl border transition-all duration-300 ${
-                m.status === 'winner' 
-                  ? 'bg-[#141108] border-amber-500/70 shadow-[0_0_20px_rgba(245,158,11,0.08)]' 
-                  : 'bg-[#0C0F14] border-slate-800/80 hover:border-slate-700/80'
-              }`}
-            >
-              <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 relative z-10">
-                {/* Miner Identity */}
-                <div className="flex items-center gap-3 min-w-[200px]">
-                  <span className="text-2xl filter grayscale contrast-125">{getMinerAvatar(m.type)}</span>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2">
-                      <span className="font-display font-bold text-white text-base leading-tight">{m.name}</span>
-                      <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">
-                        {m.type}
+          ) : miners.map(m => {
+            const mTheme = getMinerTheme(m.name);
+            const initial = m.name ? m.name.charAt(0).toUpperCase() : 'M';
+            const lastBlock = blockchain.length > 1 ? blockchain[blockchain.length - 1] : null;
+            const isLastBlockSolver = lastBlock !== null && (lastBlock.minerName === m.name || lastBlock.minerName === m.id);
+            const isWinnerCard = m.status === 'winner' || (appState === 'completed' && isLastBlockSolver);
+
+            return (
+              <div 
+                key={m.id} 
+                className={`relative p-4 rounded-xl border transition-all duration-300 ${
+                  isWinnerCard 
+                    ? 'bg-[#141108] border-amber-400 animate-block-pulse shadow-[0_0_20px_rgba(245,158,11,0.12)]' 
+                    : 'bg-[#0C0F14] border-slate-800/80 hover:border-slate-700/80'
+                }`}
+              >
+                <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 relative z-10">
+                  {/* Miner Identity with Letter Circle Avatar */}
+                  <div className="flex items-center gap-3 min-w-[200px]">
+                    <div className={`w-9 h-9 rounded-full flex items-center justify-center font-display font-bold text-sm shrink-0 border ${mTheme.bg} ${mTheme.text} ${mTheme.border}`}>
+                      {initial}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span className="font-display font-bold text-white text-base leading-tight truncate">{m.name}</span>
+                        <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700 shrink-0">
+                          {m.type}
+                        </span>
+                      </div>
+                      <div className="mt-1.5 flex items-center gap-2">
+                        <div className="flex-1 bg-[#090A0F] h-1.5 rounded-full overflow-hidden border border-slate-800 max-w-[120px]">
+                          <div 
+                            className={`${mTheme.progressBar} h-full transition-all duration-300`} 
+                            style={{ width: `${m.power}%` }} 
+                          />
+                        </div>
+                        <span className="text-[10px] font-mono tabular-nums text-slate-400">{m.power}%</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Activity Lane (Real-Time Nonce & Hash - Static in-place, NO sliding/scrolling) */}
+                  <div className="flex-1 h-11 bg-[#090A0F] rounded-xl border border-slate-800/90 overflow-hidden relative flex items-center px-4 shadow-inner min-w-0">
+                    {isWinnerCard && (
+                      <div className="absolute inset-0 bg-amber-500/10 pointer-events-none" />
+                    )}
+                    
+                    <div className="relative z-10 flex w-full justify-between items-center text-xs font-mono tabular-nums text-slate-400 gap-3">
+                      <span className="truncate shrink-0 font-medium">
+                        Nonce: <span className="text-white font-bold">{m.currentNonce.toLocaleString()}</span>
+                      </span>
+                      <span className={`truncate font-mono text-[11px] sm:text-xs ${
+                        isWinnerCard ? 'text-amber-400 font-bold' : 'text-slate-400'
+                      }`}>
+                        Hash: {isWinnerCard 
+                          ? m.currentHash 
+                          : m.currentHash.length > 28 
+                            ? m.currentHash.substring(0, 10) + '...' + m.currentHash.substring(m.currentHash.length - 8)
+                            : m.currentHash
+                        }
                       </span>
                     </div>
-                    <div className="mt-1.5 flex items-center gap-2">
-                      <div className="flex-1 bg-[#090A0F] h-1.5 rounded-full overflow-hidden border border-slate-800 max-w-[120px]">
-                        <div 
-                          className={`${getMinerTheme(m.name).progressBar} h-full transition-all duration-300`} 
-                          style={{ width: `${m.power}%` }} 
-                        />
+                  </div>
+
+                  {/* Real-time Mining Stats (Hashrate, Attempts, Blocks, Status) */}
+                  <div className="flex items-center justify-between xl:justify-end gap-4 sm:gap-5 min-w-[340px] border-t xl:border-t-0 border-slate-800/60 pt-2 xl:pt-0">
+                    {/* Real Hashrate */}
+                    <div className="text-left xl:text-right w-24">
+                      <div className="text-[10px] text-slate-500 font-display font-bold uppercase tracking-wider">
+                        {isVi ? 'Tốc độ' : 'Hashrate'}
                       </div>
-                      <span className="text-[10px] font-mono tabular-nums text-slate-400">{m.power}%</span>
+                      <div className="font-mono tabular-nums text-emerald-400 font-bold text-xs sm:text-sm">
+                        {formatHashrate(m.hashrate)}
+                      </div>
                     </div>
-                  </div>
-                </div>
 
-                {/* Activity Lane (Real-Time Nonce & Hash) */}
-                <div className="flex-1 h-11 bg-[#090A0F] rounded-xl border border-slate-800/90 overflow-hidden relative flex items-center px-4 shadow-inner min-w-0">
-                  {appState === 'mining' && m.status !== 'winner' && (
-                    <div 
-                      className="absolute inset-0 opacity-20 mix-blend-screen" 
-                      style={{
-                        background: `linear-gradient(90deg, transparent, rgba(16, 185, 129, 1) 50%, transparent)`,
-                        width: '40%',
-                        animation: `scan ${Math.max(0.3, 1500 / (m.hashrate || 100))}s linear infinite`
-                      }} 
-                    />
-                  )}
-                  {m.status === 'winner' && (
-                    <div className="absolute inset-0 bg-amber-500/10" />
-                  )}
-                  
-                  <div className="relative z-10 flex w-full justify-between items-center text-xs font-mono tabular-nums text-slate-400 gap-3">
-                    <span className="truncate shrink-0 font-medium">
-                      Nonce: <span className="text-white font-bold">{m.currentNonce.toLocaleString()}</span>
-                    </span>
-                    <span className={`truncate font-mono text-[11px] sm:text-xs transition-colors duration-200 ${
-                      m.status === 'winner' ? 'text-amber-400 font-bold' : 'text-slate-400'
-                    }`}>
-                      Hash: {m.status === 'winner' 
-                        ? m.currentHash 
-                        : m.currentHash.length > 28 
-                          ? m.currentHash.substring(0, 10) + '...' + m.currentHash.substring(m.currentHash.length - 8)
-                          : m.currentHash
-                      }
-                    </span>
-                  </div>
-                </div>
+                    {/* Real Cumulative Attempts */}
+                    <div className="text-right w-20">
+                      <div className="text-[10px] text-slate-500 font-display font-bold uppercase tracking-wider">
+                        {isVi ? 'Đã thử' : 'Attempts'}
+                      </div>
+                      <div className="font-mono tabular-nums text-white font-bold text-xs sm:text-sm">
+                        {(m.attempts || 0).toLocaleString()}
+                      </div>
+                    </div>
 
-                {/* Real-time Mining Stats (Hashrate, Attempts, Blocks, Status) */}
-                <div className="flex items-center justify-between xl:justify-end gap-4 sm:gap-5 min-w-[340px] border-t xl:border-t-0 border-slate-800/60 pt-2 xl:pt-0">
-                  {/* Real Hashrate */}
-                  <div className="text-left xl:text-right w-24">
-                    <div className="text-[10px] text-slate-500 font-display font-bold uppercase tracking-wider">
-                      {isVi ? 'Tốc độ' : 'Hashrate'}
+                    {/* Blocks Won Total */}
+                    <div className="text-right w-16">
+                      <div className="text-[10px] text-slate-500 font-display font-bold uppercase tracking-wider">
+                        {isVi ? 'Số khối' : 'Blocks'}
+                      </div>
+                      <div className="font-mono tabular-nums text-emerald-400 font-bold text-xs sm:text-sm">
+                        {m.blocksWon || 0}
+                      </div>
                     </div>
-                    <div className="font-mono tabular-nums text-emerald-400 font-bold text-xs sm:text-sm">
-                      {formatHashrate(m.hashrate)}
+                    
+                    {/* Miner Status Badge & Delete Action */}
+                    <div className="flex items-center justify-end w-44 border-l border-slate-800/80 pl-3">
+                      <div className="text-xs font-sans font-medium flex-1 text-right">
+                        {getMinerStatusBadge(m, appState)}
+                      </div>
+                      {miners.length > 1 && (
+                        <button 
+                          onClick={() => handleRemoveMiner(m.id)} 
+                          className="p-1.5 text-slate-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all ml-2 cursor-pointer shrink-0"
+                          title={isVi ? 'Xóa thợ đào' : 'Remove miner'}
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      )}
                     </div>
-                  </div>
-
-                  {/* Real Cumulative Attempts */}
-                  <div className="text-right w-20">
-                    <div className="text-[10px] text-slate-500 font-display font-bold uppercase tracking-wider">
-                      {isVi ? 'Đã thử' : 'Attempts'}
-                    </div>
-                    <div className="font-mono tabular-nums text-white font-bold text-xs sm:text-sm">
-                      {(m.attempts || 0).toLocaleString()}
-                    </div>
-                  </div>
-
-                  {/* Blocks Won Total */}
-                  <div className="text-right w-16">
-                    <div className="text-[10px] text-slate-500 font-display font-bold uppercase tracking-wider">
-                      {isVi ? 'Số khối' : 'Blocks'}
-                    </div>
-                    <div className="font-mono tabular-nums text-emerald-400 font-bold text-xs sm:text-sm">
-                      {m.blocksWon || 0}
-                    </div>
-                  </div>
-                  
-                  {/* Miner Status Badge & Delete Action */}
-                  <div className="flex items-center justify-end w-44 border-l border-slate-800/80 pl-3">
-                    <div className="text-xs font-sans font-medium flex-1 text-right">
-                      {getMinerStatusBadge(m, appState)}
-                    </div>
-                    {miners.length > 1 && (
-                      <button 
-                        onClick={() => handleRemoveMiner(m.id)} 
-                        className="p-1.5 text-slate-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all ml-2 cursor-pointer shrink-0"
-                        title={isVi ? 'Xóa thợ đào' : 'Remove miner'}
-                      >
-                        <Trash2 size={14} />
-                      </button>
-                    )}
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* COMPLETION SUMMARY CARD */}
@@ -1132,24 +1164,30 @@ export const PowLesson: React.FC = () => {
                   {isVi ? 'Kết Quả Từng Thợ Đào' : 'Miner Results'}
                 </span>
                 <div className="space-y-1.5 text-xs font-mono">
-                  {miners.map(m => (
-                    <div key={m.id} className="flex items-center justify-between py-1.5 border-b border-slate-800/50 last:border-0">
-                      <span className="text-slate-300 font-sans font-medium flex items-center gap-1.5">
-                        {getMinerAvatar(m.type)} {m.name}
-                        <span className="text-[10px] text-slate-500 font-mono">({m.type})</span>
-                      </span>
-                      <div className="flex items-center gap-3">
-                        <span className="text-slate-400 text-[11px] font-mono">{formatHashrate(m.hashrate)}</span>
-                        <span className={`font-bold font-mono text-xs px-2 py-0.5 rounded border ${
-                          m.blocksWon > 0 
-                            ? 'text-amber-400 bg-amber-500/10 border-amber-500/20' 
-                            : 'text-slate-500 bg-slate-800/40 border-slate-800'
-                        }`}>
-                          {m.blocksWon} {isVi ? 'khối' : 'Blocks'}
+                  {miners.map(m => {
+                    const summaryTheme = getMinerTheme(m.name);
+                    return (
+                      <div key={m.id} className="flex items-center justify-between py-1.5 border-b border-slate-800/50 last:border-0">
+                        <span className="text-slate-300 font-sans font-medium flex items-center gap-2">
+                          <div className={`w-5 h-5 rounded-full flex items-center justify-center font-display font-bold text-[10px] shrink-0 border ${summaryTheme.bg} ${summaryTheme.text} ${summaryTheme.border}`}>
+                            {m.name.charAt(0).toUpperCase()}
+                          </div>
+                          {m.name}
+                          <span className="text-[10px] text-slate-500 font-mono">({m.type})</span>
                         </span>
+                        <div className="flex items-center gap-3">
+                          <span className="text-slate-400 text-[11px] font-mono">{formatHashrate(m.hashrate)}</span>
+                          <span className={`font-bold font-mono text-xs px-2 py-0.5 rounded border ${
+                            m.blocksWon > 0 
+                              ? 'text-amber-400 bg-amber-500/10 border-amber-500/20' 
+                              : 'text-slate-500 bg-slate-800/40 border-slate-800'
+                          }`}>
+                            {m.blocksWon} {isVi ? 'khối' : 'Blocks'}
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
 
@@ -1194,7 +1232,7 @@ export const PowLesson: React.FC = () => {
           <div 
             ref={timelineScrollRef}
             onScroll={handleTimelineScroll}
-            className="flex overflow-x-auto pb-3 gap-3 items-center custom-scrollbar px-1"
+            className="flex overflow-x-auto py-2 pb-3 gap-3 items-center custom-scrollbar px-2"
           >
             {blockchain.map((block, idx) => {
               const isJustAdded = justAddedBlockIndex === block.index;
@@ -1204,14 +1242,14 @@ export const PowLesson: React.FC = () => {
                 <React.Fragment key={`${block.index}-${block.hash}`}>
                   <div 
                     onClick={() => setSelectedBlock(block)}
-                    className={`p-3.5 rounded-xl bg-[#0C0F14] transition-all duration-300 flex flex-col items-center justify-between min-w-[125px] sm:min-w-[135px] shrink-0 cursor-pointer select-none ${
+                    className={`p-3.5 rounded-xl bg-[#0C0F14] transition-colors duration-200 flex flex-col items-center justify-between min-w-[125px] sm:min-w-[135px] shrink-0 cursor-pointer select-none border-2 box-border ${
                       isJustAdded 
-                        ? 'border-2 border-amber-400 shadow-[0_0_20px_rgba(245,158,11,0.25)] scale-[1.03]' 
-                        : `border ${theme.border} hover:border-slate-500 hover:bg-[#0E131A] shadow-sm`
+                        ? 'border-amber-400 animate-block-pulse' 
+                        : `${theme.border} hover:border-slate-500 hover:bg-[#0E131A] shadow-sm`
                     }`}
                   >
                     {/* Real Sequential Block Integer: Clean, NO brackets */}
-                    <div className={`text-2xl sm:text-3xl font-mono font-black tabular-nums tracking-wider ${theme.text} my-0.5 transition-transform`}>
+                    <div className={`text-2xl sm:text-3xl font-mono font-black tabular-nums tracking-wider ${theme.text} my-0.5`}>
                       {block.index}
                     </div>
 
@@ -1369,10 +1407,6 @@ export const PowLesson: React.FC = () => {
       />
       
       <style dangerouslySetInnerHTML={{__html: `
-        @keyframes scan {
-          0% { transform: translateX(-100%); }
-          100% { transform: translateX(350%); }
-        }
         .custom-scrollbar::-webkit-scrollbar {
           height: 6px;
           width: 5px;

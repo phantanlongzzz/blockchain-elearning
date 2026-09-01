@@ -30,34 +30,34 @@ export const CertificatesModal: React.FC = () => {
   return (
     <div
       id="certificates-modal-overlay"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-sm animate-fade-in"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#090A0F]/85 backdrop-blur-sm animate-fade-in font-sans"
       onClick={() => setCertificatesModalOpen(false)}
     >
       <div
         id="certificates-modal-container"
-        className="relative w-full max-w-xl bg-slate-900 border border-slate-700/80 rounded-2xl shadow-2xl overflow-hidden p-6 sm:p-7 max-h-[90vh] overflow-y-auto"
+        className="relative w-full max-w-xl bg-[#0C0F14] border border-[#1C2430] rounded-2xl shadow-2xl overflow-hidden p-6 sm:p-7 max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
         <button
           id="btn-close-cert-modal"
           onClick={() => setCertificatesModalOpen(false)}
-          className="absolute top-4 right-4 p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition-colors"
+          className="absolute top-4 right-4 p-2 text-[#717B8C] hover:text-[#F2F4F7] rounded-lg hover:bg-[#11161E] transition-colors cursor-pointer"
           aria-label="Close modal"
         >
           <X className="w-5 h-5" />
         </button>
 
         {/* Modal Header */}
-        <div className="pb-4 border-b border-slate-800 flex items-center gap-3">
-          <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400">
+        <div className="pb-4 border-b border-[#1C2430] flex items-center gap-3">
+          <div className="p-2.5 rounded-xl bg-[#F59E0B]/10 border border-[#F59E0B]/30 text-[#F59E0B]">
             <Award className="w-6 h-6" />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-white tracking-tight">
+            <h3 className="text-lg font-bold text-[#F2F4F7] tracking-tight">
               {strings.certificates.title}
             </h3>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-[#717B8C]">
               {strings.certificates.subtitle}
             </p>
           </div>
@@ -65,22 +65,22 @@ export const CertificatesModal: React.FC = () => {
 
         {/* Future-Ready Certificate Status & Placeholder */}
         <div className="my-6 space-y-4">
-          <div className="p-6 bg-slate-950/70 border border-slate-800 rounded-2xl text-center space-y-4">
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 shadow-inner">
+          <div className="p-6 bg-[#090A0F] border border-[#1C2430] rounded-2xl text-center space-y-4">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-[#00C98D]/10 border border-[#00C98D]/30 text-[#00C98D] shadow-inner">
               <Award className="w-6 h-6" />
             </div>
 
             <div>
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-[11px] font-semibold text-amber-300 mb-2">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#00C98D]/10 border border-[#00C98D]/20 text-[11px] font-semibold text-[#00C98D] mb-2">
                 <Sparkles className="w-3.5 h-3.5" />
                 {strings.certificates.previewBadge}
               </span>
-              <h4 className="text-base font-bold text-white">
+              <h4 className="text-base font-bold text-[#F2F4F7]">
                 {language === 'vi'
                   ? 'Chứng Chỉ Đánh Giá Năng Lực Học Thuật'
                   : 'Academic Assessment Certification'}
               </h4>
-              <p className="text-xs text-slate-300 mt-2 font-medium">
+              <p className="text-xs text-[#A5AFBF] mt-2 font-medium">
                 {language === 'vi'
                   ? 'Chứng chỉ sẽ được cấp sau khi hoàn thành các bài đánh giá đạt chuẩn.'
                   : 'Certificates will be available after completing eligible assessments.'}
@@ -89,8 +89,8 @@ export const CertificatesModal: React.FC = () => {
 
             {/* Eligibility Status Check */}
             {activeCert ? (
-              <div className="p-4 bg-emerald-950/30 border border-emerald-500/30 rounded-xl text-left text-xs space-y-2">
-                <div className="flex items-center justify-between text-emerald-400 font-semibold">
+              <div className="p-4 bg-[#00C98D]/5 border border-[#00C98D]/30 rounded-xl text-left text-xs space-y-2">
+                <div className="flex items-center justify-between text-[#00C98D] font-semibold">
                   <div className="flex items-center gap-1.5">
                     <CheckCircle2 className="w-4 h-4" />
                     <span>
@@ -99,23 +99,23 @@ export const CertificatesModal: React.FC = () => {
                         : 'Assessment Requirement Met'}
                     </span>
                   </div>
-                  <span className="font-mono text-emerald-300">
+                  <span className="font-mono text-[#00C98D] font-bold">
                     {activeCert.score}%
                   </span>
                 </div>
-                <p className="text-slate-300 text-[11px] leading-relaxed">
+                <p className="text-[#A5AFBF] text-[11px] leading-relaxed">
                   {language === 'vi'
                     ? `Sinh viên ${user.name} (${user.studentId} - ${user.class}) đã đạt ${activeCert.score}% tại bài kiểm tra phiên bản v${activeCert.quizVersion}. Mã định danh lưu trữ: ${activeCert.certificateId}.`
                     : `Student ${user.name} (${user.studentId} - ${user.class}) achieved ${activeCert.score}% on version v${activeCert.quizVersion}. Stored Certificate Identifier: ${activeCert.certificateId}.`}
                 </p>
               </div>
             ) : (
-              <div className="p-3.5 bg-slate-900/90 border border-slate-800 rounded-xl text-left text-xs space-y-2">
-                <div className="flex items-center gap-2 text-slate-300 font-medium">
-                  <Info className="w-4 h-4 text-emerald-400 shrink-0" />
+              <div className="p-3.5 bg-[#0C0F14] border border-[#1C2430] rounded-xl text-left text-xs space-y-2">
+                <div className="flex items-center gap-2 text-[#F2F4F7] font-medium">
+                  <Info className="w-4 h-4 text-[#00C98D] shrink-0" />
                   <span>{strings.certificates.passRequirement}</span>
                 </div>
-                <p className="text-slate-400 text-[11px] leading-relaxed">
+                <p className="text-[#717B8C] text-[11px] leading-relaxed">
                   {language === 'vi'
                     ? 'Hệ thống lưu trữ cấu trúc dữ liệu chứng chỉ tự động liên kết với từng lần nộp bài (Quiz Attempt) có điểm số từ 75% trở lên.'
                     : 'The underlying data architecture automatically links verifiable certificate records to quiz attempts scoring 75% or higher.'}
@@ -124,16 +124,16 @@ export const CertificatesModal: React.FC = () => {
             )}
 
             {/* Architecture Schema Preview */}
-            <div className="p-4 bg-slate-900/60 border border-slate-800 rounded-xl text-left text-xs font-mono space-y-1.5">
-              <div className="flex items-center gap-2 text-slate-400 text-[10px] uppercase tracking-wider font-bold mb-2">
-                <Database className="w-3.5 h-3.5 text-emerald-400" />
+            <div className="p-4 bg-[#0B0F15] border border-[#1C2430] rounded-xl text-left text-xs font-mono space-y-1.5">
+              <div className="flex items-center gap-2 text-[#717B8C] text-[10px] uppercase tracking-wider font-bold mb-2">
+                <Database className="w-3.5 h-3.5 text-[#00C98D]" />
                 <span>Certificate Data Architecture Model</span>
               </div>
-              <div className="text-[11px] text-slate-400 space-y-1">
-                <div><span className="text-emerald-400">userId:</span> "{user.userId}"</div>
-                <div><span className="text-emerald-400">quizVersion:</span> "1.0"</div>
-                <div><span className="text-emerald-400">certificateId:</span> "{activeCert ? activeCert.certificateId : 'BC-CERT-XXXXXX'}"</div>
-                <div><span className="text-emerald-400">status:</span> "{activeCert ? 'eligible' : 'pending'}"</div>
+              <div className="text-[11px] text-[#A5AFBF] space-y-1">
+                <div><span className="text-[#00C98D]">userId:</span> "{user.userId}"</div>
+                <div><span className="text-[#00C98D]">quizVersion:</span> "1.0"</div>
+                <div><span className="text-[#00C98D]">certificateId:</span> "{activeCert ? activeCert.certificateId : 'BC-CERT-XXXXXX'}"</div>
+                <div><span className="text-[#00C98D]">status:</span> "{activeCert ? 'eligible' : 'pending'}"</div>
               </div>
             </div>
 
@@ -144,14 +144,14 @@ export const CertificatesModal: React.FC = () => {
                 const el = document.getElementById('quiz-section');
                 if (el) el.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="px-5 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-xs rounded-xl shadow-lg shadow-amber-500/20 transition-all inline-flex items-center gap-2"
+              className="px-5 py-2.5 bg-[#00C98D] hover:bg-[#00B982] text-[#090A0F] font-bold text-xs rounded-xl shadow-sm transition-all inline-flex items-center gap-2 cursor-pointer"
             >
               <span>{strings.quiz.startQuiz}</span>
             </button>
           </div>
 
           {/* Platform Notice */}
-          <div className="p-3 bg-slate-950/40 rounded-xl border border-slate-800/80 text-[11px] text-slate-500 text-center leading-relaxed">
+          <div className="p-3 bg-[#090A0F] rounded-xl border border-[#1C2430] text-[11px] text-[#717B8C] text-center leading-relaxed">
             {language === 'vi'
               ? 'Chứng chỉ được cấp bởi Nền tảng Blockchain Elearning. Tính năng xuất tệp PDF và xác thực chữ ký số sẽ được tích hợp trong bản cập nhật tiếp theo.'
               : 'Certificates are issued by the Blockchain Elearning platform. PDF export and cryptographic signature verification will be integrated in a future release.'}
@@ -159,10 +159,10 @@ export const CertificatesModal: React.FC = () => {
         </div>
 
         {/* Modal Footer */}
-        <div className="pt-3 border-t border-slate-800 flex justify-end">
+        <div className="pt-3 border-t border-[#1C2430] flex justify-end">
           <button
             onClick={() => setCertificatesModalOpen(false)}
-            className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium rounded-xl transition-colors"
+            className="px-4 py-2 bg-[#11161E] hover:bg-[#151C26] text-[#A5AFBF] hover:text-[#F2F4F7] text-xs font-medium rounded-xl border border-[#1C2430] transition-colors cursor-pointer"
           >
             {strings.profile.cancel}
           </button>

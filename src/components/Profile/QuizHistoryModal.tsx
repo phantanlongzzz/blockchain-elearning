@@ -35,34 +35,34 @@ export const QuizHistoryModal: React.FC = () => {
   return (
     <div
       id="quiz-history-modal-overlay"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-fade-in"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#090A0F]/85 backdrop-blur-sm animate-fade-in font-sans"
       onClick={() => setQuizHistoryModalOpen(false)}
     >
       <div
         id="quiz-history-modal-container"
-        className="relative w-full max-w-2xl bg-slate-900 border border-slate-700/80 rounded-2xl shadow-2xl overflow-hidden p-6 sm:p-8 max-h-[85vh] flex flex-col"
+        className="relative w-full max-w-2xl bg-[#0C0F14] border border-[#1C2430] rounded-2xl shadow-2xl overflow-hidden p-6 sm:p-8 max-h-[85vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
         <button
           id="btn-close-history-modal"
           onClick={() => setQuizHistoryModalOpen(false)}
-          className="absolute top-4 right-4 p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition-colors"
+          className="absolute top-4 right-4 p-2 text-[#717B8C] hover:text-[#F2F4F7] rounded-lg hover:bg-[#11161E] transition-colors cursor-pointer"
           aria-label="Close modal"
         >
           <X className="w-5 h-5" />
         </button>
 
         {/* Modal Header */}
-        <div className="pb-4 border-b border-slate-800 flex items-center gap-3">
-          <div className="p-2.5 rounded-xl bg-sky-500/10 border border-sky-500/30 text-sky-400">
+        <div className="pb-4 border-b border-[#1C2430] flex items-center gap-3">
+          <div className="p-2.5 rounded-xl bg-[#00C98D]/10 border border-[#00C98D]/30 text-[#00C98D]">
             <History className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-white tracking-tight">
+            <h3 className="text-lg font-bold text-[#F2F4F7] tracking-tight">
               {strings.quizHistory.title}
             </h3>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-[#717B8C]">
               {strings.quizHistory.subtitle}
             </p>
           </div>
@@ -71,9 +71,9 @@ export const QuizHistoryModal: React.FC = () => {
         {/* Attempts List */}
         <div className="flex-1 overflow-y-auto py-4 space-y-3 pr-1">
           {attempts.length === 0 ? (
-            <div className="text-center py-12 px-4 border border-dashed border-slate-800 rounded-xl">
-              <History className="w-10 h-10 text-slate-600 mx-auto mb-3" />
-              <p className="text-sm font-semibold text-slate-300">
+            <div className="text-center py-12 px-4 border border-dashed border-[#1C2430] rounded-xl bg-[#090A0F]/40">
+              <History className="w-10 h-10 text-[#4D5665] mx-auto mb-3" />
+              <p className="text-sm font-medium text-[#A5AFBF]">
                 {strings.quizHistory.emptyHistory}
               </p>
               <button
@@ -82,7 +82,7 @@ export const QuizHistoryModal: React.FC = () => {
                   const el = document.getElementById('quiz-section');
                   if (el) el.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="mt-4 px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-semibold text-xs rounded-xl shadow-md transition-colors"
+                className="mt-4 px-4 py-2 bg-[#00C98D] hover:bg-[#00B982] text-[#090A0F] font-bold text-xs rounded-xl shadow-sm transition-colors cursor-pointer"
               >
                 {strings.quizHistory.emptyAction}
               </button>
@@ -104,28 +104,28 @@ export const QuizHistoryModal: React.FC = () => {
               return (
                 <div
                   key={att.id}
-                  className="p-4 bg-slate-800/40 hover:bg-slate-800/80 border border-slate-700/60 rounded-xl transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+                  className="p-4 bg-[#11161E]/70 hover:bg-[#11161E] border border-[#1C2430] hover:border-[#24313D] rounded-xl transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
                 >
                   <div className="space-y-1 flex-1">
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-semibold px-2 py-0.5 rounded bg-slate-700 text-slate-300 font-mono">
+                      <span className="text-xs font-semibold px-2 py-0.5 rounded bg-[#090A0F] text-[#A5AFBF] border border-[#1C2430] font-mono">
                         v{att.quizVersion}
                       </span>
-                      <h4 className="text-sm font-bold text-white">
+                      <h4 className="text-sm font-bold text-[#F2F4F7]">
                         {language === 'vi'
                           ? att.quizTitle.vi
                           : att.quizTitle.en}
                       </h4>
                     </div>
 
-                    <div className="flex flex-wrap items-center gap-3 text-xs text-slate-400 font-mono pt-1">
+                    <div className="flex flex-wrap items-center gap-3 text-xs text-[#717B8C] font-mono pt-1">
                       <span className="flex items-center gap-1">
-                        <Calendar className="w-3.5 h-3.5 text-slate-500" />
+                        <Calendar className="w-3.5 h-3.5 text-[#4D5665]" />
                         {dateStr}
                       </span>
                       {att.durationSeconds ? (
                         <span className="flex items-center gap-1">
-                          <Clock className="w-3.5 h-3.5 text-slate-500" />
+                          <Clock className="w-3.5 h-3.5 text-[#4D5665]" />
                           {Math.floor(att.durationSeconds / 60)}m{' '}
                           {att.durationSeconds % 60}s
                         </span>
@@ -141,14 +141,14 @@ export const QuizHistoryModal: React.FC = () => {
                     <div className="text-right">
                       <span
                         className={`text-lg font-bold font-mono ${
-                          isPassed ? 'text-emerald-400' : 'text-rose-400'
+                          isPassed ? 'text-[#00C98D]' : 'text-rose-400'
                         }`}
                       >
                         {att.score}%
                       </span>
                       <span
                         className={`block text-[10px] uppercase font-bold tracking-wider ${
-                          isPassed ? 'text-emerald-500' : 'text-rose-500'
+                          isPassed ? 'text-[#00C98D]' : 'text-rose-400'
                         }`}
                       >
                         {isPassed
@@ -159,10 +159,10 @@ export const QuizHistoryModal: React.FC = () => {
 
                     <button
                       onClick={() => handleReview(att)}
-                      className="flex items-center gap-1 px-3 py-2 bg-slate-700/80 hover:bg-slate-700 text-slate-200 hover:text-white rounded-lg text-xs font-semibold transition-colors shadow-sm"
+                      className="flex items-center gap-1 px-3 py-2 bg-[#151C26] hover:bg-[#1C2430] text-[#F2F4F7] border border-[#1C2430] hover:border-[#00C98D]/30 rounded-lg text-xs font-semibold transition-colors cursor-pointer"
                     >
                       <span>{strings.quizHistory.reviewAttempt}</span>
-                      <ChevronRight className="w-3.5 h-3.5" />
+                      <ChevronRight className="w-3.5 h-3.5 text-[#00C98D]" />
                     </button>
                   </div>
                 </div>
@@ -172,10 +172,10 @@ export const QuizHistoryModal: React.FC = () => {
         </div>
 
         {/* Modal Footer */}
-        <div className="pt-3 border-t border-slate-800 flex justify-end">
+        <div className="pt-3 border-t border-[#1C2430] flex justify-end">
           <button
             onClick={() => setQuizHistoryModalOpen(false)}
-            className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium rounded-xl transition-colors"
+            className="px-4 py-2 bg-[#11161E] hover:bg-[#151C26] text-[#A5AFBF] hover:text-[#F2F4F7] text-xs font-medium rounded-xl border border-[#1C2430] transition-colors cursor-pointer"
           >
             {strings.profile.cancel}
           </button>

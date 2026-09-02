@@ -1,355 +1,17 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Play, Pause, RotateCcw, Clock } from 'lucide-react';
-import { useLanguage } from '../../i18n/LanguageContext';
-import { getMinerColorTheme, GENESIS_THEME } from '../../utils/minerColors';
+import fs from 'fs';
 
-export interface MempoolTx {
-  id: string;
-  txCode: string;
-  from: string;
-  to: string;
-  amount: number;
-  fee: number;
-  status: 'mempool' | 'candidate_a' | 'candidate_b' | 'confirmed' | 'returned_stale';
+const file = 'src/components/ProofOfWork/P2PForkConsensusVisualizer.tsx';
+const content = fs.readFileSync(file, 'utf-8');
+
+const returnIndex = content.indexOf('  return (\n    <div className="w-full flex flex-col');
+if (returnIndex === -1) {
+  console.log("Could not find return statement");
+  process.exit(1);
 }
 
-export interface P2PBlock {
-  id: string;
-  blockNumber: number;
-  displayNumber: string;
-  height: number;
-  minerName: string;
-  minerRole: string;
-  branch: 'trunk' | 'branchA' | 'branchB';
-  status: 'canonical' | 'competing' | 'stale';
-  isLeading?: boolean;
-  hash: string;
-  prevHash: string;
-  merkleRoot: string;
-  nonce: number;
-  timestamp: string;
-  txs: string[];
-  coinbaseReward: number;
-  cumulativeWork: number;
-}
+const beforeReturn = content.substring(0, returnIndex);
 
-const INITIAL_MEMPOOL_TXS: MempoolTx[] = [
-  { id: 'tx-1', txCode: 'TX-01', from: 'Alice', to: 'Bob', amount: 2.5, fee: 0.0005, status: 'mempool' },
-  { id: 'tx-2', txCode: 'TX-02', from: 'Bob', to: 'Charlie', amount: 1.0, fee: 0.0003, status: 'mempool' },
-  { id: 'tx-3', txCode: 'TX-03', from: 'Dave', to: 'Eve', amount: 0.5, fee: 0.0002, status: 'mempool' },
-  { id: 'tx-4', txCode: 'TX-04', from: 'Charlie', to: 'Alice', amount: 3.2, fee: 0.0008, status: 'mempool' },
-  { id: 'tx-5', txCode: 'TX-05', from: 'Eve', to: 'Frank', amount: 1.2, fee: 0.0004, status: 'mempool' },
-  { id: 'tx-6', txCode: 'TX-06', from: 'Frank', to: 'Grace', amount: 0.8, fee: 0.0002, status: 'mempool' },
-];
-
-const GENESIS_BLOCK: P2PBlock = {
-  id: 'block-0',
-  blockNumber: 0,
-  displayNumber: '0',
-  height: 0,
-  minerName: 'Genesis',
-  minerRole: 'Network Genesis',
-  branch: 'trunk',
-  status: 'canonical',
-  isLeading: true,
-  hash: '000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f',
-  prevHash: '0000000000000000000000000000000000000000000000000000000000000000',
-  merkleRoot: '4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b',
-  nonce: 2083236893,
-  timestamp: '00:00:00',
-  txs: ['Coinbase: 50.0 BTC → Satoshi (Genesis Reward)'],
-  coinbaseReward: 50.0,
-  cumulativeWork: 0,
-};
-
-const MINERS = [
-  { name: 'Alice', weight: 10, role: 'CPU Miner' },
-  { name: 'Bob', weight: 40, role: 'GPU Miner' },
-  { name: 'Charlie', weight: 80, role: 'ASIC Miner' },
-  { name: 'Dave', weight: 100, role: 'Quantum Miner' },
-];
-
-function getWeightedMiner(avoidMiner?: string, streak?: number) {
-  let adjusted = MINERS.map(m => ({ ...m }));
-  if (avoidMiner && streak && streak >= 3) {
-    const m = adjusted.find(x => x.name === avoidMiner);
-    if (m) {
-      m.weight = m.weight / (streak * 2); // Heavily penalize long streaks
-    }
-  }
-  const total = adjusted.reduce((acc, m) => acc + m.weight, 0);
-  let r = Math.random() * total;
-  for (const m of adjusted) {
-    if (r < m.weight) return m;
-    r -= m.weight;
-  }
-  return adjusted[adjusted.length - 1];
-}
-
-function generateHash(prevHash: string, nonce: number) {
-  const chars = '0123456789abcdef';
-  let h = '000000';
-  for (let i = 0; i < 58; i++) h += chars[Math.floor(Math.random() * chars.length)];
-  return h;
-}
-
-export const P2PForkConsensusVisualizer: React.FC = () => {
-  const { language } = useLanguage();
-  const isVi = language === 'vi';
-
-  // Controls
-  const [duration, setDuration] = useState<number>(60);
-  const [playSpeed, setPlaySpeed] = useState<number>(1);
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [elapsedSeconds, setElapsedSeconds] = useState<number>(0);
-
-  // Blockchain State
-  const [trunk, setTrunk] = useState<P2PBlock[]>([{ ...GENESIS_BLOCK }]);
-  const [activeFork, setActiveFork] = useState<{ branchA: P2PBlock[], branchB: P2PBlock[] } | null>(null);
-  const [staleBranches, setStaleBranches] = useState<P2PBlock[][]>([]);
-  
-  // Mining stats
-  const [lastMiner, setLastMiner] = useState<string>('');
-  const [minerStreak, setMinerStreak] = useState<number>(0);
-  const [blockCounter, setBlockCounter] = useState<number>(1);
-
-  // UI State
-  const [selectedBlock, setSelectedBlock] = useState<P2PBlock | null>(null);
-  const [selectedTx, setSelectedTx] = useState<MempoolTx | null>(null);
-  const [currentStageText, setCurrentStageText] = useState(isVi ? 'Sẵn Sàng' : 'Ready');
-
-  // Refs for loop
-  const stateRef = useRef({
-    trunk, activeFork, staleBranches, lastMiner, minerStreak, blockCounter, isPlaying, playSpeed, duration, elapsedSeconds,
-    miningCountdown: 0
-  });
-  
-  // Auto-focus Refs
-  const treeScrollRef = useRef<HTMLDivElement>(null);
-  const mempoolScrollRef = useRef<HTMLDivElement>(null);
-  
-  useEffect(() => {
-    stateRef.current = { trunk, activeFork, staleBranches, lastMiner, minerStreak, blockCounter, isPlaying, playSpeed, duration, elapsedSeconds, miningCountdown: stateRef.current.miningCountdown };
-  }, [trunk, activeFork, staleBranches, lastMiner, minerStreak, blockCounter, isPlaying, playSpeed, duration, elapsedSeconds]);
-
-  const moveCameraToFocus = useCallback(() => {
-    if (treeScrollRef.current) {
-      treeScrollRef.current.scrollTo({ left: treeScrollRef.current.scrollWidth, behavior: 'smooth' });
-    }
-  }, []);
-
-  const createBlock = (parent: P2PBlock, minerInfo: typeof MINERS[0], branch: 'trunk'|'branchA'|'branchB', specificHeight?: number): P2PBlock => {
-    const height = specificHeight ?? (parent.height + 1);
-    const nonce = Math.floor(Math.random() * 100000);
-    const mins = Math.floor(stateRef.current.elapsedSeconds / 60);
-    const secs = Math.floor(stateRef.current.elapsedSeconds % 60);
-    return {
-      id: `block-${Math.random().toString(36).substring(2, 9)}`,
-      blockNumber: height,
-      displayNumber: `${height}${branch === 'branchA' ? 'A' : branch === 'branchB' ? 'B' : ''}`,
-      height,
-      minerName: minerInfo.name,
-      minerRole: minerInfo.role,
-      branch,
-      status: branch === 'trunk' ? 'canonical' : 'competing',
-      isLeading: true,
-      hash: generateHash(parent.hash, nonce),
-      prevHash: parent.hash,
-      merkleRoot: 'a1b2c3d4e5f67890123456789abcdef0123456789abcdef0123456789abcdef0',
-      nonce,
-      timestamp: `00:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`,
-      txs: [`Coinbase: 6.25 BTC → ${minerInfo.name}`, 'Random Tx...'],
-      coinbaseReward: 6.25,
-      cumulativeWork: parent.cumulativeWork + 1,
-    };
-  };
-
-  const processMiningRound = () => {
-    const st = stateRef.current;
-    
-    if (st.activeFork) {
-      // Fork is active, miners compete on branches
-      const miner = getWeightedMiner(st.lastMiner, st.minerStreak);
-      const newStreak = miner.name === st.lastMiner ? st.minerStreak + 1 : 1;
-      
-      const tie = Math.random() < 0.15; // 15% chance to extend both simultaneously (very rare)
-      if (tie) {
-        const minerB = getWeightedMiner(miner.name, 1);
-        const parentA = st.activeFork.branchA[st.activeFork.branchA.length - 1];
-        const parentB = st.activeFork.branchB[st.activeFork.branchB.length - 1];
-        const blockA = createBlock(parentA, miner, 'branchA');
-        const blockB = createBlock(parentB, minerB, 'branchB');
-        setActiveFork({
-          branchA: [...st.activeFork.branchA, blockA],
-          branchB: [...st.activeFork.branchB, blockB]
-        });
-        setLastMiner(miner.name);
-        setMinerStreak(newStreak);
-        setCurrentStageText(isVi ? 'Kéo Dài Nhánh' : 'Branch Extension');
-        setTimeout(moveCameraToFocus, 100);
-        return;
-      }
-      
-      const extendA = Math.random() > 0.5;
-      if (extendA) {
-        const parentA = st.activeFork.branchA[st.activeFork.branchA.length - 1];
-        const blockA = createBlock(parentA, miner, 'branchA');
-        const newBranchA = [...st.activeFork.branchA, blockA];
-        
-        if (newBranchA.length > st.activeFork.branchB.length) {
-          // Branch A wins!
-          const newTrunk = [...st.trunk];
-          newBranchA.forEach(b => {
-             b.status = 'canonical';
-             b.branch = 'trunk';
-             b.displayNumber = `${b.height}`;
-             newTrunk.push(b);
-          });
-          const stales = [...st.staleBranches];
-          const currentStaleBranch = [...st.activeFork.branchB];
-          currentStaleBranch.forEach(b => b.status = 'stale');
-          stales.push(currentStaleBranch);
-          
-          setTrunk(newTrunk);
-          setStaleBranches(stales);
-          setActiveFork(null);
-          setCurrentStageText(isVi ? 'Đồng Thuận & Loại Bỏ Khối Cũ' : 'Consensus & Stale Blocks');
-        } else {
-          setActiveFork({ ...st.activeFork, branchA: newBranchA });
-          setCurrentStageText(isVi ? 'Kéo Dài Nhánh' : 'Branch Extension');
-        }
-      } else {
-        const parentB = st.activeFork.branchB[st.activeFork.branchB.length - 1];
-        const blockB = createBlock(parentB, miner, 'branchB');
-        const newBranchB = [...st.activeFork.branchB, blockB];
-        
-        if (newBranchB.length > st.activeFork.branchA.length) {
-          // Branch B wins!
-          const newTrunk = [...st.trunk];
-          newBranchB.forEach(b => {
-             b.status = 'canonical';
-             b.branch = 'trunk';
-             b.displayNumber = `${b.height}`;
-             newTrunk.push(b);
-          });
-          const stales = [...st.staleBranches];
-          const currentStaleBranch = [...st.activeFork.branchA];
-          currentStaleBranch.forEach(b => b.status = 'stale');
-          stales.push(currentStaleBranch);
-          
-          setTrunk(newTrunk);
-          setStaleBranches(stales);
-          setActiveFork(null);
-          setCurrentStageText(isVi ? 'Đồng Thuận & Loại Bỏ Khối Cũ' : 'Consensus & Stale Blocks');
-        } else {
-          setActiveFork({ ...st.activeFork, branchB: newBranchB });
-          setCurrentStageText(isVi ? 'Kéo Dài Nhánh' : 'Branch Extension');
-        }
-      }
-      setLastMiner(miner.name);
-      setMinerStreak(newStreak);
-      
-    } else {
-      // No active fork
-      const isFork = Math.random() < 0.15; // 15% chance to create a fork
-      if (isFork) {
-        const minerA = getWeightedMiner();
-        const minerB = getWeightedMiner(minerA.name, 1);
-        const parent = st.trunk[st.trunk.length - 1];
-        
-        const blockA = createBlock(parent, minerA, 'branchA', parent.height + 1);
-        const blockB = createBlock(parent, minerB, 'branchB', parent.height + 1);
-        
-        setActiveFork({ branchA: [blockA], branchB: [blockB] });
-        setCurrentStageText(isVi ? 'Phân Nhánh Xảy Ra!' : 'Fork Occurs!');
-      } else {
-        const miner = getWeightedMiner(st.lastMiner, st.minerStreak);
-        const newStreak = miner.name === st.lastMiner ? st.minerStreak + 1 : 1;
-        const parent = st.trunk[st.trunk.length - 1];
-        
-        const newBlock = createBlock(parent, miner, 'trunk');
-        
-        setTrunk([...st.trunk, newBlock]);
-        setLastMiner(miner.name);
-        setMinerStreak(newStreak);
-        setCurrentStageText(isVi ? 'Khai Thác Khối Mới' : 'Mining Blocks');
-      }
-    }
-    setTimeout(moveCameraToFocus, 100);
-  };
-
-  useEffect(() => {
-    if (!isPlaying) {
-      if (elapsedSeconds === 0 && trunk.length === 1 && currentStageText !== (isVi ? 'Sẵn Sàng' : 'Ready')) {
-        setCurrentStageText(isVi ? 'Sẵn Sàng' : 'Ready');
-      }
-      return;
-    }
-    if (elapsedSeconds === 0 && trunk.length === 1) {
-      setCurrentStageText(isVi ? 'Bắt Đầu Mô Phỏng' : 'Simulation Started');
-    }
-
-    const tickIntervalMs = 250;
-    const interval = setInterval(() => {
-      const st = stateRef.current;
-      const stepSeconds = (tickIntervalMs / 1000) * st.playSpeed;
-      
-      setElapsedSeconds(prev => {
-        const next = prev + stepSeconds;
-        if (next >= st.duration) {
-          setIsPlaying(false);
-          setCurrentStageText(isVi ? 'Hoàn Thành Mô Phỏng' : 'Simulation Completed');
-          return st.duration;
-        }
-        return next;
-      });
-
-      // Handle mining countdown
-      stateRef.current.miningCountdown -= stepSeconds;
-      if (stateRef.current.miningCountdown <= 0) {
-        processMiningRound();
-        
-        // Calculate new random interval based on duration to hit target blocks
-        const targetBlocks = st.duration === 30 ? 8 : st.duration === 60 ? 15 : st.duration === 120 ? 25 : 55;
-        const avgInterval = st.duration / targetBlocks;
-        const randomInterval = avgInterval * (0.6 + Math.random() * 0.8); // +/- 40% variance
-        stateRef.current.miningCountdown = randomInterval;
-      }
-      
-    }, tickIntervalMs);
-
-    return () => clearInterval(interval);
-  }, [isPlaying, isVi]);
-
-  const handleReset = () => {
-    setIsPlaying(false);
-    setElapsedSeconds(0);
-    setTrunk([{ ...GENESIS_BLOCK }]);
-    setActiveFork(null);
-    setStaleBranches([]);
-    setLastMiner('');
-    setMinerStreak(0);
-    setBlockCounter(1);
-    setCurrentStageText(isVi ? 'Sẵn Sàng' : 'Ready');
-    stateRef.current.miningCountdown = 0;
-    setTimeout(() => {
-      if (treeScrollRef.current) {
-        treeScrollRef.current.scrollTo({ left: 0, behavior: 'smooth' });
-      }
-    }, 50);
-  };
-
-  const formatTime = (sec: number) => {
-    const mins = Math.floor(sec / 60);
-    const secs = Math.floor(sec % 60);
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-  };
-
-  return (
+const newUI = `  return (
     <div className="w-full flex flex-col gap-8 font-sans select-none pb-12">
       {/* HEADER CONTROLS */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between bg-transparent gap-4">
@@ -362,11 +24,11 @@ export const P2PForkConsensusVisualizer: React.FC = () => {
                 if (!isPlaying && elapsedSeconds >= duration) handleReset();
                 setIsPlaying(!isPlaying);
               }}
-              className={`w-9 h-9 flex items-center justify-center rounded-[6px] transition-colors cursor-pointer ${
+              className={\`w-9 h-9 flex items-center justify-center rounded-[6px] transition-colors cursor-pointer \${
                 isPlaying 
                   ? 'bg-slate-800 text-slate-200 hover:bg-slate-700'
                   : 'bg-white text-black hover:bg-slate-200'
-              }`}
+              }\`}
             >
               {isPlaying ? <Pause size={16} className="fill-current" /> : <Play size={16} className="fill-current ml-0.5" />}
             </button>
@@ -385,9 +47,9 @@ export const P2PForkConsensusVisualizer: React.FC = () => {
                 <button
                   key={spd}
                   onClick={() => setPlaySpeed(spd)}
-                  className={`transition-colors cursor-pointer ${
+                  className={\`transition-colors cursor-pointer \${
                     playSpeed === spd ? 'text-white' : 'hover:text-slate-300'
-                  }`}
+                  }\`}
                 >
                   {spd}x
                 </button>
@@ -410,9 +72,9 @@ export const P2PForkConsensusVisualizer: React.FC = () => {
                     setDuration(item.val);
                     if (!isPlaying) setElapsedSeconds(0);
                   }}
-                  className={`transition-colors cursor-pointer ${
+                  className={\`transition-colors cursor-pointer \${
                     duration === item.val ? 'text-white' : 'hover:text-slate-300'
-                  }`}
+                  }\`}
                 >
                   {item.label}
                 </button>
@@ -427,7 +89,7 @@ export const P2PForkConsensusVisualizer: React.FC = () => {
              <div className="text-xs font-medium text-slate-500">{currentStageText}</div>
              <div className="text-sm font-mono text-slate-300 tabular-nums flex items-center justify-end gap-2">
                <div className="w-16 h-1 bg-slate-800 rounded-full overflow-hidden flex-shrink-0">
-                 <div className="h-full bg-white transition-all duration-300 ease-linear" style={{ width: `${Math.min(100, (elapsedSeconds / duration) * 100)}%` }} />
+                 <div className="h-full bg-white transition-all duration-300 ease-linear" style={{ width: \`\${Math.min(100, (elapsedSeconds / duration) * 100)}%\` }} />
                </div>
                {formatTime(elapsedSeconds)} / {formatTime(duration)}
              </div>
@@ -497,7 +159,7 @@ export const P2PForkConsensusVisualizer: React.FC = () => {
                     
                     {/* Render stale blocks hanging off this trunk block */}
                     {stales.map((staleBranch, sIdx) => (
-                      <div key={staleBranch[0].id} className="absolute left-[80px] flex items-center shrink-0" style={{ top: `${(sIdx + 1) * 80}px` }}>
+                      <div key={staleBranch[0].id} className="absolute left-[80px] flex items-center shrink-0" style={{ top: \`\${(sIdx + 1) * 80}px\` }}>
                         {/* Connector down then right */}
                         <div className="w-4 h-full absolute -left-4 top-0 border-l border-b border-slate-700/60 rounded-bl-[10px]" style={{ height: '40px', transform: 'translateY(-40px)' }} />
                         
@@ -588,18 +250,18 @@ const CompactBlockCard: React.FC<{ block: P2PBlock; onClick: () => void; isVi: b
   return (
     <div
       onClick={onClick}
-      title={isVi ? `Khối #${block.displayNumber} - ${block.minerName}` : `Block #${block.displayNumber} - ${block.minerName}`}
-      className={`relative p-2 rounded-[10px] transition-all duration-150 flex flex-col items-center justify-between w-[80px] h-[64px] shrink-0 cursor-pointer select-none border box-border ${
+      title={isVi ? \`Khối #\${block.displayNumber} - \${block.minerName}\` : \`Block #\${block.displayNumber} - \${block.minerName}\`}
+      className={\`relative p-2 rounded-[10px] transition-all duration-150 flex flex-col items-center justify-between w-[80px] h-[64px] shrink-0 cursor-pointer select-none border box-border \${
         isStale
           ? 'bg-transparent border-dashed border-slate-700/60 opacity-50 text-slate-500 hover:opacity-100 hover:bg-[#11161D]'
           : isLeading
           ? 'border-[#EAB308] bg-[#0E131A] hover:bg-[#131922]'
-          : `${mTheme.border} ${mTheme.bg} hover:border-slate-500 hover:bg-[#0E131A]`
-      }`}
+          : \`\${mTheme.border} \${mTheme.bg} hover:border-slate-500 hover:bg-[#0E131A]\`
+      }\`}
     >
-      <div className={`text-sm font-mono font-bold tabular-nums tracking-wider ${
+      <div className={\`text-sm font-mono font-bold tabular-nums tracking-wider \${
         isStale ? 'text-slate-500' : isLeading ? 'text-[#EAB308]' : mTheme.text
-      }`}>
+      }\`}>
         #{block.displayNumber}
       </div>
       <div className="flex items-center justify-center gap-1.5 text-[11px] font-sans font-medium text-slate-300 truncate w-full px-1">
@@ -622,7 +284,7 @@ const BlockDetailModal: React.FC<{ block: P2PBlock; onClose: () => void; isVi: b
       <div className="bg-[#0C0F14] border border-slate-800 rounded-[16px] p-6 w-full max-w-md shadow-2xl flex flex-col gap-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <span className={`text-sm font-mono px-2 py-1 rounded-[6px] border font-bold ${mTheme.badge}`}>
+            <span className={\`text-sm font-mono px-2 py-1 rounded-[6px] border font-bold \${mTheme.badge}\`}>
               #{block.displayNumber}
             </span>
             <span className="text-base font-sans font-medium text-white flex items-center gap-2">
@@ -701,3 +363,7 @@ const TxDetailModal: React.FC<{ tx: MempoolTx; onClose: () => void; isVi: boolea
     </div>
   );
 };
+`;
+
+const finalContent = beforeReturn + newUI;
+fs.writeFileSync(file, finalContent);

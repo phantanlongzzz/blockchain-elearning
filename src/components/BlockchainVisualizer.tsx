@@ -45,11 +45,17 @@ const InlineHash: React.FC<InlineHashProps> = ({
   };
 
   const formatted = `${hash.slice(0, 8)}...${hash.slice(-6)}`;
-
+  const [expanded, setExpanded] = useState(false);
   return (
     <div className="flex items-center justify-between font-mono text-xs py-0.5 group/hash">
-      <span className="truncate select-all" title={hash}>
-        {prefixHighlight && hash.startsWith('0'.repeat(prefixHighlight)) ? (
+      <span 
+        className={`${expanded ? 'break-all' : 'truncate'} select-all cursor-pointer`}
+        title="Click to expand/collapse full hash"
+        onClick={(e) => { e.stopPropagation(); setExpanded(!expanded); }}
+      >
+        {expanded ? (
+          <span className={isError ? 'text-rose-400 font-semibold' : 'text-[#F2F4F7]'}>{hash}</span>
+        ) : prefixHighlight && hash.startsWith('0'.repeat(prefixHighlight)) ? (
           <>
             <span className={isError ? 'text-rose-400 font-bold' : 'text-[#00C98D] font-bold'}>
               {hash.slice(0, prefixHighlight)}

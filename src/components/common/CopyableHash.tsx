@@ -28,6 +28,7 @@ export const CopyableHash: React.FC<CopyableHashProps> = ({
   label,
 }) => {
   const [copied, setCopied] = useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   const handleCopy = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -63,8 +64,18 @@ export const CopyableHash: React.FC<CopyableHashProps> = ({
       )}
 
       {/* Responsive hash text display */}
-      <span className="truncate select-all cursor-text font-mono tracking-wider">
-        {truncateMobileOnly ? (
+      <button 
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          setExpanded(!expanded);
+        }}
+        className={`text-left select-all cursor-pointer font-mono tracking-wider transition-all ${expanded ? 'break-all' : 'truncate'}`}
+        title="Click to expand/collapse full value"
+      >
+        {expanded ? (
+          hash
+        ) : truncateMobileOnly ? (
           <>
             <span className="hidden sm:inline break-all">{hash}</span>
             <span className="sm:hidden">{formattedMobile}</span>
@@ -75,7 +86,7 @@ export const CopyableHash: React.FC<CopyableHashProps> = ({
             <span className="md:hidden">{formattedMobile}</span>
           </>
         )}
-      </span>
+      </button>
 
       {/* Status text + icon if provided */}
       {statusLabel && (

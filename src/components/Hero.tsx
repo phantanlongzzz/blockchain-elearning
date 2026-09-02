@@ -147,15 +147,7 @@ export const Hero: React.FC = () => {
           {strings.hero.description}
         </p>
 
-        {/* Student Researcher Identity */}
-        <div className="inline-flex items-center flex-wrap justify-center gap-2 text-xs font-sans text-zinc-400 mb-10 sm:mb-12">
-          <span className="text-emerald-400 font-medium">{strings.hero.researcherLabel}</span>
-          <span className="font-semibold text-zinc-200">Phan Tấn Long</span>
-          <span className="text-zinc-600">·</span>
-          <span className="text-zinc-400">CTK47B</span>
-          <span className="text-zinc-600">·</span>
-          <span className="text-zinc-400 font-mono">ID: 2312679</span>
-        </div>
+
 
         {/* ============================================================ */}
         {/* LEARNING PROGRESS & RESUME LEARNING HERO CARD                */}
@@ -287,19 +279,15 @@ export const Hero: React.FC = () => {
             </div>
           </div>
 
-          {/* Hashing Flow Connector */}
-          <div className="flex items-center justify-center my-3 text-emerald-400">
-            <div className="h-px bg-gradient-to-r from-transparent via-[#292929] to-transparent flex-1" />
-            <div className="px-2.5 py-0.5 rounded-md bg-[#181818] border border-[#292929] text-[10px] font-mono uppercase tracking-widest text-emerald-400 flex items-center">
-              <span>SHA-256 (64 ROUNDS)</span>
-            </div>
-            <div className="h-px bg-gradient-to-r from-transparent via-[#292929] to-transparent flex-1" />
-          </div>
+
 
           {/* 256-bit Hexadecimal Output Display */}
           <div className="space-y-3 font-sans">
             <div className="flex items-center justify-between text-xs text-[#a1a1aa]">
-              <span className="uppercase tracking-wider font-semibold text-emerald-400">{strings.hero.digestLabel}</span>
+              <div className="flex items-center gap-2">
+                <span className="uppercase tracking-wider font-semibold text-emerald-400">{strings.hero.digestLabel}</span>
+                <span className="px-2 py-0.5 rounded bg-[#181818] border border-[#292929] text-[9px] font-mono uppercase tracking-widest text-emerald-400/80">SHA-256 (64 ROUNDS)</span>
+              </div>
               <button
                 id="hero-copy-hash-btn"
                 onClick={copyHash}
@@ -420,6 +408,17 @@ export const Hero: React.FC = () => {
           </div>
         </div>
       </div>
+        {/* Student Researcher Identity - Footer positioning */}
+        <div className="max-w-5xl mx-auto text-center mt-16 pt-8 border-t border-[#292929]">
+          <div className="inline-flex items-center flex-wrap justify-center gap-2 text-xs font-sans text-[#71717a]">
+            <span className="text-[#a1a1aa] font-medium">{strings.hero.researcherLabel}</span>
+            <span className="font-semibold text-[#f5f5f5]">Phan Tấn Long</span>
+            <span className="text-[#3f3f46]">·</span>
+            <span>CTK47B</span>
+            <span className="text-[#3f3f46]">·</span>
+            <span className="font-mono">ID: 2312679</span>
+          </div>
+        </div>
     </section>
   );
 };

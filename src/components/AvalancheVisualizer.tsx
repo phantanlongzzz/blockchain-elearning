@@ -257,11 +257,11 @@ export const AvalancheVisualizer: React.FC = () => {
                   {strings.avalanche.hammingDistance}
                 </span>
                 <div className="text-3xl sm:text-4xl font-bold font-sans text-[#F2F4F7]">
-                  <span className="font-mono text-[#00C98D]">{diffResult.changedBits}</span>{' '}
+                  <span className="font-mono text-[#EAB308]">{diffResult.changedBits}</span>{' '}
                   <span className="text-lg font-normal text-[#A5AFBF] font-sans">/ 256 bits</span>
                 </div>
                 <p className="text-xs text-[#A5AFBF] mt-1 font-sans">
-                  Input diff: <span className="font-mono text-[#00C98D]">{inputDiff.changedBits} bit{inputDiff.changedBits === 1 ? '' : 's'}</span> flipped
+                  Input diff: <span className="font-mono text-[#EAB308]">{inputDiff.changedBits} bit{inputDiff.changedBits === 1 ? '' : 's'}</span> flipped
                 </p>
               </div>
 
@@ -299,7 +299,7 @@ export const AvalancheVisualizer: React.FC = () => {
             <div className="mt-6 pt-6 border-t border-[#1C2430] font-sans">
               <div className="flex justify-between text-xs text-[#A5AFBF] mb-2">
                 <span>{strings.avalanche.noChange}</span>
-                <span className="text-[#00C98D] font-semibold font-mono">
+                <span className="text-[#EAB308] font-semibold font-mono">
                   {diffResult.changedBits} of 256 Bits Flipped ({diffResult.percentage.toFixed(1)}%)
                 </span>
                 <span>{strings.avalanche.fullInversion}</span>
@@ -308,7 +308,7 @@ export const AvalancheVisualizer: React.FC = () => {
                 {/* 50% ideal marker */}
                 <div className="absolute top-0 bottom-0 left-1/2 w-0.5 bg-[#2A3649] z-10" title="50% Strict Avalanche Reference" />
                 <div
-                  className="h-full rounded-full bg-[#00C98D] transition-all duration-300"
+                  className="h-full rounded-full bg-[#EAB308] transition-all duration-300"
                   style={{ width: `${diffResult.percentage}%` }}
                 />
               </div>
@@ -331,8 +331,8 @@ export const AvalancheVisualizer: React.FC = () => {
 
               <div className="flex items-center gap-4 text-xs font-sans">
                 <div className="flex items-center gap-1.5">
-                  <span className="w-3 h-3 rounded bg-rose-500 inline-block" />
-                  <span className="text-[#F2F4F7]">{strings.avalanche.flippedBit} (<strong className="font-mono text-rose-400">{diffResult.changedBits}</strong>)</span>
+                  <span className="w-3 h-3 rounded bg-[#EAB308] inline-block" />
+                  <span className="text-[#F2F4F7]">{strings.avalanche.flippedBit} (<strong className="font-mono text-[#EAB308]">{diffResult.changedBits}</strong>)</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <span className="w-3 h-3 rounded bg-[#090A0F] border border-[#1C2430] inline-block" />
@@ -360,7 +360,7 @@ export const AvalancheVisualizer: React.FC = () => {
                         : ''
                     } ${
                       isFlipped
-                        ? 'bg-rose-500/80 text-white font-bold border border-rose-400'
+                        ? 'bg-[#EAB308] text-[#090A0F] font-bold border border-[#EAB308]'
                         : 'bg-[#0F131A] text-[#717B8C] border border-[#1C2430] hover:text-[#A5AFBF]'
                     }`}
                     title={`Bit #${idx}: A=${bitA} -> B=${bitB} (${isFlipped ? 'FLIPPED' : 'UNCHANGED'})`}
@@ -381,7 +381,7 @@ export const AvalancheVisualizer: React.FC = () => {
                   <div className="flex items-center gap-4 font-mono">
                     <span>Digest A: <strong className="text-[#00C98D]">{diffResult.bitsA[hoveredBitIndex]}</strong></span>
                     <span>Digest B: <strong className="text-[#F59E0B]">{diffResult.bitsB[hoveredBitIndex]}</strong></span>
-                    <span className={diffResult.diffIndices.includes(hoveredBitIndex) ? 'text-rose-400 font-bold' : 'text-[#A5AFBF]'}>
+                    <span className={diffResult.diffIndices.includes(hoveredBitIndex) ? 'text-[#EAB308] font-bold' : 'text-[#A5AFBF]'}>
                       {diffResult.diffIndices.includes(hoveredBitIndex) ? 'STATUS: FLIPPED' : 'STATUS: UNCHANGED'}
                     </span>
                   </div>

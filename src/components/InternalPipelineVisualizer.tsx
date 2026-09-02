@@ -44,7 +44,7 @@ export const InternalPipelineVisualizer: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-10 font-sans">
-          <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-[#0C0F14] border border-[#1C2430] text-[#00C98D] text-xs font-mono tracking-wider uppercase mb-3">
+          <div className="flex items-center justify-center gap-2 text-[#00C98D] text-xs font-mono tracking-wider uppercase mb-3 font-semibold">
             <span>{strings.pipeline.badge}</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-bold text-[#F2F4F7] tracking-tight font-sans mb-2">

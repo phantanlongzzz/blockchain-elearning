@@ -13,7 +13,7 @@ export const ResearcherProfile: React.FC = () => {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-12 font-sans">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-950/70 border border-emerald-500/30 text-emerald-400 text-xs font-mono tracking-widest uppercase mb-3">
+          <div className="flex items-center justify-center gap-2 text-emerald-400 text-xs font-mono tracking-wider uppercase mb-3 font-semibold">
             <UserCheck className="w-3.5 h-3.5" />
             <span>{strings.researcherProfile.badge}</span>
           </div>

@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import {
   Boxes,
   ArrowRight,
@@ -401,8 +401,19 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
     { index: number; valid: boolean; title: string; detail: string }[]
   >([]);
   const [isChainValid, setIsChainValid] = useState<boolean | null>(null);
+  const verifyIntervalRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (verifyIntervalRef.current) {
+        clearInterval(verifyIntervalRef.current);
+        verifyIntervalRef.current = null;
+      }
+    };
+  }, []);
 
   const handleRunVerification = () => {
+    if (verifyIntervalRef.current) clearInterval(verifyIntervalRef.current);
     setIsVerifying(true);
     setVerificationDone(false);
     setVerifyProgressIndex(0);
@@ -414,9 +425,12 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
     let chainPassed = true;
 
     let idx = 0;
-    const interval = setInterval(() => {
+    verifyIntervalRef.current = window.setInterval(() => {
       if (idx >= targetChain.length) {
-        clearInterval(interval);
+        if (verifyIntervalRef.current) {
+          clearInterval(verifyIntervalRef.current);
+          verifyIntervalRef.current = null;
+        }
         setIsVerifying(false);
         setVerificationDone(true);
         setIsChainValid(chainPassed);

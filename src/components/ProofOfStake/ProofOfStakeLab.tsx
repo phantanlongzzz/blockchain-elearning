@@ -52,12 +52,14 @@ export const ProofOfStakeLab: React.FC = () => {
   const [isCodeModalOpen, setIsCodeModalOpen] = useState<boolean>(false);
   const [isSimulationMode, setIsSimulationMode] = useState<boolean>(false);
 
-  const timerRef = useRef<NodeJS.Timeout[]>([]);
+  const timerRef = useRef<number[]>([]);
+  const tickerIntervalRef = useRef<number | null>(null);
 
   // Cleanup timeouts on unmount
   useEffect(() => {
     return () => {
       timerRef.current.forEach((t) => clearTimeout(t));
+      if (tickerIntervalRef.current) clearInterval(tickerIntervalRef.current);
       setSimulationActive(false);
     };
   }, [setSimulationActive]);
@@ -201,15 +203,19 @@ export const ProofOfStakeLab: React.FC = () => {
     setSelectedProposerId(null);
 
     // Rapid selection ticker
+    if (tickerIntervalRef.current) clearInterval(tickerIntervalRef.current);
     let counter = 0;
-    const interval = setInterval(() => {
+    tickerIntervalRef.current = window.setInterval(() => {
       const randomCandidate = activeNodes[counter % activeNodes.length];
       setSelectedProposerId(randomCandidate.id);
       counter++;
     }, 100);
 
-    const timer = setTimeout(() => {
-      clearInterval(interval);
+    const timer = window.setTimeout(() => {
+      if (tickerIntervalRef.current) {
+        clearInterval(tickerIntervalRef.current);
+        tickerIntervalRef.current = null;
+      }
 
       // Perform real weighted lottery
       const totalStake = activeNodes.reduce((sum, v) => sum + v.stake, 0);
@@ -235,6 +241,10 @@ export const ProofOfStakeLab: React.FC = () => {
   const handleResetState = () => {
     timerRef.current.forEach((t) => clearTimeout(t));
     timerRef.current = [];
+    if (tickerIntervalRef.current) {
+      clearInterval(tickerIntervalRef.current);
+      tickerIntervalRef.current = null;
+    }
 
     setValidators(INITIAL_POS_VALIDATORS);
     setSelectedProposerId('bob');

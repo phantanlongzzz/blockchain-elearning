@@ -207,7 +207,7 @@ export function createMiningWorkerBlob(): string {
       }
 
       const now = performance.now();
-      if (now - lastReportTime >= 80) {
+      if (now - lastReportTime >= 120) {
         const deltaSec = (now - lastReportTime) / 1000;
         const deltaAttempts = attempts - lastReportAttempts;
         const instHashrate = deltaSec > 0.01

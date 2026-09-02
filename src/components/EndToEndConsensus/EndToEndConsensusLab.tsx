@@ -95,7 +95,7 @@ const INITIAL_MINERS: E2EMiner[] = [
   {
     id: 'miner-alice',
     name: 'Alice Node',
-    avatarColor: '#10b981',
+    avatarColor: '#22c55e',
     hashrateKHz: 450,
     currentNonce: 0,
     currentHash: '',
@@ -107,7 +107,7 @@ const INITIAL_MINERS: E2EMiner[] = [
   {
     id: 'miner-bob',
     name: 'Bob Node',
-    avatarColor: '#3B82F6',
+    avatarColor: '#38bdf8',
     hashrateKHz: 820,
     currentNonce: 1,
     currentHash: '',
@@ -119,7 +119,7 @@ const INITIAL_MINERS: E2EMiner[] = [
   {
     id: 'miner-charlie',
     name: 'Charlie Node',
-    avatarColor: '#A855F7',
+    avatarColor: '#8b5cf6',
     hashrateKHz: 210,
     currentNonce: 2,
     currentHash: '',
@@ -131,7 +131,7 @@ const INITIAL_MINERS: E2EMiner[] = [
   {
     id: 'miner-dave',
     name: 'Dave Node',
-    avatarColor: '#10B981',
+    avatarColor: '#f43f5e',
     hashrateKHz: 600,
     currentNonce: 3,
     currentHash: '',

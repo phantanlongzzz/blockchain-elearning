@@ -71,7 +71,7 @@ const DEFAULT_MINERS_CONFIG = [
     hardware: 'CPU Core i7 (4 Cores)',
     hardwareEn: 'CPU Core i7 (4 Cores)',
     avatarColor: 'bg-emerald-500',
-    avatarBg: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
+    avatarBg: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
     step: 4,
     hashrateKHz: 480,
   },
@@ -80,8 +80,8 @@ const DEFAULT_MINERS_CONFIG = [
     name: 'Bob Rig',
     hardware: 'GPU RTX 4080 (Dedicated)',
     hardwareEn: 'GPU RTX 4080 (Dedicated)',
-    avatarColor: 'bg-emerald-400',
-    avatarBg: 'bg-emerald-400/20 text-emerald-200 border-emerald-400/30',
+    avatarColor: 'bg-sky-500',
+    avatarBg: 'bg-sky-500/20 text-sky-300 border-sky-500/40',
     step: 4,
     hashrateKHz: 1250,
   },
@@ -90,8 +90,8 @@ const DEFAULT_MINERS_CONFIG = [
     name: 'Charlie Farm',
     hardware: 'ASIC Antminer S19 Pro',
     hardwareEn: 'ASIC Antminer S19 Pro',
-    avatarColor: 'bg-teal-400',
-    avatarBg: 'bg-teal-400/20 text-teal-200 border-teal-400/30',
+    avatarColor: 'bg-violet-500',
+    avatarBg: 'bg-violet-500/20 text-violet-300 border-violet-500/40',
     step: 4,
     hashrateKHz: 3950,
   },
@@ -100,8 +100,8 @@ const DEFAULT_MINERS_CONFIG = [
     name: 'Dave Mining',
     hardware: 'Multi-GPU Mining Rig',
     hardwareEn: 'Multi-GPU Mining Rig',
-    avatarColor: 'bg-emerald-600',
-    avatarBg: 'bg-emerald-600/20 text-emerald-300 border-emerald-600/30',
+    avatarColor: 'bg-rose-500',
+    avatarBg: 'bg-rose-500/20 text-rose-300 border-rose-500/40',
     step: 4,
     hashrateKHz: 2100,
   },
@@ -206,6 +206,8 @@ export const PoWConsensusSection: React.FC<PoWConsensusSectionProps> = ({
   const workersRef = useRef<Worker[]>([]);
   const workerBlobUrlRef = useRef<string | null>(null);
   const timerIntervalRef = useRef<number | null>(null);
+  const telemetryFlushTimerRef = useRef<number | null>(null);
+  const latestTelemetryRef = useRef<Record<string, MinerWorkerOutgoingMessage>>({});
   const isRacingRef = useRef<boolean>(false);
   const minersRef = useRef<MinerLiveState[]>(miners);
   const logsContainerRef = useRef<HTMLDivElement | null>(null);
@@ -285,6 +287,11 @@ export const PoWConsensusSection: React.FC<PoWConsensusSectionProps> = ({
     if (timerIntervalRef.current) {
       clearInterval(timerIntervalRef.current);
       timerIntervalRef.current = null;
+    }
+
+    if (telemetryFlushTimerRef.current) {
+      clearInterval(telemetryFlushTimerRef.current);
+      telemetryFlushTimerRef.current = null;
     }
   }, []);
 
@@ -376,20 +383,7 @@ export const PoWConsensusSection: React.FC<PoWConsensusSectionProps> = ({
           if (!msg) return;
 
           if (msg.type === 'TELEMETRY') {
-            setMiners((prev) =>
-              prev.map((m) =>
-                m.id === msg.minerId
-                  ? {
-                      ...m,
-                      currentNonce: msg.currentNonce,
-                      attempts: m.attempts + msg.attempts,
-                      currentHash: msg.currentHash,
-                      hashrateKHz: msg.measuredHashrateKHz,
-                      status: m.status === 'winner' ? 'winner' : 'mining',
-                    }
-                  : m
-              )
-            );
+            latestTelemetryRef.current[msg.minerId] = msg;
           } else if (msg.type === 'VALID_HASH' || msg.type === 'WINNER') {
             const currentMiners = minersRef.current;
             const winningMiner = currentMiners.find((m) => m.id === msg.minerId) || miner;
@@ -530,6 +524,27 @@ export const PoWConsensusSection: React.FC<PoWConsensusSectionProps> = ({
         finishRace();
       }
     }, 250);
+
+    // Throttled UI Telemetry flusher (100ms)
+    telemetryFlushTimerRef.current = window.setInterval(() => {
+      if (!isRacingRef.current) return;
+      const updates = latestTelemetryRef.current;
+      if (Object.keys(updates).length === 0) return;
+      setMiners((prev) =>
+        prev.map((m) => {
+          const msg = updates[m.id];
+          if (!msg || msg.type !== 'TELEMETRY') return m;
+          return {
+            ...m,
+            currentNonce: msg.currentNonce,
+            attempts: m.attempts + msg.attempts,
+            currentHash: msg.currentHash,
+            hashrateKHz: msg.measuredHashrateKHz || m.hashrateKHz,
+            status: m.status === 'winner' ? 'winner' : 'mining',
+          };
+        })
+      );
+    }, 100);
   }, [
     minerCount,
     durationSec,

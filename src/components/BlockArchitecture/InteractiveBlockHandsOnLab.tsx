@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import {
   FlaskConical,
   RotateCcw,
@@ -235,17 +235,31 @@ export const InteractiveBlockHandsOnLab: React.FC<{
   const currentSelectedTx = processedTxs.find((t) => t.id === selectedTxId) || processedTxs[0];
 
   // Cryptographic Stream Simulation effect
+  const streamIntervalRef = useRef<number | null>(null);
+  const mineIntervalRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (streamIntervalRef.current) clearInterval(streamIntervalRef.current);
+      if (mineIntervalRef.current) clearInterval(mineIntervalRef.current);
+    };
+  }, []);
+
   const triggerHashStream = (finalHash: string, callback?: () => void) => {
+    if (streamIntervalRef.current) clearInterval(streamIntervalRef.current);
     setIsComputingHash(true);
     let frames = 0;
-    const interval = setInterval(() => {
+    streamIntervalRef.current = window.setInterval(() => {
       frames++;
       const randHex = Array.from({ length: 32 }, () =>
         Math.floor(Math.random() * 16).toString(16)
       ).join('');
       setHashStreamText(randHex);
       if (frames >= 6) {
-        clearInterval(interval);
+        if (streamIntervalRef.current) {
+          clearInterval(streamIntervalRef.current);
+          streamIntervalRef.current = null;
+        }
         setHashStreamText(finalHash);
         setIsComputingHash(false);
         if (callback) callback();
@@ -461,7 +475,8 @@ export const InteractiveBlockHandsOnLab: React.FC<{
     let iterations = 0;
     const startTime = Date.now();
 
-    const mineInterval = setInterval(() => {
+    if (mineIntervalRef.current) clearInterval(mineIntervalRef.current);
+    mineIntervalRef.current = window.setInterval(() => {
       iterations += 500;
       testNonce += 1;
       setNonce(testNonce);
@@ -473,7 +488,10 @@ export const InteractiveBlockHandsOnLab: React.FC<{
       const h = calcSha256(calcSha256(raw));
 
       if (h.startsWith('00') || iterations >= 3000) {
-        clearInterval(mineInterval);
+        if (mineIntervalRef.current) {
+          clearInterval(mineIntervalRef.current);
+          mineIntervalRef.current = null;
+        }
         setIsMining(false);
         setFeedback({
           type: 'success',

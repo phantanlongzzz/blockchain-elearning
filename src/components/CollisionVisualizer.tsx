@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { CopyX, Search, Sparkles, AlertCircle, Play, CheckCircle, RefreshCw } from 'lucide-react';
-import { hashSha256 } from '../utils/sha256';
+import { fastSha256Hex } from '../utils/sha256';
 import { truncateHashToBits } from '../utils/binary';
 import { InlineMath } from './MathView';
 import { useLanguage } from '../i18n/LanguageContext';
@@ -11,6 +11,16 @@ export const CollisionVisualizer: React.FC = () => {
 
   const [reducedBits, setReducedBits] = useState<number>(12);
   const [isSearching, setIsSearching] = useState(false);
+  const isSearchingRef = useRef(false);
+  const timerRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      isSearchingRef.current = false;
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, []);
+
   const [collisionResult, setCollisionResult] = useState<{
     inputA: string;
     inputB: string;
@@ -21,8 +31,10 @@ export const CollisionVisualizer: React.FC = () => {
     timeMs: number;
   } | null>(null);
 
-  const runReducedCollisionSearch = async () => {
+  const runReducedCollisionSearch = () => {
+    if (timerRef.current) clearTimeout(timerRef.current);
     setIsSearching(true);
+    isSearchingRef.current = true;
     setCollisionResult(null);
 
     const startTime = performance.now();
@@ -30,13 +42,14 @@ export const CollisionVisualizer: React.FC = () => {
     let attempts = 0;
     const maxAttempts = 150000;
 
-    // Run in chunks using setTimeout to prevent UI lockup
-    const searchChunk = async () => {
+    // Run in chunks using setTimeout to prevent UI lockup and allow frame rendering
+    const searchChunk = () => {
+      if (!isSearchingRef.current) return;
       for (let i = 0; i < 3000; i++) {
         attempts++;
         const candidate = `research_probe_${Math.random().toString(36).substring(2, 9)}_${attempts}`;
-        const res = await hashSha256(candidate);
-        const truncated = truncateHashToBits(res.hex, reducedBits);
+        const hex = fastSha256Hex(candidate);
+        const truncated = truncateHashToBits(hex, reducedBits);
 
         if (seenHashes.has(truncated)) {
           const match = seenHashes.get(truncated)!;
@@ -46,30 +59,32 @@ export const CollisionVisualizer: React.FC = () => {
               inputA: match.input,
               inputB: candidate,
               fullHashA: match.fullHex,
-              fullHashB: res.hex,
+              fullHashB: hex,
               truncatedHash: truncated,
               attempts,
               timeMs,
             });
             setIsSearching(false);
+            isSearchingRef.current = false;
             return;
           }
         } else {
-          seenHashes.set(truncated, { input: candidate, fullHex: res.hex });
+          seenHashes.set(truncated, { input: candidate, fullHex: hex });
         }
 
         if (attempts >= maxAttempts) {
           setIsSearching(false);
+          isSearchingRef.current = false;
           return;
         }
       }
 
-      if (isSearching) {
-        setTimeout(searchChunk, 0);
+      if (isSearchingRef.current) {
+        timerRef.current = window.setTimeout(searchChunk, 0);
       }
     };
 
-    searchChunk();
+    timerRef.current = window.setTimeout(searchChunk, 0);
   };
 
   const bitOptions = [

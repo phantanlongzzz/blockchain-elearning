@@ -60,26 +60,44 @@ export const CustomCursor: React.FC = () => {
 
     document.documentElement.classList.add('custom-cursor-active');
 
+    let lastHoverCheck = 0;
+    let isMoving = false;
+
+    const updatePosition = (x: number, y: number) => {
+      if (cursorRef.current) {
+        cursorRef.current.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+      }
+    };
+
     const handleMouseMove = (e: MouseEvent) => {
-      mousePos.current.x = e.clientX;
-      mousePos.current.y = e.clientY;
+      const x = e.clientX;
+      const y = e.clientY;
+      mousePos.current.x = x;
+      mousePos.current.y = y;
 
       if (!isVisibleRef.current) {
         isVisibleRef.current = true;
         setIsVisible(true);
       }
 
-      // Check hover target without triggering React state re-render unless value changes
-      const target = e.target as HTMLElement | null;
-      if (target) {
-        const isClickable = Boolean(
-          target.closest(
-            'button, a, input, select, textarea, [role="button"], [role="tab"], [role="link"], [role="checkbox"], [role="radio"], [role="switch"], [role="menuitem"], label, summary, [data-interactive="true"], .btn-primary, .lab-card, .cursor-pointer'
-          )
-        );
-        if (isHoveredRef.current !== isClickable) {
-          isHoveredRef.current = isClickable;
-          setIsHovered(isClickable);
+      // Direct GPU transform update
+      updatePosition(x, y);
+
+      // Throttled hover check (every 40ms max) to prevent main-thread DOM query stalls
+      const now = performance.now();
+      if (now - lastHoverCheck > 40) {
+        lastHoverCheck = now;
+        const target = e.target as HTMLElement | null;
+        if (target) {
+          const isClickable = Boolean(
+            target.closest(
+              'button, a, input, select, textarea, [role="button"], [role="tab"], [role="link"], [data-interactive="true"], .btn-primary, .cursor-pointer'
+            )
+          );
+          if (isHoveredRef.current !== isClickable) {
+            isHoveredRef.current = isClickable;
+            setIsHovered(isClickable);
+          }
         }
       }
     };
@@ -100,16 +118,6 @@ export const CustomCursor: React.FC = () => {
     window.addEventListener('mouseup', handleMouseUp, { passive: true });
     document.addEventListener('mouseleave', handleMouseLeave);
     document.addEventListener('mouseenter', handleMouseEnter);
-
-    // High-performance direct translate3d loop
-    const render = () => {
-      if (cursorRef.current) {
-        cursorRef.current.style.transform = `translate3d(${mousePos.current.x}px, ${mousePos.current.y}px, 0)`;
-      }
-      rafId.current = requestAnimationFrame(render);
-    };
-
-    rafId.current = requestAnimationFrame(render);
 
     return () => {
       document.documentElement.classList.remove('custom-cursor-active');

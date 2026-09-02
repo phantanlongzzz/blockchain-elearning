@@ -10,6 +10,13 @@ import {
 import { createMiningWorkerBlob } from '../../utils/miningWorker';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { SimulationCodeModal } from './SimulationCodeModal';
+import { 
+  MINER_COLORS, 
+  getMinerColorTheme, 
+  GENESIS_THEME, 
+  ATTACKER_THEME, 
+  MinerColorToken 
+} from '../../utils/minerColors';
 
 type Scenario = 'normal' | 'hashrate' | 'attack51';
 type AppState = 'idle' | 'mining' | 'animating_win' | 'paused' | 'completed';
@@ -40,175 +47,37 @@ interface BlockRecord {
   difficulty: number;
 }
 
-export interface MinerTheme {
-  name: string;
-  text: string;
-  border: string;
-  bg: string;
-  badge: string;
-  progressBar: string;
-}
+export type MinerTheme = MinerColorToken;
 
 export const MINER_THEMES: Record<string, MinerTheme> = {
-  alice: {
-    name: 'Alice',
-    text: 'text-emerald-400',
-    border: 'border-emerald-500/40',
-    bg: 'bg-emerald-500/5',
-    badge: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/25',
-    progressBar: 'bg-emerald-500'
-  },
-  bob: {
-    name: 'Bob',
-    text: 'text-emerald-300',
-    border: 'border-emerald-500/40',
-    bg: 'bg-emerald-500/5',
-    badge: 'bg-emerald-500/10 text-emerald-300 border-emerald-500/25',
-    progressBar: 'bg-emerald-500'
-  },
-  charlie: {
-    name: 'Charlie',
-    text: 'text-amber-400',
-    border: 'border-amber-500/40',
-    bg: 'bg-amber-500/5',
-    badge: 'bg-amber-500/10 text-amber-400 border-amber-500/25',
-    progressBar: 'bg-amber-500'
-  },
-  dave: {
-    name: 'Dave',
-    text: 'text-emerald-400',
-    border: 'border-emerald-500/40',
-    bg: 'bg-emerald-500/5',
-    badge: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/25',
-    progressBar: 'bg-emerald-500'
-  },
-  eve: {
-    name: 'Eve',
-    text: 'text-teal-400',
-    border: 'border-teal-500/40',
-    bg: 'bg-teal-500/5',
-    badge: 'bg-teal-500/10 text-teal-400 border-teal-500/25',
-    progressBar: 'bg-teal-500'
-  },
-  frank: {
-    name: 'Frank',
-    text: 'text-lime-400',
-    border: 'border-lime-500/40',
-    bg: 'bg-lime-500/5',
-    badge: 'bg-lime-500/10 text-lime-400 border-lime-500/25',
-    progressBar: 'bg-lime-500'
-  },
-  grace: {
-    name: 'Grace',
-    text: 'text-emerald-400',
-    border: 'border-emerald-500/40',
-    bg: 'bg-emerald-500/5',
-    badge: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/25',
-    progressBar: 'bg-emerald-500'
-  },
-  hannah: {
-    name: 'Hannah',
-    text: 'text-teal-300',
-    border: 'border-teal-500/40',
-    bg: 'bg-teal-500/5',
-    badge: 'bg-teal-500/10 text-teal-300 border-teal-500/25',
-    progressBar: 'bg-teal-500'
-  },
-  ian: {
-    name: 'Ian',
-    text: 'text-lime-300',
-    border: 'border-lime-500/40',
-    bg: 'bg-lime-500/5',
-    badge: 'bg-lime-500/10 text-lime-300 border-lime-500/25',
-    progressBar: 'bg-lime-500'
-  },
-  jack: {
-    name: 'Jack',
-    text: 'text-amber-500',
-    border: 'border-amber-500/40',
-    bg: 'bg-amber-500/5',
-    badge: 'bg-amber-500/10 text-amber-500 border-amber-500/25',
-    progressBar: 'bg-amber-500'
-  },
-  'charlie-pool': {
-    name: '51% Attacker Pool',
-    text: 'text-rose-400',
-    border: 'border-rose-500/40',
-    bg: 'bg-rose-500/5',
-    badge: 'bg-rose-500/10 text-rose-400 border-rose-500/25',
-    progressBar: 'bg-rose-500'
-  },
-  '51% attacker pool': {
-    name: '51% Attacker Pool',
-    text: 'text-rose-400',
-    border: 'border-rose-500/40',
-    bg: 'bg-rose-500/5',
-    badge: 'bg-rose-500/10 text-rose-400 border-rose-500/25',
-    progressBar: 'bg-rose-500'
-  },
-  'miner-1': {
-    name: 'Custom Miner 1',
-    text: 'text-emerald-400',
-    border: 'border-emerald-500/40',
-    bg: 'bg-emerald-500/5',
-    badge: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/25',
-    progressBar: 'bg-emerald-500'
-  },
-  'miner-2': {
-    name: 'Custom Miner 2',
-    text: 'text-sky-400',
-    border: 'border-sky-500/40',
-    bg: 'bg-sky-500/5',
-    badge: 'bg-sky-500/10 text-sky-400 border-sky-500/25',
-    progressBar: 'bg-sky-500'
-  },
-  genesis: {
-    name: 'Genesis',
-    text: 'text-slate-200',
-    border: 'border-slate-800',
-    bg: 'bg-[#0C0F14]',
-    badge: 'bg-slate-800 text-slate-400 border-slate-700',
-    progressBar: 'bg-slate-600'
-  }
+  alice: MINER_COLORS.Alice,
+  bob: MINER_COLORS.Bob,
+  charlie: MINER_COLORS.Charlie,
+  dave: MINER_COLORS.Dave,
+  eve: MINER_COLORS.Eve,
+  frank: MINER_COLORS.Frank,
+  grace: MINER_COLORS.Grace,
+  henry: MINER_COLORS.Henry,
+  'charlie-pool': ATTACKER_THEME,
+  '51% attacker pool': ATTACKER_THEME,
+  'miner-1': MINER_COLORS.Alice,
+  'miner-2': MINER_COLORS.Bob,
+  genesis: GENESIS_THEME
 };
 
 export const ALPHABET_MINER_POOL = [
-  { name: 'Alice', type: 'CPU' as const, power: 10 },
-  { name: 'Bob', type: 'GPU' as const, power: 40 },
-  { name: 'Charlie', type: 'ASIC' as const, power: 80 },
-  { name: 'Dave', type: 'Quantum' as const, power: 100 },
-  { name: 'Eve', type: 'CPU' as const, power: 25 },
-  { name: 'Frank', type: 'GPU' as const, power: 55 },
-  { name: 'Grace', type: 'ASIC' as const, power: 75 },
-  { name: 'Hannah', type: 'Quantum' as const, power: 90 },
-  { name: 'Ian', type: 'CPU' as const, power: 30 },
-  { name: 'Jack', type: 'GPU' as const, power: 65 },
-  { name: 'Kevin', type: 'ASIC' as const, power: 85 },
-  { name: 'Leo', type: 'Quantum' as const, power: 95 },
-  { name: 'Maya', type: 'CPU' as const, power: 35 },
-  { name: 'Noah', type: 'GPU' as const, power: 60 },
-  { name: 'Olivia', type: 'ASIC' as const, power: 80 },
-];
-
-const EXTRA_THEMES: MinerTheme[] = [
-  { name: 'Teal', text: 'text-teal-400', border: 'border-teal-500/40', bg: 'bg-teal-500/5', badge: 'bg-teal-500/10 text-teal-400 border-teal-500/25', progressBar: 'bg-teal-500' },
-  { name: 'Lime', text: 'text-lime-400', border: 'border-lime-500/40', bg: 'bg-lime-500/5', badge: 'bg-lime-500/10 text-lime-400 border-lime-500/25', progressBar: 'bg-lime-500' },
-  { name: 'Emerald', text: 'text-emerald-400', border: 'border-emerald-500/40', bg: 'bg-emerald-500/5', badge: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/25', progressBar: 'bg-emerald-500' },
-  { name: 'Amber', text: 'text-amber-400', border: 'border-amber-500/40', bg: 'bg-amber-500/5', badge: 'bg-amber-500/10 text-amber-400 border-amber-500/25', progressBar: 'bg-amber-500' },
+  { name: 'Alice', type: 'CPU' as const, power: 10, colorClass: 'emerald' },
+  { name: 'Bob', type: 'GPU' as const, power: 40, colorClass: 'sky' },
+  { name: 'Charlie', type: 'ASIC' as const, power: 80, colorClass: 'violet' },
+  { name: 'Dave', type: 'Quantum' as const, power: 100, colorClass: 'rose' },
+  { name: 'Eve', type: 'CPU' as const, power: 25, colorClass: 'cyan' },
+  { name: 'Frank', type: 'GPU' as const, power: 55, colorClass: 'orange' },
+  { name: 'Grace', type: 'ASIC' as const, power: 75, colorClass: 'pink' },
+  { name: 'Henry', type: 'Quantum' as const, power: 90, colorClass: 'indigo' },
 ];
 
 export const getMinerTheme = (nameOrId: string, index?: number): MinerTheme => {
-  if (index === 0) return MINER_THEMES.genesis;
-  const key = nameOrId.toLowerCase().trim();
-  if (MINER_THEMES[key]) return MINER_THEMES[key];
-  for (const [k, val] of Object.entries(MINER_THEMES)) {
-    if (key.includes(k)) return val;
-  }
-  let hash = 0;
-  for (let i = 0; i < key.length; i++) {
-    hash = (hash << 5) - hash + key.charCodeAt(i);
-  }
-  return EXTRA_THEMES[Math.abs(hash) % EXTRA_THEMES.length];
+  return getMinerColorTheme(nameOrId, index);
 };
 
 interface LogEvent {
@@ -269,6 +138,8 @@ export const PowLesson: React.FC = () => {
   const timelineScrollRef = useRef<HTMLDivElement>(null);
   const timerEndedRef = useRef(false);
   const currentBlockSaltRef = useRef<string>(Math.random().toString(36).substring(2, 9));
+  const latestTelemetryRef = useRef<Record<string, any>>({});
+  const telemetryFlushTimerRef = useRef<number | null>(null);
 
   const appStateRef = useRef(appState);
   useEffect(() => { appStateRef.current = appState; }, [appState]);
@@ -304,9 +175,48 @@ export const PowLesson: React.FC = () => {
   useEffect(() => {
     return () => {
       terminateWorkers();
+      if (telemetryFlushTimerRef.current) {
+        clearInterval(telemetryFlushTimerRef.current);
+        telemetryFlushTimerRef.current = null;
+      }
       if (blobUrlRef.current) URL.revokeObjectURL(blobUrlRef.current);
     };
   }, [terminateWorkers]);
+
+  // Throttled UI telemetry flusher for high-performance rendering without state churn
+  useEffect(() => {
+    if (appState === 'mining') {
+      telemetryFlushTimerRef.current = window.setInterval(() => {
+        const updates = latestTelemetryRef.current;
+        if (Object.keys(updates).length === 0) return;
+        setMiners((prev) =>
+          prev.map((prevM) => {
+            const msg = updates[prevM.id];
+            if (!msg) return prevM;
+            return {
+              ...prevM,
+              hashrate: msg.hashrate || prevM.hashrate,
+              attempts: msg.attempts,
+              currentNonce: msg.currentNonce,
+              currentHash: msg.currentHash,
+              status: prevM.status === 'winner' ? 'winner' : 'mining',
+            };
+          })
+        );
+      }, 100);
+    } else {
+      if (telemetryFlushTimerRef.current) {
+        clearInterval(telemetryFlushTimerRef.current);
+        telemetryFlushTimerRef.current = null;
+      }
+    }
+    return () => {
+      if (telemetryFlushTimerRef.current) {
+        clearInterval(telemetryFlushTimerRef.current);
+        telemetryFlushTimerRef.current = null;
+      }
+    };
+  }, [appState]);
 
   const handleReset = useCallback(() => {
     terminateWorkers();
@@ -344,22 +254,22 @@ export const PowLesson: React.FC = () => {
       usedNamesRef.current = new Set(['Alice', 'Bob', 'Charlie', 'Dave']);
       setMiners([
         { id: 'alice', name: 'Alice', type: 'CPU', colorClass: 'emerald', power: 10, hashrate: 0, attempts: 0, blocksWon: 0, currentNonce: Math.floor(Math.random() * 0x7FFFFFFF), currentHash: '----------------------------------------------------------------', status: 'idle' },
-        { id: 'bob', name: 'Bob', type: 'GPU', colorClass: 'blue', power: 40, hashrate: 0, attempts: 0, blocksWon: 0, currentNonce: Math.floor(Math.random() * 0x7FFFFFFF), currentHash: '----------------------------------------------------------------', status: 'idle' },
+        { id: 'bob', name: 'Bob', type: 'GPU', colorClass: 'sky', power: 40, hashrate: 0, attempts: 0, blocksWon: 0, currentNonce: Math.floor(Math.random() * 0x7FFFFFFF), currentHash: '----------------------------------------------------------------', status: 'idle' },
         { id: 'charlie', name: 'Charlie', type: 'ASIC', colorClass: 'violet', power: 80, hashrate: 0, attempts: 0, blocksWon: 0, currentNonce: Math.floor(Math.random() * 0x7FFFFFFF), currentHash: '----------------------------------------------------------------', status: 'idle' },
-        { id: 'dave', name: 'Dave', type: 'Quantum', colorClass: 'amber', power: 100, hashrate: 0, attempts: 0, blocksWon: 0, currentNonce: Math.floor(Math.random() * 0x7FFFFFFF), currentHash: '----------------------------------------------------------------', status: 'idle' },
+        { id: 'dave', name: 'Dave', type: 'Quantum', colorClass: 'rose', power: 100, hashrate: 0, attempts: 0, blocksWon: 0, currentNonce: Math.floor(Math.random() * 0x7FFFFFFF), currentHash: '----------------------------------------------------------------', status: 'idle' },
       ]);
     } else if (scenario === 'attack51') {
       usedNamesRef.current = new Set(['Alice', 'Bob', '51% Attacker Pool']);
       setMiners([
         { id: 'alice', name: 'Alice', type: 'CPU', colorClass: 'emerald', power: 5, hashrate: 0, attempts: 0, blocksWon: 0, currentNonce: Math.floor(Math.random() * 0x7FFFFFFF), currentHash: '----------------------------------------------------------------', status: 'idle' },
-        { id: 'bob', name: 'Bob', type: 'GPU', colorClass: 'blue', power: 10, hashrate: 0, attempts: 0, blocksWon: 0, currentNonce: Math.floor(Math.random() * 0x7FFFFFFF), currentHash: '----------------------------------------------------------------', status: 'idle' },
+        { id: 'bob', name: 'Bob', type: 'GPU', colorClass: 'sky', power: 10, hashrate: 0, attempts: 0, blocksWon: 0, currentNonce: Math.floor(Math.random() * 0x7FFFFFFF), currentHash: '----------------------------------------------------------------', status: 'idle' },
         { id: 'charlie-pool', name: '51% Attacker Pool', type: 'ASIC', colorClass: 'rose', power: 95, hashrate: 0, attempts: 0, blocksWon: 0, currentNonce: Math.floor(Math.random() * 0x7FFFFFFF), currentHash: '----------------------------------------------------------------', status: 'idle' },
       ]);
     } else if (scenario === 'hashrate') {
       usedNamesRef.current = new Set(['Custom Miner 1', 'Custom Miner 2']);
       setMiners([
         { id: 'miner-1', name: 'Custom Miner 1', type: 'ASIC', colorClass: 'emerald', power: 50, hashrate: 0, attempts: 0, blocksWon: 0, currentNonce: Math.floor(Math.random() * 0x7FFFFFFF), currentHash: '----------------------------------------------------------------', status: 'idle' },
-        { id: 'miner-2', name: 'Custom Miner 2', type: 'ASIC', colorClass: 'blue', power: 50, hashrate: 0, attempts: 0, blocksWon: 0, currentNonce: Math.floor(Math.random() * 0x7FFFFFFF), currentHash: '----------------------------------------------------------------', status: 'idle' },
+        { id: 'miner-2', name: 'Custom Miner 2', type: 'ASIC', colorClass: 'sky', power: 50, hashrate: 0, attempts: 0, blocksWon: 0, currentNonce: Math.floor(Math.random() * 0x7FFFFFFF), currentHash: '----------------------------------------------------------------', status: 'idle' },
       ]);
     }
     
@@ -471,14 +381,7 @@ export const PowLesson: React.FC = () => {
       worker.onmessage = (e) => {
         const msg = e.data;
         if (msg.type === 'TELEMETRY') {
-          setMiners(prev => prev.map(prevM => prevM.id === msg.minerId ? {
-            ...prevM, 
-            hashrate: msg.hashrate || prevM.hashrate, 
-            attempts: msg.attempts, 
-            currentNonce: msg.currentNonce, 
-            currentHash: msg.currentHash,
-            status: prevM.status === 'winner' ? 'winner' : 'mining'
-          } : prevM));
+          latestTelemetryRef.current[msg.minerId] = msg;
         } else if (msg.type === 'WINNER') {
           handleWinner(msg);
         }
@@ -634,10 +537,12 @@ export const PowLesson: React.FC = () => {
       const count = usedNamesRef.current.size + 1;
       const types: ('CPU' | 'GPU' | 'ASIC' | 'Quantum')[] = ['CPU', 'GPU', 'ASIC', 'Quantum'];
       const powers = [25, 50, 75, 95];
+      const colors = ['emerald', 'sky', 'violet', 'rose', 'cyan', 'orange', 'pink', 'indigo'];
       template = {
         name: `Node-${count}`,
         type: types[count % types.length],
-        power: powers[count % powers.length]
+        power: powers[count % powers.length],
+        colorClass: colors[count % colors.length]
       };
     }
     
@@ -650,7 +555,7 @@ export const PowLesson: React.FC = () => {
       id,
       name: template.name,
       type: template.type,
-      colorClass: template.type === 'Quantum' ? 'rose' : template.type === 'ASIC' ? 'amber' : template.type === 'GPU' ? 'blue' : 'slate',
+      colorClass: (template as { colorClass?: string }).colorClass || 'emerald',
       power: template.power,
       hashrate: 0,
       attempts: 0,
@@ -1210,18 +1115,35 @@ export const PowLesson: React.FC = () => {
         
         {/* HORIZONTAL BLOCKCHAIN TIMELINE */}
         <div className="pt-1">
-          <div className="flex items-center justify-between mb-3 px-1">
-            <h3 className="text-xs sm:text-sm font-display font-bold text-slate-300 tracking-wider flex items-center gap-2">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-3 px-1 gap-2">
+            <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-emerald-400" />
-              {isVi ? 'CHUỖI KHỐI ĐÃ KHAI THÁC' : 'BLOCKCHAIN TIMELINE'}
-            </h3>
-            <div className="flex items-center gap-3">
+              <h3 className="text-xs sm:text-sm font-display font-bold text-slate-300 tracking-wider">
+                {isVi ? 'CHUỖI KHỐI ĐÃ KHAI THÁC' : 'BLOCKCHAIN TIMELINE'}
+              </h3>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-3">
+              {/* Miner Color Identity Badges */}
+              <div className="hidden md:flex items-center gap-2 text-[11px] font-mono text-slate-400">
+                <span className="text-slate-500">{isVi ? 'Màu thợ đào:' : 'Miner colors:'}</span>
+                {miners.slice(0, 8).map(m => {
+                  const mTh = getMinerTheme(m.name);
+                  return (
+                    <span key={m.id} className="inline-flex items-center gap-1">
+                      <span className="w-2 h-2 rounded-full" style={{ backgroundColor: mTh.primary }} />
+                      <span className="text-slate-300 font-sans">{m.name}</span>
+                    </span>
+                  );
+                })}
+              </div>
+
               <span className="text-xs font-mono text-slate-400">
                 {isVi ? `Tổng số khối: ${blockchain.length}` : `Total blocks: ${blockchain.length}`}
               </span>
               <button
                 onClick={scrollToLatestBlock}
-                className="text-xs font-mono font-semibold text-emerald-400 hover:text-emerald-300 px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/25 transition-all cursor-pointer"
+                className="text-xs font-mono font-semibold text-emerald-400 hover:text-emerald-300 px-2.5 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/25 transition-all cursor-pointer shadow-sm"
                 title={isVi ? 'Cuộn đến khối mới nhất' : 'Scroll to latest block'}
               >
                 {isVi ? 'Mới nhất' : 'Latest'}
@@ -1232,31 +1154,54 @@ export const PowLesson: React.FC = () => {
           <div 
             ref={timelineScrollRef}
             onScroll={handleTimelineScroll}
-            className="flex overflow-x-auto py-2 pb-3 gap-3 items-center custom-scrollbar px-2"
+            className="flex overflow-x-auto py-3 pb-4 gap-3.5 items-center custom-scrollbar px-2"
           >
             {blockchain.map((block, idx) => {
               const isJustAdded = justAddedBlockIndex === block.index;
+              const isLatestTip = idx === blockchain.length - 1 && blockchain.length > 1;
+              const isLeading = isJustAdded || isLatestTip;
               const theme = getMinerTheme(block.minerName, block.index);
+              const isGenesis = block.index === 0;
 
               return (
                 <React.Fragment key={`${block.index}-${block.hash}`}>
                   <div 
                     onClick={() => setSelectedBlock(block)}
-                    className={`p-3.5 rounded-xl bg-[#0C0F14] transition-colors duration-200 flex flex-col items-center justify-between min-w-[125px] sm:min-w-[135px] shrink-0 cursor-pointer select-none border-2 box-border ${
-                      isJustAdded 
-                        ? 'border-amber-400 animate-block-pulse' 
-                        : `${theme.border} hover:border-slate-500 hover:bg-[#0E131A] shadow-sm`
+                    className={`relative p-3.5 rounded-xl transition-all duration-200 flex flex-col items-center justify-between min-w-[135px] sm:min-w-[145px] shrink-0 cursor-pointer select-none border-2 box-border ${
+                      isLeading 
+                        ? 'border-amber-400 bg-amber-500/10 shadow-[0_0_20px_rgba(245,158,11,0.25)] animate-block-pulse' 
+                        : `${theme.border} ${theme.bg} hover:border-slate-400 hover:bg-[#0E131A] shadow-sm`
                     }`}
                   >
+                    {/* Status Badge for Leading / Latest Block */}
+                    {isLeading && (
+                      <div className="absolute -top-2.5 px-2 py-0.5 rounded-full text-[9px] font-mono font-bold tracking-wider uppercase bg-amber-400 text-black shadow-md flex items-center gap-1">
+                        <span>★</span>
+                        <span>{isVi ? 'KHỐI MỚI NHẤT' : 'LEADING TIP'}</span>
+                      </div>
+                    )}
+
                     {/* Real Sequential Block Integer: Clean, NO brackets */}
-                    <div className={`text-2xl sm:text-3xl font-mono font-black tabular-nums tracking-wider ${theme.text} my-0.5`}>
+                    <div className={`text-2xl sm:text-3xl font-mono font-black tabular-nums tracking-wider ${isGenesis ? 'text-slate-300' : theme.text} my-0.5`}>
                       {block.index}
                     </div>
 
-                    {/* Miner Name / Genesis */}
-                    <span className="font-display font-semibold text-slate-200 text-xs tracking-wide uppercase my-1 text-center truncate max-w-full">
-                      {block.index === 0 ? 'GENESIS' : block.minerName}
-                    </span>
+                    {/* Miner Name / Genesis Badge (Identifies WHO mined the block) */}
+                    <div className="my-1.5 text-center max-w-full">
+                      {isGenesis ? (
+                        <span className="font-display font-semibold text-slate-400 text-xs tracking-wide uppercase px-2 py-0.5 rounded bg-slate-800 border border-slate-700">
+                          GENESIS
+                        </span>
+                      ) : (
+                        <span className={`inline-flex items-center gap-1.5 font-display font-bold text-xs tracking-wide px-2 py-0.5 rounded border max-w-full truncate ${theme.badge}`}>
+                          <span 
+                            className="w-2 h-2 rounded-full shrink-0" 
+                            style={{ backgroundColor: theme.primary }}
+                          />
+                          <span className="truncate">{block.minerName}</span>
+                        </span>
+                      )}
+                    </div>
 
                     {/* Truncated Hash */}
                     <span className="text-[10px] font-mono tabular-nums text-slate-400 bg-slate-900/90 px-2 py-0.5 rounded border border-slate-800/80 truncate max-w-full">
@@ -1324,80 +1269,93 @@ export const PowLesson: React.FC = () => {
       </div>
 
       {/* Selected Block Details Modal */}
-      {selectedBlock && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in zoom-in-95 duration-200">
-          <div className="bg-[#0C0F14] border border-slate-800 rounded-2xl p-6 sm:p-7 w-full max-w-lg shadow-2xl space-y-4">
-            <div className="flex justify-between items-center border-b border-slate-800/80 pb-3">
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2.5 py-0.5 rounded bg-slate-800 text-slate-200 border border-slate-700 font-bold">
-                  Block #{selectedBlock.index}
-                </span>
-                <h3 className="text-base font-display font-bold text-white">
-                  {selectedBlock.index === 0 ? 'Genesis' : `${selectedBlock.minerName}`}
-                </h3>
-              </div>
-              <button 
-                onClick={() => setSelectedBlock(null)} 
-                className="text-slate-500 hover:text-white cursor-pointer"
-              >
-                <X size={18}/>
-              </button>
-            </div>
+      {selectedBlock && (() => {
+        const modalTheme = getMinerTheme(selectedBlock.minerName, selectedBlock.index);
+        const isLeadingModalBlock = selectedBlock.index === blockchain[blockchain.length - 1]?.index && blockchain.length > 1;
 
-            <div className="space-y-3 text-xs font-mono">
-              <div className="bg-[#11161D] p-3 rounded-xl border border-slate-800 space-y-2">
-                <div className="flex justify-between">
-                  <span className="text-slate-500">{isVi ? 'Thợ đào:' : 'Miner:'}</span>
-                  <span className="text-white font-bold">{selectedBlock.minerName}</span>
+        return (
+          <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in zoom-in-95 duration-200">
+            <div className="bg-[#0C0F14] border border-slate-800 rounded-2xl p-6 sm:p-7 w-full max-w-lg shadow-2xl space-y-4">
+              <div className="flex justify-between items-center border-b border-slate-800/80 pb-3">
+                <div className="flex items-center gap-2">
+                  <span className={`text-xs font-mono px-2.5 py-0.5 rounded border font-bold ${modalTheme.badge}`}>
+                    Block #{selectedBlock.index}
+                  </span>
+                  <h3 className="text-base font-display font-bold text-white">
+                    {selectedBlock.index === 0 ? 'Genesis Block' : selectedBlock.minerName}
+                  </h3>
+                  {isLeadingModalBlock && (
+                    <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-400 text-black">
+                      ★ {isVi ? 'Khối Dẫn Đầu' : 'Leading Tip'}
+                    </span>
+                  )}
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-500">{isVi ? 'Thời gian:' : 'Timestamp:'}</span>
-                  <span className="text-slate-300">{selectedBlock.timestamp}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-500">{isVi ? 'Độ khó:' : 'Difficulty:'}</span>
-                  <span className="text-emerald-400 font-bold">{selectedBlock.difficulty}</span>
-                </div>
-                {selectedBlock.nonce !== undefined && (
+                <button 
+                  onClick={() => setSelectedBlock(null)} 
+                  className="text-slate-500 hover:text-white cursor-pointer"
+                >
+                  <X size={18}/>
+                </button>
+              </div>
+
+              <div className="space-y-3 text-xs font-mono">
+                <div className="bg-[#11161D] p-3 rounded-xl border border-slate-800 space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-500">{isVi ? 'Thợ đào:' : 'Miner:'}</span>
+                    <span className="flex items-center gap-2 font-bold font-sans">
+                      <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: modalTheme.primary }} />
+                      <span className={modalTheme.text}>{selectedBlock.minerName}</span>
+                    </span>
+                  </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-500">{isVi ? 'Nonce hợp lệ:' : 'Winning Nonce:'}</span>
-                    <span className="text-white font-bold">{selectedBlock.nonce.toLocaleString()}</span>
+                    <span className="text-slate-500">{isVi ? 'Thời gian:' : 'Timestamp:'}</span>
+                    <span className="text-slate-300">{selectedBlock.timestamp}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-500">{isVi ? 'Độ khó:' : 'Difficulty:'}</span>
+                    <span className="text-emerald-400 font-bold">{selectedBlock.difficulty}</span>
+                  </div>
+                  {selectedBlock.nonce !== undefined && (
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">{isVi ? 'Nonce hợp lệ:' : 'Winning Nonce:'}</span>
+                      <span className="text-white font-bold">{selectedBlock.nonce.toLocaleString()}</span>
+                    </div>
+                  )}
+                </div>
+
+                <div>
+                  <label className="text-[10px] text-slate-500 font-display font-bold uppercase tracking-wider block mb-1">
+                    SHA-256 Hash
+                  </label>
+                  <div className="bg-[#11161D] p-2.5 rounded-xl border border-slate-800 text-[11px] text-emerald-400 break-all select-all">
+                    {selectedBlock.hash}
+                  </div>
+                </div>
+
+                {selectedBlock.prevHash && (
+                  <div>
+                    <label className="text-[10px] text-slate-500 font-display font-bold uppercase tracking-wider block mb-1">
+                      {isVi ? 'Hash Khối Trước' : 'Previous Block Hash'}
+                    </label>
+                    <div className="bg-[#11161D] p-2.5 rounded-xl border border-slate-800 text-[11px] text-slate-400 break-all select-all">
+                      {selectedBlock.prevHash}
+                    </div>
                   </div>
                 )}
               </div>
 
-              <div>
-                <label className="text-[10px] text-slate-500 font-display font-bold uppercase tracking-wider block mb-1">
-                  SHA-256 Hash
-                </label>
-                <div className="bg-[#11161D] p-2.5 rounded-xl border border-slate-800 text-[11px] text-emerald-400 break-all select-all">
-                  {selectedBlock.hash}
-                </div>
+              <div className="pt-2">
+                <button
+                  onClick={() => setSelectedBlock(null)}
+                  className="w-full py-2 bg-[#11161D] hover:bg-slate-800 text-slate-300 hover:text-white rounded-xl text-xs font-semibold border border-slate-700 transition-all cursor-pointer"
+                >
+                  {isVi ? 'Đóng' : 'Close'}
+                </button>
               </div>
-
-              {selectedBlock.prevHash && (
-                <div>
-                  <label className="text-[10px] text-slate-500 font-display font-bold uppercase tracking-wider block mb-1">
-                    {isVi ? 'Hash Khối Trước' : 'Previous Block Hash'}
-                  </label>
-                  <div className="bg-[#11161D] p-2.5 rounded-xl border border-slate-800 text-[11px] text-slate-400 break-all select-all">
-                    {selectedBlock.prevHash}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div className="pt-2">
-              <button
-                onClick={() => setSelectedBlock(null)}
-                className="w-full py-2 bg-[#11161D] hover:bg-slate-800 text-slate-300 hover:text-white rounded-xl text-xs font-semibold border border-slate-700 transition-all cursor-pointer"
-              >
-                {isVi ? 'Đóng' : 'Close'}
-              </button>
             </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
 
       {/* Simulation Code Modal */}
       <SimulationCodeModal

@@ -182,6 +182,14 @@ export const ExperimentLab: React.FC = () => {
 
   const isSearchingRef = useRef(false);
   isSearchingRef.current = isSearchingCollision;
+  const rafRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      isSearchingRef.current = false;
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
 
   const runCollisionSearch = () => {
     setIsSearchingCollision(true);

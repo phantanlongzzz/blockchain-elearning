@@ -8,6 +8,7 @@ interface AnimatedNumberProps {
 
 export const AnimatedNumber: React.FC<AnimatedNumberProps> = ({ value, duration = 400, className = '' }) => {
   const [displayValue, setDisplayValue] = useState(value);
+  const displayValueRef = useRef(value);
   const animationRef = useRef<number>();
   const lastValueRef = useRef(value);
 
@@ -17,11 +18,12 @@ export const AnimatedNumber: React.FC<AnimatedNumberProps> = ({ value, duration 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) {
       setDisplayValue(value);
+      displayValueRef.current = value;
       lastValueRef.current = value;
       return;
     }
 
-    const startValue = displayValue;
+    const startValue = displayValueRef.current;
     const endValue = value;
     const startTime = performance.now();
 
@@ -33,11 +35,13 @@ export const AnimatedNumber: React.FC<AnimatedNumberProps> = ({ value, duration 
       const easeProgress = 1 - Math.pow(1 - progress, 3);
       
       const currentValue = Math.round(startValue + (endValue - startValue) * easeProgress);
+      displayValueRef.current = currentValue;
       setDisplayValue(currentValue);
 
       if (progress < 1) {
         animationRef.current = requestAnimationFrame(animate);
       } else {
+        displayValueRef.current = endValue;
         setDisplayValue(endValue);
         lastValueRef.current = endValue;
       }
@@ -53,7 +57,7 @@ export const AnimatedNumber: React.FC<AnimatedNumberProps> = ({ value, duration 
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [value, duration, displayValue]);
+  }, [value, duration]);
 
   return <span className={className}>{displayValue}</span>;
 };

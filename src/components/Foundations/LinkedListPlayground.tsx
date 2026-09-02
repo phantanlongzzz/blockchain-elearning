@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   Plus,
   Search,
@@ -41,6 +41,16 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
   }>({ found: false, index: -1, searched: false });
   const [isSearching, setIsSearching] = useState(false);
   const [currentSearchIdx, setCurrentSearchIdx] = useState<number | null>(null);
+  const searchIntervalRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (searchIntervalRef.current) {
+        clearInterval(searchIntervalRef.current);
+        searchIntervalRef.current = null;
+      }
+    };
+  }, []);
 
   // Progressive disclosure mode: 'visual' | 'sushi' | 'code'
   const [viewMode, setViewMode] = useState<'visual' | 'sushi' | 'code'>('visual');
@@ -119,15 +129,19 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
   // Step-by-step search simulation
   const handleSearch = () => {
     if (!searchTarget.trim() || nodes.length === 0) return;
+    if (searchIntervalRef.current) clearInterval(searchIntervalRef.current);
     setIsSearching(true);
     setSearchResult({ searched: false, found: false, index: -1 });
 
     let idx = 0;
-    const interval = setInterval(() => {
+    searchIntervalRef.current = window.setInterval(() => {
       if (idx < nodes.length) {
         setCurrentSearchIdx(idx);
         if (nodes[idx].data.toLowerCase() === searchTarget.trim().toLowerCase()) {
-          clearInterval(interval);
+          if (searchIntervalRef.current) {
+            clearInterval(searchIntervalRef.current);
+            searchIntervalRef.current = null;
+          }
           setIsSearching(false);
           setSearchResult({ found: true, index: idx, searched: true });
           onInteracted?.();
@@ -135,7 +149,10 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
         }
         idx++;
       } else {
-        clearInterval(interval);
+        if (searchIntervalRef.current) {
+          clearInterval(searchIntervalRef.current);
+          searchIntervalRef.current = null;
+        }
         setIsSearching(false);
         setSearchResult({ found: false, index: -1, searched: true });
         setCurrentSearchIdx(null);
@@ -145,6 +162,10 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
   };
 
   const handleReset = () => {
+    if (searchIntervalRef.current) {
+      clearInterval(searchIntervalRef.current);
+      searchIntervalRef.current = null;
+    }
     setNodes(INITIAL_LINKED_LIST_NODES);
     setInputData('');
     setSearchTarget('');

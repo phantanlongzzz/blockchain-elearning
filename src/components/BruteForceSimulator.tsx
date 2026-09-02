@@ -70,6 +70,14 @@ export const BruteForceSimulator: React.FC = () => {
 
   const isRunningRef = useRef(false);
   isRunningRef.current = isRunning;
+  const rafRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      isRunningRef.current = false;
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
 
   useEffect(() => {
     const input = customInput.trim();
@@ -115,11 +123,12 @@ export const BruteForceSimulator: React.FC = () => {
     }
 
     const generator = generateCandidates('', 0);
+    let lastUiUpdate = 0;
 
     const runBatch = () => {
       if (!isRunningRef.current) return;
 
-      const batchSize = 120;
+      const batchSize = 250;
       let matched = false;
 
       for (let i = 0; i < batchSize; i++) {
@@ -140,32 +149,30 @@ export const BruteForceSimulator: React.FC = () => {
           const end = performance.now();
           const elapsed = end - start;
           setElapsedMs(elapsed);
-          setHashRate(Math.round((localAttempts / (elapsed / 1000))));
+          setHashRate(Math.round((localAttempts / (Math.max(elapsed, 1) / 1000))));
           setFoundResult(candidate);
           setIsRunning(false);
           matched = true;
           break;
         }
+      }
 
-        if (i === batchSize - 1) {
-          setCurrentCandidate(candidate);
-          setCurrentHash(cHash);
-          setAttempts(localAttempts);
-          const now = performance.now();
+      if (!matched && isRunningRef.current) {
+        const now = performance.now();
+        if (now - lastUiUpdate >= 60) {
+          lastUiUpdate = now;
           const elapsed = now - start;
+          setAttempts(localAttempts);
           setElapsedMs(elapsed);
           if (elapsed > 0) {
             setHashRate(Math.round((localAttempts / (elapsed / 1000))));
           }
         }
-      }
-
-      if (!matched && isRunningRef.current) {
-        requestAnimationFrame(runBatch);
+        rafRef.current = requestAnimationFrame(runBatch);
       }
     };
 
-    requestAnimationFrame(runBatch);
+    rafRef.current = requestAnimationFrame(runBatch);
   };
 
   const stopBruteForce = () => {

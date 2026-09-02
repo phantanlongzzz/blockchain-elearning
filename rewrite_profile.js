@@ -1,4 +1,6 @@
-import React, { useState, useRef } from 'react';
+import fs from 'fs';
+
+const content = `import React, { useState, useRef } from 'react';
 import {
   X,
   Camera,
@@ -352,7 +354,7 @@ export const ProfileModal: React.FC = () => {
             <div className="flex-1 h-2 bg-[#1C2430] rounded-full overflow-hidden">
               <div 
                 className="h-full bg-[#00C98D] rounded-full transition-all duration-500 ease-out" 
-                style={{ width: `${progressPercentage}%` }}
+                style={{ width: \`\${progressPercentage}%\` }}
               />
             </div>
             <span className="text-sm font-mono text-[#00C98D]">{progressPercentage}%</span>
@@ -368,10 +370,10 @@ export const ProfileModal: React.FC = () => {
                 ) : (
                    <span className="w-3.5 h-3.5 rounded-full border border-[#4D5665] opacity-50 inline-block shrink-0"></span>
                 )}
-                <span className={`truncate ${
+                <span className={\`truncate \${
                   topic.isLocked ? 'text-[#4D5665]' : 
                   topic.isCompleted ? 'text-[#F2F4F7]' : 'text-[#A5AFBF]'
-                }`}>
+                }\`}>
                   {language === 'vi' ? topic.label.vi : topic.label.en}
                 </span>
               </div>
@@ -412,3 +414,6 @@ export const ProfileModal: React.FC = () => {
     </div>
   );
 };
+`
+
+fs.writeFileSync('src/components/Profile/ProfileModal.tsx', content);

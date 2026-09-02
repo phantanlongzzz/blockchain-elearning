@@ -198,9 +198,9 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
   return (
     <div className="space-y-6 font-sans">
       {/* Main Simulation Arena */}
-      <div className="p-5 sm:p-6 rounded-xl bg-[#0c101c] border border-slate-800 space-y-6">
+      <div className="p-5 sm:p-6 rounded-xl bg-[#0B0E12] border border-[#1C2430] space-y-6">
         {/* Simulation Control Toolbar */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#1C2430]">
           {/* Step Pill Indicators */}
           <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
             {STEPS_INFO.map((s) => (
@@ -217,7 +217,7 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
                     ? 'bg-emerald-500 text-slate-950 font-semibold'
                     : currentStep > s.step
                     ? 'bg-emerald-500/10 text-emerald-300 border border-emerald-500/30'
-                    : 'bg-slate-900 text-slate-400 border border-slate-800 hover:text-slate-200'
+                    : 'bg-[#10151D] text-[#A5AFBF] border border-[#1C2430] hover:text-slate-200'
                 }`}
               >
                 {s.step}. {s.short[language as 'vi' | 'en'] || s.short.vi}
@@ -232,7 +232,7 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
               id="btn-lifecycle-prev"
               disabled={currentStep <= 1}
               onClick={handlePrevStep}
-              className="px-3 py-1.5 rounded-md bg-slate-900 hover:bg-slate-800 disabled:opacity-40 text-slate-200 text-xs flex items-center gap-1 cursor-pointer border border-slate-800 font-sans"
+              className="px-3 py-1.5 rounded-md bg-[#10151D] hover:bg-[#161D27] disabled:opacity-40 text-slate-200 text-xs flex items-center gap-1 cursor-pointer border border-[#1C2430] font-sans"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               <span>{isVi ? 'Trước' : 'Prev'}</span>
@@ -276,7 +276,7 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
               type="button"
               id="btn-lifecycle-reset"
               onClick={handleResetSimulation}
-              className="p-2 rounded-md bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-slate-200 border border-slate-800 transition-colors cursor-pointer"
+              className="p-2 rounded-md bg-[#10151D] hover:bg-[#161D27] text-[#A5AFBF] hover:text-slate-200 border border-[#1C2430] transition-colors cursor-pointer"
               title="Reset Simulation"
             >
               <RotateCcw className="w-3.5 h-3.5" />
@@ -285,7 +285,7 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
         </div>
 
         {/* Current Step Description Card */}
-        <div className="p-4 rounded-lg bg-[#080c16] border border-slate-800 flex items-start gap-3">
+        <div className="p-4 rounded-lg bg-[#10151D] border border-[#1C2430] flex items-start gap-3">
           <div className="w-7 h-7 rounded-md bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-semibold font-mono shrink-0 text-xs">
             {currentStep}
           </div>
@@ -293,38 +293,38 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
             <h4 className="text-sm font-semibold text-white font-sans">
               {STEPS_INFO[currentStep - 1].title[language as 'vi' | 'en'] || STEPS_INFO[currentStep - 1].title.vi}
             </h4>
-            <p className="text-xs text-slate-400 font-sans">
+            <p className="text-xs text-[#A5AFBF] font-sans">
               {STEPS_INFO[currentStep - 1].desc[language as 'vi' | 'en'] || STEPS_INFO[currentStep - 1].desc.vi}
             </p>
           </div>
         </div>
 
         {/* STEP-SPECIFIC VISUAL STAGES */}
-        <div className="p-5 rounded-xl bg-[#080c16] border border-slate-800 min-h-[280px] flex flex-col justify-center">
+        <div className="p-5 rounded-xl bg-[#10151D] border border-[#1C2430] min-h-[280px] flex flex-col justify-center">
           {/* STEP 1: CREATE TRANSACTION */}
           {currentStep === 1 && (
             <div className="max-w-md mx-auto w-full space-y-4 text-center">
-              <div className="p-5 rounded-xl bg-[#0c101c] border border-emerald-500/40 space-y-3">
-                <div className="flex items-center justify-between text-xs font-mono border-b border-slate-800 pb-2">
+              <div className="p-5 rounded-xl bg-[#0B0E12] border border-emerald-500/40 space-y-3">
+                <div className="flex items-center justify-between text-xs font-mono border-b border-[#1C2430] pb-2">
                   <span className="text-emerald-400 font-semibold">GIAO DỊCH MỚI ({txAlice.id})</span>
-                  <span className="text-slate-500 font-sans text-[11px]">Chưa ký</span>
+                  <span className="text-[#717B8C] font-sans text-[11px]">Chưa ký</span>
                 </div>
                 <div className="space-y-1.5 text-left font-mono text-xs">
                   <div className="text-slate-300">
-                    <span className="text-slate-500 font-sans">Người gửi (From):</span> {txAlice.sender} (Alice)
+                    <span className="text-[#717B8C] font-sans">Người gửi (From):</span> {txAlice.sender} (Alice)
                   </div>
                   <div className="text-slate-300">
-                    <span className="text-slate-500 font-sans">Người nhận (To):</span> {txAlice.receiver} (Bob)
+                    <span className="text-[#717B8C] font-sans">Người nhận (To):</span> {txAlice.receiver} (Bob)
                   </div>
                   <div className="text-emerald-400 font-semibold text-sm">
-                    <span className="text-slate-500 font-sans font-normal text-xs">Số tiền:</span> {txAlice.amount} {txAlice.unit}
+                    <span className="text-[#717B8C] font-sans font-normal text-xs">Số tiền:</span> {txAlice.amount} {txAlice.unit}
                   </div>
-                  <div className="text-slate-500 text-[11px] font-sans">
+                  <div className="text-[#717B8C] text-[11px] font-sans">
                     Thời gian: {txAlice.timestamp}
                   </div>
                 </div>
               </div>
-              <p className="text-xs text-slate-400 font-sans">
+              <p className="text-xs text-[#A5AFBF] font-sans">
                 {isVi
                   ? 'Giao dịch thô đã được tạo. Bước tiếp theo: Ký số bằng khóa bí mật của Alice.'
                   : 'Raw transaction created. Next: Sign with Alice’s private key.'}
@@ -336,18 +336,18 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
           {currentStep === 2 && (
             <div className="max-w-xl mx-auto w-full space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono text-xs text-center">
-                <div className="p-3.5 rounded-lg bg-[#0c101c] border border-slate-800 space-y-1">
-                  <div className="text-slate-400 text-[10px] font-sans">1. Dữ liệu TX</div>
+                <div className="p-3.5 rounded-lg bg-[#0B0E12] border border-[#1C2430] space-y-1">
+                  <div className="text-[#A5AFBF] text-[10px] font-sans">1. Dữ liệu TX</div>
                   <div className="font-semibold text-white">Alice → Bob: 10 BTC</div>
                 </div>
-                <div className="p-3.5 rounded-lg bg-[#0c101c] border border-slate-800 space-y-1">
-                  <div className="text-slate-400 text-[10px] flex items-center justify-center gap-1 font-sans">
+                <div className="p-3.5 rounded-lg bg-[#0B0E12] border border-[#1C2430] space-y-1">
+                  <div className="text-[#A5AFBF] text-[10px] flex items-center justify-center gap-1 font-sans">
                     <Lock className="w-3 h-3 text-emerald-400" />
                     2. Alice Private Key
                   </div>
                   <div className="font-semibold text-slate-200">0x8f12...49a1</div>
                 </div>
-                <div className="p-3.5 rounded-lg bg-[#0c101c] border border-emerald-500/50 space-y-1">
+                <div className="p-3.5 rounded-lg bg-[#0B0E12] border border-emerald-500/50 space-y-1">
                   <div className="text-emerald-400 text-[10px] flex items-center justify-center gap-1 font-sans">
                     <KeyRound className="w-3 h-3" />
                     3. Chữ Ký (r, s)
@@ -355,7 +355,7 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
                   <div className="font-semibold text-emerald-300">✓ ĐÃ KÝ SỐ</div>
                 </div>
               </div>
-              <div className="p-3 rounded-md bg-[#0c101c] border border-slate-800 text-center font-mono text-xs text-emerald-400 truncate">
+              <div className="p-3 rounded-md bg-[#0B0E12] border border-[#1C2430] text-center font-mono text-xs text-emerald-400 truncate">
                 Digital Signature: 3045022100e4a78c1b9f42d591837c9f8034b...5910220268a73bc
               </div>
             </div>
@@ -364,17 +364,17 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
           {/* STEP 3: VERIFY SIGNATURE */}
           {currentStep === 3 && (
             <div className="max-w-lg mx-auto w-full space-y-4 text-center">
-              <div className="p-5 rounded-xl bg-[#0c101c] border border-emerald-500/50 space-y-3">
+              <div className="p-5 rounded-xl bg-[#0B0E12] border border-emerald-500/50 space-y-3">
                 <div className="flex items-center justify-center gap-2 text-emerald-400 font-semibold font-sans text-sm">
                   <ShieldCheck className="w-5 h-5" />
                   <span>XÁC THỰC CHỮ KÝ THÀNH CÔNG</span>
                 </div>
-                <div className="p-3 rounded-lg bg-[#080c16] border border-slate-800 font-mono text-xs text-slate-300 space-y-1.5 text-left">
+                <div className="p-3 rounded-lg bg-[#10151D] border border-[#1C2430] font-mono text-xs text-slate-300 space-y-1.5 text-left">
                   <div>
-                    <span className="text-slate-500 font-sans">Khóa công khai:</span> 04e6c9...4719b2 (Alice)
+                    <span className="text-[#717B8C] font-sans">Khóa công khai:</span> 04e6c9...4719b2 (Alice)
                   </div>
                   <div>
-                    <span className="text-slate-500 font-sans">Thuật toán:</span> ECDSA · SECP256K1
+                    <span className="text-[#717B8C] font-sans">Thuật toán:</span> ECDSA · SECP256K1
                   </div>
                   <div className="text-emerald-300 font-semibold font-sans">
                     Trạng thái: HỢP LỆ — Sẵn sàng đưa vào Mempool & Block Body
@@ -387,7 +387,7 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
           {/* STEP 4: ADD TO BLOCK BODY */}
           {currentStep === 4 && (
             <div className="max-w-2xl mx-auto w-full space-y-4">
-              <div className="flex items-center justify-between font-mono text-xs text-slate-400 pb-1">
+              <div className="flex items-center justify-between font-mono text-xs text-[#A5AFBF] pb-1">
                 <span className="text-emerald-400 font-semibold flex items-center gap-1.5 font-sans">
                   <Boxes className="w-4 h-4" />
                   BLOCK BODY (4 Giao dịch được đóng gói)
@@ -400,12 +400,12 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
                     key={tx.id}
                     className={`p-3 rounded-lg border space-y-1 transition-all ${
                       tx.isNew
-                        ? 'bg-[#0c101c] border-emerald-500/60'
-                        : 'bg-[#0c101c] border-slate-800 text-slate-300'
+                        ? 'bg-[#0B0E12] border-emerald-500/60'
+                        : 'bg-[#0B0E12] border-[#1C2430] text-slate-300'
                     }`}
                   >
                     <div className="flex items-center justify-between text-[11px]">
-                      <span className={tx.isNew ? 'text-emerald-300 font-semibold' : 'text-slate-400'}>
+                      <span className={tx.isNew ? 'text-emerald-300 font-semibold' : 'text-[#A5AFBF]'}>
                         {tx.id} {tx.isNew && '← VỪA THÊM'}
                       </span>
                       <span className="text-emerald-400 font-semibold">
@@ -428,14 +428,14 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
                 <GitFork className="w-4 h-4" />
                 <span>CÂY MERKLE TỔNG HỢP VÀO BLOCK HEADER</span>
               </div>
-              <div className="p-4 rounded-xl bg-[#0c101c] border border-emerald-500/40 space-y-2">
+              <div className="p-4 rounded-xl bg-[#0B0E12] border border-emerald-500/40 space-y-2">
                 <div className="text-slate-300 text-[11px] font-semibold font-sans">
                   BẢN BĂM MERKLE ROOT (32 BYTES)
                 </div>
-                <div className="p-2.5 rounded bg-[#080c16] text-emerald-300 font-mono font-medium break-all text-xs border border-emerald-500/20">
+                <div className="p-2.5 rounded bg-[#10151D] text-emerald-300 font-mono font-medium break-all text-xs border border-emerald-500/20">
                   {liveMerkleRoot}
                 </div>
-                <div className="text-[10px] text-slate-400 font-sans">
+                <div className="text-[10px] text-[#A5AFBF] font-sans">
                   Đại diện toán học duy nhất cho toàn bộ giao dịch trong Body
                 </div>
               </div>
@@ -445,8 +445,8 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
           {/* STEP 6: FINALIZE BLOCK HEADER */}
           {currentStep === 6 && (
             <div className="max-w-2xl mx-auto w-full space-y-4 font-mono text-xs">
-              <div className="p-5 rounded-xl bg-[#0c101c] border border-emerald-500/50 space-y-4">
-                <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+              <div className="p-5 rounded-xl bg-[#0B0E12] border border-emerald-500/50 space-y-4">
+                <div className="flex items-center justify-between border-b border-[#1C2430] pb-2">
                   <span className="text-emerald-400 font-semibold text-sm font-sans">
                     BLOCK #42 HOÀN TẤT CẤU TRÚC
                   </span>
@@ -457,27 +457,27 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
 
                 {/* Header 4 Fields */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px]">
-                  <div className="p-2 rounded bg-[#080c16] border border-slate-800">
-                    <span className="text-slate-500 block text-[10px] font-sans">Prev Hash</span>
+                  <div className="p-2 rounded bg-[#10151D] border border-[#1C2430]">
+                    <span className="text-[#717B8C] block text-[10px] font-sans">Prev Hash</span>
                     <span className="text-emerald-300 truncate block">{playPrevHash.slice(0, 8)}...</span>
                   </div>
-                  <div className="p-2 rounded bg-[#080c16] border border-slate-800">
-                    <span className="text-slate-500 block text-[10px] font-sans">Timestamp</span>
+                  <div className="p-2 rounded bg-[#10151D] border border-[#1C2430]">
+                    <span className="text-[#717B8C] block text-[10px] font-sans">Timestamp</span>
                     <span className="text-slate-200">{playTimestamp}</span>
                   </div>
-                  <div className="p-2 rounded bg-[#080c16] border border-slate-800">
-                    <span className="text-slate-500 block text-[10px] font-sans">Merkle Root</span>
+                  <div className="p-2 rounded bg-[#10151D] border border-[#1C2430]">
+                    <span className="text-[#717B8C] block text-[10px] font-sans">Merkle Root</span>
                     <span className="text-emerald-300 truncate block">{liveMerkleRoot.slice(0, 8)}...</span>
                   </div>
-                  <div className="p-2 rounded bg-[#080c16] border border-slate-800">
-                    <span className="text-slate-500 block text-[10px] font-sans">Nonce</span>
+                  <div className="p-2 rounded bg-[#10151D] border border-[#1C2430]">
+                    <span className="text-[#717B8C] block text-[10px] font-sans">Nonce</span>
                     <span className="text-slate-200">{playNonce}</span>
                   </div>
                 </div>
 
                 {/* Final Block SHA-256 Hash */}
-                <div className="p-3 rounded-lg bg-[#080c16] border border-emerald-500/30 text-center space-y-1">
-                  <div className="text-[10px] text-slate-400 uppercase font-semibold font-sans">
+                <div className="p-3 rounded-lg bg-[#10151D] border border-emerald-500/30 text-center space-y-1">
+                  <div className="text-[10px] text-[#A5AFBF] uppercase font-semibold font-sans">
                     BLOCK HASH = SHA-256(BLOCK HEADER)
                   </div>
                   <div className="text-xs font-semibold text-emerald-300 break-all">{liveBlockHash}</div>
@@ -489,7 +489,7 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
 
         {/* POST-SIMULATION INTERACTIVE TAMPER TESTING PLAYGROUND (When step === 6 or interactive) */}
         {currentStep === 6 && (
-          <div className="p-5 rounded-xl bg-[#080c16] border border-slate-800 space-y-4">
+          <div className="p-5 rounded-xl bg-[#10151D] border border-[#1C2430] space-y-4">
             <div className="flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-emerald-400" />
               <h5 className="text-xs sm:text-sm font-semibold text-white font-sans">
@@ -498,7 +498,7 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
                   : 'Post-Simulation Interactive Experiment'}
               </h5>
             </div>
-            <p className="text-xs text-slate-400 font-sans">
+            <p className="text-xs text-[#A5AFBF] font-sans">
               {isVi
                 ? 'Hãy thử thay đổi các trường dữ liệu dưới đây để quan sát Merkle Root và Block Hash phản ứng tức thì theo thời gian thực:'
                 : 'Experiment modifying fields below to observe live cascading recalculations in Merkle Root and Block Hash:'}
@@ -506,7 +506,7 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 font-mono text-xs">
               {/* Change TX3 Amount */}
-              <div className="p-3 rounded-lg bg-[#0c101c] border border-slate-800 space-y-2">
+              <div className="p-3 rounded-lg bg-[#0B0E12] border border-[#1C2430] space-y-2">
                 <span className="text-slate-200 font-medium block text-[11px] font-sans">
                   1. Sửa TX #3 (Alice → Bob)
                 </span>
@@ -521,16 +521,16 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
                   <button
                     type="button"
                     onClick={() => setTx3Amount(10.0)}
-                    className="px-2 py-1 rounded bg-slate-800 text-slate-300 text-[10px] font-sans cursor-pointer border border-slate-700"
+                    className="px-2 py-1 rounded bg-[#10151D] text-slate-300 text-[10px] font-sans cursor-pointer border border-[#1C2430]"
                   >
                     10 BTC
                   </button>
                 </div>
-                <div className="text-[10px] text-slate-500 font-sans">→ Merkle Root & Hash đổi</div>
+                <div className="text-[10px] text-[#717B8C] font-sans">→ Merkle Root & Hash đổi</div>
               </div>
 
               {/* Change Timestamp */}
-              <div className="p-3 rounded-lg bg-[#0c101c] border border-slate-800 space-y-2">
+              <div className="p-3 rounded-lg bg-[#0B0E12] border border-[#1C2430] space-y-2">
                 <span className="text-slate-200 font-medium block text-[11px] font-sans">
                   2. Sửa Timestamp
                 </span>
@@ -545,16 +545,16 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
                   <button
                     type="button"
                     onClick={() => setPlayTimestamp(1715428800)}
-                    className="px-2 py-1 rounded bg-slate-800 text-slate-300 text-[10px] font-sans cursor-pointer border border-slate-700"
+                    className="px-2 py-1 rounded bg-[#10151D] text-slate-300 text-[10px] font-sans cursor-pointer border border-[#1C2430]"
                   >
                     Gốc
                   </button>
                 </div>
-                <div className="text-[10px] text-slate-500 font-sans">→ Header & Hash đổi</div>
+                <div className="text-[10px] text-[#717B8C] font-sans">→ Header & Hash đổi</div>
               </div>
 
               {/* Change Previous Hash */}
-              <div className="p-3 rounded-lg bg-[#0c101c] border border-slate-800 space-y-2">
+              <div className="p-3 rounded-lg bg-[#0B0E12] border border-[#1C2430] space-y-2">
                 <span className="text-slate-200 font-medium block text-[11px] font-sans">
                   3. Sửa Prev Hash
                 </span>
@@ -569,16 +569,16 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
                   <button
                     type="button"
                     onClick={() => setPlayPrevHash('0000a3f9e81b2c4d6e8f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d')}
-                    className="px-2 py-1 rounded bg-slate-800 text-slate-300 text-[10px] font-sans cursor-pointer border border-slate-700"
+                    className="px-2 py-1 rounded bg-[#10151D] text-slate-300 text-[10px] font-sans cursor-pointer border border-[#1C2430]"
                   >
                     Gốc
                   </button>
                 </div>
-                <div className="text-[10px] text-slate-500 font-sans">→ Đứt gãy liên kết chuỗi</div>
+                <div className="text-[10px] text-[#717B8C] font-sans">→ Đứt gãy liên kết chuỗi</div>
               </div>
 
               {/* Change Nonce */}
-              <div className="p-3 rounded-lg bg-[#0c101c] border border-slate-800 space-y-2">
+              <div className="p-3 rounded-lg bg-[#0B0E12] border border-[#1C2430] space-y-2">
                 <span className="text-slate-200 font-medium block text-[11px] font-sans">
                   4. Sửa Nonce (+1)
                 </span>
@@ -593,19 +593,19 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
                   <button
                     type="button"
                     onClick={() => setPlayNonce(48291)}
-                    className="px-2 py-1 rounded bg-slate-800 text-slate-300 text-[10px] font-sans cursor-pointer border border-slate-700"
+                    className="px-2 py-1 rounded bg-[#10151D] text-slate-300 text-[10px] font-sans cursor-pointer border border-[#1C2430]"
                   >
                     Gốc
                   </button>
                 </div>
-                <div className="text-[10px] text-slate-500 font-sans">→ Thử nghiệm đào PoW</div>
+                <div className="text-[10px] text-[#717B8C] font-sans">→ Thử nghiệm đào PoW</div>
               </div>
             </div>
           </div>
         )}
 
         {/* EXPERIMENT MODE INVITATION BANNER */}
-        <div className="p-5 rounded-xl bg-[#080c16] border border-slate-800 space-y-3">
+        <div className="p-5 rounded-xl bg-[#10151D] border border-[#1C2430] space-y-3">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="space-y-1">
               <div className="inline-flex items-center gap-2 text-xs font-semibold text-emerald-400 font-sans">
@@ -617,7 +617,7 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
                   ? 'Tự tay xây dựng và thao tác một Block hoàn chỉnh'
                   : 'Build and manipulate your own live Block from scratch'}
               </h4>
-              <p className="text-xs text-slate-400 max-w-2xl leading-relaxed font-sans">
+              <p className="text-xs text-[#A5AFBF] max-w-2xl leading-relaxed font-sans">
                 {isVi
                   ? 'Tự nhập người gửi, ký số ECDSA, gom vào Block Body, quan sát Cây Merkle tự động kết nối vào Block Header, và thử nghiệm giả mạo giao dịch để kiểm chứng bảo mật.'
                   : 'Enter custom transactions, sign with ECDSA, compile into Block Body, watch Merkle tree build live, and tamper with transactions to verify cryptographic integrity.'}

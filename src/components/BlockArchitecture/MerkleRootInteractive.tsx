@@ -103,8 +103,8 @@ export const MerkleRootInteractive: React.FC<MerkleRootInteractiveProps> = ({
   return (
     <div className="space-y-6 font-sans">
       {/* Main Visual Merkle Tree Explorer Card */}
-      <div className="p-5 sm:p-6 rounded-xl bg-[#0c101c] border border-slate-800 space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800">
+      <div className="p-5 sm:p-6 rounded-xl bg-[#0B0E12] border border-[#1C2430] space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#1C2430]">
           <div className="flex items-center gap-2">
             <GitFork className="w-4 h-4 text-emerald-400" />
             <h4 className="text-sm font-semibold text-white font-sans">
@@ -148,14 +148,14 @@ export const MerkleRootInteractive: React.FC<MerkleRootInteractiveProps> = ({
         <div className="space-y-4">
           {/* TIER 3: MERKLE ROOT (Root Node) */}
           <div className="flex flex-col items-center">
-            <div className="text-xs font-sans text-slate-400 font-medium mb-1.5 flex items-center gap-1.5">
+            <div className="text-xs font-sans text-[#A5AFBF] font-medium mb-1.5 flex items-center gap-1.5">
               <span>{isVi ? 'Gốc Merkle (Ghi vào Block Header)' : 'Merkle Root (Stored in Block Header)'}</span>
             </div>
             <div
               className={`p-4 rounded-lg border max-w-md w-full text-center transition-all ${
                 isTampered
-                  ? 'bg-[#080c16] border-rose-500/60'
-                  : 'bg-[#080c16] border-emerald-500/50'
+                  ? 'bg-[#10151D] border-rose-500/60'
+                  : 'bg-[#10151D] border-emerald-500/50'
               }`}
             >
               <div className="flex items-center justify-between text-xs font-mono mb-1.5">
@@ -174,7 +174,7 @@ export const MerkleRootInteractive: React.FC<MerkleRootInteractiveProps> = ({
                 )}
               </div>
               <div
-                className={`font-mono text-xs font-medium break-all p-2 rounded bg-[#0c101c] border ${
+                className={`font-mono text-xs font-medium break-all p-2 rounded bg-[#0B0E12] border ${
                   isTampered ? 'text-rose-300 border-rose-500/40' : 'text-emerald-300 border-emerald-500/30'
                 }`}
               >
@@ -190,12 +190,12 @@ export const MerkleRootInteractive: React.FC<MerkleRootInteractiveProps> = ({
           {/* TIER 2: INTERMEDIATE PARENT HASHES */}
           <div className="grid grid-cols-2 gap-4 max-w-2xl mx-auto">
             {/* Hash 1+2 */}
-            <div className="p-3 rounded-lg bg-[#080c16] border border-slate-800 space-y-1 text-center font-mono">
+            <div className="p-3 rounded-lg bg-[#10151D] border border-[#1C2430] space-y-1 text-center font-mono">
               <div className="flex items-center justify-between text-xs">
                 <span className="text-slate-300 font-medium">H_12 (TX1 + TX2)</span>
-                <span className="text-slate-500 text-[10px] font-sans">Tầng 1</span>
+                <span className="text-[#717B8C] text-[10px] font-sans">Tầng 1</span>
               </div>
-              <div className="text-xs text-slate-300 truncate font-mono p-1.5 rounded bg-[#0c101c] border border-slate-800/80">
+              <div className="text-xs text-slate-300 truncate font-mono p-1.5 rounded bg-[#0B0E12] border border-[#1C2430]">
                 {h12.slice(0, 16)}...
               </div>
             </div>
@@ -204,8 +204,8 @@ export const MerkleRootInteractive: React.FC<MerkleRootInteractiveProps> = ({
             <div
               className={`p-3 rounded-lg border space-y-1 text-center font-mono transition-all ${
                 isTampered
-                  ? 'bg-[#080c16] border-rose-500/50'
-                  : 'bg-[#080c16] border-slate-800'
+                  ? 'bg-[#10151D] border-rose-500/50'
+                  : 'bg-[#10151D] border-[#1C2430]'
               }`}
             >
               <div className="flex items-center justify-between text-xs">
@@ -221,8 +221,8 @@ export const MerkleRootInteractive: React.FC<MerkleRootInteractiveProps> = ({
                 )}
               </div>
               <div
-                className={`text-xs truncate font-mono p-1.5 rounded bg-[#0c101c] border ${
-                  isTampered ? 'text-rose-300 border-rose-500/30' : 'text-slate-300 border-slate-800/80'
+                className={`text-xs truncate font-mono p-1.5 rounded bg-[#0B0E12] border ${
+                  isTampered ? 'text-rose-300 border-rose-500/30' : 'text-slate-300 border-[#1C2430]'
                 }`}
               >
                 {h34.slice(0, 16)}...
@@ -238,15 +238,15 @@ export const MerkleRootInteractive: React.FC<MerkleRootInteractiveProps> = ({
 
           {/* TIER 1: LEAF HASHES (4 Hashes) */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5">
-            <div className="p-2.5 rounded-lg bg-[#080c16] border border-slate-800 text-center font-mono text-xs">
-              <div className="text-[10px] text-slate-400">Leaf H_1</div>
+            <div className="p-2.5 rounded-lg bg-[#10151D] border border-[#1C2430] text-center font-mono text-xs">
+              <div className="text-[10px] text-[#A5AFBF]">Leaf H_1</div>
               <div className="text-slate-300 truncate font-mono mt-0.5">
                 {h1.slice(0, 10)}...
               </div>
             </div>
 
-            <div className="p-2.5 rounded-lg bg-[#080c16] border border-slate-800 text-center font-mono text-xs">
-              <div className="text-[10px] text-slate-400">Leaf H_2</div>
+            <div className="p-2.5 rounded-lg bg-[#10151D] border border-[#1C2430] text-center font-mono text-xs">
+              <div className="text-[10px] text-[#A5AFBF]">Leaf H_2</div>
               <div className="text-slate-300 truncate font-mono mt-0.5">
                 {h2.slice(0, 10)}...
               </div>
@@ -255,16 +255,16 @@ export const MerkleRootInteractive: React.FC<MerkleRootInteractiveProps> = ({
             <div
               className={`p-2.5 rounded-lg border text-center font-mono text-xs transition-all ${
                 isTampered
-                  ? 'bg-[#080c16] border-rose-500/50 text-rose-300'
-                  : 'bg-[#080c16] border-slate-800 text-slate-300'
+                  ? 'bg-[#10151D] border-rose-500/50 text-rose-300'
+                  : 'bg-[#10151D] border-[#1C2430] text-slate-300'
               }`}
             >
-              <div className="text-[10px] text-slate-400">Leaf H_3</div>
+              <div className="text-[10px] text-[#A5AFBF]">Leaf H_3</div>
               <div className="truncate font-mono mt-0.5">{h3.slice(0, 10)}...</div>
             </div>
 
-            <div className="p-2.5 rounded-lg bg-[#080c16] border border-slate-800 text-center font-mono text-xs">
-              <div className="text-[10px] text-slate-400">Leaf H_4</div>
+            <div className="p-2.5 rounded-lg bg-[#10151D] border border-[#1C2430] text-center font-mono text-xs">
+              <div className="text-[10px] text-[#A5AFBF]">Leaf H_4</div>
               <div className="text-slate-300 truncate font-mono mt-0.5">
                 {h4.slice(0, 10)}...
               </div>
@@ -273,7 +273,7 @@ export const MerkleRootInteractive: React.FC<MerkleRootInteractiveProps> = ({
 
           {/* TIER 0: RAW TRANSACTIONS (Block Body) */}
           <div className="pt-2">
-            <div className="text-xs font-sans text-slate-400 font-semibold mb-2">
+            <div className="text-xs font-sans text-[#A5AFBF] font-semibold mb-2">
               {isVi ? 'Giao dịch trong thân khối (Block Body)' : 'Transactions in Block Body'}
             </div>
 
@@ -285,8 +285,8 @@ export const MerkleRootInteractive: React.FC<MerkleRootInteractiveProps> = ({
                     key={tx.id}
                     className={`p-3 rounded-lg border font-mono text-xs space-y-1.5 transition-all ${
                       isThisTampered
-                        ? 'bg-[#080c16] border-rose-500/60 shadow-sm'
-                        : 'bg-[#080c16] border-slate-800'
+                        ? 'bg-[#10151D] border-rose-500/60 shadow-sm'
+                        : 'bg-[#10151D] border-[#1C2430]'
                     }`}
                   >
                     <div className="flex items-center justify-between text-xs">
@@ -324,8 +324,8 @@ export const MerkleRootInteractive: React.FC<MerkleRootInteractiveProps> = ({
         <div
           className={`p-4 rounded-lg border transition-all ${
             isTampered
-              ? 'bg-[#080c16] border-rose-500/40 text-rose-200'
-              : 'bg-[#080c16] border-slate-800 text-slate-200'
+              ? 'bg-[#10151D] border-rose-500/40 text-rose-200'
+              : 'bg-[#10151D] border-[#1C2430] text-slate-200'
           }`}
         >
           <div className="flex items-start gap-3">
@@ -340,7 +340,7 @@ export const MerkleRootInteractive: React.FC<MerkleRootInteractiveProps> = ({
                   ? (isVi ? 'Hiệu ứng lan truyền cây Merkle:' : 'Merkle cascade effect:')
                   : (isVi ? 'Tóm lược giao dịch an toàn:' : 'Cryptographic integrity:')}
               </div>
-              <p className="text-slate-400 text-xs leading-relaxed font-sans">
+              <p className="text-[#A5AFBF] text-xs leading-relaxed font-sans">
                 {isTampered
                   ? (isVi
                     ? 'TX #3 đổi → Leaf Hash H_3 đổi → Parent Hash H_34 đổi → Merkle Root đổi → Toàn bộ Block Hash đổi.'
@@ -354,12 +354,12 @@ export const MerkleRootInteractive: React.FC<MerkleRootInteractiveProps> = ({
         </div>
 
         {/* Bridge Link */}
-        <div className="pt-3 flex items-center justify-between gap-3 text-xs border-t border-slate-800">
+        <div className="pt-3 flex items-center justify-between gap-3 text-xs border-t border-[#1C2430]">
           <button
             type="button"
             id="btn-prev-stage-from-merkle"
             onClick={onPrevStage}
-            className="px-3 py-1.5 rounded-md bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 text-xs flex items-center gap-1.5 cursor-pointer font-sans"
+            className="px-3 py-1.5 rounded-md bg-[#10151D] hover:bg-[#161D27] text-slate-300 border border-[#1C2430] text-xs flex items-center gap-1.5 cursor-pointer font-sans"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>{isVi ? 'Quay lại: Timestamp' : 'Back: Timestamp'}</span>

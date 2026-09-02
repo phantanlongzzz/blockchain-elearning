@@ -156,7 +156,7 @@ export const BlockArchitectureLab: React.FC = () => {
       className="space-y-8 scroll-mt-24 font-sans"
     >
       {/* Module Title Banner */}
-      <div className="p-6 sm:p-8 rounded-xl bg-[#0c101c] border border-slate-800 shadow-sm relative overflow-hidden">
+      <div className="p-6 sm:p-8 rounded-xl bg-[#0B0E12] border border-[#1C2430] shadow-sm relative overflow-hidden">
         <div className="space-y-6">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="space-y-2">
@@ -169,7 +169,7 @@ export const BlockArchitectureLab: React.FC = () => {
                   ? 'Cấu Trúc Khối & Vòng Đời Giao Dịch'
                   : 'Block Structure & Transaction Lifecycle'}
               </h2>
-              <p className="text-sm text-slate-400 max-w-3xl font-sans leading-relaxed">
+              <p className="text-sm text-[#A5AFBF] max-w-3xl font-sans leading-relaxed">
                 {isVi
                   ? 'Khám phá cấu tạo chi tiết của Block Header, Block Body, Cây Merkle và quy trình ký số bảo vệ sổ cái phi tập trung.'
                   : 'Explore the internal anatomy of Block Header, Block Body, Merkle Trees, and digital signatures securing the decentralized ledger.'}
@@ -178,7 +178,7 @@ export const BlockArchitectureLab: React.FC = () => {
 
             {/* Mode Switcher */}
             <div className="flex items-center gap-3 flex-wrap">
-              <div className="p-0.5 rounded-lg bg-slate-900 border border-slate-800 flex items-center">
+              <div className="p-0.5 rounded-lg bg-[#0B0F15] border border-[#1C2430] flex items-center">
                 <button
                   type="button"
                   id="btn-mode-guided"
@@ -186,7 +186,7 @@ export const BlockArchitectureLab: React.FC = () => {
                   className={`px-3 py-1.5 rounded-md text-xs font-mono font-medium transition-all cursor-pointer ${
                     labMode === 'guided'
                       ? 'bg-emerald-500 text-slate-950 font-semibold shadow-sm'
-                      : 'text-slate-400 hover:text-slate-200'
+                      : 'text-[#A5AFBF] hover:text-slate-200'
                   }`}
                 >
                   <GraduationCap className="w-3.5 h-3.5 inline mr-1" />
@@ -202,7 +202,7 @@ export const BlockArchitectureLab: React.FC = () => {
                   className={`px-3 py-1.5 rounded-md text-xs font-mono font-medium transition-all cursor-pointer ${
                     labMode === 'hands-on'
                       ? 'bg-emerald-500 text-slate-950 font-semibold shadow-sm'
-                      : 'text-slate-400 hover:text-slate-200'
+                      : 'text-[#A5AFBF] hover:text-slate-200'
                   }`}
                 >
                   <FlaskConical className="w-3.5 h-3.5 inline mr-1" />
@@ -215,7 +215,7 @@ export const BlockArchitectureLab: React.FC = () => {
           {/* Progress Tracker */}
           <div className="space-y-2 pt-2">
             <div className="flex items-center justify-between text-xs font-mono">
-              <span className="text-slate-400">
+              <span className="text-[#A5AFBF]">
                 {isVi ? 'Tiến độ chuyên đề:' : 'Module Progress:'}{' '}
                 <span className="text-emerald-400 font-semibold">
                   {completedCount}/{STAGES.length} {isVi ? 'phần hoàn thành' : 'sections completed'}
@@ -223,7 +223,7 @@ export const BlockArchitectureLab: React.FC = () => {
               </span>
               <span className="text-emerald-400 font-semibold">{progressPercent}%</span>
             </div>
-            <div className="w-full h-1.5 rounded-full bg-slate-900 overflow-hidden border border-slate-800">
+            <div className="w-full h-1.5 rounded-full bg-[#080B10] overflow-hidden border border-[#1C2430]">
               <div
                 className="h-full bg-emerald-500 transition-all duration-500"
                 style={{ width: `${progressPercent}%` }}
@@ -246,7 +246,7 @@ export const BlockArchitectureLab: React.FC = () => {
           <div
             role="tablist"
             aria-label={isVi ? 'Danh sách giai đoạn bài học cấu trúc khối' : 'Block architecture lesson stages'}
-            className="flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth p-1 bg-[#07090e] border border-slate-800 rounded-xl"
+            className="flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth p-1 bg-[#0B0E12] border border-[#1C2430] rounded-xl"
           >
             {STAGES.map((stage) => {
               const Icon = stage.icon;
@@ -264,8 +264,8 @@ export const BlockArchitectureLab: React.FC = () => {
                   onClick={() => handleStageChange(stage.id)}
                   className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-mono transition-all shrink-0 cursor-pointer ${
                     isActive
-                      ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/40 font-semibold'
-                      : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900 border border-transparent'
+                      ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/40 font-semibold'
+                      : 'text-[#A5AFBF] hover:text-slate-200 hover:bg-[#10151D] border border-transparent'
                   }`}
                 >
                   <span
@@ -274,7 +274,7 @@ export const BlockArchitectureLab: React.FC = () => {
                         ? 'bg-emerald-500 text-slate-950'
                         : isDone
                         ? 'bg-emerald-500/20 text-emerald-300'
-                        : 'bg-slate-800 text-slate-400'
+                        : 'bg-[#1C2430] text-[#717B8C]'
                     }`}
                   >
                     {stage.num}

@@ -66,13 +66,13 @@ export const DigitalSignatureMiniLab: React.FC<DigitalSignatureMiniLabProps> = (
   return (
     <div className="space-y-6 max-w-4xl mx-auto font-sans">
       {/* 1. Header */}
-      <div className="pb-4 border-b border-slate-800 space-y-2">
+      <div className="pb-4 border-b border-[#1C2430] space-y-2">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h2 className="text-xl font-semibold text-slate-100 font-sans tracking-tight">
               {isVi ? 'Quy trình ký và xác minh chữ ký số' : 'Digital signature verification'}
             </h2>
-            <p className="text-sm text-slate-400 mt-1">
+            <p className="text-sm text-[#A5AFBF] mt-1">
               {isVi
                 ? 'Thử nghiệm tính toàn vẹn khi thay đổi nội dung giao dịch sau khi đã ký.'
                 : 'Test how modifying transaction payload invalidates the cryptographic signature.'}
@@ -93,7 +93,7 @@ export const DigitalSignatureMiniLab: React.FC<DigitalSignatureMiniLabProps> = (
               <button
                 type="button"
                 onClick={handleReset}
-                className="px-3.5 py-1.5 rounded-lg text-xs text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 border border-slate-700 flex items-center gap-1.5 transition-colors cursor-pointer"
+                className="px-3.5 py-1.5 rounded-lg text-xs text-slate-300 hover:text-white bg-[#10151D] hover:bg-[#161D27] border border-[#1C2430] flex items-center gap-1.5 transition-colors cursor-pointer"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 <span>{isVi ? 'Khôi phục gốc' : 'Restore original'}</span>
@@ -104,17 +104,17 @@ export const DigitalSignatureMiniLab: React.FC<DigitalSignatureMiniLabProps> = (
       </div>
 
       {/* 2. Visual Pipeline (5 Steps) */}
-      <div className="p-5 rounded-xl bg-[#0c101c] border border-slate-800 space-y-4">
+      <div className="p-5 rounded-xl bg-[#0B0E12] border border-[#1C2430] space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3">
           {/* Step 1: Payload */}
           <div
             className={`p-3 rounded-lg border transition-colors space-y-2 text-xs ${
               isTampered
                 ? 'bg-rose-950/20 border-rose-500/40'
-                : 'bg-[#080c16] border-slate-800'
+                : 'bg-[#10151D] border-[#1C2430]'
             }`}
           >
-            <div className="text-slate-500 font-mono text-[10px] uppercase font-medium">
+            <div className="text-[#717B8C] font-mono text-[10px] uppercase font-medium">
               1. {isVi ? 'Giao dịch' : 'Payload'}
             </div>
             <div className="font-mono space-y-0.5">
@@ -130,10 +130,10 @@ export const DigitalSignatureMiniLab: React.FC<DigitalSignatureMiniLabProps> = (
             className={`p-3 rounded-lg border transition-colors space-y-2 text-xs ${
               isTampered
                 ? 'bg-rose-950/20 border-rose-500/40'
-                : 'bg-[#080c16] border-slate-800'
+                : 'bg-[#10151D] border-[#1C2430]'
             }`}
           >
-            <div className="text-slate-500 font-mono text-[10px] uppercase font-medium">
+            <div className="text-[#717B8C] font-mono text-[10px] uppercase font-medium">
               2. SHA-256
             </div>
             <div className="font-mono text-xs break-all text-slate-300">
@@ -144,21 +144,21 @@ export const DigitalSignatureMiniLab: React.FC<DigitalSignatureMiniLabProps> = (
           </div>
 
           {/* Step 3: Private Key */}
-          <div className="p-3 rounded-lg bg-[#080c16] border border-slate-800 space-y-2 text-xs">
-            <div className="text-slate-500 font-mono text-[10px] uppercase font-medium">
+          <div className="p-3 rounded-lg bg-[#10151D] border border-[#1C2430] space-y-2 text-xs">
+            <div className="text-[#717B8C] font-mono text-[10px] uppercase font-medium">
               3. {isVi ? 'Khóa bí mật' : 'Private key'}
             </div>
-            <div className="font-mono text-xs text-slate-400 truncate">
+            <div className="font-mono text-xs text-[#A5AFBF] truncate">
               0x8f12... (Alice)
             </div>
           </div>
 
           {/* Step 4: Signature */}
-          <div className="p-3 rounded-lg bg-[#080c16] border border-slate-800 space-y-2 text-xs">
-            <div className="text-slate-500 font-mono text-[10px] uppercase font-medium">
+          <div className="p-3 rounded-lg bg-[#10151D] border border-[#1C2430] space-y-2 text-xs">
+            <div className="text-[#717B8C] font-mono text-[10px] uppercase font-medium">
               4. {isVi ? 'Chữ ký số' : 'Signature'}
             </div>
-            <div className="font-mono text-xs text-slate-400 truncate">
+            <div className="font-mono text-xs text-[#A5AFBF] truncate">
               {ORIGINAL_SIGNATURE.slice(0, 14)}...
             </div>
           </div>
@@ -167,11 +167,11 @@ export const DigitalSignatureMiniLab: React.FC<DigitalSignatureMiniLabProps> = (
           <div
             className={`p-3 rounded-lg border transition-colors space-y-2 text-xs ${
               verificationResult
-                ? 'bg-[#080c16] border-slate-800'
+                ? 'bg-[#10151D] border-[#1C2430]'
                 : 'bg-rose-950/20 border-rose-500/40'
             }`}
           >
-            <div className="text-slate-500 font-mono text-[10px] uppercase font-medium">
+            <div className="text-[#717B8C] font-mono text-[10px] uppercase font-medium">
               5. {isVi ? 'Xác minh' : 'Verify'}
             </div>
             <div className="font-mono text-xs font-semibold">
@@ -185,7 +185,7 @@ export const DigitalSignatureMiniLab: React.FC<DigitalSignatureMiniLabProps> = (
         </div>
 
         {/* Dynamic Verification Status */}
-        <div className="p-3.5 rounded-lg bg-[#080c16] border border-slate-800 flex items-center gap-3 text-xs">
+        <div className="p-3.5 rounded-lg bg-[#10151D] border border-[#1C2430] flex items-center gap-3 text-xs">
           <span
             className={`w-2 h-2 rounded-full shrink-0 ${
               verificationResult ? 'bg-emerald-400' : 'bg-rose-400'
@@ -197,7 +197,7 @@ export const DigitalSignatureMiniLab: React.FC<DigitalSignatureMiniLabProps> = (
                 ? isVi ? 'Giao dịch hợp lệ' : 'Transaction valid'
                 : isVi ? 'Phát hiện sửa đổi dữ liệu' : 'Data tampering detected'}
             </span>
-            <p className="text-slate-400 text-xs mt-0.5">
+            <p className="text-[#A5AFBF] text-xs mt-0.5">
               {verificationResult
                 ? isVi
                   ? 'Chữ ký khớp chính xác với mã hash của dữ liệu 10 BTC ban đầu.'
@@ -211,12 +211,12 @@ export const DigitalSignatureMiniLab: React.FC<DigitalSignatureMiniLabProps> = (
       </div>
 
       {/* Navigation footer */}
-      <div className="flex items-center justify-between pt-4 border-t border-slate-800">
+      <div className="flex items-center justify-between pt-4 border-t border-[#1C2430]">
         {onPrevStage ? (
           <button
             type="button"
             onClick={onPrevStage}
-            className="px-4 py-1.5 rounded-lg text-xs text-slate-400 hover:text-slate-200 border border-slate-800 hover:border-slate-700 transition-colors cursor-pointer"
+            className="px-4 py-1.5 rounded-lg text-xs text-[#A5AFBF] hover:text-slate-200 border border-[#1C2430] hover:border-slate-700 transition-colors cursor-pointer"
           >
             <ArrowLeft className="w-3.5 h-3.5 inline mr-1" />
             <span>{isVi ? 'Quay lại' : 'Back'}</span>

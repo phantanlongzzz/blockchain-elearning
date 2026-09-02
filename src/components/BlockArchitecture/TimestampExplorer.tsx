@@ -68,15 +68,15 @@ export const TimestampExplorer: React.FC<TimestampExplorerProps> = ({
   return (
     <div className="space-y-6 font-sans">
       {/* Sequential Timeline of Blocks */}
-      <div className="p-5 sm:p-6 rounded-xl bg-[#0c101c] border border-slate-800 space-y-6">
-        <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+      <div className="p-5 sm:p-6 rounded-xl bg-[#0B0E12] border border-[#1C2430] space-y-6">
+        <div className="flex items-center justify-between pb-3 border-b border-[#1C2430]">
           <div className="flex items-center gap-2">
             <Calendar className="w-4 h-4 text-emerald-400" />
             <h4 className="text-sm font-semibold text-white font-sans">
               {isVi ? 'Chuỗi khối theo trục thời gian' : 'Chronological Block Sequence'}
             </h4>
           </div>
-          <span className="text-xs font-mono text-slate-400">
+          <span className="text-xs font-mono text-[#A5AFBF]">
             ~10 min/block
           </span>
         </div>
@@ -84,37 +84,37 @@ export const TimestampExplorer: React.FC<TimestampExplorerProps> = ({
         {/* 3 Chronological Blocks in Timeline */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Block #100 */}
-          <div className="p-4 rounded-lg bg-[#080c16] border border-slate-800 space-y-2.5 opacity-75">
+          <div className="p-4 rounded-lg bg-[#10151D] border border-[#1C2430] space-y-2.5 opacity-75">
             <div className="flex items-center justify-between text-xs font-mono">
               <span className="font-semibold text-slate-300">Block #100</span>
-              <span className="text-slate-500 font-sans text-[11px]">Đã xác thực</span>
+              <span className="text-[#717B8C] font-sans text-[11px]">Đã xác thực</span>
             </div>
-            <div className="p-2.5 rounded-md bg-[#0c101c] border border-slate-800 font-mono text-xs space-y-1">
+            <div className="p-2.5 rounded-md bg-[#0B0E12] border border-[#1C2430] font-mono text-xs space-y-1">
               <div className="text-slate-300 font-medium flex items-center gap-1.5">
                 <Clock className="w-3 h-3 text-emerald-400" />
                 12:00:03 UTC
               </div>
-              <div className="text-slate-500 text-[10px]">UNIX: 1715428803</div>
+              <div className="text-[#717B8C] text-[10px]">UNIX: 1715428803</div>
             </div>
-            <div className="text-[11px] font-mono text-slate-400 truncate">
+            <div className="text-[11px] font-mono text-[#A5AFBF] truncate">
               Hash: 0000f1a2b3c4...
             </div>
           </div>
 
           {/* Block #101 */}
-          <div className="p-4 rounded-lg bg-[#080c16] border border-slate-800 space-y-2.5 opacity-90">
+          <div className="p-4 rounded-lg bg-[#10151D] border border-[#1C2430] space-y-2.5 opacity-90">
             <div className="flex items-center justify-between text-xs font-mono">
               <span className="font-semibold text-slate-300">Block #101</span>
-              <span className="text-slate-500 font-sans text-[11px]">Đã xác thực</span>
+              <span className="text-[#717B8C] font-sans text-[11px]">Đã xác thực</span>
             </div>
-            <div className="p-2.5 rounded-md bg-[#0c101c] border border-slate-800 font-mono text-xs space-y-1">
+            <div className="p-2.5 rounded-md bg-[#0B0E12] border border-[#1C2430] font-mono text-xs space-y-1">
               <div className="text-slate-300 font-medium flex items-center gap-1.5">
                 <Clock className="w-3 h-3 text-emerald-400" />
                 12:10:12 UTC
               </div>
-              <div className="text-slate-500 text-[10px]">UNIX: 1715429412</div>
+              <div className="text-[#717B8C] text-[10px]">UNIX: 1715429412</div>
             </div>
-            <div className="text-[11px] font-mono text-slate-400 truncate">
+            <div className="text-[11px] font-mono text-[#A5AFBF] truncate">
               Hash: 00008f1c2d3e...
             </div>
           </div>
@@ -123,8 +123,8 @@ export const TimestampExplorer: React.FC<TimestampExplorerProps> = ({
           <div
             className={`p-4 rounded-lg border transition-all space-y-2.5 ${
               isTimeChanged
-                ? 'bg-[#080c16] border-emerald-500/60'
-                : 'bg-[#080c16] border-emerald-500/40'
+                ? 'bg-[#10151D] border-emerald-500/60'
+                : 'bg-[#10151D] border-emerald-500/40'
             }`}
           >
             <div className="flex items-center justify-between text-xs font-mono">
@@ -137,7 +137,7 @@ export const TimestampExplorer: React.FC<TimestampExplorerProps> = ({
               className={`p-2.5 rounded-md border font-mono text-xs space-y-1 ${
                 isTimeChanged
                   ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-200'
-                  : 'bg-[#0c101c] border-slate-800 text-slate-200'
+                  : 'bg-[#0B0E12] border-[#1C2430] text-slate-200'
               }`}
             >
               <div className="font-medium flex items-center gap-1.5">
@@ -149,7 +149,7 @@ export const TimestampExplorer: React.FC<TimestampExplorerProps> = ({
                   </span>
                 )}
               </div>
-              <div className="text-slate-400 text-[10px]">UNIX: {customTimeSeconds}</div>
+              <div className="text-[#A5AFBF] text-[10px]">UNIX: {customTimeSeconds}</div>
             </div>
             <div className="text-[11px] font-mono truncate text-emerald-300">
               Hash: {blockHash.slice(0, 16)}...
@@ -158,7 +158,7 @@ export const TimestampExplorer: React.FC<TimestampExplorerProps> = ({
         </div>
 
         {/* Interactive Timestamp Modifier Controls */}
-        <div className="p-4 sm:p-5 rounded-lg bg-[#080c16] border border-slate-800 space-y-4">
+        <div className="p-4 sm:p-5 rounded-lg bg-[#10151D] border border-[#1C2430] space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
               <h5 className="text-xs sm:text-sm font-semibold text-slate-200 font-sans">
@@ -166,7 +166,7 @@ export const TimestampExplorer: React.FC<TimestampExplorerProps> = ({
                   ? 'Thử nghiệm thay đổi Timestamp của Block #102'
                   : 'Modify Block #102 Timestamp'}
               </h5>
-              <p className="text-xs text-slate-400 mt-0.5">
+              <p className="text-xs text-[#A5AFBF] mt-0.5">
                 {isVi
                   ? 'Thay đổi thời gian để quan sát mã băm Header đổi theo'
                   : 'Change timestamp to see resulting header hash mutation'}
@@ -177,7 +177,7 @@ export const TimestampExplorer: React.FC<TimestampExplorerProps> = ({
               <button
                 type="button"
                 onClick={handleResetTime}
-                className="px-3 py-1.5 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-sans flex items-center gap-1.5 cursor-pointer border border-slate-700 self-start sm:self-auto"
+                className="px-3 py-1.5 rounded-md bg-[#0B0F15] hover:bg-[#11161E] text-slate-300 text-xs font-sans flex items-center gap-1.5 cursor-pointer border border-[#1C2430] self-start sm:self-auto"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 <span>{isVi ? 'Khôi phục' : 'Reset'}</span>
@@ -210,7 +210,7 @@ export const TimestampExplorer: React.FC<TimestampExplorerProps> = ({
           </div>
 
           {/* Educational Note */}
-          <div className="p-3.5 rounded-md bg-[#0c101c] border border-slate-800 text-xs text-slate-400 leading-relaxed">
+          <div className="p-3.5 rounded-md bg-[#0B0E12] border border-[#1C2430] text-xs text-[#A5AFBF] leading-relaxed">
             <span className="font-semibold text-slate-200">{isVi ? 'Nguyên lý:' : 'Principle:'} </span>
             <span>
               {isVi
@@ -221,12 +221,12 @@ export const TimestampExplorer: React.FC<TimestampExplorerProps> = ({
         </div>
 
         {/* Bridge Link */}
-        <div className="pt-3 flex items-center justify-between gap-3 text-xs border-t border-slate-800">
+        <div className="pt-3 flex items-center justify-between gap-3 text-xs border-t border-[#1C2430]">
           <button
             type="button"
             id="btn-prev-stage-from-timestamp"
             onClick={onPrevStage}
-            className="px-3 py-1.5 rounded-md bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 text-xs flex items-center gap-1.5 cursor-pointer font-sans"
+            className="px-3 py-1.5 rounded-md bg-[#10151D] hover:bg-[#161D27] text-slate-300 border border-[#1C2430] text-xs flex items-center gap-1.5 cursor-pointer font-sans"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>{isVi ? 'Quay lại: Chữ Ký Số' : 'Back: Digital Signature'}</span>

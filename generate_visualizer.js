@@ -1,3 +1,6 @@
+const fs = require('fs');
+
+const code = `
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
@@ -108,9 +111,9 @@ export const P2PForkConsensusVisualizer: React.FC = () => {
   const [elapsedSeconds, setElapsedSeconds] = useState<number>(0);
 
   // Blockchain State
-  const [trunk, setTrunk] = useState<P2PBlock[]>([{ ...GENESIS_BLOCK }]);
+  const [trunk, setTrunk] = useState<P2PBlock[]>([GENESIS_BLOCK]);
   const [activeFork, setActiveFork] = useState<{ branchA: P2PBlock[], branchB: P2PBlock[] } | null>(null);
-  const [staleBranches, setStaleBranches] = useState<P2PBlock[][]>([]);
+  const [staleBlocks, setStaleBlocks] = useState<P2PBlock[]>([]);
   
   // Mining stats
   const [lastMiner, setLastMiner] = useState<string>('');
@@ -120,11 +123,11 @@ export const P2PForkConsensusVisualizer: React.FC = () => {
   // UI State
   const [selectedBlock, setSelectedBlock] = useState<P2PBlock | null>(null);
   const [selectedTx, setSelectedTx] = useState<MempoolTx | null>(null);
-  const [currentStageText, setCurrentStageText] = useState(isVi ? 'Sẵn Sàng' : 'Ready');
+  const [currentStageText, setCurrentStageText] = useState(isVi ? 'Đang Khai Thác' : 'Mining Blocks');
 
   // Refs for loop
   const stateRef = useRef({
-    trunk, activeFork, staleBranches, lastMiner, minerStreak, blockCounter, isPlaying, playSpeed, duration, elapsedSeconds,
+    trunk, activeFork, staleBlocks, lastMiner, minerStreak, blockCounter, isPlaying, playSpeed, duration, elapsedSeconds,
     miningCountdown: 0
   });
   
@@ -133,8 +136,8 @@ export const P2PForkConsensusVisualizer: React.FC = () => {
   const mempoolScrollRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
-    stateRef.current = { trunk, activeFork, staleBranches, lastMiner, minerStreak, blockCounter, isPlaying, playSpeed, duration, elapsedSeconds, miningCountdown: stateRef.current.miningCountdown };
-  }, [trunk, activeFork, staleBranches, lastMiner, minerStreak, blockCounter, isPlaying, playSpeed, duration, elapsedSeconds]);
+    stateRef.current = { trunk, activeFork, staleBlocks, lastMiner, minerStreak, blockCounter, isPlaying, playSpeed, duration, elapsedSeconds, miningCountdown: stateRef.current.miningCountdown };
+  }, [trunk, activeFork, staleBlocks, lastMiner, minerStreak, blockCounter, isPlaying, playSpeed, duration, elapsedSeconds]);
 
   const moveCameraToFocus = useCallback(() => {
     if (treeScrollRef.current) {
@@ -148,9 +151,9 @@ export const P2PForkConsensusVisualizer: React.FC = () => {
     const mins = Math.floor(stateRef.current.elapsedSeconds / 60);
     const secs = Math.floor(stateRef.current.elapsedSeconds % 60);
     return {
-      id: `block-${Math.random().toString(36).substring(2, 9)}`,
+      id: \`block-\${Math.random().toString(36).substring(2, 9)}\`,
       blockNumber: height,
-      displayNumber: `${height}${branch === 'branchA' ? 'A' : branch === 'branchB' ? 'B' : ''}`,
+      displayNumber: \`\${height}\${branch === 'branchA' ? 'A' : branch === 'branchB' ? 'B' : ''}\`,
       height,
       minerName: minerInfo.name,
       minerRole: minerInfo.role,
@@ -161,8 +164,8 @@ export const P2PForkConsensusVisualizer: React.FC = () => {
       prevHash: parent.hash,
       merkleRoot: 'a1b2c3d4e5f67890123456789abcdef0123456789abcdef0123456789abcdef0',
       nonce,
-      timestamp: `00:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`,
-      txs: [`Coinbase: 6.25 BTC → ${minerInfo.name}`, 'Random Tx...'],
+      timestamp: \`00:\${mins.toString().padStart(2, '0')}:\${secs.toString().padStart(2, '0')}\`,
+      txs: [\`Coinbase: 6.25 BTC → \${minerInfo.name}\`, 'Random Tx...'],
       coinbaseReward: 6.25,
       cumulativeWork: parent.cumulativeWork + 1,
     };
@@ -206,16 +209,16 @@ export const P2PForkConsensusVisualizer: React.FC = () => {
           newBranchA.forEach(b => {
              b.status = 'canonical';
              b.branch = 'trunk';
-             b.displayNumber = `${b.height}`;
+             b.displayNumber = \`\${b.height}\`;
              newTrunk.push(b);
           });
-          const stales = [...st.staleBranches];
-          const currentStaleBranch = [...st.activeFork.branchB];
-          currentStaleBranch.forEach(b => b.status = 'stale');
-          stales.push(currentStaleBranch);
-          
+          const stales = [...st.staleBlocks];
+          st.activeFork.branchB.forEach(b => {
+             b.status = 'stale';
+             stales.push(b);
+          });
           setTrunk(newTrunk);
-          setStaleBranches(stales);
+          setStaleBlocks(stales);
           setActiveFork(null);
           setCurrentStageText(isVi ? 'Đồng Thuận & Loại Bỏ Khối Cũ' : 'Consensus & Stale Blocks');
         } else {
@@ -233,16 +236,16 @@ export const P2PForkConsensusVisualizer: React.FC = () => {
           newBranchB.forEach(b => {
              b.status = 'canonical';
              b.branch = 'trunk';
-             b.displayNumber = `${b.height}`;
+             b.displayNumber = \`\${b.height}\`;
              newTrunk.push(b);
           });
-          const stales = [...st.staleBranches];
-          const currentStaleBranch = [...st.activeFork.branchA];
-          currentStaleBranch.forEach(b => b.status = 'stale');
-          stales.push(currentStaleBranch);
-          
+          const stales = [...st.staleBlocks];
+          st.activeFork.branchA.forEach(b => {
+             b.status = 'stale';
+             stales.push(b);
+          });
           setTrunk(newTrunk);
-          setStaleBranches(stales);
+          setStaleBlocks(stales);
           setActiveFork(null);
           setCurrentStageText(isVi ? 'Đồng Thuận & Loại Bỏ Khối Cũ' : 'Consensus & Stale Blocks');
         } else {
@@ -283,15 +286,7 @@ export const P2PForkConsensusVisualizer: React.FC = () => {
   };
 
   useEffect(() => {
-    if (!isPlaying) {
-      if (elapsedSeconds === 0 && trunk.length === 1 && currentStageText !== (isVi ? 'Sẵn Sàng' : 'Ready')) {
-        setCurrentStageText(isVi ? 'Sẵn Sàng' : 'Ready');
-      }
-      return;
-    }
-    if (elapsedSeconds === 0 && trunk.length === 1) {
-      setCurrentStageText(isVi ? 'Bắt Đầu Mô Phỏng' : 'Simulation Started');
-    }
+    if (!isPlaying) return;
 
     const tickIntervalMs = 250;
     const interval = setInterval(() => {
@@ -323,18 +318,18 @@ export const P2PForkConsensusVisualizer: React.FC = () => {
     }, tickIntervalMs);
 
     return () => clearInterval(interval);
-  }, [isPlaying, isVi]);
+  }, [isPlaying, moveCameraToFocus, isVi]);
 
   const handleReset = () => {
     setIsPlaying(false);
     setElapsedSeconds(0);
     setTrunk([{ ...GENESIS_BLOCK }]);
     setActiveFork(null);
-    setStaleBranches([]);
+    setStaleBlocks([]);
     setLastMiner('');
     setMinerStreak(0);
     setBlockCounter(1);
-    setCurrentStageText(isVi ? 'Sẵn Sàng' : 'Ready');
+    setCurrentStageText(isVi ? 'Đang Khai Thác' : 'Mining Blocks');
     stateRef.current.miningCountdown = 0;
     setTimeout(() => {
       if (treeScrollRef.current) {
@@ -346,7 +341,7 @@ export const P2PForkConsensusVisualizer: React.FC = () => {
   const formatTime = (sec: number) => {
     const mins = Math.floor(sec / 60);
     const secs = Math.floor(sec % 60);
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    return \`\${mins.toString().padStart(2, '0')}:\${secs.toString().padStart(2, '0')}\`;
   };
 
   return (
@@ -362,11 +357,11 @@ export const P2PForkConsensusVisualizer: React.FC = () => {
                 if (!isPlaying && elapsedSeconds >= duration) handleReset();
                 setIsPlaying(!isPlaying);
               }}
-              className={`w-10 h-10 flex items-center justify-center rounded-lg transition-all cursor-pointer ${
+              className={\`w-10 h-10 flex items-center justify-center rounded-lg transition-all cursor-pointer \${
                 isPlaying 
                   ? 'bg-amber-500/20 text-amber-400 hover:bg-amber-500/30 border border-amber-500/30'
                   : 'bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 border border-emerald-500/30'
-              }`}
+              }\`}
             >
               {isPlaying ? <Pause size={18} className="fill-current" /> : <Play size={18} className="fill-current ml-1" />}
             </button>
@@ -387,11 +382,11 @@ export const P2PForkConsensusVisualizer: React.FC = () => {
                 <button
                   key={spd}
                   onClick={() => setPlaySpeed(spd)}
-                  className={`px-2 py-0.5 rounded-lg font-semibold transition-all ${
+                  className={\`px-2 py-0.5 rounded-lg font-semibold transition-all \${
                     playSpeed === spd
                       ? 'bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/30'
                       : 'text-slate-400 hover:text-slate-200'
-                  } cursor-pointer`}
+                  } cursor-pointer\`}
                 >
                   {spd}×
                 </button>
@@ -416,11 +411,11 @@ export const P2PForkConsensusVisualizer: React.FC = () => {
                     setDuration(item.val);
                     if (!isPlaying) setElapsedSeconds(0);
                   }}
-                  className={`px-2.5 py-0.5 rounded-lg transition-all ${
+                  className={\`px-2.5 py-0.5 rounded-lg transition-all \${
                     duration === item.val
                       ? 'bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/30'
                       : 'text-slate-400 hover:text-slate-200'
-                  } cursor-pointer`}
+                  } cursor-pointer\`}
                 >
                   {item.label}
                 </button>
@@ -440,7 +435,7 @@ export const P2PForkConsensusVisualizer: React.FC = () => {
           <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
             <div 
               className="h-full bg-emerald-500 transition-all duration-300 ease-linear"
-              style={{ width: `${Math.min(100, (elapsedSeconds / duration) * 100)}%` }}
+              style={{ width: \`\${Math.min(100, (elapsedSeconds / duration) * 100)}%\` }}
             />
           </div>
         </div>
@@ -452,7 +447,7 @@ export const P2PForkConsensusVisualizer: React.FC = () => {
           {currentStageText}
         </div>
         <div className="px-3 py-1.5 rounded-lg bg-[#0C0F14] border border-slate-800 text-slate-300 text-xs font-mono">
-          {isVi ? 'Tổng số khối:' : 'Total Blocks:'} {trunk.length + (activeFork ? activeFork.branchA.length + activeFork.branchB.length : 0) + staleBranches.reduce((acc, b) => acc + b.length, 0) - 1}
+          {isVi ? 'Tổng số khối:' : 'Total Blocks:'} {trunk.length + (activeFork ? activeFork.branchA.length + activeFork.branchB.length : 0) + staleBlocks.length}
         </div>
       </div>
 
@@ -465,7 +460,7 @@ export const P2PForkConsensusVisualizer: React.FC = () => {
           {trunk.map((blk, idx) => {
             const isLastTrunk = idx === trunk.length - 1;
             const hasForkNext = isLastTrunk && activeFork !== null;
-            const stales = staleBranches.filter(branch => branch[0].prevHash === blk.hash);
+            const stales = staleBlocks.filter(s => s.prevHash === blk.hash);
 
             return (
               <React.Fragment key={blk.id}>
@@ -477,21 +472,11 @@ export const P2PForkConsensusVisualizer: React.FC = () => {
                   />
                   
                   {/* Render stale blocks hanging off this trunk block */}
-                  {stales.map((staleBranch, sIdx) => (
-                    <div key={staleBranch[0].id} className="absolute left-[80px] flex items-center shrink-0" style={{ top: `${(sIdx + 1) * 80}px` }}>
+                  {stales.map((stale, sIdx) => (
+                    <div key={stale.id} className="absolute left-[80px] flex items-center shrink-0" style={{ top: \`\${(sIdx + 1) * 80}px\` }}>
                       {/* Connector down then right */}
                       <div className="w-4 h-full absolute -left-4 top-0 border-l-2 border-b-2 border-slate-700/60 rounded-bl-lg" style={{ height: '30px', transform: 'translateY(-30px)' }} />
-                      
-                      <div className="flex items-center">
-                        {staleBranch.map((staleBlock, sbIdx) => (
-                          <React.Fragment key={staleBlock.id}>
-                            <CompactBlockCard block={staleBlock} onClick={() => setSelectedBlock(staleBlock)} isVi={isVi} />
-                            {sbIdx < staleBranch.length - 1 && (
-                              <div className="w-4 h-0.5 bg-slate-700 shrink-0" />
-                            )}
-                          </React.Fragment>
-                        ))}
-                      </div>
+                      <CompactBlockCard block={stale} onClick={() => setSelectedBlock(stale)} isVi={isVi} />
                     </div>
                   ))}
                 </div>
@@ -596,18 +581,18 @@ const CompactBlockCard: React.FC<{ block: P2PBlock; onClick: () => void; isVi: b
   return (
     <div
       onClick={onClick}
-      title={`Block #${block.displayNumber} - ${block.minerName} (Click to inspect)`}
-      className={`relative p-2 rounded-xl transition-all duration-150 flex flex-col items-center justify-between w-[80px] h-[60px] shrink-0 cursor-pointer select-none border box-border ${
+      title={\`Block #\${block.displayNumber} - \${block.minerName} (Click to inspect)\`}
+      className={\`relative p-2 rounded-xl transition-all duration-150 flex flex-col items-center justify-between w-[80px] h-[60px] shrink-0 cursor-pointer select-none border box-border \${
         isStale
           ? 'bg-slate-950/60 border-dashed border-slate-700/60 opacity-40 text-slate-500 hover:opacity-80'
           : isLeading
           ? 'border-amber-400 bg-amber-500/10 shadow-sm ring-1 ring-amber-400/40'
-          : `${mTheme.border} ${mTheme.bg} hover:border-slate-400 hover:bg-[#0E131A]`
-      }`}
+          : \`\${mTheme.border} \${mTheme.bg} hover:border-slate-400 hover:bg-[#0E131A]\`
+      }\`}
     >
-      <div className={`text-sm sm:text-base font-mono font-black tabular-nums tracking-wider ${
+      <div className={\`text-sm sm:text-base font-mono font-black tabular-nums tracking-wider \${
         isStale ? 'text-slate-500' : isLeading ? 'text-amber-300' : mTheme.text
-      }`}>
+      }\`}>
         #{block.displayNumber}
       </div>
       <div className="flex items-center justify-center gap-1 text-[11px] font-sans font-medium text-slate-200 truncate w-full px-1">
@@ -630,7 +615,7 @@ const BlockDetailModal: React.FC<{ block: P2PBlock; onClose: () => void; isVi: b
       <div className="bg-[#0C0F14] border border-slate-800 rounded-2xl p-5 w-full max-w-md shadow-2xl space-y-3.5">
         <div className="flex justify-between items-center border-b border-slate-800/80 pb-2.5">
           <div className="flex items-center gap-2">
-            <span className={`text-xs font-mono px-2 py-0.5 rounded border font-bold ${mTheme.badge}`}>
+            <span className={\`text-xs font-mono px-2 py-0.5 rounded border font-bold \${mTheme.badge}\`}>
               Block #{block.displayNumber}
             </span>
             <span className="text-sm font-display font-bold text-white flex items-center gap-1.5">
@@ -719,3 +704,6 @@ const TxDetailModal: React.FC<{ tx: MempoolTx; onClose: () => void; isVi: boolea
     </div>
   );
 };
+`
+
+fs.writeFileSync('/tmp/new_visualizer.tsx', code);

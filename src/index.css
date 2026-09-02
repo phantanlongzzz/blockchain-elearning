@@ -431,3 +431,18 @@ html body,
     transform: none !important;
   }
 }
+
+/* Custom Neon Pink-Red Cursor - Hide default browser cursor only when active on fine-pointer devices */
+@media (pointer: fine) and (hover: hover) {
+  html.custom-cursor-active,
+  html.custom-cursor-active * {
+    cursor: none !important;
+  }
+}
+
+@media (pointer: coarse), (hover: none) {
+  .custom-cursor-wrapper {
+    display: none !important;
+  }
+}
+

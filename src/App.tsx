@@ -17,6 +17,7 @@ import { LessonFooter } from './components/layout/LessonFooter';
 import { Footer } from './components/Footer';
 import { BackToTop } from './components/BackToTop';
 import { CommandPalette } from './components/CommandPalette';
+import { CustomCursor } from './components/CustomCursor';
 
 // Persistent Modals
 import { AuthModal } from './components/Auth/AuthModal';
@@ -90,6 +91,9 @@ function AppContent() {
       {/* Application Global Footer & Utilities */}
       <Footer />
       <BackToTop />
+
+      {/* Global Modern Neon Cursor */}
+      <CustomCursor />
     </div>
   );
 }

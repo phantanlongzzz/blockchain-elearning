@@ -1,109 +1,11 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Network, Box } from 'lucide-react';
-import { Play, Pause, RotateCcw, Clock } from 'lucide-react';
-import { useLanguage } from '../../i18n/LanguageContext';
-import { getMinerColorTheme, GENESIS_THEME } from '../../utils/minerColors';
+const fs = require('fs');
+let content = fs.readFileSync('src/components/ProofOfWork/P2PForkConsensusVisualizer.tsx', 'utf8');
 
-export interface MempoolTx {
-  id: string;
-  txCode: string;
-  from: string;
-  to: string;
-  amount: number;
-  fee: number;
-  status: 'mempool' | 'candidate_a' | 'candidate_b' | 'confirmed' | 'returned_stale';
-}
+// I will just use regex to replace the entire body of P2PForkConsensusVisualizer
 
-export interface P2PBlock {
-  id: string;
-  blockNumber: number;
-  displayNumber: string;
-  height: number;
-  minerName: string;
-  minerRole: string;
-  branch: 'trunk' | 'branchA' | 'branchB';
-  status: 'canonical' | 'competing' | 'stale';
-  isLeading?: boolean;
-  hash: string;
-  prevHash: string;
-  merkleRoot: string;
-  nonce: number;
-  timestamp: string;
-  txs: string[];
-  coinbaseReward: number;
-  cumulativeWork: number;
-}
+const topPart = content.split(`export const P2PForkConsensusVisualizer: React.FC<P2PForkConsensusVisualizerProps> = ({ blockchain, appState }) => {`)[0];
 
-const INITIAL_MEMPOOL_TXS: MempoolTx[] = [
-  { id: 'tx-1', txCode: 'TX-01', from: 'Alice', to: 'Bob', amount: 2.5, fee: 0.0005, status: 'mempool' },
-  { id: 'tx-2', txCode: 'TX-02', from: 'Bob', to: 'Charlie', amount: 1.0, fee: 0.0003, status: 'mempool' },
-  { id: 'tx-3', txCode: 'TX-03', from: 'Dave', to: 'Eve', amount: 0.5, fee: 0.0002, status: 'mempool' },
-  { id: 'tx-4', txCode: 'TX-04', from: 'Charlie', to: 'Alice', amount: 3.2, fee: 0.0008, status: 'mempool' },
-  { id: 'tx-5', txCode: 'TX-05', from: 'Eve', to: 'Frank', amount: 1.2, fee: 0.0004, status: 'mempool' },
-  { id: 'tx-6', txCode: 'TX-06', from: 'Frank', to: 'Grace', amount: 0.8, fee: 0.0002, status: 'mempool' },
-];
-
-const GENESIS_BLOCK: P2PBlock = {
-  id: 'block-0',
-  blockNumber: 0,
-  displayNumber: '0',
-  height: 0,
-  minerName: 'Genesis',
-  minerRole: 'Network Genesis',
-  branch: 'trunk',
-  status: 'canonical',
-  isLeading: true,
-  hash: '000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f',
-  prevHash: '0000000000000000000000000000000000000000000000000000000000000000',
-  merkleRoot: '4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b',
-  nonce: 2083236893,
-  timestamp: '00:00:00',
-  txs: ['Coinbase: 50.0 BTC → Satoshi (Genesis Reward)'],
-  coinbaseReward: 50.0,
-  cumulativeWork: 0,
-};
-
-const MINERS = [
-  { name: 'Alice', weight: 10, role: 'CPU Miner' },
-  { name: 'Bob', weight: 40, role: 'GPU Miner' },
-  { name: 'Charlie', weight: 80, role: 'ASIC Miner' },
-  { name: 'Dave', weight: 100, role: 'Quantum Miner' },
-];
-
-function getWeightedMiner(avoidMiner?: string, streak?: number) {
-  let adjusted = MINERS.map(m => ({ ...m }));
-  if (avoidMiner && streak && streak >= 3) {
-    const m = adjusted.find(x => x.name === avoidMiner);
-    if (m) {
-      m.weight = m.weight / (streak * 2); // Heavily penalize long streaks
-    }
-  }
-  const total = adjusted.reduce((acc, m) => acc + m.weight, 0);
-  let r = Math.random() * total;
-  for (const m of adjusted) {
-    if (r < m.weight) return m;
-    r -= m.weight;
-  }
-  return adjusted[adjusted.length - 1];
-}
-
-function generateHash(prevHash: string, nonce: number) {
-  const chars = '0123456789abcdef';
-  let h = '000000';
-  for (let i = 0; i < 58; i++) h += chars[Math.floor(Math.random() * chars.length)];
-  return h;
-}
-
-export interface P2PForkConsensusVisualizerProps {
-  blockchain: any[];
-  appState: string;
-}
-
-export const P2PForkConsensusVisualizer: React.FC<P2PForkConsensusVisualizerProps> = ({ blockchain, appState }) => {
+const newBody = `export const P2PForkConsensusVisualizer: React.FC<P2PForkConsensusVisualizerProps> = ({ blockchain, appState }) => {
   const { language } = useLanguage();
   const isVi = language === 'vi';
   
@@ -111,9 +13,9 @@ export const P2PForkConsensusVisualizer: React.FC<P2PForkConsensusVisualizerProp
   const [selectedTx, setSelectedTx] = useState<MempoolTx | null>(null);
   
   const trunk: P2PBlock[] = blockchain.length > 0 ? blockchain.map((b, i) => ({
-    id: `block-${b.index}`,
+    id: \`block-\${b.index}\`,
     blockNumber: b.index,
-    displayNumber: `${b.index}`,
+    displayNumber: \`\${b.index}\`,
     height: b.index,
     minerName: b.minerName || 'Genesis',
     minerRole: 'Miner',
@@ -186,14 +88,14 @@ export const P2PForkConsensusVisualizer: React.FC<P2PForkConsensusVisualizerProp
                     )}
                     <div
                       onClick={() => setSelectedBlock(blk)}
-                      className={`relative z-10 w-32 rounded-xl border p-3 cursor-pointer transition-all duration-300 bg-[#0A0D12] ${
+                      className={\`relative z-10 w-32 rounded-xl border p-3 cursor-pointer transition-all duration-300 bg-[#0A0D12] \${
                         blk.isLeading 
                           ? 'border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.15)] ring-1 ring-emerald-500/20' 
                           : 'border-slate-700 hover:border-slate-500'
-                      }`}
+                      }\`}
                     >
                       <div className="flex items-center gap-2 mb-2">
-                        <div className={`w-2 h-2 rounded-full ${blk.isLeading ? 'bg-emerald-400 animate-pulse' : 'bg-slate-600'}`} />
+                        <div className={\`w-2 h-2 rounded-full \${blk.isLeading ? 'bg-emerald-400 animate-pulse' : 'bg-slate-600'}\`} />
                         <span className="text-[10px] font-mono font-medium text-slate-400">
                           {blk.hash.substring(0, 8)}
                         </span>
@@ -212,7 +114,7 @@ export const P2PForkConsensusVisualizer: React.FC<P2PForkConsensusVisualizerProp
                       </div>
 
                       <div className="text-center">
-                        <div className={`text-xs font-medium truncate ${blk.isLeading ? 'text-emerald-400' : 'text-slate-300'}`}>
+                        <div className={\`text-xs font-medium truncate \${blk.isLeading ? 'text-emerald-400' : 'text-slate-300'}\`}>
                           {blk.minerName}
                         </div>
                         {!isGenesis && (
@@ -232,3 +134,6 @@ export const P2PForkConsensusVisualizer: React.FC<P2PForkConsensusVisualizerProp
     </div>
   );
 };
+`;
+
+fs.writeFileSync('src/components/ProofOfWork/P2PForkConsensusVisualizer.tsx', topPart + newBody);

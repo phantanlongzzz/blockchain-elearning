@@ -348,8 +348,13 @@ export const PowLesson: React.FC = () => {
 
   // Event-based smart camera: Auto-scroll blockchain timeline to newly mined / leading block
   useEffect(() => {
-    if (!autoFollow || userScrolledAwayRef.current) return;
-    if (timelineScrollRef.current && blockchain.length > 1) {
+    if (!autoFollow) return;
+    
+    // Auto-focus rule: return focus to the new event (new block mined)
+    userScrolledAwayRef.current = false;
+    setIsAutoFollowPaused(false);
+    
+    if (timelineScrollRef.current && blockchain.length > 0) {
       const el = timelineScrollRef.current;
       const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const behavior = prefersReduced ? 'auto' : 'smooth';
@@ -1097,7 +1102,7 @@ export const PowLesson: React.FC = () => {
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-emerald-400" />
               <span className="text-xs font-display font-bold text-slate-300 uppercase tracking-wider">
-                {isVi ? 'CHẾ ĐỘ MÔ PHỎNG CHUỖI KHỐI' : 'BLOCKCHAIN VISUALIZATION MODE'}
+                {isVi ? 'CHẾ ĐỘ MÔ PHỎNG' : 'VISUALIZATION MODE'}
               </span>
             </div>
 
@@ -1111,7 +1116,7 @@ export const PowLesson: React.FC = () => {
                 }`}
               >
                 <span>🌐</span>
-                <span>{isVi ? 'Mạng P2P & Phân Nhánh (Fork & Longest Chain)' : 'P2P Network & Fork Resolution'}</span>
+                <span>{isVi ? 'Mạng P2P & Phân nhánh' : 'P2P Network'}</span>
               </button>
 
               <button
@@ -1123,70 +1128,27 @@ export const PowLesson: React.FC = () => {
                 }`}
               >
                 <span>⛓️</span>
-                <span>{isVi ? 'Chuỗi Tuyến Tính (Live Mining Timeline)' : 'Linear Mining Timeline'}</span>
+                <span>{isVi ? 'Chuỗi tuyến tính' : 'Linear Timeline'}</span>
               </button>
             </div>
           </div>
 
           {activeVisualizerView === 'p2p_network' ? (
-            <P2PForkConsensusVisualizer />
+            <P2PForkConsensusVisualizer blockchain={blockchain} appState={appState} />
           ) : (
-            /* HORIZONTAL BLOCKCHAIN TIMELINE */
+            
             <div className="p-4 sm:p-5 rounded-2xl bg-[#0A0D12] border border-slate-800 space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-1 px-1 gap-2">
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-emerald-400" />
-                  <h3 className="text-xs sm:text-sm font-display font-bold text-slate-300 tracking-wider uppercase">
-                    {isVi ? 'CHUỖI KHỐI ĐÃ KHAI THÁC THỰC TẾ' : 'LIVE MINED BLOCKS TIMELINE'}
+                  <h3 className="text-xs sm:text-sm font-display font-bold text-slate-300 tracking-wider">
+                    {isVi ? 'Chuỗi khối' : 'Blockchain'}
                   </h3>
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2.5">
-                  {/* Miner Color Identity Badges */}
-                  <div className="hidden lg:flex items-center gap-2 text-[11px] font-mono text-slate-400">
-                    <span className="text-slate-500">{isVi ? 'Màu thợ đào:' : 'Miner colors:'}</span>
-                    {miners.slice(0, 8).map(m => {
-                      const mTh = getMinerTheme(m.name);
-                      return (
-                        <span key={m.id} className="inline-flex items-center gap-1">
-                          <span className="w-2 h-2 rounded-full" style={{ backgroundColor: mTh.primary }} />
-                          <span className="text-slate-300 font-sans">{m.name}</span>
-                        </span>
-                      );
-                    })}
-                  </div>
-
-                  {/* AUTO-FOLLOW STATUS BADGE */}
-                  <div className="flex items-center gap-1.5 bg-[#11161D] px-2 py-0.5 rounded-lg border border-slate-800 text-[11px] font-mono">
-                    <span className={`w-2 h-2 rounded-full ${autoFollow && !isAutoFollowPaused ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'}`} />
-                    <span className="text-slate-300 font-bold">
-                      {autoFollow && !isAutoFollowPaused 
-                        ? (isVi ? 'TỰ ĐỘNG BÁM SÁT' : 'AUTO-FOLLOW: ON') 
-                        : (isVi ? 'TẠM DỪNG BÁM SÁT' : 'AUTO-FOLLOW: PAUSED')}
-                    </span>
-                  </div>
-
-                  {isAutoFollowPaused ? (
-                    <button
-                      onClick={scrollToLatestBlock}
-                      className="text-xs font-mono font-bold text-amber-300 hover:text-amber-200 px-2.5 py-0.5 rounded bg-amber-500/20 border border-amber-500/40 transition-all cursor-pointer shadow-sm flex items-center gap-1 animate-pulse"
-                      title={isVi ? 'Cuộn đến khối mới nhất và tiếp tục bám sát' : 'Jump to latest and resume auto-follow'}
-                    >
-                      <span>↳</span>
-                      <span>{isVi ? 'Về khối mới nhất' : 'Jump to Latest'}</span>
-                    </button>
-                  ) : (
-                    <button
-                      onClick={scrollToLatestBlock}
-                      className="text-xs font-mono font-semibold text-emerald-400 hover:text-emerald-300 px-2.5 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/25 transition-all cursor-pointer shadow-sm"
-                      title={isVi ? 'Cuộn đến khối mới nhất' : 'Scroll to latest block'}
-                    >
-                      {isVi ? 'Mới nhất' : 'Latest'}
-                    </button>
-                  )}
-
                   <span className="text-xs font-mono text-slate-400">
-                    {isVi ? `Tổng: ${blockchain.length}` : `Blocks: ${blockchain.length}`}
+                    {isVi ? `Tổng: ${blockchain.length}` : `Total: ${blockchain.length}`}
                   </span>
                 </div>
               </div>
@@ -1194,12 +1156,10 @@ export const PowLesson: React.FC = () => {
               <div 
                 ref={timelineScrollRef}
                 onScroll={handleTimelineScroll}
-                className="flex overflow-x-auto py-3 pb-4 gap-3.5 items-center custom-scrollbar px-2"
+                className="flex overflow-x-auto py-3 pb-4 gap-3 items-center custom-scrollbar px-2 max-w-full"
               >
                 {blockchain.map((block, idx) => {
-                  const isJustAdded = justAddedBlockIndex === block.index;
                   const isLatestTip = idx === blockchain.length - 1 && blockchain.length > 1;
-                  const isLeading = isJustAdded || isLatestTip;
                   const theme = getMinerTheme(block.minerName, block.index);
                   const isGenesis = block.index === 0;
 
@@ -1207,49 +1167,27 @@ export const PowLesson: React.FC = () => {
                     <React.Fragment key={`${block.index}-${block.hash}`}>
                       <div 
                         onClick={() => setSelectedBlock(block)}
-                        className={`relative p-3.5 rounded-xl transition-all duration-200 flex flex-col items-center justify-between min-w-[135px] sm:min-w-[145px] shrink-0 cursor-pointer select-none border-2 box-border ${
-                          isLeading 
-                            ? 'border-amber-400 bg-amber-500/10 shadow-[0_0_20px_rgba(245,158,11,0.25)] animate-block-pulse' 
-                            : `${theme.border} ${theme.bg} hover:border-slate-400 hover:bg-[#0E131A] shadow-sm`
+                        className={`relative py-3 px-4 rounded-xl transition-all duration-200 flex flex-col items-center justify-center min-w-[100px] shrink-0 cursor-pointer select-none border box-border ${
+                          isLatestTip 
+                            ? 'border-[#00C98D] bg-[#00C98D]/10' 
+                            : `${theme.border} ${theme.bg} hover:border-slate-400 hover:bg-[#0E131A]`
                         }`}
                       >
-                        {/* Status Badge for Leading / Latest Block */}
-                        {isLeading && (
-                          <div className="absolute -top-2.5 px-2 py-0.5 rounded-full text-[9px] font-mono font-bold tracking-wider uppercase bg-amber-400 text-black shadow-md flex items-center gap-1">
-                            <span>★</span>
-                            <span>{isVi ? 'KHỐI MỚI NHẤT' : 'LEADING TIP'}</span>
-                          </div>
-                        )}
-
-                        {/* Real Sequential Block Integer */}
-                        <div className={`text-2xl sm:text-3xl font-mono font-black tabular-nums tracking-wider ${isGenesis ? 'text-slate-300' : theme.text} my-0.5`}>
-                          {block.index}
+                        <div className={`text-2xl font-mono font-bold tracking-wider ${isGenesis ? 'text-slate-300' : theme.text} mb-1`}>
+                          #{block.index}
                         </div>
-
-                        {/* Miner Name / Genesis Badge */}
-                        <div className="my-1.5 text-center max-w-full">
+                        <div className="text-center w-full">
                           {isGenesis ? (
-                            <span className="font-display font-semibold text-slate-400 text-xs tracking-wide uppercase px-2 py-0.5 rounded bg-slate-800 border border-slate-700">
-                              GENESIS
-                            </span>
+                            <span className="font-sans font-medium text-slate-400 text-xs truncate block w-full">Genesis</span>
                           ) : (
-                            <span className={`inline-flex items-center gap-1.5 font-display font-bold text-xs tracking-wide px-2 py-0.5 rounded border max-w-full truncate ${theme.badge}`}>
-                              <span 
-                                className="w-2 h-2 rounded-full shrink-0" 
-                                style={{ backgroundColor: theme.primary }}
-                              />
-                              <span className="truncate">{block.minerName}</span>
+                            <span className={`font-sans font-medium text-xs truncate block w-full ${theme.text}`}>
+                              {block.minerName}
                             </span>
                           )}
                         </div>
-
-                        {/* Truncated Hash */}
-                        <span className="text-[10px] font-mono tabular-nums text-slate-400 bg-slate-900/90 px-2 py-0.5 rounded border border-slate-800/80 truncate max-w-full">
-                          {block.hash.substring(0, 8)}...
-                        </span>
                       </div>
                       {idx < blockchain.length - 1 && (
-                        <div className="w-6 h-px bg-slate-700 relative shrink-0">
+                        <div className="w-4 h-px bg-slate-700 relative shrink-0">
                           <div className="absolute right-0 top-1/2 -translate-y-1/2 border-y-[3px] border-y-transparent border-l-[5px] border-l-slate-500" />
                         </div>
                       )}

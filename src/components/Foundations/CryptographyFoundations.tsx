@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { fastSha256Hex } from '../../utils/sha256';
+import { PublicKeyVsPrimaryKey } from './PublicKeyVsPrimaryKey';
 
 interface CryptographyFoundationsProps {
   onInteracted?: () => void;
@@ -434,6 +435,11 @@ export const CryptographyFoundations: React.FC<CryptographyFoundationsProps> = (
                 5Kb8kLf9zg... (Secret Key · Không chia sẻ)
               </div>
             </div>
+          </div>
+
+          {/* Comparison Section: Public Key vs Primary Key */}
+          <div className="pt-2">
+            <PublicKeyVsPrimaryKey />
           </div>
         </div>
       )}

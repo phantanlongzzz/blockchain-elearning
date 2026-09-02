@@ -130,6 +130,9 @@ export const PowLesson: React.FC = () => {
   const [showCodeModal, setShowCodeModal] = useState(false);
   const [selectedBlock, setSelectedBlock] = useState<BlockRecord | null>(null);
   const [activeVisualizerView, setActiveVisualizerView] = useState<'p2p_network' | 'timeline'>('p2p_network');
+  const [autoFollow, setAutoFollow] = useState<boolean>(true);
+  const [isAutoFollowPaused, setIsAutoFollowPaused] = useState<boolean>(false);
+  const [showTelemetryDetails, setShowTelemetryDetails] = useState<boolean>(false);
   
   const usedNamesRef = useRef<Set<string>>(new Set(['Alice', 'Bob', 'Charlie', 'Dave']));
 
@@ -322,46 +325,60 @@ export const PowLesson: React.FC = () => {
   }, [appState, addLog, isVi, terminateWorkers]);
 
   const userScrolledAwayRef = useRef(false);
+  const isProgrammaticScrollRef = useRef(false);
 
-  // Handle user manual scroll on horizontal blockchain timeline
+  // Handle user manual scroll on horizontal blockchain timeline (UX Rule: Do not fight user scroll)
   const handleTimelineScroll = useCallback(() => {
+    if (isProgrammaticScrollRef.current) return;
     if (timelineScrollRef.current) {
       const el = timelineScrollRef.current;
       const distanceFromEnd = el.scrollWidth - el.clientWidth - el.scrollLeft;
-      if (distanceFromEnd < 80) {
-        userScrolledAwayRef.current = false;
-      } else if (distanceFromEnd > 200) {
+      if (distanceFromEnd > 140) {
         userScrolledAwayRef.current = true;
+        setIsAutoFollowPaused(true);
+      } else if (distanceFromEnd < 40) {
+        userScrolledAwayRef.current = false;
+        setIsAutoFollowPaused(false);
       }
     }
   }, []);
 
-  // Auto-scroll blockchain timeline to latest block smoothly when running
+  // Event-based smart camera: Auto-scroll blockchain timeline to newly mined / leading block
   useEffect(() => {
-    if (timelineScrollRef.current) {
-      const isRunning = appState === 'mining' || appState === 'animating_win';
-      if (isRunning && blockchain.length > 1) {
-        requestAnimationFrame(() => {
-          if (timelineScrollRef.current) {
-            const el = timelineScrollRef.current;
-            el.scrollTo({
-              left: el.scrollWidth,
-              behavior: 'smooth'
-            });
-          }
-        });
-      }
+    if (!autoFollow || userScrolledAwayRef.current) return;
+    if (timelineScrollRef.current && blockchain.length > 1) {
+      const el = timelineScrollRef.current;
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const behavior = prefersReduced ? 'auto' : 'smooth';
+
+      isProgrammaticScrollRef.current = true;
+      el.scrollTo({
+        left: el.scrollWidth,
+        behavior
+      });
+
+      const timer = setTimeout(() => {
+        isProgrammaticScrollRef.current = false;
+      }, 500);
+      return () => clearTimeout(timer);
     }
-  }, [blockchain.length, appState]);
+  }, [blockchain.length, autoFollow]);
 
   const scrollToLatestBlock = () => {
     userScrolledAwayRef.current = false;
+    setIsAutoFollowPaused(false);
+    setAutoFollow(true);
     if (timelineScrollRef.current) {
       const el = timelineScrollRef.current;
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      isProgrammaticScrollRef.current = true;
       el.scrollTo({
         left: el.scrollWidth,
-        behavior: 'smooth'
+        behavior: prefersReduced ? 'auto' : 'smooth'
       });
+      setTimeout(() => {
+        isProgrammaticScrollRef.current = false;
+      }, 500);
     }
   };
 
@@ -651,26 +668,21 @@ export const PowLesson: React.FC = () => {
     <div className="min-h-screen bg-[#090A0F] text-slate-200 font-sans selection:bg-emerald-500/30 selection:text-emerald-200 pb-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-6 space-y-5">
         
-        {/* Header & Scenarios */}
-        <header className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        {/* LAYER 1: MINING CONTROL */}
+        <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800/80 pb-4">
           <div>
-            <div className="flex items-center gap-2 mb-1">
-              <span className="text-xs font-mono font-bold px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/25">
-                POW CONSENSUS · REAL WEB WORKERS
-              </span>
-            </div>
-            <h1 className="text-2xl sm:text-3xl font-bold font-display text-white tracking-tight">
-              {isVi ? 'Phòng Khai Thác Proof of Work' : 'Proof of Work Mining Laboratory'}
+            <h1 className="text-xl sm:text-2xl font-bold font-display text-white tracking-tight">
+              {isVi ? 'Phòng Thí Nghiệm Khai Thác Proof of Work' : 'Proof of Work Mining Lab'}
             </h1>
-            <p className="text-slate-400 mt-1 text-xs sm:text-sm">
+            <p className="text-slate-400 mt-0.5 text-xs sm:text-sm">
               {isVi 
-                ? 'Thử nghiệm cơ chế Proof of Work với Web Workers đa luồng và đo lường Hashrate thực tế.' 
-                : 'Experiment with multi-threaded Web Worker Proof of Work and real-time Hashrate telemetry.'}
+                ? 'Mô phỏng cuộc đua khai thác đa thợ đào với Web Workers thực tế.' 
+                : 'Run a multi-miner Proof of Work race using real Web Workers.'}
             </p>
           </div>
           
           <div className="flex items-center gap-2">
-            <div className="flex bg-[#0D1117] p-1 rounded-xl border border-slate-800 shrink-0 overflow-x-auto no-scrollbar">
+            <div className="flex bg-[#0C0F14] p-1 rounded-xl border border-slate-800 shrink-0 overflow-x-auto no-scrollbar">
               {(['normal', 'hashrate', 'attack51'] as Scenario[]).map(s => (
                 <button
                   key={s}
@@ -691,201 +703,124 @@ export const PowLesson: React.FC = () => {
 
             <button
               onClick={() => setShowCodeModal(true)}
-              className="p-2 bg-[#0D1117] hover:bg-slate-800 text-slate-300 hover:text-emerald-400 border border-slate-800 rounded-xl flex items-center gap-1.5 text-xs font-semibold transition-all cursor-pointer shrink-0"
+              className="p-2 bg-[#0C0F14] hover:bg-slate-800 text-slate-300 hover:text-emerald-400 border border-slate-800 rounded-xl flex items-center gap-1.5 text-xs font-semibold transition-all cursor-pointer shrink-0"
               title={isVi ? 'Xem mã nguồn thuật toán' : 'View algorithm code'}
             >
-              <Code2 size={16} />
+              <Code2 size={15} />
               <span className="hidden sm:inline">{isVi ? 'Mã Nguồn' : 'Code'}</span>
             </button>
           </div>
         </header>
 
-        {/* Compact Controls Panel */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {/* Duration */}
-          <div className="p-4 bg-[#0C0F14] rounded-xl border border-slate-800/90 shadow-sm flex flex-col justify-between">
-            <div className="flex items-center justify-between mb-2.5">
-              <label className="text-[11px] text-slate-400 font-display font-bold uppercase tracking-wider block">
-                {isVi ? 'Thời gian mô phỏng' : 'Simulation Duration'}
-              </label>
-              <span className="text-xs font-mono tabular-nums text-slate-400 font-semibold">{duration}s</span>
-            </div>
-            <div className="flex gap-2">
-              {[30, 45, 60].map(val => (
-                <button 
-                  key={val}
-                  onClick={() => setDuration(val)}
-                  disabled={appState !== 'idle' && appState !== 'completed'}
-                  className={`flex-1 py-1.5 rounded-lg text-xs font-mono tabular-nums font-semibold transition-all ${
-                    duration === val 
-                      ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30' 
-                      : 'bg-[#11161D] text-slate-400 border border-slate-800 hover:border-slate-700'
-                  } disabled:opacity-50 cursor-pointer`}
-                >
-                  {val === 60 ? '1 min' : `${val}s`}
-                </button>
-              ))}
-            </div>
-          </div>
-          
-          {/* Difficulty */}
-          <div className="p-4 bg-[#0C0F14] rounded-xl border border-slate-800/90 shadow-sm flex flex-col justify-between">
-            <div className="flex items-center justify-between mb-2.5">
-              <label className="text-[11px] text-slate-400 font-display font-bold uppercase tracking-wider block">
-                {isVi ? 'Độ khó' : 'Mining Difficulty'}
-              </label>
-              <span className="text-xs font-mono tabular-nums text-emerald-400 font-bold">
-                "{'0'.repeat(difficulty)}..."
+        {/* Compact Configuration & Execution Bar */}
+        <div className="p-3.5 sm:p-4 bg-[#0C0F14] rounded-2xl border border-slate-800 flex flex-col lg:flex-row lg:items-center justify-between gap-3 shadow-sm">
+          {/* Controls: Duration & Difficulty */}
+          <div className="flex flex-wrap items-center gap-4">
+            {/* Duration Selector */}
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-display font-semibold text-slate-400">
+                {isVi ? 'Thời gian:' : 'Duration:'}
               </span>
+              <div className="flex bg-[#11161D] p-0.5 rounded-lg border border-slate-800">
+                {[30, 45, 60].map(val => (
+                  <button 
+                    key={val}
+                    onClick={() => setDuration(val)}
+                    disabled={appState !== 'idle' && appState !== 'completed'}
+                    className={`px-2 py-1 rounded-md text-xs font-mono font-semibold transition-all ${
+                      duration === val 
+                        ? 'bg-emerald-500/20 text-emerald-400 font-bold' 
+                        : 'text-slate-400 hover:text-slate-200'
+                    } disabled:opacity-50 cursor-pointer`}
+                  >
+                    {val}s
+                  </button>
+                ))}
+              </div>
             </div>
-            <div className="flex gap-2">
-              {[1, 2, 3, 4].map(val => (
-                <button 
-                  key={val}
-                  onClick={() => setDifficulty(val)}
-                  disabled={appState !== 'idle' && appState !== 'completed'}
-                  className={`flex-1 py-1.5 rounded-lg text-xs font-mono tabular-nums font-semibold transition-all ${
-                    difficulty === val 
-                      ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30' 
-                      : 'bg-[#11161D] text-slate-400 border border-slate-800 hover:border-slate-700'
-                  } disabled:opacity-50 cursor-pointer`}
-                >
-                  {val}
-                </button>
-              ))}
+
+            {/* Difficulty Selector */}
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-display font-semibold text-slate-400">
+                {isVi ? 'Độ khó:' : 'Difficulty:'}
+              </span>
+              <div className="flex bg-[#11161D] p-0.5 rounded-lg border border-slate-800">
+                {[1, 2, 3, 4].map(val => (
+                  <button 
+                    key={val}
+                    onClick={() => setDifficulty(val)}
+                    disabled={appState !== 'idle' && appState !== 'completed'}
+                    className={`px-2.5 py-1 rounded-md text-xs font-mono font-semibold transition-all ${
+                      difficulty === val 
+                        ? 'bg-emerald-500/20 text-emerald-400 font-bold' 
+                        : 'text-slate-400 hover:text-slate-200'
+                    } disabled:opacity-50 cursor-pointer`}
+                  >
+                    {val}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Target Prefix Summary Pill */}
+            <div className="hidden sm:flex items-center gap-2 bg-[#11161D] px-3 py-1.5 rounded-lg border border-slate-800 text-xs font-mono">
+              <span className="text-slate-500">{isVi ? 'Tiền tố mục tiêu:' : 'Target Prefix:'}</span>
+              <span className="text-emerald-400 font-bold">"{'0'.repeat(difficulty)}"</span>
             </div>
           </div>
-          
-          {/* Execution Controls & Compact Timer */}
-          <div className="p-4 bg-[#0C0F14] rounded-xl border border-slate-800/90 shadow-sm flex items-center justify-between gap-3 sm:col-span-2 lg:col-span-1">
-            {/* Compact Timer */}
-            <div className="flex items-center gap-2 bg-[#11161D] border border-slate-800 px-3.5 py-2 rounded-xl shrink-0" title={isVi ? 'Thời gian còn lại' : 'Remaining time'}>
-              <Clock size={15} className={appState === 'mining' ? 'text-emerald-400 animate-pulse' : 'text-slate-500'} />
-              <span className={`font-mono tabular-nums font-bold text-base ${appState === 'mining' ? 'text-white' : 'text-slate-300'}`}>
+
+          {/* Timer & Start / Stop Buttons */}
+          <div className="flex items-center gap-2 self-end lg:self-auto">
+            {/* Timer */}
+            <div className="flex items-center gap-1.5 bg-[#11161D] border border-slate-800 px-3 py-1.5 rounded-xl text-xs font-mono" title={isVi ? 'Thời gian còn lại' : 'Remaining time'}>
+              <Clock size={13} className={appState === 'mining' ? 'text-emerald-400 animate-pulse' : 'text-slate-500'} />
+              <span className={`tabular-nums font-bold ${appState === 'mining' ? 'text-white' : 'text-slate-300'}`}>
                 {formatTime(remainingTime)}
               </span>
             </div>
 
-            {/* Start / Pause / Resume & Reset */}
-            <div className="flex gap-2 flex-1">
-              {appState === 'idle' ? (
-                <button 
-                  onClick={handleStart} 
-                  disabled={miners.length === 0} 
-                  className="flex-1 py-2 px-3 bg-emerald-500 hover:bg-emerald-400 text-black font-display font-bold text-xs sm:text-sm rounded-xl flex items-center justify-center gap-1.5 transition-all disabled:opacity-50 cursor-pointer shadow-sm"
-                >
-                  <Play size={15} className="fill-current" /> {isVi ? 'Bắt Đầu' : 'Start'}
-                </button>
-              ) : appState === 'completed' ? (
-                <button 
-                  onClick={handleReset} 
-                  className="flex-1 py-2 px-3 bg-emerald-500 hover:bg-emerald-400 text-black font-display font-bold text-xs sm:text-sm rounded-xl flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-sm"
-                >
-                  <RotateCcw size={15} /> {isVi ? 'Chạy Lại' : 'Run Again'}
-                </button>
-              ) : appState === 'mining' ? (
-                <button 
-                  onClick={handlePause} 
-                  className="flex-1 py-2 px-3 bg-amber-500 hover:bg-amber-400 text-black font-display font-bold text-xs sm:text-sm rounded-xl flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-sm"
-                >
-                  <Pause size={15} className="fill-current" /> {isVi ? 'Tạm Dừng' : 'Pause'}
-                </button>
-              ) : (
-                <button 
-                  onClick={handleStart} 
-                  disabled={appState === 'animating_win'} 
-                  className="flex-1 py-2 px-3 bg-emerald-500 hover:bg-emerald-400 text-black font-display font-bold text-xs sm:text-sm rounded-xl flex items-center justify-center gap-1.5 transition-all disabled:opacity-50 cursor-pointer shadow-sm"
-                >
-                  <Play size={15} className="fill-current" /> {isVi ? 'Tiếp Tục' : 'Resume'}
-                </button>
-              )}
-              
+            {/* Action button */}
+            {appState === 'idle' ? (
+              <button 
+                onClick={handleStart} 
+                disabled={miners.length === 0} 
+                className="py-1.5 px-4 bg-emerald-500 hover:bg-emerald-400 text-black font-display font-bold text-xs rounded-xl flex items-center gap-1.5 transition-all disabled:opacity-50 cursor-pointer shadow-sm"
+              >
+                <Play size={13} className="fill-current" /> {isVi ? 'Bắt Đầu' : 'Start Mining'}
+              </button>
+            ) : appState === 'completed' ? (
               <button 
                 onClick={handleReset} 
-                className="px-3.5 py-2 bg-[#11161D] hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 rounded-xl flex items-center justify-center transition-all cursor-pointer"
-                title={isVi ? 'Khởi tạo lại' : 'Reset'}
+                className="py-1.5 px-4 bg-emerald-500 hover:bg-emerald-400 text-black font-display font-bold text-xs rounded-xl flex items-center gap-1.5 transition-all cursor-pointer shadow-sm"
               >
-                <RotateCcw size={15} />
+                <RotateCcw size={13} /> {isVi ? 'Chạy Lại' : 'Run Again'}
               </button>
-            </div>
+            ) : appState === 'mining' ? (
+              <button 
+                onClick={handlePause} 
+                className="py-1.5 px-4 bg-amber-500 hover:bg-amber-400 text-black font-display font-bold text-xs rounded-xl flex items-center gap-1.5 transition-all cursor-pointer shadow-sm"
+              >
+                <Pause size={13} className="fill-current" /> {isVi ? 'Tạm Dừng' : 'Pause'}
+              </button>
+            ) : (
+              <button 
+                onClick={handleStart} 
+                disabled={appState === 'animating_win'} 
+                className="py-1.5 px-4 bg-emerald-500 hover:bg-emerald-400 text-black font-display font-bold text-xs rounded-xl flex items-center gap-1.5 transition-all disabled:opacity-50 cursor-pointer shadow-sm"
+              >
+                <Play size={13} className="fill-current" /> {isVi ? 'Tiếp Tục' : 'Resume'}
+              </button>
+            )}
+            
+            <button 
+              onClick={handleReset} 
+              className="p-1.5 bg-[#11161D] hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 rounded-xl transition-all cursor-pointer"
+              title={isVi ? 'Khởi tạo lại' : 'Reset'}
+            >
+              <RotateCcw size={13} />
+            </button>
           </div>
         </div>
-
-        {/* TARGET & TELEMETRY STRIP */}
-        {appState === 'completed' ? (
-          <div className="bg-[#0C0F14] border border-slate-800/80 rounded-xl px-4 py-2 flex flex-wrap items-center justify-between gap-2 text-xs font-mono text-slate-400 shadow-sm">
-            <div className="flex items-center gap-2">
-              <span className="text-[10px] font-display font-bold text-slate-400 uppercase tracking-wider">Target:</span>
-              <span className="text-emerald-400 font-bold">{'0'.repeat(difficulty)}</span>
-              <span className="text-slate-600">{'x'.repeat(Math.min(24, 64 - difficulty))}...</span>
-              <span className="text-slate-600">·</span>
-              <span>{isVi ? 'Độ khó' : 'Difficulty'}: <strong className="text-white font-bold">{difficulty}</strong></span>
-              <span className="text-slate-600">·</span>
-              <span>{isVi ? 'Tiền tố' : 'Prefix'}: <strong className="text-emerald-400 font-mono">"{'0'.repeat(difficulty)}"</strong></span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-                {isVi ? 'Mô phỏng hoàn tất' : 'Simulation Completed'}
-              </span>
-            </div>
-          </div>
-        ) : (
-          <div className="bg-[#0C0F14] border border-slate-800/90 rounded-xl px-4 py-2.5 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs">
-            {/* Target Visual String */}
-            <div className="flex items-center gap-2.5 min-w-0 overflow-hidden">
-              <span className="text-[10px] sm:text-xs font-display font-bold text-slate-400 uppercase tracking-wider shrink-0">
-                TARGET:
-              </span>
-              <div 
-                className="font-mono tracking-widest text-[11px] sm:text-xs bg-[#11161D] px-3 py-1 rounded-lg border border-slate-800/80 flex items-center overflow-x-auto no-scrollbar max-w-full"
-                title={isVi ? 'Hash phải bắt đầu bằng số 0 theo độ khó đã chọn.' : 'Hash must start with leading zero(s) matching the chosen difficulty.'}
-              >
-                <span className="text-emerald-400 font-bold">{'0'.repeat(difficulty)}</span>
-                <span className="text-slate-600">{'x'.repeat(64 - difficulty)}</span>
-              </div>
-            </div>
-
-            {/* Telemetry Metrics & Status */}
-            <div className="flex items-center gap-4 sm:gap-5 shrink-0 justify-between md:justify-end border-t md:border-t-0 border-slate-800/60 pt-2 md:pt-0">
-              <div className="flex items-center gap-1.5">
-                <span className="text-slate-500 font-display font-bold text-[10px] sm:text-xs uppercase">
-                  {isVi ? 'ĐỘ KHÓ:' : 'DIFFICULTY:'}
-                </span>
-                <span className="font-mono tabular-nums font-bold text-emerald-400 px-1.5 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/25 text-xs">
-                  {difficulty}
-                </span>
-              </div>
-
-              <div className="hidden sm:flex items-center gap-1.5 text-slate-400">
-                <span className="text-slate-500 font-display font-bold text-[10px] sm:text-xs uppercase">
-                  {isVi ? 'YÊU CẦU:' : 'REQUIRED PREFIX:'}
-                </span>
-                <span className="font-mono text-xs text-slate-300 font-medium">
-                  "{'0'.repeat(difficulty)}"
-                </span>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <span className="text-slate-500 font-display font-bold text-[10px] sm:text-xs uppercase">
-                  {isVi ? 'TRẠNG THÁI:' : 'STATUS:'}
-                </span>
-                {appState === 'mining' ? (
-                  <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
-                    {isVi ? 'Đang giải block' : 'Solving block'}
-                  </span>
-                ) : appState === 'paused' ? (
-                  <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/30">
-                    {isVi ? 'Tạm dừng' : 'Paused'}
-                  </span>
-                ) : (
-                  <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-800/80 text-slate-400 border border-slate-700">
-                    {isVi ? 'Sẵn sàng' : 'Ready'}
-                  </span>
-                )}
-              </div>
-            </div>
-          </div>
-        )}
 
         {/* MINING ARENA */}
         <div className="space-y-3">
@@ -1165,9 +1100,9 @@ export const PowLesson: React.FC = () => {
                   </h3>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-3">
+                <div className="flex flex-wrap items-center gap-2.5">
                   {/* Miner Color Identity Badges */}
-                  <div className="hidden md:flex items-center gap-2 text-[11px] font-mono text-slate-400">
+                  <div className="hidden lg:flex items-center gap-2 text-[11px] font-mono text-slate-400">
                     <span className="text-slate-500">{isVi ? 'Màu thợ đào:' : 'Miner colors:'}</span>
                     {miners.slice(0, 8).map(m => {
                       const mTh = getMinerTheme(m.name);
@@ -1180,16 +1115,38 @@ export const PowLesson: React.FC = () => {
                     })}
                   </div>
 
+                  {/* AUTO-FOLLOW STATUS BADGE */}
+                  <div className="flex items-center gap-1.5 bg-[#11161D] px-2 py-0.5 rounded-lg border border-slate-800 text-[11px] font-mono">
+                    <span className={`w-2 h-2 rounded-full ${autoFollow && !isAutoFollowPaused ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'}`} />
+                    <span className="text-slate-300 font-bold">
+                      {autoFollow && !isAutoFollowPaused 
+                        ? (isVi ? 'TỰ ĐỘNG BÁM SÁT' : 'AUTO-FOLLOW: ON') 
+                        : (isVi ? 'TẠM DỪNG BÁM SÁT' : 'AUTO-FOLLOW: PAUSED')}
+                    </span>
+                  </div>
+
+                  {isAutoFollowPaused ? (
+                    <button
+                      onClick={scrollToLatestBlock}
+                      className="text-xs font-mono font-bold text-amber-300 hover:text-amber-200 px-2.5 py-0.5 rounded bg-amber-500/20 border border-amber-500/40 transition-all cursor-pointer shadow-sm flex items-center gap-1 animate-pulse"
+                      title={isVi ? 'Cuộn đến khối mới nhất và tiếp tục bám sát' : 'Jump to latest and resume auto-follow'}
+                    >
+                      <span>↳</span>
+                      <span>{isVi ? 'Về khối mới nhất' : 'Jump to Latest'}</span>
+                    </button>
+                  ) : (
+                    <button
+                      onClick={scrollToLatestBlock}
+                      className="text-xs font-mono font-semibold text-emerald-400 hover:text-emerald-300 px-2.5 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/25 transition-all cursor-pointer shadow-sm"
+                      title={isVi ? 'Cuộn đến khối mới nhất' : 'Scroll to latest block'}
+                    >
+                      {isVi ? 'Mới nhất' : 'Latest'}
+                    </button>
+                  )}
+
                   <span className="text-xs font-mono text-slate-400">
-                    {isVi ? `Tổng số khối: ${blockchain.length}` : `Total blocks: ${blockchain.length}`}
+                    {isVi ? `Tổng: ${blockchain.length}` : `Blocks: ${blockchain.length}`}
                   </span>
-                  <button
-                    onClick={scrollToLatestBlock}
-                    className="text-xs font-mono font-semibold text-emerald-400 hover:text-emerald-300 px-2.5 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/25 transition-all cursor-pointer shadow-sm"
-                    title={isVi ? 'Cuộn đến khối mới nhất' : 'Scroll to latest block'}
-                  >
-                    {isVi ? 'Mới nhất' : 'Latest'}
-                  </button>
                 </div>
               </div>
 
@@ -1263,51 +1220,71 @@ export const PowLesson: React.FC = () => {
           )}
         </div>
 
-        {/* Live Logs & Technical Telemetry */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 pt-1 border-t border-slate-800/60">
-          {/* Mining Event Log */}
-          <div className="p-4 rounded-xl border border-slate-800/90 bg-[#0C0F14]">
-            <h3 className="text-xs sm:text-sm font-display font-bold text-slate-300 mb-3 flex items-center gap-2">
-              <Activity size={15} className="text-slate-400"/> 
-              {isVi ? 'Nhật Ký Sự Kiện Khai Thác' : 'Mining Event Log'}
-            </h3>
-            <div className="h-[180px] overflow-y-auto font-mono tabular-nums text-xs space-y-1.5 pr-2 custom-scrollbar">
-              {logs.map(log => (
-                <div key={log.id} className="flex gap-2.5 text-[#F5F5F5]">
-                  <span className="text-slate-400 shrink-0 font-normal">[{log.time}]</span>
-                  <span className="text-white font-normal leading-relaxed">
-                    {log.message}
-                  </span>
-                </div>
-              ))}
-              {logs.length === 0 && <div className="text-slate-400 italic">{isVi ? 'Chưa có sự kiện nào.' : 'No events yet.'}</div>}
+        {/* LAYER 4: COLLAPSIBLE TELEMETRY & LOGS (PROGRESSIVE DISCLOSURE) */}
+        <div className="pt-1 border-t border-slate-800/60">
+          <button
+            onClick={() => setShowTelemetryDetails(prev => !prev)}
+            className="w-full py-2 px-3 bg-[#0C0F14] hover:bg-[#11161D] rounded-xl border border-slate-800/80 flex items-center justify-between text-xs text-slate-400 hover:text-slate-200 transition-all cursor-pointer"
+          >
+            <div className="flex items-center gap-2 font-display font-semibold">
+              <Activity size={14} className={showTelemetryDetails ? 'text-emerald-400' : 'text-slate-500'} />
+              <span>{isVi ? 'Nhật Ký Sự Kiện & Chi Tiết Nút Thợ Đào' : 'Event Log & Node Telemetry'}</span>
+              <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-slate-800 text-slate-400">
+                {logs.length} {isVi ? 'sự kiện' : 'events'}
+              </span>
             </div>
-          </div>
-          
-          {/* Node Technical Telemetry */}
-          <div className="p-4 rounded-xl border border-slate-800/90 bg-[#0C0F14]">
-            <h3 className="text-xs sm:text-sm font-display font-bold text-slate-300 mb-3 flex items-center gap-2">
-              <FileText size={15} className="text-amber-400"/> 
-              {isVi ? 'Chi Tiết Kỹ Thuật Nút Thợ Đào' : 'Node Technical Telemetry'}
-            </h3>
-            <div className="space-y-2 h-[180px] overflow-y-auto pr-2 custom-scrollbar">
-              {miners.map(m => (
-                <div key={m.id} className="text-xs font-mono tabular-nums bg-[#11161D] p-2.5 rounded-lg border border-slate-800/80">
-                  <div className="flex justify-between text-slate-400 mb-1">
-                    <span className="font-bold text-white font-sans">{m.name} ({m.type})</span>
-                    <span>{isVi ? 'Độ khó' : 'Diff'}: {difficulty} | {isVi ? 'Sức mạnh' : 'Power'}: {m.power}% | {isVi ? 'Tốc độ' : 'Speed'}: {formatHashrate(m.hashrate)}</span>
-                  </div>
-                  <div className="grid grid-cols-2 gap-2 text-[11px]">
-                    <div>Nonce: <span className="text-white font-semibold">{m.currentNonce.toLocaleString()}</span></div>
-                    <div className="text-right">{isVi ? 'Đã thử' : 'Attempts'}: <span className="text-white font-semibold">{m.attempts.toLocaleString()}</span></div>
-                  </div>
-                  <div className="truncate text-slate-500 text-[10px] mt-0.5">
-                    Hash: <span className={m.status === 'winner' ? 'text-amber-400 font-bold' : 'text-slate-300'}>{m.currentHash}</span>
-                  </div>
+            <span className="text-xs text-slate-500 font-mono">
+              {showTelemetryDetails ? (isVi ? '▲ Thu gọn' : '▲ Collapse') : (isVi ? '▼ Mở rộng để xem' : '▼ Expand to inspect')}
+            </span>
+          </button>
+
+          {showTelemetryDetails && (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-3 animate-in fade-in duration-200">
+              {/* Mining Event Log */}
+              <div className="p-4 rounded-xl border border-slate-800/90 bg-[#0C0F14]">
+                <h3 className="text-xs sm:text-sm font-display font-bold text-slate-300 mb-3 flex items-center gap-2">
+                  <Activity size={15} className="text-slate-400"/> 
+                  {isVi ? 'Nhật Ký Sự Kiện Khai Thác' : 'Mining Event Log'}
+                </h3>
+                <div className="h-[180px] overflow-y-auto font-mono tabular-nums text-xs space-y-1.5 pr-2 custom-scrollbar">
+                  {logs.map(log => (
+                    <div key={log.id} className="flex gap-2.5 text-[#F5F5F5]">
+                      <span className="text-slate-400 shrink-0 font-normal">[{log.time}]</span>
+                      <span className="text-white font-normal leading-relaxed">
+                        {log.message}
+                      </span>
+                    </div>
+                  ))}
+                  {logs.length === 0 && <div className="text-slate-400 italic">{isVi ? 'Chưa có sự kiện nào.' : 'No events yet.'}</div>}
                 </div>
-              ))}
+              </div>
+              
+              {/* Node Technical Telemetry */}
+              <div className="p-4 rounded-xl border border-slate-800/90 bg-[#0C0F14]">
+                <h3 className="text-xs sm:text-sm font-display font-bold text-slate-300 mb-3 flex items-center gap-2">
+                  <FileText size={15} className="text-amber-400"/> 
+                  {isVi ? 'Chi Tiết Kỹ Thuật Nút Thợ Đào' : 'Node Technical Telemetry'}
+                </h3>
+                <div className="space-y-2 h-[180px] overflow-y-auto pr-2 custom-scrollbar">
+                  {miners.map(m => (
+                    <div key={m.id} className="text-xs font-mono tabular-nums bg-[#11161D] p-2.5 rounded-lg border border-slate-800/80">
+                      <div className="flex justify-between text-slate-400 mb-1">
+                        <span className="font-bold text-white font-sans">{m.name} ({m.type})</span>
+                        <span>{isVi ? 'Độ khó' : 'Diff'}: {difficulty} | {isVi ? 'Sức mạnh' : 'Power'}: {m.power}% | {isVi ? 'Tốc độ' : 'Speed'}: {formatHashrate(m.hashrate)}</span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2 text-[11px]">
+                        <div>Nonce: <span className="text-white font-semibold">{m.currentNonce.toLocaleString()}</span></div>
+                        <div className="text-right">{isVi ? 'Đã thử' : 'Attempts'}: <span className="text-white font-semibold">{m.attempts.toLocaleString()}</span></div>
+                      </div>
+                      <div className="truncate text-slate-500 text-[10px] mt-0.5">
+                        Hash: <span className={m.status === 'winner' ? 'text-amber-400 font-bold' : 'text-slate-300'}>{m.currentHash}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
       </div>

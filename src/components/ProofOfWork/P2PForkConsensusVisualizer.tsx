@@ -2,19 +2,10 @@
  * @license
  * SPDX-License-Identifier: Apache-2.0
  */
-import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { 
-  GitFork, Play, Pause, RotateCcw, ArrowRight, ArrowLeft, CheckCircle2, 
-  XCircle, AlertTriangle, ShieldCheck, Zap, Info, Layers, Clock, Server, 
-  Cpu, Database, Sparkles, Check, ChevronRight, Hash, Users, ExternalLink
-} from 'lucide-react';
+import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
+import { Play, Pause, RotateCcw, ArrowRight, ArrowLeft } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
-import { 
-  MINER_COLORS, 
-  getMinerColorTheme, 
-  GENESIS_THEME, 
-  MinerColorToken 
-} from '../../utils/minerColors';
+import { getMinerColorTheme, GENESIS_THEME } from '../../utils/minerColors';
 
 export interface MempoolTx {
   id: string;
@@ -46,64 +37,110 @@ export interface P2PBlock {
   cumulativeWork: number;
 }
 
-export interface P2PNode {
-  id: string;
-  name: string;
-  minerName: string;
-  region: string;
-  activeTip: 'trunk' | 'branchA' | 'branchB';
-  status: 'idle' | 'mining' | 'propagating' | 'reorging' | 'synced';
-  currentHashrate: string;
-}
-
 const INITIAL_MEMPOOL_TXS: MempoolTx[] = [
-  { id: 'tx-1', txCode: 'TX-01', from: 'Alice', to: 'Bob', amount: 2.0, fee: 0.0005, status: 'mempool' },
+  { id: 'tx-1', txCode: 'TX-01', from: 'Alice', to: 'Bob', amount: 2.5, fee: 0.0005, status: 'mempool' },
   { id: 'tx-2', txCode: 'TX-02', from: 'Bob', to: 'Charlie', amount: 1.0, fee: 0.0003, status: 'mempool' },
   { id: 'tx-3', txCode: 'TX-03', from: 'Dave', to: 'Eve', amount: 0.5, fee: 0.0002, status: 'mempool' },
-  { id: 'tx-4', txCode: 'TX-04', from: 'Charlie', to: 'Alice', amount: 3.0, fee: 0.0008, status: 'mempool' },
+  { id: 'tx-4', txCode: 'TX-04', from: 'Charlie', to: 'Alice', amount: 3.2, fee: 0.0008, status: 'mempool' },
   { id: 'tx-5', txCode: 'TX-05', from: 'Eve', to: 'Frank', amount: 1.2, fee: 0.0004, status: 'mempool' },
   { id: 'tx-6', txCode: 'TX-06', from: 'Frank', to: 'Grace', amount: 0.8, fee: 0.0002, status: 'mempool' },
-  { id: 'tx-7', txCode: 'TX-07', from: 'Grace', to: 'Henry', amount: 1.5, fee: 0.0006, status: 'mempool' },
-  { id: 'tx-8', txCode: 'TX-08', from: 'Henry', to: 'Alice', amount: 0.4, fee: 0.0001, status: 'mempool' },
-];
-
-const INITIAL_NODES: P2PNode[] = [
-  { id: 'node-alice', name: 'Node #1 (East)', minerName: 'Alice', region: 'US-East', activeTip: 'trunk', status: 'idle', currentHashrate: '220 H/s' },
-  { id: 'node-bob', name: 'Node #2 (West)', minerName: 'Bob', region: 'US-West', activeTip: 'trunk', status: 'idle', currentHashrate: '1.25 KH/s' },
-  { id: 'node-charlie', name: 'Node #3 (Europe)', minerName: 'Charlie', region: 'EU-Central', activeTip: 'trunk', status: 'idle', currentHashrate: '3.95 KH/s' },
-  { id: 'node-dave', name: 'Node #4 (Asia)', minerName: 'Dave', region: 'AP-East', activeTip: 'trunk', status: 'idle', currentHashrate: '2.10 KH/s' },
-  { id: 'node-eve', name: 'Node #5 (South)', minerName: 'Eve', region: 'SA-East', activeTip: 'trunk', status: 'idle', currentHashrate: '450 H/s' },
-  { id: 'node-frank', name: 'Node #6 (North)', minerName: 'Frank', region: 'CA-Central', activeTip: 'trunk', status: 'idle', currentHashrate: '890 H/s' },
 ];
 
 export const P2PForkConsensusVisualizer: React.FC = () => {
   const { language } = useLanguage();
   const isVi = language === 'vi';
 
-  // Active Stage (1 to 8)
+  // Active Stage (1 to 7)
   const [currentStage, setCurrentStage] = useState<number>(1);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [playSpeed, setPlaySpeed] = useState<number>(1); // 1x, 2x, 0.5x
+  const [playSpeed, setPlaySpeed] = useState<number>(1);
   const [selectedBlock, setSelectedBlock] = useState<P2PBlock | null>(null);
+  const [selectedTx, setSelectedTx] = useState<MempoolTx | null>(null);
   const [interactiveWinnerBranch, setInteractiveWinnerBranch] = useState<'branchA' | 'branchB'>('branchA');
 
+  // Camera & Auto-Focus State
+  const [autoCamera, setAutoCamera] = useState<boolean>(true);
+  const [cameraPaused, setCameraPaused] = useState<boolean>(false);
+
   const timerRef = useRef<number | null>(null);
+  const mempoolScrollRef = useRef<HTMLDivElement>(null);
+  const treeScrollRef = useRef<HTMLDivElement>(null);
+  const forkJunctionRef = useRef<HTMLDivElement>(null);
+  const leadingTipRef = useRef<HTMLDivElement>(null);
+  const isProgrammaticScrollRef = useRef<boolean>(false);
+
+  // Auto-focus camera controller (Event-driven)
+  const moveCameraToFocus = useCallback((target?: 'fork' | 'leading' | 'mempool' | 'start') => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const behavior = prefersReducedMotion ? 'auto' : 'smooth';
+
+    isProgrammaticScrollRef.current = true;
+    setTimeout(() => {
+      isProgrammaticScrollRef.current = false;
+    }, 500);
+
+    if (target === 'mempool' || currentStage === 1) {
+      if (mempoolScrollRef.current) {
+        mempoolScrollRef.current.scrollTo({ left: 0, behavior });
+      }
+      if (treeScrollRef.current) {
+        treeScrollRef.current.scrollTo({ left: 0, behavior });
+      }
+    } else if (target === 'fork' || currentStage === 4) {
+      if (forkJunctionRef.current) {
+        forkJunctionRef.current.scrollIntoView({ behavior, block: 'nearest', inline: 'center' });
+      } else if (treeScrollRef.current) {
+        treeScrollRef.current.scrollTo({ left: treeScrollRef.current.scrollWidth * 0.5, behavior });
+      }
+    } else if (target === 'leading' || currentStage >= 5) {
+      if (leadingTipRef.current) {
+        leadingTipRef.current.scrollIntoView({ behavior, block: 'nearest', inline: 'center' });
+      } else if (treeScrollRef.current) {
+        treeScrollRef.current.scrollTo({ left: treeScrollRef.current.scrollWidth, behavior });
+      }
+    } else if (treeScrollRef.current) {
+      treeScrollRef.current.scrollTo({ left: treeScrollRef.current.scrollWidth * 0.3, behavior });
+    }
+  }, [currentStage]);
+
+  // Trigger camera on stage changes
+  useEffect(() => {
+    if (autoCamera && !cameraPaused) {
+      const timer = setTimeout(() => {
+        moveCameraToFocus();
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [currentStage, interactiveWinnerBranch, autoCamera, cameraPaused, moveCameraToFocus]);
+
+  const handleTreeScroll = () => {
+    if (isProgrammaticScrollRef.current) return;
+    if (autoCamera && !cameraPaused) {
+      setCameraPaused(true);
+    }
+  };
+
+  const handleResumeCamera = () => {
+    setCameraPaused(false);
+    setAutoCamera(true);
+    moveCameraToFocus();
+  };
 
   // Auto-play timer
   useEffect(() => {
     if (isPlaying) {
-      const delay = (3500 / playSpeed);
+      const delay = 3200 / playSpeed;
       timerRef.current = window.setTimeout(() => {
         setCurrentStage((prev) => {
-          if (prev >= 8) {
+          if (prev >= 7) {
             setIsPlaying(false);
-            return 8;
+            return 7;
           }
           return prev + 1;
         });
       }, delay);
-    } else {
-      if (timerRef.current) clearTimeout(timerRef.current);
+    } else if (timerRef.current) {
+      clearTimeout(timerRef.current);
     }
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
@@ -114,42 +151,47 @@ export const P2PForkConsensusVisualizer: React.FC = () => {
     setIsPlaying(false);
     setCurrentStage(1);
     setSelectedBlock(null);
+    setSelectedTx(null);
     setInteractiveWinnerBranch('branchA');
+    setCameraPaused(false);
+    setAutoCamera(true);
+    setTimeout(() => {
+      if (treeScrollRef.current) {
+        treeScrollRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+      }
+    }, 50);
   };
 
   const handleNext = () => {
-    setCurrentStage((prev) => Math.min(8, prev + 1));
+    setCurrentStage((prev) => Math.min(7, prev + 1));
   };
 
   const handlePrev = () => {
     setCurrentStage((prev) => Math.max(1, prev - 1));
   };
 
-  // Compute Mempool items state based on current stage
+  // Dynamic Mempool transactions based on stages
   const mempoolTxs = useMemo(() => {
     return INITIAL_MEMPOOL_TXS.map((tx, idx) => {
       if (currentStage === 1) {
         return { ...tx, status: 'mempool' as const };
       }
       if (currentStage === 2 || currentStage === 3) {
-        if (idx < 3) return { ...tx, status: 'candidate_a' as const };
-        if (idx >= 3 && idx < 6) return { ...tx, status: 'candidate_b' as const };
+        if (idx < 2) return { ...tx, status: 'candidate_a' as const };
+        if (idx >= 2 && idx < 4) return { ...tx, status: 'candidate_b' as const };
         return { ...tx, status: 'mempool' as const };
       }
-      if (currentStage >= 4 && currentStage <= 6) {
-        if (idx < 3) return { ...tx, status: 'candidate_a' as const };
-        if (idx >= 3 && idx < 6) return { ...tx, status: 'candidate_b' as const };
+      if (currentStage >= 4 && currentStage <= 5) {
+        if (idx < 2) return { ...tx, status: 'candidate_a' as const };
+        if (idx >= 2 && idx < 4) return { ...tx, status: 'candidate_b' as const };
         return { ...tx, status: 'mempool' as const };
       }
-      if (currentStage >= 7) {
-        // In stage 7 & 8, branch A (or chosen winner branch) transactions are confirmed.
-        // If Branch A won, TX 1, 2, 3 + TX 7, 8 confirmed in 4A.
-        // TX 4, 5, 6 from stale Branch B return to mempool!
+      if (currentStage >= 6) {
         if (interactiveWinnerBranch === 'branchA') {
-          if (idx < 3 || idx >= 6) return { ...tx, status: 'confirmed' as const };
+          if (idx < 2 || idx >= 4) return { ...tx, status: 'confirmed' as const };
           return { ...tx, status: 'returned_stale' as const };
         } else {
-          if (idx >= 3 && idx < 6) return { ...tx, status: 'confirmed' as const };
+          if (idx >= 2 && idx < 4) return { ...tx, status: 'confirmed' as const };
           return { ...tx, status: 'returned_stale' as const };
         }
       }
@@ -157,483 +199,374 @@ export const P2PForkConsensusVisualizer: React.FC = () => {
     });
   }, [currentStage, interactiveWinnerBranch]);
 
-  // Compute Nodes state based on current stage
-  const p2pNodes = useMemo(() => {
-    return INITIAL_NODES.map((node) => {
-      if (currentStage <= 3) {
-        return { ...node, activeTip: 'trunk' as const, status: currentStage === 3 ? ('mining' as const) : ('idle' as const) };
+  // NATURAL BLOCKCHAIN HISTORY: Starting strictly from Genesis (#0)
+  const trunkBlocks: P2PBlock[] = useMemo(() => {
+    const list: P2PBlock[] = [
+      {
+        id: 'block-0',
+        blockNumber: 0,
+        displayNumber: '0',
+        height: 0,
+        minerName: 'Genesis',
+        minerRole: 'Network Genesis',
+        branch: 'trunk',
+        status: 'canonical',
+        isLeading: currentStage === 1,
+        hash: '000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f',
+        prevHash: '0000000000000000000000000000000000000000000000000000000000000000',
+        merkleRoot: '4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b',
+        nonce: 2083236893,
+        timestamp: '00:00:00',
+        txs: ['Coinbase: 50.0 BTC → Satoshi (Genesis Reward)'],
+        coinbaseReward: 50.0,
+        cumulativeWork: 0,
       }
-      if (currentStage === 4) {
-        // Fork just occurred
-        return { ...node, activeTip: node.id.includes('alice') || node.id.includes('charlie') || node.id.includes('dave') ? ('branchA' as const) : ('branchB' as const), status: 'mining' as const };
-      }
-      if (currentStage === 5) {
-        // P2P propagation: US-East/EU on Branch A, US-West/SA on Branch B
-        const isEast = node.region.includes('East') || node.region.includes('EU');
-        return { 
-          ...node, 
-          activeTip: isEast ? ('branchA' as const) : ('branchB' as const), 
-          status: 'propagating' as const 
-        };
-      }
-      if (currentStage === 6) {
-        // Branch A (or winner) found block 4A
-        return { 
-          ...node, 
-          activeTip: node.id.includes('alice') || node.id.includes('charlie') ? (interactiveWinnerBranch) : (interactiveWinnerBranch === 'branchA' ? 'branchB' : 'branchA'), 
-          status: 'reorging' as const 
-        };
-      }
-      if (currentStage >= 7) {
-        // Re-org complete, all nodes sync to winner canonical chain
-        return { ...node, activeTip: interactiveWinnerBranch, status: 'synced' as const };
-      }
-      return node;
-    });
-  }, [currentStage, interactiveWinnerBranch]);
+    ];
 
-  // Block definitions based on current stage
-  const trunkBlocks: P2PBlock[] = [
-    {
-      id: 'genesis',
-      blockNumber: 0,
-      displayNumber: '0',
-      height: 0,
-      minerName: 'Satoshi',
-      minerRole: 'Genesis Creator',
-      branch: 'trunk',
-      status: 'canonical',
-      hash: '000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f',
-      prevHash: '0000000000000000000000000000000000000000000000000000000000000000',
-      merkleRoot: '4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b',
-      nonce: 2083236893,
-      timestamp: '18:15:05',
-      txs: ['Coinbase: 50.0 BTC → Satoshi'],
-      coinbaseReward: 50.0,
-      cumulativeWork: 1,
-    },
-    {
-      id: 'block-1',
-      blockNumber: 1,
-      displayNumber: '1',
-      height: 1,
-      minerName: 'Alice',
-      minerRole: 'CPU Miner',
-      branch: 'trunk',
-      status: 'canonical',
-      hash: '0000a7b4c92ef01823d456789abcde0123456789abcdef0123456789abcdef01',
-      prevHash: '000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f',
-      merkleRoot: '8f92ab103982cd34028471928374928172938471928374928172938471928374',
-      nonce: 49102,
-      timestamp: '18:15:20',
-      txs: ['Coinbase: 3.125 BTC → Alice', 'TX-00: Dave → Satoshi 0.1 BTC'],
-      coinbaseReward: 3.125,
-      cumulativeWork: 2,
-    },
-    {
-      id: 'block-2',
-      blockNumber: 2,
-      displayNumber: '2',
-      height: 2,
-      minerName: 'Charlie',
-      minerRole: 'ASIC Miner',
-      branch: 'trunk',
-      status: 'canonical',
-      hash: '0000f3910c2837d9182736451928374619283746192837461928374619283746',
-      prevHash: '0000a7b4c92ef01823d456789abcde0123456789abcdef0123456789abcdef01',
-      merkleRoot: '3b89f02938471029384710293847102938471029384710293847102938471029',
-      nonce: 87103,
-      timestamp: '18:15:35',
-      txs: ['Coinbase: 3.125 BTC → Charlie', 'TX-09: Frank → Bob 0.5 BTC'],
-      coinbaseReward: 3.125,
-      cumulativeWork: 3,
-    },
-  ];
+    if (currentStage >= 2) {
+      list.push({
+        id: 'block-1',
+        blockNumber: 1,
+        displayNumber: '1',
+        height: 1,
+        minerName: 'Alice',
+        minerRole: 'GPU Miner',
+        branch: 'trunk',
+        status: 'canonical',
+        isLeading: currentStage === 2,
+        hash: '000000a12e847c0938bfe4918237461928374619283746192837461928374619',
+        prevHash: '000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f',
+        merkleRoot: '1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b',
+        nonce: 38210,
+        timestamp: '00:01:00',
+        txs: ['Coinbase: 6.25 BTC → Alice', 'TX-00: Satoshi → Hal 10 BTC'],
+        coinbaseReward: 6.25,
+        cumulativeWork: 1,
+      });
+    }
 
-  // Branch A Blocks
+    if (currentStage >= 3) {
+      list.push(
+        {
+          id: 'block-2',
+          blockNumber: 2,
+          displayNumber: '2',
+          height: 2,
+          minerName: 'Bob',
+          minerRole: 'ASIC Miner',
+          branch: 'trunk',
+          status: 'canonical',
+          hash: '0000003b89f02938471029384710293847102938471029384710293847102938',
+          prevHash: '000000a12e847c0938bfe4918237461928374619283746192837461928374619',
+          merkleRoot: '2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c',
+          nonce: 51294,
+          timestamp: '00:02:00',
+          txs: ['Coinbase: 6.25 BTC → Bob', 'TX-01: Alice → Bob 2.5 BTC'],
+          coinbaseReward: 6.25,
+          cumulativeWork: 2,
+        },
+        {
+          id: 'block-3',
+          blockNumber: 3,
+          displayNumber: '3',
+          height: 3,
+          minerName: 'Charlie',
+          minerRole: 'ASIC Miner',
+          branch: 'trunk',
+          status: 'canonical',
+          isLeading: currentStage === 3,
+          hash: '0000009c81273645192837461928374619283746192837461928374619283746',
+          prevHash: '0000003b89f02938471029384710293847102938471029384710293847102938',
+          merkleRoot: '3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d',
+          nonce: 89401,
+          timestamp: '00:03:00',
+          txs: ['Coinbase: 6.25 BTC → Charlie', 'TX-02: Bob → Charlie 1.0 BTC'],
+          coinbaseReward: 6.25,
+          cumulativeWork: 3,
+        }
+      );
+    }
+
+    return list;
+  }, [currentStage]);
+
+  // Branch A Blocks (#4A -> #5A -> #6A)
   const branchABlocks: P2PBlock[] = useMemo(() => {
     if (currentStage < 4) return [];
 
     const blocks: P2PBlock[] = [
       {
-        id: 'block-3a',
-        blockNumber: 3,
-        displayNumber: '3A',
-        height: 3,
-        minerName: 'Alice',
-        minerRole: 'CPU Miner',
+        id: 'block-4a',
+        blockNumber: 4,
+        displayNumber: '4A',
+        height: 4,
+        minerName: 'Bob',
+        minerRole: 'ASIC Miner',
         branch: 'branchA',
-        status: currentStage >= 7 
+        status: currentStage >= 6 
           ? (interactiveWinnerBranch === 'branchA' ? 'canonical' : 'stale') 
           : 'competing',
-        isLeading: currentStage === 4 || (currentStage === 5 && interactiveWinnerBranch === 'branchA'),
-        hash: '0000a9f110293847102938471029384710293847102938471029384710293847',
-        prevHash: '0000f3910c2837d9182736451928374619283746192837461928374619283746',
+        isLeading: currentStage === 4,
+        hash: '0000008f10293847102938471029384710293847102938471029384710293847',
+        prevHash: '0000009c81273645192837461928374619283746192837461928374619283746',
         merkleRoot: 'a1b2c3d4e5f67890123456789abcdef0123456789abcdef0123456789abcdef0',
-        nonce: 84291,
-        timestamp: '18:15:50',
-        txs: ['Coinbase: 3.125 BTC → Alice', 'TX-01 (Alice→Bob)', 'TX-02 (Bob→Charlie)', 'TX-03 (Dave→Eve)'],
-        coinbaseReward: 3.125,
+        nonce: 48291,
+        timestamp: '00:04:00',
+        txs: ['Coinbase: 6.25 BTC → Bob', 'TX-01 (Alice→Bob)', 'TX-02 (Bob→Charlie)'],
+        coinbaseReward: 6.25,
         cumulativeWork: 4,
       }
     ];
 
-    if (currentStage >= 6) {
+    if (currentStage >= 5) {
       if (interactiveWinnerBranch === 'branchA') {
         blocks.push({
-          id: 'block-4a',
-          blockNumber: 4,
-          displayNumber: '4A',
-          height: 4,
-          minerName: 'Dave',
-          minerRole: 'Quantum Miner',
+          id: 'block-5a',
+          blockNumber: 5,
+          displayNumber: '5A',
+          height: 5,
+          minerName: 'Charlie',
+          minerRole: 'ASIC Miner',
           branch: 'branchA',
-          status: currentStage >= 7 ? 'canonical' : 'competing',
-          isLeading: true,
-          hash: '00004ad890123456789abcdef0123456789abcdef0123456789abcdef0123456',
-          prevHash: '0000a9f110293847102938471029384710293847102938471029384710293847',
-          merkleRoot: 'f0e1d2c3b4a59876543210fedcba9876543210fedcba9876543210fedcba9876',
-          nonce: 142095,
-          timestamp: '18:16:05',
-          txs: ['Coinbase: 3.125 BTC → Dave', 'TX-07 (Grace→Henry)', 'TX-08 (Henry→Alice)'],
-          coinbaseReward: 3.125,
+          status: currentStage >= 6 ? 'canonical' : 'competing',
+          isLeading: currentStage === 5,
+          hash: '0000003c890123456789abcdef0123456789abcdef0123456789abcdef0123456',
+          prevHash: '0000008f10293847102938471029384710293847102938471029384710293847',
+          merkleRoot: 'b2c3d4e5f6a7890123456789abcdef0123456789abcdef0123456789abcdef01',
+          nonce: 91402,
+          timestamp: '00:05:00',
+          txs: ['Coinbase: 6.25 BTC → Charlie', 'TX-03 (Dave→Eve)'],
+          coinbaseReward: 6.25,
           cumulativeWork: 5,
         });
+
+        if (currentStage >= 6) {
+          blocks.push({
+            id: 'block-6a',
+            blockNumber: 6,
+            displayNumber: '6A',
+            height: 6,
+            minerName: 'Alice',
+            minerRole: 'GPU Miner',
+            branch: 'branchA',
+            status: 'canonical',
+            isLeading: true,
+            hash: '0000001a456789abcdef0123456789abcdef0123456789abcdef0123456789ab',
+            prevHash: '0000003c890123456789abcdef0123456789abcdef0123456789abcdef0123456',
+            merkleRoot: 'c3d4e5f6a7b890123456789abcdef0123456789abcdef0123456789abcdef012',
+            nonce: 139402,
+            timestamp: '00:06:00',
+            txs: ['Coinbase: 6.25 BTC → Alice', 'TX-06 (Frank→Grace)'],
+            coinbaseReward: 6.25,
+            cumulativeWork: 6,
+          });
+        }
       }
     }
 
     return blocks;
   }, [currentStage, interactiveWinnerBranch]);
 
-  // Branch B Blocks
+  // Branch B Blocks (#4B -> #5B)
   const branchBBlocks: P2PBlock[] = useMemo(() => {
     if (currentStage < 4) return [];
 
     const blocks: P2PBlock[] = [
       {
-        id: 'block-3b',
-        blockNumber: 3,
-        displayNumber: '3B',
-        height: 3,
-        minerName: 'Bob',
+        id: 'block-4b',
+        blockNumber: 4,
+        displayNumber: '4B',
+        height: 4,
+        minerName: 'Dave',
         minerRole: 'GPU Miner',
         branch: 'branchB',
-        status: currentStage >= 7 
+        status: currentStage >= 6 
           ? (interactiveWinnerBranch === 'branchB' ? 'canonical' : 'stale') 
           : 'competing',
-        isLeading: currentStage === 4 || (currentStage === 5 && interactiveWinnerBranch === 'branchB'),
-        hash: '0000b4c829103948571029384756102938475610293847561029384756102938',
-        prevHash: '0000f3910c2837d9182736451928374619283746192837461928374619283746',
+        isLeading: currentStage === 4 && interactiveWinnerBranch === 'branchB',
+        hash: '0000007d829103948571029384756102938475610293847561029384756102938',
+        prevHash: '0000009c81273645192837461928374619283746192837461928374619283746',
         merkleRoot: 'c9d8e7f6a5b41234567890abcdef1234567890abcdef1234567890abcdef1234',
-        nonce: 103482,
-        timestamp: '18:15:50',
-        txs: ['Coinbase: 3.125 BTC → Bob', 'TX-04 (Charlie→Alice)', 'TX-05 (Eve→Frank)', 'TX-06 (Frank→Grace)'],
-        coinbaseReward: 3.125,
+        nonce: 62482,
+        timestamp: '00:04:00',
+        txs: ['Coinbase: 6.25 BTC → Dave', 'TX-04 (Charlie→Alice)', 'TX-05 (Eve→Frank)'],
+        coinbaseReward: 6.25,
         cumulativeWork: 4,
       }
     ];
 
-    if (currentStage >= 6) {
-      if (interactiveWinnerBranch === 'branchB') {
-        blocks.push({
-          id: 'block-4b',
-          blockNumber: 4,
-          displayNumber: '4B',
-          height: 4,
-          minerName: 'Eve',
-          minerRole: 'CPU Miner',
-          branch: 'branchB',
-          status: currentStage >= 7 ? 'canonical' : 'competing',
-          isLeading: true,
-          hash: '00007ec123456789abcdef0123456789abcdef0123456789abcdef0123456789',
-          prevHash: '0000b4c829103948571029384756102938475610293847561029384756102938',
-          merkleRoot: '1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b',
-          nonce: 168920,
-          timestamp: '18:16:05',
-          txs: ['Coinbase: 3.125 BTC → Eve', 'TX-01 (Alice→Bob)', 'TX-02 (Bob→Charlie)'],
-          coinbaseReward: 3.125,
-          cumulativeWork: 5,
-        });
-      }
+    if (currentStage >= 5 && interactiveWinnerBranch === 'branchB') {
+      blocks.push({
+        id: 'block-5b',
+        blockNumber: 5,
+        displayNumber: '5B',
+        height: 5,
+        minerName: 'Eve',
+        minerRole: 'CPU Miner',
+        branch: 'branchB',
+        status: currentStage >= 6 ? 'canonical' : 'competing',
+        isLeading: true,
+        hash: '0000005e123456789abcdef0123456789abcdef0123456789abcdef0123456789',
+        prevHash: '0000007d829103948571029384756102938475610293847561029384756102938',
+        merkleRoot: '1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b',
+        nonce: 118920,
+        timestamp: '00:05:00',
+        txs: ['Coinbase: 6.25 BTC → Eve', 'TX-01 (Alice→Bob)'],
+        coinbaseReward: 6.25,
+        cumulativeWork: 5,
+      });
     }
 
     return blocks;
   }, [currentStage, interactiveWinnerBranch]);
 
-  // Stage Meta Descriptions
-  const STAGE_CONFIGS = [
-    {
-      num: 1,
-      titleVi: 'Giai đoạn 1: Hàng đợi Mempool',
-      titleEn: 'Stage 1: Pending Mempool Pool',
-      subtitleVi: 'Các giao dịch chưa xác nhận được phát tán vào Mempool dùng chung trước khi thợ đào gom vào khối ứng viên.',
-      subtitleEn: 'Unconfirmed transactions sit in the shared Mempool before miners bundle them into candidate blocks.',
-      tag: 'P2P MEMPOOL'
-    },
-    {
-      num: 2,
-      titleVi: 'Giai đoạn 2: Xây dựng Khối Ứng Viên',
-      titleEn: 'Stage 2: Candidate Block Assembly',
-      subtitleVi: 'Mỗi thợ đào tự chọn các giao dịch từ Mempool, tính Merkle Root, đặt Previous Hash và thêm giao dịch thưởng Coinbase.',
-      subtitleEn: 'Miners independently pick transactions, compute Merkle Root, reference the latest tip PrevHash, and attach Coinbase reward.',
-      tag: 'CANDIDATE BLOCK'
-    },
-    {
-      num: 3,
-      titleVi: 'Giai đoạn 3: Cuộc Đua Khai Thác PoW',
-      titleEn: 'Stage 3: Mining Race Competition',
-      subtitleVi: 'Các thợ đào chạy song song hàng triệu phép thử Nonce để tìm chuỗi băm SHA-256 thỏa mãn độ khó mục tiêu.',
-      subtitleEn: 'Miners iterate millions of nonces concurrently searching for a SHA-256 hash meeting the difficulty target.',
-      tag: 'POW RACE'
-    },
-    {
-      num: 4,
-      titleVi: 'Giai đoạn 4: Phân Nhánh Chuỗi Tạm Thời',
-      titleEn: 'Stage 4: Temporary Blockchain Fork',
-      subtitleVi: 'Alice và Bob tìm thấy khối hợp lệ gần như cùng lúc tại độ cao #3. Mạng lưới tạm thời chia làm 2 nhánh cạnh tranh (3A & 3B).',
-      subtitleEn: 'Alice and Bob solve valid blocks nearly simultaneously at height #3. The network splits into competing branches (3A & 3B).',
-      tag: 'FORK EVENT'
-    },
-    {
-      num: 5,
-      titleVi: 'Giai đoạn 5: Lan Truyền Mạng Ngang Hàng P2P',
-      titleEn: 'Stage 5: P2P Network Propagation',
-      subtitleVi: 'Do độ trễ mạng Internet, các node ở khu vực Đông nhận khối 3A trước, còn các node phía Tây nhận khối 3B trước.',
-      subtitleEn: 'Due to network latency, Eastern nodes receive Block 3A first, while Western nodes accept Block 3B first.',
-      tag: 'P2P PROPAGATION'
-    },
-    {
-      num: 6,
-      titleVi: 'Giai đoạn 6: Quy Tắc Chuỗi Dài Nhất (Nakamoto)',
-      titleEn: 'Stage 6: Longest Chain Extension',
-      subtitleVi: 'Thợ đào tiếp tục giải khối tiếp theo. Nhánh nào tìm được khối mới trước sẽ có tổng công việc PoW tích lũy lớn hơn.',
-      subtitleEn: 'Miners continue hashing on their local tip. Whichever branch discovers the next block becomes the heavier chain.',
-      tag: 'LONGEST CHAIN'
-    },
-    {
-      num: 7,
-      titleVi: 'Giai đoạn 7: Xác Định Chuỗi Chính Thức (Canonical)',
-      titleEn: 'Stage 7: Canonical Chain Convergence',
-      subtitleVi: 'Toàn bộ các node trong mạng đồng thuận chuyển sang nhánh dài nhất làm chuỗi chính thức (Canonical Chain).',
-      subtitleEn: 'All nodes re-organize and converge on the longest valid branch as the single Canonical Chain.',
-      tag: 'CANONICAL CONSENSUS'
-    },
-    {
-      num: 8,
-      titleVi: 'Giai đoạn 8: Xử Lý Khối Thừa (Stale) & Hoàn Trả TX',
-      titleEn: 'Stage 8: Stale Block & Mempool Recovery',
-      subtitleVi: 'Khối nhánh thua chuyển thành Stale/Orphan. Các giao dịch chưa được xác nhận trên chuỗi chính sẽ quay lại Mempool an toàn.',
-      subtitleEn: 'Losing branch block becomes Stale/Orphan. Unconfirmed transactions safely return to the Mempool to prevent fund loss.',
-      tag: 'STALE & MEMPOOL RECOVERY'
-    }
+  // Clean 7-Stage Flow
+  const STAGES = [
+    { num: 1, titleVi: 'Hàng đợi Mempool', titleEn: 'Mempool Queue' },
+    { num: 2, titleVi: 'Khối Ứng Viên', titleEn: 'Candidate Block' },
+    { num: 3, titleVi: 'Cuộc Đua Khai Thác', titleEn: 'Mining Race' },
+    { num: 4, titleVi: 'Phân Nhánh (Fork)', titleEn: 'Fork Occurs' },
+    { num: 5, titleVi: 'Kéo Dài Nhánh', titleEn: 'Branch Extension' },
+    { num: 6, titleVi: 'Chuỗi Dài Nhất & Stale', titleEn: 'Longest Chain & Stale' },
+    { num: 7, titleVi: 'Đồng Thuận & Khôi Phục TX', titleEn: 'Consensus & Recovery' },
   ];
 
-  const currentStageMeta = STAGE_CONFIGS[currentStage - 1];
-
   return (
-    <div id="p2p-fork-consensus-visualizer" className="bg-[#07090E] border border-slate-800 rounded-2xl p-5 sm:p-7 text-slate-100 font-sans shadow-2xl space-y-6">
+    <div id="p2p-fork-consensus-visualizer" className="bg-[#07090E] border border-slate-800 rounded-2xl p-4 sm:p-5 text-slate-100 font-sans shadow-2xl space-y-4">
       
-      {/* Visualizer Top Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-800/80 pb-5">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2.5">
-            <div className="p-2 bg-emerald-500/10 border border-emerald-500/30 rounded-xl text-emerald-400 shrink-0">
-              <GitFork size={18} />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h2 className="text-base sm:text-lg font-display font-bold text-white tracking-wide">
-                  {isVi ? 'Mạng P2P, Phân Nhánh Khối & Giải Quyết Đồng Thuận' : 'P2P Network, Block Fork & Longest Chain Resolution'}
-                </h2>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-500/10 text-amber-400 border border-amber-500/30">
-                  {currentStageMeta.tag}
-                </span>
-              </div>
-              <p className="text-xs text-slate-400 mt-0.5 font-sans">
-                {isVi 
-                  ? 'Mô phỏng chân thực chuỗi khối phi tập trung: Từ hàng đợi Mempool đến phân nhánh và quy tắc chuỗi dài nhất Nakamoto.' 
-                  : 'Realistic decentralized blockchain simulation: From Mempool queue to temporary forks and Nakamoto consensus.'}
-              </p>
-            </div>
-          </div>
+      {/* 1. TOP SIMULATION CONTROLS (COMPACT) */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800/80 pb-3">
+        <div>
+          <h2 className="text-sm sm:text-base font-display font-bold text-white tracking-wide">
+            {isVi ? 'Phân Nhánh & Đồng Thuận Nakamoto' : 'Fork & Nakamoto Consensus'}
+          </h2>
         </div>
 
-        {/* Global Controls: Play, Step Prev/Next, Speed, Reset */}
-        <div className="flex flex-wrap items-center gap-2.5">
-          <button
-            onClick={() => setIsPlaying(!isPlaying)}
-            className={`px-3.5 py-1.5 rounded-xl font-display font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer shadow-sm ${
-              isPlaying 
-                ? 'bg-amber-500 hover:bg-amber-400 text-black' 
-                : 'bg-emerald-500 hover:bg-emerald-400 text-black'
-            }`}
-          >
-            {isPlaying ? <Pause size={14} className="fill-current" /> : <Play size={14} className="fill-current" />}
-            <span>{isPlaying ? (isVi ? 'Tạm Dừng' : 'Pause') : (isVi ? 'Tự Động Chạy' : 'Auto Play')}</span>
-          </button>
-
-          <div className="flex items-center bg-[#0C0F14] border border-slate-800 rounded-xl p-1 gap-1">
+        {/* Minimal Controls: Play/Pause, Reset, Speed, Step indicator */}
+        <div className="flex items-center gap-2 self-end sm:self-auto">
+          {/* Step Indicator */}
+          <div className="flex items-center bg-[#0C0F14] border border-slate-800 rounded-xl px-2 py-1 text-xs font-mono">
             <button
               onClick={handlePrev}
               disabled={currentStage === 1}
-              className="p-1.5 text-slate-400 hover:text-white disabled:opacity-30 rounded-lg hover:bg-slate-800 transition-all cursor-pointer"
+              className="p-1 text-slate-400 hover:text-white disabled:opacity-30 cursor-pointer"
               title={isVi ? 'Bước trước' : 'Previous step'}
             >
-              <ArrowLeft size={14} />
+              <ArrowLeft size={12} />
             </button>
-            <span className="text-xs font-mono font-bold px-2 text-emerald-400">
-              {currentStage}/8
+            <span className="font-bold px-2 text-emerald-400">
+              {currentStage}/7
             </span>
             <button
               onClick={handleNext}
-              disabled={currentStage === 8}
-              className="p-1.5 text-slate-400 hover:text-white disabled:opacity-30 rounded-lg hover:bg-slate-800 transition-all cursor-pointer"
-              title={isVi ? 'Bước tiếp theo' : 'Next step'}
+              disabled={currentStage === 7}
+              className="p-1 text-slate-400 hover:text-white disabled:opacity-30 cursor-pointer"
+              title={isVi ? 'Bước tiếp' : 'Next step'}
             >
-              <ArrowRight size={14} />
+              <ArrowRight size={12} />
             </button>
           </div>
 
-          {/* Speed selector */}
-          <div className="flex items-center bg-[#0C0F14] border border-slate-800 rounded-xl px-2 py-1 gap-1 text-[11px] font-mono">
-            <span className="text-slate-500 mr-1">{isVi ? 'Tốc độ:' : 'Speed:'}</span>
-            {[0.5, 1, 2].map((spd) => (
+          {/* Speed */}
+          <div className="flex bg-[#0C0F14] border border-slate-800 rounded-xl p-0.5 text-xs font-mono">
+            {[1, 2].map((spd) => (
               <button
                 key={spd}
                 onClick={() => setPlaySpeed(spd)}
-                className={`px-1.5 py-0.5 rounded ${playSpeed === spd ? 'bg-emerald-500/20 text-emerald-300 font-bold' : 'text-slate-400 hover:text-slate-200'}`}
+                className={`px-2 py-0.5 rounded-lg font-semibold transition-all ${
+                  playSpeed === spd ? 'bg-emerald-500/20 text-emerald-400 font-bold' : 'text-slate-400 hover:text-slate-200'
+                }`}
               >
                 {spd}x
               </button>
             ))}
           </div>
 
+          {/* Play / Pause */}
+          <button
+            onClick={() => setIsPlaying(!isPlaying)}
+            className={`px-3 py-1.5 rounded-xl font-display font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer shadow-sm ${
+              isPlaying 
+                ? 'bg-amber-500 hover:bg-amber-400 text-black' 
+                : 'bg-emerald-500 hover:bg-emerald-400 text-black'
+            }`}
+          >
+            {isPlaying ? <Pause size={12} className="fill-current" /> : <Play size={12} className="fill-current" />}
+            <span>{isPlaying ? (isVi ? 'Tạm Dừng' : 'Pause') : (isVi ? 'Tự Động' : 'Start')}</span>
+          </button>
+
+          {/* Reset */}
           <button
             onClick={handleReset}
-            className="p-2 bg-[#0C0F14] hover:bg-slate-800 border border-slate-800 rounded-xl text-slate-400 hover:text-white transition-all cursor-pointer"
-            title={isVi ? 'Khởi động lại mô phỏng' : 'Reset simulation'}
+            className="p-1.5 bg-[#0C0F14] hover:bg-slate-800 border border-slate-800 rounded-xl text-slate-400 hover:text-white transition-all cursor-pointer"
+            title={isVi ? 'Khởi tạo lại' : 'Reset'}
           >
-            <RotateCcw size={14} />
+            <RotateCcw size={13} />
           </button>
         </div>
       </div>
 
-      {/* 8-Stage Progress Stepper Strip */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2">
-        {STAGE_CONFIGS.map((stg) => {
+      {/* 2. COMPACT STAGE PROGRESS INDICATOR (FLOW PILLS) */}
+      <div className="flex items-center overflow-x-auto gap-1.5 py-0.5 no-scrollbar">
+        {STAGES.map((stg, idx) => {
           const isActive = currentStage === stg.num;
           const isPassed = currentStage > stg.num;
 
           return (
-            <button
-              key={stg.num}
-              onClick={() => {
-                setCurrentStage(stg.num);
-                setIsPlaying(false);
-              }}
-              className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
-                isActive
-                  ? 'bg-emerald-500/10 border-emerald-500/60 shadow-[0_0_15px_rgba(16,185,129,0.15)] ring-1 ring-emerald-500/30'
-                  : isPassed
-                  ? 'bg-[#0C0F14] border-slate-800 hover:border-slate-700 opacity-90'
-                  : 'bg-[#090C10] border-slate-850 opacity-50 hover:opacity-75'
-              }`}
-            >
-              <div className="flex items-center justify-between mb-1">
-                <span className={`text-[10px] font-mono font-bold ${isActive ? 'text-emerald-400' : isPassed ? 'text-slate-300' : 'text-slate-500'}`}>
-                  0{stg.num}
+            <React.Fragment key={stg.num}>
+              <button
+                onClick={() => {
+                  setCurrentStage(stg.num);
+                  setIsPlaying(false);
+                }}
+                className={`px-2.5 py-1 rounded-lg text-xs font-display font-medium shrink-0 transition-all cursor-pointer flex items-center gap-1.5 ${
+                  isActive
+                    ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/50 font-bold ring-1 ring-emerald-500/20'
+                    : isPassed
+                    ? 'bg-[#0C0F14] text-slate-300 border border-slate-800 hover:border-slate-700'
+                    : 'bg-[#080B10] text-slate-500 border border-slate-850 hover:text-slate-400'
+                }`}
+              >
+                <span className={`text-[10px] font-mono ${isActive ? 'text-emerald-400' : 'text-slate-500'}`}>
+                  {stg.num}
                 </span>
-                {isPassed && <Check size={12} className="text-emerald-400" />}
-                {isActive && <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />}
-              </div>
-              <span className={`text-[11px] font-display font-bold truncate ${isActive ? 'text-white' : 'text-slate-400'}`}>
-                {isVi ? stg.titleVi.split(':')[1] : stg.titleEn.split(':')[1]}
-              </span>
-            </button>
+                <span>{isVi ? stg.titleVi : stg.titleEn}</span>
+              </button>
+              {idx < STAGES.length - 1 && (
+                <span className="text-slate-700 text-xs shrink-0 select-none">→</span>
+              )}
+            </React.Fragment>
           );
         })}
       </div>
 
-      {/* Active Stage Callout Banner */}
-      <div className="p-4 rounded-xl bg-[#0C0F14] border border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-3">
-        <div className="space-y-0.5">
+      {/* 3. MEMPOOL SEPARATE VISUAL PANEL */}
+      <div className="p-3 sm:p-4 rounded-xl bg-[#090C11] border border-slate-800/90 space-y-2">
+        <div className="flex items-center justify-between border-b border-slate-800/60 pb-1.5">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-mono font-bold text-emerald-400 uppercase tracking-wider">
-              {isVi ? currentStageMeta.titleVi : currentStageMeta.titleEn}
+            <span className="text-xs font-display font-bold text-slate-300 uppercase tracking-wider">
+              MEMPOOL
             </span>
-          </div>
-          <p className="text-xs text-slate-300 leading-relaxed font-sans max-w-4xl">
-            {isVi ? currentStageMeta.subtitleVi : currentStageMeta.subtitleEn}
-          </p>
-        </div>
-
-        {/* Interactive fork decision if at stage 6 or 7 */}
-        {(currentStage >= 4 && currentStage <= 7) && (
-          <div className="flex items-center gap-2 shrink-0 bg-[#11161D] border border-slate-800 p-2 rounded-xl">
-            <span className="text-[11px] font-mono text-slate-400">{isVi ? 'Mô phỏng nhánh thắng:' : 'Simulate winner:'}</span>
-            <div className="flex gap-1">
-              <button
-                onClick={() => setInteractiveWinnerBranch('branchA')}
-                className={`px-2.5 py-1 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer ${
-                  interactiveWinnerBranch === 'branchA'
-                    ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
-                    : 'text-slate-400 hover:text-white bg-slate-800/40 border border-transparent'
-                }`}
-              >
-                Nhánh A (Alice/Dave)
-              </button>
-              <button
-                onClick={() => setInteractiveWinnerBranch('branchB')}
-                className={`px-2.5 py-1 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer ${
-                  interactiveWinnerBranch === 'branchB'
-                    ? 'bg-sky-500/20 text-sky-300 border border-sky-500/40'
-                    : 'text-slate-400 hover:text-white bg-slate-800/40 border border-transparent'
-                }`}
-              >
-                Nhánh B (Bob/Eve)
-              </button>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* ========================================================================= */}
-      {/* SECTION 1: MEMPOOL (STAGE 1 REQUIREMENT) */}
-      {/* ========================================================================= */}
-      <div className="p-4 sm:p-5 rounded-2xl bg-[#0A0D12] border border-slate-800/90 space-y-3.5 shadow-sm">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800/60 pb-2.5">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-400" />
-            <h3 className="text-xs sm:text-sm font-display font-bold text-slate-200 tracking-wider uppercase">
-              {isVi ? 'HÀNG ĐỢI GIAO DỊCH MEMPOOL' : 'MEMPOOL TRANSACTION POOL'}
-            </h3>
-            <span className="text-[10px] font-mono text-slate-500 px-2 py-0.5 rounded bg-slate-800/60 border border-slate-800">
-              {mempoolTxs.filter(t => t.status === 'mempool' || t.status === 'returned_stale').length} {isVi ? 'đang chờ' : 'pending'}
+            <span className="text-[10px] font-mono text-slate-500 px-1.5 py-0.2 rounded bg-slate-800/60">
+              {mempoolTxs.length} TX
             </span>
           </div>
 
-          <div className="flex items-center gap-3 text-[11px] font-mono text-slate-400">
-            <span className="inline-flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-slate-600" />
-              <span>{isVi ? 'Chờ' : 'Pending'}</span>
-            </span>
-            <span className="inline-flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-emerald-400" />
-              <span>{isVi ? 'Ứng viên A' : 'Candidate A'}</span>
-            </span>
-            <span className="inline-flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-sky-400" />
-              <span>{isVi ? 'Ứng viên B' : 'Candidate B'}</span>
-            </span>
-            <span className="inline-flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-amber-400" />
-              <span>{isVi ? 'Hoàn trả Stale' : 'Returned Stale'}</span>
-            </span>
+          <div className="flex items-center gap-3 text-[10px] font-mono text-slate-400">
+            {currentStage >= 6 && (
+              <span className="inline-flex items-center gap-1 text-amber-400">
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                <span>{isVi ? 'Hoàn trả Mempool' : 'Returned Stale'}</span>
+              </span>
+            )}
           </div>
         </div>
 
-        {/* Compact Horizontal Mempool Chips */}
-        <div className="flex overflow-x-auto py-1.5 gap-2.5 items-center custom-scrollbar">
+        {/* Mempool Cards: Displaying only TX Code, From -> To, Amount */}
+        <div 
+          ref={mempoolScrollRef}
+          className="flex overflow-x-auto py-1 gap-2 items-center custom-scrollbar"
+        >
           {mempoolTxs.map((tx) => {
             const isCandA = tx.status === 'candidate_a';
             const isCandB = tx.status === 'candidate_b';
@@ -643,44 +576,30 @@ export const P2PForkConsensusVisualizer: React.FC = () => {
             return (
               <div
                 key={tx.id}
-                className={`p-2.5 rounded-xl border text-xs font-mono shrink-0 transition-all flex flex-col justify-between min-w-[170px] ${
+                onClick={() => setSelectedTx(tx)}
+                className={`p-2 rounded-xl border text-xs font-mono shrink-0 transition-all flex flex-col justify-between min-w-[125px] cursor-pointer ${
                   isConfirmed
                     ? 'bg-emerald-500/10 border-emerald-500/40 text-emerald-300'
                     : isCandA
-                    ? 'bg-emerald-950/30 border-emerald-500/30 text-emerald-400'
+                    ? 'bg-sky-950/30 border-sky-500/30 text-sky-300'
                     : isCandB
-                    ? 'bg-sky-950/30 border-sky-500/30 text-sky-400'
+                    ? 'bg-rose-950/30 border-rose-500/30 text-rose-300'
                     : isReturned
-                    ? 'bg-amber-950/30 border-amber-500/50 text-amber-300 ring-1 ring-amber-500/30 animate-pulse'
-                    : 'bg-[#11161D] border-slate-800 text-slate-300'
+                    ? 'bg-amber-950/40 border-amber-500/60 text-amber-300 ring-1 ring-amber-500/30 animate-pulse'
+                    : 'bg-[#0E131A] border-slate-800 text-slate-300 hover:border-slate-700'
                 }`}
               >
-                <div className="flex items-center justify-between mb-1.5">
-                  <span className="font-bold text-[11px] text-white flex items-center gap-1">
-                    <span>{tx.txCode}</span>
+                <div className="flex items-center justify-between mb-1">
+                  <span className="font-bold text-[11px] text-white">
+                    {tx.txCode}
                   </span>
-                  <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded uppercase ${
-                    isConfirmed 
-                      ? 'bg-emerald-500/20 text-emerald-300' 
-                      : isCandA
-                      ? 'bg-emerald-500/20 text-emerald-400'
-                      : isCandB
-                      ? 'bg-sky-500/20 text-sky-400'
-                      : isReturned
-                      ? 'bg-amber-500/20 text-amber-300'
-                      : 'bg-slate-800 text-slate-400'
-                  }`}>
-                    {isConfirmed ? (isVi ? 'Xác nhận' : 'Confirmed') : isCandA ? 'Alice 3A' : isCandB ? 'Bob 3B' : isReturned ? (isVi ? 'Hoàn Mempool' : 'Re-queued') : 'Mempool'}
+                  <span className="text-[10px] text-slate-400 font-semibold">
+                    {tx.amount} BTC
                   </span>
                 </div>
 
-                <div className="text-[11px] text-slate-200 font-sans truncate mb-1">
-                  <span className="font-semibold">{tx.from}</span> → <span className="font-semibold">{tx.to}</span>
-                </div>
-
-                <div className="flex items-center justify-between text-[10px] text-slate-400 pt-1 border-t border-slate-800/60">
-                  <span className="font-bold text-white">{tx.amount} BTC</span>
-                  <span className="text-slate-500">fee: {tx.fee}</span>
+                <div className="text-[10px] text-slate-300 font-sans truncate">
+                  <span>{tx.from}</span> → <span>{tx.to}</span>
                 </div>
               </div>
             );
@@ -688,150 +607,145 @@ export const P2PForkConsensusVisualizer: React.FC = () => {
         </div>
       </div>
 
-      {/* ========================================================================= */}
-      {/* SECTION 2: P2P FORK TREE VISUALIZER (STAGES 2, 3, 4, 6, 7, 8) */}
-      {/* ========================================================================= */}
-      <div className="p-4 sm:p-6 rounded-2xl bg-[#0A0D12] border border-slate-800/90 space-y-4 shadow-sm">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800/60 pb-3">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-400" />
-            <h3 className="text-xs sm:text-sm font-display font-bold text-slate-200 tracking-wider uppercase">
-              {isVi ? 'CÂY PHÂN NHÁNH CHUỖI & ĐỒNG THUẬN NAKAMOTO' : 'BLOCKCHAIN FORK TREE & NAKAMOTO CONSENSUS'}
-            </h3>
-          </div>
+      {/* 4. BLOCKCHAIN NETWORK & FORK TREE VISUAL PANEL */}
+      <div className="p-3.5 sm:p-5 rounded-xl bg-[#090C11] border border-slate-800/90 space-y-3">
+        <div className="flex items-center justify-between border-b border-slate-800/60 pb-2">
+          <span className="text-xs font-display font-bold text-slate-300 uppercase tracking-wider">
+            {isVi ? 'MẠNG LƯỚI BLOCKCHAIN' : 'BLOCKCHAIN NETWORK'}
+          </span>
 
-          <div className="flex items-center gap-3 text-[11px] font-mono text-slate-400">
-            <span className="inline-flex items-center gap-1.5">
-              <span className="w-2.5 h-2.5 rounded border border-emerald-500/50 bg-emerald-500/10 text-emerald-400 font-bold flex items-center justify-center text-[8px]">✓</span>
-              <span>{isVi ? 'Chuỗi chính (Canonical)' : 'Canonical Chain'}</span>
-            </span>
-            <span className="inline-flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-amber-400" />
-              <span>{isVi ? 'Khối dẫn đầu / Mới nhất' : 'Leading Tip'}</span>
-            </span>
-            <span className="inline-flex items-center gap-1.5">
-              <span className="w-2.5 h-2.5 rounded border border-slate-700 bg-slate-900 text-slate-500 text-[8px] flex items-center justify-center">✕</span>
-              <span>{isVi ? 'Khối thừa (Stale/Orphan)' : 'Stale Block'}</span>
-            </span>
+          <div className="flex items-center gap-2">
+            {(currentStage >= 4 && currentStage <= 6) && (
+              <div className="flex items-center gap-1.5 bg-[#11161D] border border-slate-800 p-1 rounded-lg text-xs font-mono">
+                <span className="text-slate-400 text-[10px] mr-0.5">{isVi ? 'Nhánh thắng:' : 'Winner:'}</span>
+                <button
+                  onClick={() => setInteractiveWinnerBranch('branchA')}
+                  className={`px-1.5 py-0.5 rounded text-[11px] font-bold cursor-pointer ${
+                    interactiveWinnerBranch === 'branchA'
+                      ? 'bg-sky-500/20 text-sky-300 border border-sky-500/40'
+                      : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  Bob (#4A)
+                </button>
+                <button
+                  onClick={() => setInteractiveWinnerBranch('branchB')}
+                  className={`px-1.5 py-0.5 rounded text-[11px] font-bold cursor-pointer ${
+                    interactiveWinnerBranch === 'branchB'
+                      ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40'
+                      : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  Dave (#4B)
+                </button>
+              </div>
+            )}
+
+            {cameraPaused && (
+              <button
+                onClick={handleResumeCamera}
+                className="px-2 py-0.5 rounded bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-[11px] font-mono font-bold transition-all cursor-pointer flex items-center gap-1 animate-pulse"
+                title={isVi ? 'Cuộn đến khối mới nhất' : 'Jump to latest block'}
+              >
+                <span>↳</span>
+                <span>{isVi ? 'Đến khối mới nhất' : 'Jump to Latest'}</span>
+              </button>
+            )}
           </div>
         </div>
 
-        {/* Fork Tree Visual Canvas */}
-        <div className="p-4 sm:p-6 overflow-x-auto min-h-[380px] bg-[#07090E] rounded-xl border border-slate-850 flex items-center custom-scrollbar">
-          <div className="flex items-center gap-4 min-w-max mx-auto py-2">
+        {/* Tree Canvas */}
+        <div 
+          ref={treeScrollRef}
+          onScroll={handleTreeScroll}
+          className="p-3 sm:p-5 overflow-x-auto min-h-[220px] bg-[#07090E] rounded-xl border border-slate-850 flex items-center custom-scrollbar"
+        >
+          <div className="flex items-center gap-2 min-w-max mx-auto py-2">
             
-            {/* Trunk: Genesis -> Block 1 -> Block 2 */}
-            <div className="flex items-center gap-4">
-              {trunkBlocks.map((blk, idx) => (
-                <React.Fragment key={blk.id}>
-                  <BlockCard 
-                    block={blk} 
-                    onClick={() => setSelectedBlock(blk)} 
-                    isVi={isVi} 
-                  />
-                  {idx < trunkBlocks.length - 1 && (
-                    <div className="flex flex-col items-center justify-center shrink-0">
-                      <div className="w-6 h-0.5 bg-emerald-500/40" />
-                      <span className="text-[9px] font-mono text-emerald-400/80 mt-0.5">link</span>
-                    </div>
-                  )}
-                </React.Fragment>
-              ))}
+            {/* Trunk: Genesis (#0) -> #1 -> #2 -> #3 */}
+            <div className="flex items-center gap-2">
+              {trunkBlocks.map((blk, idx) => {
+                return (
+                  <React.Fragment key={blk.id}>
+                    <CompactBlockCard 
+                      block={blk} 
+                      onClick={() => setSelectedBlock(blk)} 
+                      isVi={isVi} 
+                    />
+                    {idx < trunkBlocks.length - 1 && (
+                      <div className="w-3 h-0.5 bg-slate-700 shrink-0" />
+                    )}
+                  </React.Fragment>
+                );
+              })}
             </div>
 
             {/* Fork Junction Connector */}
             {currentStage >= 4 ? (
-              <div className="flex items-center relative z-0 px-1">
-                <div className="w-6 h-0.5 bg-slate-700" />
-                <div className="w-0.5 h-[220px] bg-slate-700 relative flex flex-col justify-between items-center">
-                  <div className="w-6 h-0.5 bg-slate-700 self-start absolute top-0 left-0" />
-                  <div className="w-6 h-0.5 bg-slate-700 self-start absolute bottom-0 left-0" />
+              <div ref={forkJunctionRef} className="flex items-center relative z-0 px-1">
+                <div className="w-4 h-0.5 bg-slate-700" />
+                <div className="w-0.5 h-[140px] bg-slate-700 relative flex flex-col justify-between items-center">
+                  <div className="w-4 h-0.5 bg-slate-700 self-start absolute top-0 left-0" />
+                  <div className="w-4 h-0.5 bg-slate-700 self-start absolute bottom-0 left-0" />
                   
-                  {/* Fork Alert Badge */}
-                  <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 bg-[#0C0F14] border border-amber-500/50 text-amber-400 text-[10px] font-mono font-bold px-2 py-0.5 rounded-full whitespace-nowrap z-20 shadow-md flex items-center gap-1">
-                    <GitFork size={12} />
-                    <span>{isVi ? 'Phân Nhánh' : 'Fork Split'}</span>
+                  <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 bg-[#0C0F14] border border-amber-500/40 text-amber-300 text-[9px] font-mono px-1.5 py-0.2 rounded z-20">
+                    Fork
                   </div>
                 </div>
               </div>
-            ) : (
-              <div className="flex items-center gap-3">
-                <div className="w-6 h-0.5 bg-slate-700" />
-                <div className="p-4 rounded-xl border border-dashed border-slate-800 bg-[#0C0F14]/50 flex flex-col items-center justify-center min-w-[140px] text-center">
-                  <span className="text-xs font-mono text-slate-500">{isVi ? 'Đang chuẩn bị đào #3' : 'Preparing Block #3'}</span>
-                  <span className="text-[10px] text-slate-600 mt-1">{isVi ? 'Chưa phân nhánh' : 'No fork active'}</span>
+            ) : currentStage === 3 ? (
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-0.5 bg-slate-700" />
+                <div className="w-16 h-[56px] rounded-xl border border-dashed border-slate-800 bg-[#0C0F14]/40 flex items-center justify-center text-center">
+                  <span className="text-[10px] font-mono text-slate-500">#4 ?</span>
                 </div>
               </div>
-            )}
+            ) : null}
 
-            {/* Branches: Branch A (Top) and Branch B (Bottom) */}
+            {/* Branches: Branch A (Top) & Branch B (Bottom) */}
             {currentStage >= 4 && (
-              <div className="flex flex-col gap-8 z-10 py-2">
+              <div className="flex flex-col gap-5 z-10 py-1">
                 
-                {/* BRANCH A ROW (Alice -> Dave) */}
-                <div className="flex items-center gap-4 min-h-[140px]">
-                  <div className="text-[11px] font-mono font-bold text-emerald-400 w-20 shrink-0">
-                    <div className="px-2 py-1 rounded bg-emerald-500/10 border border-emerald-500/30 text-center">
-                      Nhánh A
-                    </div>
-                  </div>
-
-                  {branchABlocks.map((blk, bIdx) => (
-                    <React.Fragment key={blk.id}>
-                      <BlockCard 
-                        block={blk} 
-                        onClick={() => setSelectedBlock(blk)} 
-                        isVi={isVi} 
-                      />
-                      {bIdx < branchABlocks.length - 1 && (
-                        <div className="flex flex-col items-center justify-center shrink-0">
-                          <div className="w-6 h-0.5 bg-emerald-500/40" />
-                          <span className="text-[9px] font-mono text-emerald-400/80 mt-0.5">link</span>
+                {/* BRANCH A (Bob #4A -> Charlie #5A -> Alice #6A) */}
+                <div className="flex items-center gap-2 min-h-[70px]">
+                  {branchABlocks.map((blk, bIdx) => {
+                    const isTheLeadingTip = blk.isLeading;
+                    return (
+                      <React.Fragment key={blk.id}>
+                        <div ref={isTheLeadingTip ? leadingTipRef : undefined}>
+                          <CompactBlockCard 
+                            block={blk} 
+                            onClick={() => setSelectedBlock(blk)} 
+                            isVi={isVi} 
+                          />
                         </div>
-                      )}
-                    </React.Fragment>
-                  ))}
-
-                  {/* Empty slot placeholder for next block if at stage 4 or 5 */}
-                  {currentStage <= 5 && (
-                    <div className="w-32 h-[135px] rounded-xl border border-dashed border-slate-800 bg-[#0C0F14]/30 flex flex-col items-center justify-center text-center p-3">
-                      <span className="text-[11px] font-mono text-slate-500">Khối #4A</span>
-                      <span className="text-[9px] text-slate-600 mt-1">{isVi ? 'Đang khai thác...' : 'Mining...'}</span>
-                    </div>
-                  )}
+                        {bIdx < branchABlocks.length - 1 && (
+                          <div className="w-3 h-0.5 bg-slate-700 shrink-0" />
+                        )}
+                      </React.Fragment>
+                    );
+                  })}
                 </div>
 
-                {/* BRANCH B ROW (Bob -> Eve) */}
-                <div className="flex items-center gap-4 min-h-[140px]">
-                  <div className="text-[11px] font-mono font-bold text-sky-400 w-20 shrink-0">
-                    <div className="px-2 py-1 rounded bg-sky-500/10 border border-sky-500/30 text-center">
-                      Nhánh B
-                    </div>
-                  </div>
-
-                  {branchBBlocks.map((blk, bIdx) => (
-                    <React.Fragment key={blk.id}>
-                      <BlockCard 
-                        block={blk} 
-                        onClick={() => setSelectedBlock(blk)} 
-                        isVi={isVi} 
-                      />
-                      {bIdx < branchBBlocks.length - 1 && (
-                        <div className="flex flex-col items-center justify-center shrink-0">
-                          <div className="w-6 h-0.5 bg-sky-500/40" />
-                          <span className="text-[9px] font-mono text-sky-400/80 mt-0.5">link</span>
+                {/* BRANCH B (Dave #4B) */}
+                <div className="flex items-center gap-2 min-h-[70px]">
+                  {branchBBlocks.map((blk, bIdx) => {
+                    const isTheLeadingTip = blk.isLeading && interactiveWinnerBranch === 'branchB';
+                    return (
+                      <React.Fragment key={blk.id}>
+                        <div ref={isTheLeadingTip ? leadingTipRef : undefined}>
+                          <CompactBlockCard 
+                            block={blk} 
+                            onClick={() => setSelectedBlock(blk)} 
+                            isVi={isVi} 
+                          />
                         </div>
-                      )}
-                    </React.Fragment>
-                  ))}
-
-                  {/* Empty slot placeholder for next block if at stage 4 or 5 */}
-                  {currentStage <= 5 && (
-                    <div className="w-32 h-[135px] rounded-xl border border-dashed border-slate-800 bg-[#0C0F14]/30 flex flex-col items-center justify-center text-center p-3">
-                      <span className="text-[11px] font-mono text-slate-500">Khối #4B</span>
-                      <span className="text-[9px] text-slate-600 mt-1">{isVi ? 'Đang khai thác...' : 'Mining...'}</span>
-                    </div>
-                  )}
+                        {bIdx < branchBBlocks.length - 1 && (
+                          <div className="w-3 h-0.5 bg-slate-700 shrink-0" />
+                        )}
+                      </React.Fragment>
+                    );
+                  })}
                 </div>
 
               </div>
@@ -841,121 +755,20 @@ export const P2PForkConsensusVisualizer: React.FC = () => {
         </div>
       </div>
 
-      {/* ========================================================================= */}
-      {/* SECTION 3: P2P NETWORK PROPAGATION STATUS (STAGE 5 REQUIREMENT) */}
-      {/* ========================================================================= */}
-      <div className="p-4 sm:p-5 rounded-2xl bg-[#0A0D12] border border-slate-800/90 space-y-3.5 shadow-sm">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800/60 pb-2.5">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-400" />
-            <h3 className="text-xs sm:text-sm font-display font-bold text-slate-200 tracking-wider uppercase">
-              {isVi ? 'TRẠNG THÁI CÁC NÚT MẠNG P2P TOÀN CẦU' : 'GLOBAL P2P NETWORK NODE PROPAGATION'}
-            </h3>
-          </div>
-          <span className="text-xs font-mono text-slate-400">
-            {isVi ? 'Mỗi node độc lập xác thực và duy trì đỉnh chuỗi (Chain Tip)' : 'Each node independently validates and tracks its local chain tip'}
-          </span>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-          {p2pNodes.map((node) => {
-            const mTheme = getMinerColorTheme(node.minerName);
-            const isTipA = node.activeTip === 'branchA';
-            const isTipB = node.activeTip === 'branchB';
-
-            return (
-              <div 
-                key={node.id} 
-                className={`p-3 rounded-xl border flex flex-col justify-between transition-all bg-[#0C0F14] ${
-                  node.status === 'reorging'
-                    ? 'border-amber-500/60 shadow-[0_0_15px_rgba(245,158,11,0.15)] animate-pulse'
-                    : isTipA
-                    ? 'border-emerald-500/40 hover:border-emerald-500/70'
-                    : isTipB
-                    ? 'border-sky-500/40 hover:border-sky-500/70'
-                    : 'border-slate-800'
-                }`}
-              >
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="font-display font-bold text-xs text-white truncate">{node.name}</span>
-                    <span 
-                      className="w-2.5 h-2.5 rounded-full shrink-0"
-                      style={{ backgroundColor: mTheme.primary }}
-                      title={node.minerName}
-                    />
-                  </div>
-
-                  <div className="space-y-1 text-[11px] font-mono text-slate-400 mb-2">
-                    <div className="flex justify-between">
-                      <span className="text-slate-500">{isVi ? 'Khu vực:' : 'Region:'}</span>
-                      <span className="text-slate-300">{node.region}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-500">{isVi ? 'Tốc độ:' : 'Hashrate:'}</span>
-                      <span className="text-emerald-400 font-bold">{node.currentHashrate}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between">
-                  <span className="text-[10px] text-slate-500 uppercase">{isVi ? 'Đỉnh Chuỗi:' : 'Local Tip:'}</span>
-                  <span className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded border ${
-                    node.activeTip === 'trunk'
-                      ? 'bg-slate-800 text-slate-300 border-slate-700'
-                      : isTipA
-                      ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
-                      : 'bg-sky-500/15 text-sky-300 border-sky-500/30'
-                  }`}>
-                    {node.activeTip === 'trunk' ? 'Block #2' : isTipA ? 'Branch A (#3A)' : 'Branch B (#3B)'}
-                  </span>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* ========================================================================= */}
-      {/* SECTION 4: EDUCATIONAL SUMMARY & QUIZ QUICK CHECK */}
-      {/* ========================================================================= */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        {/* Core Architectural Rule */}
-        <div className="p-4 rounded-xl bg-[#0C0F14] border border-slate-800 space-y-2 lg:col-span-2">
-          <div className="flex items-center gap-2">
-            <ShieldCheck size={16} className="text-emerald-400" />
-            <h4 className="text-xs font-display font-bold text-white uppercase tracking-wider">
-              {isVi ? 'Quy Tắc Nakamoto: Chuỗi Nặng Nhất (Heaviest / Longest Chain Rule)' : 'Nakamoto Consensus: Heaviest / Longest Chain Rule'}
-            </h4>
-          </div>
-          <p className="text-xs text-slate-300 leading-relaxed font-sans">
-            {isVi 
-              ? 'Trong mạng blockchain phi tập trung, không có máy chủ trung tâm nào quyết định khối nào đúng. Khi xảy ra phân nhánh (Fork), các thợ đào tiếp tục giải thuật toán trên đỉnh khối mà họ nhận được trước. Khi một nhánh được bổ sung khối tiếp theo, tổng công việc PoW tích lũy (Cumulative Difficulty) của nhánh đó sẽ vượt trội. Mọi node khác tự động tái tổ chức chuỗi (Re-org) sang nhánh dài nhất.' 
-              : 'In decentralized blockchains, no central server arbitrates block legitimacy. When a temporary fork occurs, nodes build atop whichever block arrived first locally. As soon as another block extends either branch, the cumulative Proof-of-Work makes that chain strictly heavier. All honest nodes automatically reorganize (re-org) to the longest chain.'}
-          </p>
-        </div>
-
-        {/* Stale Block & Mempool Safe Recovery */}
-        <div className="p-4 rounded-xl bg-[#0C0F14] border border-slate-800 space-y-2">
-          <div className="flex items-center gap-2">
-            <AlertTriangle size={16} className="text-amber-400" />
-            <h4 className="text-xs font-display font-bold text-white uppercase tracking-wider">
-              {isVi ? 'Xử Lý Khối Mồ Côi & Mempool' : 'Stale Blocks & Mempool Safety'}
-            </h4>
-          </div>
-          <p className="text-xs text-slate-300 leading-relaxed font-sans">
-            {isVi
-              ? 'Khối thuộc nhánh thua (như Khối #3B) bị loại thành Stale Block. Phần thưởng đào khối của Bob bị vô hiệu hóa. Tuy nhiên, toàn bộ giao dịch người dùng (TX) trong khối thua chưa có trên chuỗi thắng sẽ tự động quay trở lại Mempool an toàn.'
-              : 'Blocks on the abandoned branch (such as Block #3B) become Stale/Orphaned. The miner reward is revoked, but unconfirmed user transactions safely return to the Mempool to prevent double spending and loss.'}
-          </p>
-        </div>
-      </div>
-
-      {/* Block Details Modal */}
+      {/* Block Details Modal (Progressive Disclosure) */}
       {selectedBlock && (
         <BlockDetailModal
           block={selectedBlock}
           onClose={() => setSelectedBlock(null)}
+          isVi={isVi}
+        />
+      )}
+
+      {/* Tx Details Modal */}
+      {selectedTx && (
+        <TxDetailModal
+          tx={selectedTx}
+          onClose={() => setSelectedTx(null)}
           isVi={isVi}
         />
       )}
@@ -965,172 +778,125 @@ export const P2PForkConsensusVisualizer: React.FC = () => {
 };
 
 // =========================================================================
-// SUBCOMPONENTS: BlockCard & Modal
+// SUBCOMPONENTS: Small Clean BlockCard & Modal
 // =========================================================================
 
-interface BlockCardProps {
+interface CompactBlockCardProps {
   block: P2PBlock;
   onClick: () => void;
   isVi: boolean;
 }
 
-const BlockCard: React.FC<BlockCardProps> = ({ block, onClick, isVi }) => {
-  const isGenesis = block.blockNumber === 0;
-  const isCanonical = block.status === 'canonical';
+const CompactBlockCard: React.FC<CompactBlockCardProps> = ({ block, onClick, isVi }) => {
   const isStale = block.status === 'stale';
   const isLeading = block.isLeading;
+  const isGenesis = block.minerName === 'Genesis';
   const mTheme = isGenesis ? GENESIS_THEME : getMinerColorTheme(block.minerName, block.blockNumber);
 
   return (
     <div
       onClick={onClick}
-      className={`relative p-3.5 rounded-xl transition-all duration-200 flex flex-col items-center justify-between min-w-[145px] sm:min-w-[155px] shrink-0 cursor-pointer select-none border-2 box-border ${
+      title={`Block #${block.displayNumber} - ${block.minerName} (Click to inspect)`}
+      className={`relative p-2 rounded-xl transition-all duration-150 flex flex-col items-center justify-between min-w-[72px] sm:min-w-[80px] h-[60px] shrink-0 cursor-pointer select-none border box-border ${
         isStale
-          ? 'bg-slate-950/80 border-dashed border-slate-700/80 opacity-55 text-slate-500 hover:opacity-85'
+          ? 'bg-slate-950/60 border-dashed border-slate-700/60 opacity-40 text-slate-500 hover:opacity-80'
           : isLeading
-          ? 'border-amber-400 bg-amber-500/10 shadow-[0_0_20px_rgba(245,158,11,0.25)] animate-block-pulse'
-          : `${mTheme.border} ${mTheme.bg} hover:border-slate-400 hover:bg-[#0E131A] shadow-sm`
+          ? 'border-amber-400 bg-amber-500/10 shadow-sm ring-1 ring-amber-400/40'
+          : `${mTheme.border} ${mTheme.bg} hover:border-slate-400 hover:bg-[#0E131A]`
       }`}
     >
-      {/* Leading Tip Gold Star Badge */}
-      {isLeading && !isStale && (
-        <div className="absolute -top-2.5 px-2 py-0.5 rounded-full text-[9px] font-mono font-bold tracking-wider uppercase bg-amber-400 text-black shadow-md flex items-center gap-1">
-          <span>★</span>
-          <span>{isVi ? 'DẪN ĐẦU' : 'LEADING TIP'}</span>
-        </div>
-      )}
-
-      {/* Canonical Green Status Badge */}
-      {isCanonical && !isLeading && (
-        <div className="absolute -top-2 px-1.5 py-0.2 rounded text-[8px] font-mono font-bold uppercase bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
-          <Check size={9} />
-          <span>CANONICAL</span>
-        </div>
-      )}
-
-      {/* Stale Badge */}
-      {isStale && (
-        <div className="absolute -top-2 px-1.5 py-0.2 rounded text-[8px] font-mono font-bold uppercase bg-slate-800 text-slate-400 border border-slate-700 flex items-center gap-1">
-          <XCircle size={9} />
-          <span>STALE</span>
-        </div>
-      )}
-
-      {/* Block Display Number */}
-      <div className={`text-2xl sm:text-3xl font-mono font-black tabular-nums tracking-wider my-0.5 ${
-        isStale ? 'text-slate-500' : isGenesis ? 'text-slate-300' : mTheme.text
+      {/* Block Number */}
+      <div className={`text-sm sm:text-base font-mono font-black tabular-nums tracking-wider ${
+        isStale ? 'text-slate-500' : isLeading ? 'text-amber-300' : mTheme.text
       }`}>
-        {block.displayNumber}
+        #{block.displayNumber}
       </div>
 
-      {/* Miner Identity Badge */}
-      <div className="my-1 text-center max-w-full">
-        {isGenesis ? (
-          <span className="font-display font-semibold text-slate-400 text-[11px] tracking-wide uppercase px-2 py-0.5 rounded bg-slate-800 border border-slate-700">
-            GENESIS
-          </span>
-        ) : (
-          <span className={`inline-flex items-center gap-1.5 font-display font-bold text-[11px] tracking-wide px-2 py-0.5 rounded border max-w-full truncate ${
-            isStale ? 'bg-slate-900 border-slate-800 text-slate-500' : mTheme.badge
-          }`}>
-            <span 
-              className="w-2 h-2 rounded-full shrink-0" 
-              style={{ backgroundColor: isStale ? '#64748b' : mTheme.primary }}
-            />
-            <span className="truncate">{block.minerName}</span>
-          </span>
-        )}
-      </div>
-
-      {/* Truncated Hash */}
-      <span className="text-[10px] font-mono tabular-nums text-slate-400 bg-slate-900/90 px-2 py-0.5 rounded border border-slate-800/80 truncate max-w-full">
-        {block.hash.slice(0, 4)}...{block.hash.slice(-4)}
-      </span>
-
-      {/* Nonce & Cumulative Work */}
-      <div className="flex items-center justify-between w-full mt-2 pt-1 border-t border-slate-800/60 text-[9px] font-mono text-slate-500">
-        <span>N: {block.nonce.toLocaleString()}</span>
-        <span className={isCanonical ? 'text-emerald-400 font-bold' : ''}>Work: {block.cumulativeWork}</span>
+      {/* Miner Identity */}
+      <div className="flex items-center gap-1 text-[11px] font-sans font-medium text-slate-200 truncate max-w-full">
+        <span 
+          className="w-1.5 h-1.5 rounded-full shrink-0" 
+          style={{ backgroundColor: isStale ? '#64748b' : mTheme.primary }}
+        />
+        <span className="truncate">{block.minerName}</span>
       </div>
     </div>
   );
 };
 
 const BlockDetailModal: React.FC<{ block: P2PBlock; onClose: () => void; isVi: boolean }> = ({ block, onClose, isVi }) => {
-  const isGenesis = block.blockNumber === 0;
+  const isGenesis = block.minerName === 'Genesis';
   const mTheme = isGenesis ? GENESIS_THEME : getMinerColorTheme(block.minerName, block.blockNumber);
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in zoom-in-95 duration-200">
-      <div className="bg-[#0C0F14] border border-slate-800 rounded-2xl p-6 sm:p-7 w-full max-w-lg shadow-2xl space-y-4">
-        <div className="flex justify-between items-center border-b border-slate-800/80 pb-3">
+    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in zoom-in-95 duration-150">
+      <div className="bg-[#0C0F14] border border-slate-800 rounded-2xl p-5 w-full max-w-md shadow-2xl space-y-3.5">
+        <div className="flex justify-between items-center border-b border-slate-800/80 pb-2.5">
           <div className="flex items-center gap-2">
-            <span className={`text-xs font-mono px-2.5 py-0.5 rounded border font-bold ${mTheme.badge}`}>
-              Khối #{block.displayNumber}
+            <span className={`text-xs font-mono px-2 py-0.5 rounded border font-bold ${mTheme.badge}`}>
+              Block #{block.displayNumber}
             </span>
-            <h3 className="text-base font-display font-bold text-white">
-              {isGenesis ? 'Genesis Block' : block.minerName}
-            </h3>
+            <span className="text-sm font-display font-bold text-white flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full" style={{ backgroundColor: mTheme.primary }} />
+              <span>{block.minerName}</span>
+            </span>
             {block.status === 'canonical' && (
-              <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+              <span className="px-1.5 py-0.2 rounded text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
                 ✓ Canonical
               </span>
             )}
             {block.status === 'stale' && (
-              <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-slate-800 text-slate-400 border border-slate-700">
+              <span className="px-1.5 py-0.2 rounded text-[10px] font-mono font-bold bg-slate-800 text-slate-400 border border-slate-700">
                 ✕ Stale
               </span>
             )}
           </div>
           <button 
             onClick={onClose} 
-            className="text-slate-500 hover:text-white cursor-pointer"
+            className="text-slate-400 hover:text-white cursor-pointer px-1 text-sm font-mono"
           >
             ✕
           </button>
         </div>
 
-        <div className="space-y-3 text-xs font-mono">
-          <div className="bg-[#11161D] p-3 rounded-xl border border-slate-800 space-y-2">
+        <div className="space-y-2 text-xs font-mono">
+          <div className="bg-[#11161D] p-3 rounded-xl border border-slate-800 space-y-1.5">
             <div className="flex justify-between items-center">
               <span className="text-slate-500">{isVi ? 'Thợ đào:' : 'Miner:'}</span>
-              <span className="flex items-center gap-2 font-bold font-sans">
-                <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: mTheme.primary }} />
-                <span className={mTheme.text}>{block.minerName} ({block.minerRole})</span>
-              </span>
+              <span className="font-bold text-white">{block.minerName}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-slate-500">{isVi ? 'Thời gian:' : 'Timestamp:'}</span>
               <span className="text-slate-300">{block.timestamp}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-slate-500">{isVi ? 'Công việc tích lũy (PoW):' : 'Cumulative Work:'}</span>
+              <span className="text-slate-500">{isVi ? 'PoW tích lũy:' : 'Cumulative Work:'}</span>
               <span className="text-emerald-400 font-bold">{block.cumulativeWork} blocks</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-slate-500">{isVi ? 'Phần thưởng Coinbase:' : 'Coinbase Reward:'}</span>
+              <span className="text-slate-500">{isVi ? 'Thưởng Coinbase:' : 'Coinbase Reward:'}</span>
               <span className="text-amber-400 font-bold">+{block.coinbaseReward} BTC</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-slate-500">{isVi ? 'Winning Nonce:' : 'Winning Nonce:'}</span>
+              <span className="text-slate-500">Nonce:</span>
               <span className="text-white font-bold">{block.nonce.toLocaleString()}</span>
             </div>
           </div>
 
           <div>
             <label className="text-[10px] text-slate-500 font-display font-bold uppercase tracking-wider block mb-1">
-              SHA-256 Hash
+              Block Hash (SHA-256)
             </label>
-            <div className="bg-[#11161D] p-2.5 rounded-xl border border-slate-800 text-[11px] text-emerald-400 break-all select-all">
+            <div className="bg-[#11161D] p-2 rounded-xl border border-slate-800 text-[11px] text-emerald-400 break-all select-all font-mono">
               {block.hash}
             </div>
           </div>
 
           <div>
             <label className="text-[10px] text-slate-500 font-display font-bold uppercase tracking-wider block mb-1">
-              Previous Block Hash
+              Previous Hash
             </label>
-            <div className="bg-[#11161D] p-2.5 rounded-xl border border-slate-800 text-[11px] text-slate-400 break-all select-all">
+            <div className="bg-[#11161D] p-2 rounded-xl border border-slate-800 text-[11px] text-slate-400 break-all select-all font-mono">
               {block.prevHash}
             </div>
           </div>
@@ -1139,7 +905,7 @@ const BlockDetailModal: React.FC<{ block: P2PBlock; onClose: () => void; isVi: b
             <label className="text-[10px] text-slate-500 font-display font-bold uppercase tracking-wider block mb-1">
               {isVi ? 'Giao dịch trong khối' : 'Included Transactions'}
             </label>
-            <div className="bg-[#11161D] p-2.5 rounded-xl border border-slate-800 text-[11px] text-slate-300 space-y-1">
+            <div className="bg-[#11161D] p-2.5 rounded-xl border border-slate-800 text-[11px] text-slate-300 space-y-1 max-h-[100px] overflow-y-auto">
               {block.txs.map((t, idx) => (
                 <div key={idx} className="flex items-center gap-1.5">
                   <span className="text-emerald-400">●</span>
@@ -1150,7 +916,7 @@ const BlockDetailModal: React.FC<{ block: P2PBlock; onClose: () => void; isVi: b
           </div>
         </div>
 
-        <div className="pt-2">
+        <div className="pt-1">
           <button
             onClick={onClose}
             className="w-full py-2 bg-[#11161D] hover:bg-slate-800 text-slate-300 hover:text-white rounded-xl text-xs font-semibold border border-slate-700 transition-all cursor-pointer"
@@ -1158,6 +924,53 @@ const BlockDetailModal: React.FC<{ block: P2PBlock; onClose: () => void; isVi: b
             {isVi ? 'Đóng' : 'Close'}
           </button>
         </div>
+      </div>
+    </div>
+  );
+};
+
+const TxDetailModal: React.FC<{ tx: MempoolTx; onClose: () => void; isVi: boolean }> = ({ tx, onClose, isVi }) => {
+  return (
+    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in zoom-in-95 duration-150">
+      <div className="bg-[#0C0F14] border border-slate-800 rounded-2xl p-5 w-full max-w-sm shadow-2xl space-y-3">
+        <div className="flex justify-between items-center border-b border-slate-800/80 pb-2.5">
+          <span className="text-sm font-display font-bold text-white">
+            {tx.txCode} ({isVi ? 'Giao Dịch' : 'Transaction'})
+          </span>
+          <button onClick={onClose} className="text-slate-400 hover:text-white cursor-pointer px-1 font-mono">
+            ✕
+          </button>
+        </div>
+
+        <div className="bg-[#11161D] p-3 rounded-xl border border-slate-800 space-y-2 text-xs font-mono">
+          <div className="flex justify-between">
+            <span className="text-slate-500">{isVi ? 'Người gửi:' : 'Sender:'}</span>
+            <span className="font-bold text-white">{tx.from}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-slate-500">{isVi ? 'Người nhận:' : 'Receiver:'}</span>
+            <span className="font-bold text-white">{tx.to}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-slate-500">{isVi ? 'Số lượng:' : 'Amount:'}</span>
+            <span className="font-bold text-emerald-400">{tx.amount} BTC</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-slate-500">{isVi ? 'Phí giao dịch:' : 'Fee:'}</span>
+            <span className="text-slate-300">{tx.fee} BTC</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-slate-500">{isVi ? 'Trạng thái:' : 'Status:'}</span>
+            <span className="font-bold text-amber-400 uppercase">{tx.status.replace('_', ' ')}</span>
+          </div>
+        </div>
+
+        <button
+          onClick={onClose}
+          className="w-full py-2 bg-[#11161D] hover:bg-slate-800 text-slate-300 hover:text-white rounded-xl text-xs font-semibold border border-slate-700 transition-all cursor-pointer"
+        >
+          {isVi ? 'Đóng' : 'Close'}
+        </button>
       </div>
     </div>
   );

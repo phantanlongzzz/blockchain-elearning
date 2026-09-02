@@ -61,9 +61,22 @@ export const ForkAndLongestChainLab: React.FC<{onInteracted?: () => void}> = ({ 
   const [quizResult, setQuizResult] = useState<'correct' | 'incorrect' | null>(null);
 
   const logEndRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLDivElement>(null);
 
   const currentEvent = SIMULATION_EVENTS[currentStep] || SIMULATION_EVENTS[0];
   const isFinished = currentStep === SIMULATION_EVENTS.length - 1;
+
+  // Auto-focus camera on current step/fork event
+  useEffect(() => {
+    if (canvasRef.current && currentStep > 0) {
+      const el = canvasRef.current;
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      el.scrollTo({
+        left: el.scrollWidth,
+        behavior: prefersReduced ? 'auto' : 'smooth'
+      });
+    }
+  }, [currentStep]);
 
   const handleStepNext = () => {
     setCurrentStep((prev) => Math.min(SIMULATION_EVENTS.length - 1, prev + 1));
@@ -152,7 +165,7 @@ export const ForkAndLongestChainLab: React.FC<{onInteracted?: () => void}> = ({ 
         {/* Left: Visualizer */}
         <div className="flex-1 border-b lg:border-b-0 lg:border-r border-zinc-800 flex flex-col bg-[#0a0d12]">
           
-          <div className="flex-1 p-6 sm:p-8 overflow-x-auto min-h-[400px] flex items-center justify-center relative custom-scrollbar">
+          <div ref={canvasRef} className="flex-1 p-6 sm:p-8 overflow-x-auto min-h-[400px] flex items-center justify-center relative custom-scrollbar">
             <div className="flex items-center">
               {/* Trunk */}
               <div className="flex items-center gap-5 z-10">

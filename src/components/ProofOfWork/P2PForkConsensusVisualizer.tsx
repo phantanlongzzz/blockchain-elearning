@@ -6,6 +6,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Network, Box } from 'lucide-react';
 import { Play, Pause, RotateCcw, Clock } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
+import { SimulationNavigation } from './SimulationNavigation';
 import { getMinerColorTheme, GENESIS_THEME } from '../../utils/minerColors';
 
 export interface MempoolTx {
@@ -101,16 +102,26 @@ function generateHash(prevHash: string, nonce: number) {
 export interface P2PForkConsensusVisualizerProps {
   blockchain: any[];
   appState: string;
+  focusedBlockIndex: number;
+  navigateTimeline: (direction: 'prev' | 'next') => void;
+  scrollToLatestBlock: () => void;
 }
 
-export const P2PForkConsensusVisualizer: React.FC<P2PForkConsensusVisualizerProps> = ({ blockchain, appState }) => {
+export const P2PForkConsensusVisualizer: React.FC<P2PForkConsensusVisualizerProps> = ({ 
+  blockchain, 
+  appState,
+  focusedBlockIndex,
+  navigateTimeline,
+  scrollToLatestBlock
+}) => {
   const { language } = useLanguage();
   const isVi = language === 'vi';
   
   const [selectedBlock, setSelectedBlock] = useState<P2PBlock | null>(null);
   const [selectedTx, setSelectedTx] = useState<MempoolTx | null>(null);
   
-  const trunk: P2PBlock[] = blockchain.length > 0 ? blockchain.map((b, i) => ({
+  const visibleBlockchain = blockchain.slice(0, focusedBlockIndex + 1);
+  const trunk: P2PBlock[] = visibleBlockchain.length > 0 ? visibleBlockchain.map((b, i) => ({
     id: `block-${b.index}`,
     blockNumber: b.index,
     displayNumber: `${b.index}`,
@@ -119,7 +130,7 @@ export const P2PForkConsensusVisualizer: React.FC<P2PForkConsensusVisualizerProp
     minerRole: 'Miner',
     branch: 'trunk',
     status: 'canonical',
-    isLeading: i === blockchain.length - 1,
+    isLeading: i === visibleBlockchain.length - 1,
     hash: b.hash,
     prevHash: b.prevHash,
     merkleRoot: '...',
@@ -138,9 +149,14 @@ export const P2PForkConsensusVisualizer: React.FC<P2PForkConsensusVisualizerProp
 
   useEffect(() => {
     if (treeScrollRef.current) {
-      treeScrollRef.current.scrollTo({ left: treeScrollRef.current.scrollWidth, behavior: 'smooth' });
+      const blockEl = document.getElementById(`p2p-block-${focusedBlockIndex}`);
+      if (blockEl) {
+        blockEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      } else {
+        treeScrollRef.current.scrollTo({ left: treeScrollRef.current.scrollWidth, behavior: 'smooth' });
+      }
     }
-  }, [trunk.length]);
+  }, [focusedBlockIndex, trunk.length]);
 
   return (
     <div className="flex flex-col gap-4">
@@ -156,10 +172,19 @@ export const P2PForkConsensusVisualizer: React.FC<P2PForkConsensusVisualizerProp
             </h3>
           </div>
           <div className="flex flex-wrap items-center gap-2.5">
-            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-800/50 border border-slate-700/50">
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-800/50 border border-slate-700/50 mr-2">
               <Network size={12} className="text-emerald-400" />
               <span className="text-xs font-mono text-slate-300">4 {isVi ? 'Nút' : 'Nodes'}</span>
             </div>
+            <SimulationNavigation 
+              currentIndex={focusedBlockIndex}
+              totalSteps={blockchain.length}
+              onPrevious={() => navigateTimeline('prev')}
+              onNext={() => navigateTimeline('next')}
+              onLatest={scrollToLatestBlock}
+              isVi={isVi}
+              prefix="#"
+            />
           </div>
         </div>
 
@@ -173,7 +198,7 @@ export const P2PForkConsensusVisualizer: React.FC<P2PForkConsensusVisualizerProp
               {trunk.map((blk, idx) => {
                 const isGenesis = blk.blockNumber === 0;
                 return (
-                  <div key={blk.id} className="relative flex flex-col items-center group">
+                  <div key={blk.id} id={`p2p-block-${blk.blockNumber}`} className="relative flex flex-col items-center group">
                     <div className="absolute -top-8 text-[10px] font-mono text-slate-500">
                       #{blk.displayNumber}
                     </div>

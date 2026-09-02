@@ -5,11 +5,12 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { 
   Play, RotateCcw, CheckCircle2, Plus, X, Pause, Clock, Activity, 
-  FileText, Trophy, Trash2, Code2, Info, Check, ArrowRight, ExternalLink
+  FileText, Trophy, Trash2, Code2, Info, Check, ArrowRight, ExternalLink, ChevronLeft, ChevronRight
 } from 'lucide-react';
 import { createMiningWorkerBlob } from '../../utils/miningWorker';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { SimulationCodeModal } from './SimulationCodeModal';
+import { SimulationNavigation } from './SimulationNavigation';
 import { P2PForkConsensusVisualizer } from './P2PForkConsensusVisualizer';
 import { 
   MINER_COLORS, 
@@ -128,6 +129,7 @@ export const PowLesson: React.FC = () => {
   const [miners, setMiners] = useState<MinerVisual[]>([]);
   const [blockchain, setBlockchain] = useState<BlockRecord[]>([]);
   const [justAddedBlockIndex, setJustAddedBlockIndex] = useState<number | null>(null);
+  const [focusedBlockIndex, setFocusedBlockIndex] = useState<number>(0);
   const [logs, setLogs] = useState<LogEvent[]>([]);
   const [showCodeModal, setShowCodeModal] = useState(false);
   const [selectedBlock, setSelectedBlock] = useState<BlockRecord | null>(null);
@@ -331,11 +333,85 @@ export const PowLesson: React.FC = () => {
   const isProgrammaticScrollRef = useRef(false);
 
   // Handle user manual scroll on horizontal blockchain timeline (UX Rule: Do not fight user scroll)
+  
+  const navigateTimeline = useCallback((direction: 'prev' | 'next') => {
+    setBlockchain(prevBlockchain => {
+      setFocusedBlockIndex(prevIdx => {
+        const total = prevBlockchain.length;
+        if (total === 0) return prevIdx;
+        
+        let newIndex = prevIdx;
+        if (direction === 'prev') {
+          newIndex = Math.max(0, prevIdx - 1);
+        } else {
+          newIndex = Math.min(total - 1, prevIdx + 1);
+        }
+        
+        setIsAutoFollowPaused(true);
+        userScrolledAwayRef.current = true;
+        
+        setTimeout(() => {
+          const blockEl = document.getElementById(`timeline-block-${newIndex}`);
+          if (blockEl && timelineScrollRef.current) {
+            isProgrammaticScrollRef.current = true;
+            blockEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            setTimeout(() => {
+              isProgrammaticScrollRef.current = false;
+            }, 500);
+          }
+        }, 10);
+
+        return newIndex;
+      });
+      return prevBlockchain;
+    });
+  }, []);
+
+  useEffect(() => {
+    if (activeVisualizerView !== 'timeline') return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        navigateTimeline('prev');
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        navigateTimeline('next');
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activeVisualizerView, navigateTimeline]);
+
   const handleTimelineScroll = useCallback(() => {
     if (isProgrammaticScrollRef.current) return;
     if (timelineScrollRef.current) {
       const el = timelineScrollRef.current;
       const distanceFromEnd = el.scrollWidth - el.clientWidth - el.scrollLeft;
+      
+      const centerPos = el.scrollLeft + el.clientWidth / 2;
+      let closestIdx = 0;
+      let minDiff = Infinity;
+      
+      const children = Array.from(el.children) as HTMLElement[];
+      children.forEach((child) => {
+        if (child.id && child.id.startsWith('timeline-block-')) {
+          const childCenter = child.offsetLeft + child.offsetWidth / 2;
+          const diff = Math.abs(childCenter - centerPos);
+          if (diff < minDiff) {
+            minDiff = diff;
+            closestIdx = parseInt(child.id.replace('timeline-block-', ''), 10);
+          }
+        }
+      });
+      
+      if (!isNaN(closestIdx)) {
+        setFocusedBlockIndex(closestIdx);
+      }
+
       if (distanceFromEnd > 140) {
         userScrolledAwayRef.current = true;
         setIsAutoFollowPaused(true);
@@ -351,6 +427,7 @@ export const PowLesson: React.FC = () => {
     if (!autoFollow) return;
     
     // Auto-focus rule: return focus to the new event (new block mined)
+    setFocusedBlockIndex(blockchain.length - 1);
     userScrolledAwayRef.current = false;
     setIsAutoFollowPaused(false);
     
@@ -376,6 +453,7 @@ export const PowLesson: React.FC = () => {
     userScrolledAwayRef.current = false;
     setIsAutoFollowPaused(false);
     setAutoFollow(true);
+    setFocusedBlockIndex(blockchain.length - 1);
     if (timelineScrollRef.current) {
       const el = timelineScrollRef.current;
       const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1134,7 +1212,13 @@ export const PowLesson: React.FC = () => {
           </div>
 
           {activeVisualizerView === 'p2p_network' ? (
-            <P2PForkConsensusVisualizer blockchain={blockchain} appState={appState} />
+            <P2PForkConsensusVisualizer 
+              blockchain={blockchain} 
+              appState={appState}
+              focusedBlockIndex={focusedBlockIndex}
+              navigateTimeline={navigateTimeline}
+              scrollToLatestBlock={scrollToLatestBlock}
+            />
           ) : (
             
             <div className="p-4 sm:p-5 rounded-2xl bg-[#0A0D12] border border-slate-800 space-y-4">
@@ -1147,9 +1231,18 @@ export const PowLesson: React.FC = () => {
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2.5">
-                  <span className="text-xs font-mono text-slate-400">
+                  <span className="text-xs font-mono text-slate-400 mr-2">
                     {isVi ? `Tổng: ${blockchain.length}` : `Total: ${blockchain.length}`}
                   </span>
+                  <SimulationNavigation 
+                    currentIndex={focusedBlockIndex}
+                    totalSteps={blockchain.length}
+                    onPrevious={() => navigateTimeline('prev')}
+                    onNext={() => navigateTimeline('next')}
+                    onLatest={scrollToLatestBlock}
+                    isVi={isVi}
+                    prefix="#"
+                  />
                 </div>
               </div>
 
@@ -1166,12 +1259,13 @@ export const PowLesson: React.FC = () => {
                   return (
                     <React.Fragment key={`${block.index}-${block.hash}`}>
                       <div 
+                        id={`timeline-block-${block.index}`}
                         onClick={() => setSelectedBlock(block)}
                         className={`relative py-3 px-4 rounded-xl transition-all duration-200 flex flex-col items-center justify-center min-w-[100px] shrink-0 cursor-pointer select-none border box-border ${
                           isLatestTip 
                             ? 'border-[#00C98D] bg-[#00C98D]/10' 
                             : `${theme.border} ${theme.bg} hover:border-slate-400 hover:bg-[#0E131A]`
-                        }`}
+                        } ${idx === focusedBlockIndex ? 'ring-2 ring-emerald-500/50 shadow-[0_0_15px_rgba(16,185,129,0.15)]' : ''}`}
                       >
                         <div className={`text-2xl font-mono font-bold tracking-wider ${isGenesis ? 'text-slate-300' : theme.text} mb-1`}>
                           #{block.index}

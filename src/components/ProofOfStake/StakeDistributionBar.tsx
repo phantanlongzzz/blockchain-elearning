@@ -80,6 +80,10 @@ export const StakeDistributionBar: React.FC<StakeDistributionBarProps> = ({
     const labelX = center + midRadius * Math.cos(midAngle);
     const labelY = center + midRadius * Math.sin(midAngle);
     const preset = getValidatorPreset(val.id, val.name);
+    const isSelected = selectedProposerId === val.id;
+
+    // Distinct restrained palette: bright emerald for winner, restrained dark emerald/teal/slate for normal
+    const sliceColor = isSelected ? '#22C55E' : preset.color;
 
     return {
       validator: val,
@@ -88,11 +92,11 @@ export const StakeDistributionBar: React.FC<StakeDistributionBarProps> = ({
       pathData,
       labelX,
       labelY,
-      colorHex: preset.color,
+      colorHex: sliceColor,
       colorGlow: preset.glow,
       textClass: preset.textClass,
       isHovered: hoveredId === val.id,
-      isSelected: selectedProposerId === val.id,
+      isSelected,
     };
   });
 
@@ -104,21 +108,16 @@ export const StakeDistributionBar: React.FC<StakeDistributionBarProps> = ({
       id="pos-stake-distribution-section"
       className="bg-[#0C0F14] border border-[#1C2430] rounded-2xl p-5 sm:p-6 shadow-xl space-y-6"
     >
-      {/* Header */}
+      {/* Header — Direct clean hierarchy without redundant small Step 2 badge */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#1C2430]">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-[rgba(0,201,141,0.08)] border border-[rgba(0,201,141,0.35)] flex items-center justify-center text-[#00C98D] shrink-0">
             <PieChart className="w-5 h-5" />
           </div>
           <div>
-            <div className="flex items-center gap-2">
-              <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-[rgba(0,201,141,0.12)] text-[#00C98D] border border-[rgba(0,201,141,0.35)]">
-                {language === 'vi' ? 'BƯỚC 2' : 'STEP 2'}
-              </span>
-              <h3 className="text-base sm:text-lg font-bold text-[#F2F4F7] font-display">
-                {language === 'vi' ? 'Chọn người giải khối theo xác suất' : 'Probability-Weighted Selection'}
-              </h3>
-            </div>
+            <h3 className="text-base sm:text-lg font-bold text-[#F2F4F7] font-display">
+              {language === 'vi' ? 'Chọn người giải khối theo xác suất' : 'Probability-Weighted Selection'}
+            </h3>
             <p className="text-xs text-[#A5AFBF] mt-0.5">
               {language === 'vi'
                 ? 'Hệ thống quay vòng xác suất: ai đặt cọc càng nhiều ETH thì diện tích ô càng lớn, xác suất được chọn càng cao.'
@@ -162,10 +161,10 @@ export const StakeDistributionBar: React.FC<StakeDistributionBarProps> = ({
 
       {/* Main 2-Column Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-        {/* Left: Donut Chart */}
+        {/* Left: Donut Chart with Restrained Palette and Crisp Flat Contrast */}
         <div className="lg:col-span-6 flex flex-col items-center justify-center relative py-2">
           <div className="relative w-[300px] h-[300px] flex items-center justify-center">
-            <svg viewBox={`0 0 ${size} ${size}`} className="w-full h-full drop-shadow-lg select-none">
+            <svg viewBox={`0 0 ${size} ${size}`} className="w-full h-full select-none">
               {/* Background Guide Circle */}
               <circle
                 cx={center}
@@ -177,7 +176,7 @@ export const StakeDistributionBar: React.FC<StakeDistributionBarProps> = ({
                 opacity={0.6}
               />
 
-              {/* Slices */}
+              {/* Slices — High Contrast, zero blur, zero neon glow */}
               {totalActiveStake > 0 ? (
                 slices.map((slice) => {
                   const isHighlighted = slice.isHovered || slice.isSelected;
@@ -186,7 +185,7 @@ export const StakeDistributionBar: React.FC<StakeDistributionBarProps> = ({
                   return (
                     <g
                       key={slice.validator.id}
-                      className="cursor-pointer transition-all duration-200"
+                      className="cursor-pointer transition-all duration-150"
                       onMouseEnter={() => setHoveredId(slice.validator.id)}
                       onMouseLeave={() => setHoveredId(null)}
                     >
@@ -201,15 +200,8 @@ export const StakeDistributionBar: React.FC<StakeDistributionBarProps> = ({
                             ? '#FFFFFF'
                             : '#090A0F'
                         }
-                        strokeWidth={slice.isSelected ? 3.5 : slice.isHovered ? 2.5 : 1.5}
-                        style={{
-                          filter: slice.isSelected
-                            ? `drop-shadow(0 0 12px ${slice.colorGlow})`
-                            : slice.isHovered
-                            ? `drop-shadow(0 0 8px ${slice.colorGlow})`
-                            : undefined,
-                          transition: 'all 0.25s ease-out',
-                        }}
+                        strokeWidth={slice.isSelected ? 3 : slice.isHovered ? 2 : 1.5}
+                        className="transition-opacity duration-150"
                       />
 
                       {/* Percentage label inside slice */}
@@ -220,7 +212,7 @@ export const StakeDistributionBar: React.FC<StakeDistributionBarProps> = ({
                           textAnchor="middle"
                           dominantBaseline="central"
                           fill="#FFFFFF"
-                          className="font-mono font-black text-[12px] pointer-events-none drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]"
+                          className="font-mono font-black text-[12px] pointer-events-none drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]"
                         >
                           {slice.percentage.toFixed(1)}%
                         </text>
@@ -242,13 +234,13 @@ export const StakeDistributionBar: React.FC<StakeDistributionBarProps> = ({
                 </div>
               ) : selectedValidator ? (
                 <div className="animate-in fade-in zoom-in-95 duration-200 flex flex-col items-center">
-                  <div className="w-7 h-7 rounded-full bg-[rgba(0,201,141,0.15)] flex items-center justify-center text-[#00C98D] mb-0.5">
-                    <Trophy className="w-4 h-4" />
+                  <div className="w-7 h-7 rounded-full bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 mb-0.5">
+                    <Trophy className="w-4 h-4 text-emerald-400" />
                   </div>
                   <span className="text-sm font-black text-[#F2F4F7] font-display">
                     {selectedName}
                   </span>
-                  <span className="text-xs font-mono font-bold text-[#00C98D]">
+                  <span className="text-xs font-mono font-bold text-amber-400">
                     {selectedValidator.stake.toFixed(0)} ETH
                   </span>
                 </div>
@@ -257,7 +249,7 @@ export const StakeDistributionBar: React.FC<StakeDistributionBarProps> = ({
                   <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#717B8C] mb-0.5">
                     {language === 'vi' ? 'TỔNG ĐẶT CỌC' : 'TOTAL STAKE'}
                   </span>
-                  <span className="text-2xl font-black font-mono text-[#00C98D] tracking-tight">
+                  <span className="text-2xl font-black font-mono text-emerald-400 tracking-tight">
                     {totalActiveStake.toFixed(0)}
                   </span>
                   <span className="text-[11px] font-mono text-[#717B8C]">ETH</span>
@@ -268,7 +260,7 @@ export const StakeDistributionBar: React.FC<StakeDistributionBarProps> = ({
 
           {/* Educational Note directly under Visualization */}
           <div className="mt-3 text-center">
-            <p className="text-xs sm:text-sm font-semibold text-[#00C98D] font-sans">
+            <p className="text-xs sm:text-sm font-semibold text-emerald-400 font-sans">
               {language === 'vi'
                 ? 'Đặt cọc càng nhiều ETH → xác suất được chọn càng cao.'
                 : 'More ETH deposited → higher chance of being selected.'}
@@ -280,24 +272,33 @@ export const StakeDistributionBar: React.FC<StakeDistributionBarProps> = ({
         <div className="lg:col-span-6 flex flex-col gap-3">
           {/* Winner Announcement Banner */}
           {selectedValidator ? (
-            <div className="p-4 rounded-xl bg-[rgba(0,201,141,0.08)] border border-[rgba(0,201,141,0.35)] shadow-sm space-y-2 animate-in fade-in slide-in-from-top-2 duration-300">
-              <div className="flex items-center gap-2 text-[#00C98D] font-bold text-sm">
-                <Sparkles className="w-4 h-4 text-[#00C98D] shrink-0" />
+            <div className="p-4 rounded-xl bg-[#10151D] border border-emerald-500/40 shadow-sm space-y-1.5 animate-in fade-in duration-200">
+              <div className="flex items-center gap-2 text-[#22C55E] font-bold text-sm">
+                <Trophy className="w-4 h-4 text-[#22C55E] shrink-0" />
                 <span>
-                  {selectedName} {language === 'vi' ? 'được chọn giải khối!' : 'was selected as Block Solver!'}
+                  <strong className="text-[#F2F4F7]">{selectedName}</strong> {language === 'vi' ? 'được chọn giải khối!' : 'was selected as Block Solver!'}
                 </span>
               </div>
               <p className="text-xs text-[#A5AFBF] leading-relaxed">
-                <strong className="text-[#F2F4F7]">{selectedName}</strong>{' '}
-                {language === 'vi'
-                  ? `có xác suất được chọn là ${((selectedValidator.stake / totalActiveStake) * 100).toFixed(1)}% tương ứng với lượng ETH đặt cọc.`
-                  : `has a selection probability of ${((selectedValidator.stake / totalActiveStake) * 100).toFixed(1)}% corresponding to their deposited ETH stake.`}
+                {language === 'vi' ? (
+                  <>
+                    <span className="text-[#F2F4F7] font-semibold">{selectedName}</span> có xác suất được chọn là{' '}
+                    <span className="text-amber-400 font-mono font-bold">{((selectedValidator.stake / totalActiveStake) * 100).toFixed(1)}%</span>, tương ứng với{' '}
+                    <span className="text-amber-400 font-mono font-bold">{selectedValidator.stake.toFixed(0)} ETH</span> đặt cọc.
+                  </>
+                ) : (
+                  <>
+                    <span className="text-[#F2F4F7] font-semibold">{selectedName}</span> has a selection probability of{' '}
+                    <span className="text-amber-400 font-mono font-bold">{((selectedValidator.stake / totalActiveStake) * 100).toFixed(1)}%</span>, corresponding to{' '}
+                    <span className="text-amber-400 font-mono font-bold">{selectedValidator.stake.toFixed(0)} ETH</span> deposited.
+                  </>
+                )}
               </p>
             </div>
           ) : (
             <div className="p-4 rounded-xl bg-[#0F131A] border border-[#1C2430] text-xs text-[#A5AFBF] leading-relaxed">
               <div className="font-bold text-[#F2F4F7] mb-1 flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-[#00C98D]" />
+                <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
                 <span>{language === 'vi' ? 'Cách thức lựa chọn:' : 'How Selection Works:'}</span>
               </div>
               {language === 'vi'
@@ -311,6 +312,7 @@ export const StakeDistributionBar: React.FC<StakeDistributionBarProps> = ({
             {validators.map((val) => {
               const preset = getValidatorPreset(val.id, val.name);
               const isSelected = selectedProposerId === val.id;
+              const isZeroStake = val.stake <= 0;
               const percentage = totalActiveStake > 0 ? (val.stake / totalActiveStake) * 100 : 0;
 
               return (
@@ -318,26 +320,33 @@ export const StakeDistributionBar: React.FC<StakeDistributionBarProps> = ({
                   key={val.id}
                   className={`p-2.5 rounded-xl border text-left transition-all ${
                     isSelected
-                      ? 'bg-[rgba(0,201,141,0.12)] border-[#00C98D] shadow-sm ring-1 ring-[#00C98D]'
-                      : val.stake > 0
-                      ? 'bg-[#0F131A] border-[#1C2430]'
-                      : 'bg-[#0B0F15]/40 border-[#1C2430]/40 opacity-50'
+                      ? 'bg-[#10151D] border-[#22C55E] ring-1 ring-[#22C55E]/60 text-white shadow-sm'
+                      : isZeroStake
+                      ? 'bg-[#0B0E12] border-[#1C2430]/60 opacity-45'
+                      : 'bg-[#0F131A] border-[#1C2430] hover:border-[#2C384A]'
                   }`}
                 >
                   <div className="flex items-center justify-between gap-1 mb-1">
                     <div className="flex items-center gap-1.5 min-w-0">
-                      <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: preset.color }} />
-                      <span className="text-xs font-bold text-[#F2F4F7] truncate">{val.name}</span>
+                      <div
+                        className="w-2.5 h-2.5 rounded-full shrink-0"
+                        style={{ backgroundColor: isSelected ? '#22C55E' : isZeroStake ? '#64748B' : preset.color }}
+                      />
+                      <span className={`text-xs font-bold truncate ${isZeroStake ? 'text-[#717B8C]' : isSelected ? 'text-white' : 'text-[#F2F4F7]'}`}>
+                        {val.name}
+                      </span>
                     </div>
                     {isSelected && (
-                      <span className="text-[9px] font-bold px-1 rounded bg-[rgba(0,201,141,0.2)] text-[#00C98D]">
-                        ✓ {language === 'vi' ? 'Chọn' : 'Chosen'}
+                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">
+                        ✓ {language === 'vi' ? 'Được chọn' : 'Selected'}
                       </span>
                     )}
                   </div>
                   <div className="flex items-baseline justify-between text-[11px] font-mono">
-                    <span className="text-[#A5AFBF]">{val.stake.toFixed(0)} ETH</span>
-                    <span className={val.stake > 0 ? preset.textClass : 'text-[#717B8C]'}>
+                    <span className={isZeroStake ? 'text-[#717B8C]' : isSelected ? 'text-amber-400 font-bold' : 'text-[#A5AFBF]'}>
+                      {val.stake.toFixed(0)} ETH
+                    </span>
+                    <span className={isZeroStake ? 'text-[#717B8C]' : isSelected ? 'text-emerald-400 font-bold' : preset.textClass}>
                       {percentage.toFixed(1)}%
                     </span>
                   </div>
@@ -355,7 +364,7 @@ export const StakeDistributionBar: React.FC<StakeDistributionBarProps> = ({
             type="button"
             id="pos-back-to-step1-btn"
             onClick={onBackToStep1}
-            className="px-4 py-2 rounded-xl bg-[#0F131A] hover:bg-[#11161E] text-[#A5AFBF] border border-[#1C2430] text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer"
+            className="px-4 py-2 rounded-xl bg-[#0F131A] hover:bg-[#11161E] text-[#A5AFBF] hover:text-[#F2F4F7] border border-[#1C2430] text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>{language === 'vi' ? 'Quay lại: Đặt cọc' : 'Back: Deposit'}</span>

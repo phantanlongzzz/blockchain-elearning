@@ -259,10 +259,10 @@ export const ProofOfStakeLab: React.FC = () => {
     },
     {
       stepNumber: 2,
-      titleVi: 'Bước 2: Chọn Người Đề Xuất Khối (Proposer Selection)',
-      titleEn: 'Step 2: Proposer Lottery Selection',
-      instructionVi: 'Thuật toán ngẫu nhiên có trọng số (Weighted Lottery) chọn 1 Validator đề xuất khối tiếp theo.',
-      instructionEn: 'A weighted pseudo-random lottery selects a single validator to propose the next block.',
+      titleVi: 'Bước 2: Chọn Người Giải Khối',
+      titleEn: 'Step 2: Select Block Solver',
+      instructionVi: 'Thuật toán ngẫu nhiên có trọng số (Weighted Lottery) chọn 1 Validator giải khối tiếp theo dựa trên lượng ETH đặt cọc.',
+      instructionEn: 'A weighted pseudo-random lottery selects a single validator to solve the next block based on deposited ETH.',
       targetActionVi: 'Bấm nút "Bắt đầu chọn người giải khối", sau đó bấm "Tiếp tục: Ghi & Kiểm tra khối".',
       targetActionEn: 'Click "Select Block Solver", then click "Continue: Verify Block".',
       isCompleted: activeStep >= 2 && !isSelecting,
@@ -419,49 +419,23 @@ export const ProofOfStakeLab: React.FC = () => {
       {guideMode === 'guided' && (
         <div
           id="pos-guided-banner"
-          className="p-3.5 sm:p-4 rounded-xl bg-[#0C0F14] border border-[rgba(0,201,141,0.35)] flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm animate-in fade-in duration-200"
+          className="p-3.5 sm:p-4 rounded-xl bg-[#0C0F14] border border-[rgba(0,201,141,0.35)] flex items-start sm:items-center gap-3 shadow-sm animate-in fade-in duration-200"
         >
-          <div className="flex items-start sm:items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-[rgba(0,201,141,0.12)] border border-[rgba(0,201,141,0.35)] flex items-center justify-center text-[#00C98D] shrink-0 mt-0.5 sm:mt-0">
-              <Compass className="w-4 h-4" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-[rgba(0,201,141,0.15)] text-[#00C98D]">
-                  {isVi ? `BƯỚC ${activeStep}/3` : `STEP ${activeStep}/3`}
-                </span>
-                <h4 className="text-xs sm:text-sm font-bold text-[#F2F4F7] font-display">
-                  {isVi ? currentStepGuide.titleVi : currentStepGuide.titleEn}
-                </h4>
-              </div>
-              <p className="text-xs text-[#A5AFBF] font-sans mt-0.5 leading-snug">
-                {isVi ? currentStepGuide.instructionVi : currentStepGuide.instructionEn}
-              </p>
-            </div>
+          <div className="w-8 h-8 rounded-lg bg-[rgba(0,201,141,0.12)] border border-[rgba(0,201,141,0.35)] flex items-center justify-center text-[#00C98D] shrink-0 mt-0.5 sm:mt-0">
+            <Compass className="w-4 h-4" />
           </div>
-
-          <div className="flex items-center gap-2 self-end sm:self-center shrink-0">
-            {activeStep > 1 && (
-              <button
-                type="button"
-                onClick={() => setActiveStep(Math.max(1, activeStep - 1) as 1 | 2 | 3)}
-                className="px-3 py-1.5 rounded-lg bg-[#0F131A] hover:bg-[#11161E] text-[#A5AFBF] border border-[#1C2430] text-xs font-semibold flex items-center gap-1 transition-all cursor-pointer"
-              >
-                <ArrowLeft className="w-3.5 h-3.5" />
-                <span>{isVi ? 'Lùi lại' : 'Previous'}</span>
-              </button>
-            )}
-
-            {activeStep < 3 && (
-              <button
-                type="button"
-                onClick={() => setActiveStep(Math.min(3, activeStep + 1) as 1 | 2 | 3)}
-                className="px-3.5 py-1.5 rounded-lg bg-[#00C98D] hover:bg-[#00B982] text-[#090A0F] font-bold text-xs flex items-center gap-1 shadow-sm transition-all cursor-pointer"
-              >
-                <span>{isVi ? 'Bước tiếp' : 'Next Step'}</span>
-                <ArrowRight className="w-3.5 h-3.5 text-[#090A0F]" />
-              </button>
-            )}
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-[rgba(0,201,141,0.15)] text-[#00C98D]">
+                {isVi ? `BƯỚC ${activeStep}/3` : `STEP ${activeStep}/3`}
+              </span>
+              <h4 className="text-xs sm:text-sm font-bold text-[#F2F4F7] font-display">
+                {isVi ? currentStepGuide.titleVi : currentStepGuide.titleEn}
+              </h4>
+            </div>
+            <p className="text-xs text-[#A5AFBF] font-sans mt-0.5 leading-snug">
+              {isVi ? currentStepGuide.instructionVi : currentStepGuide.instructionEn}
+            </p>
           </div>
         </div>
       )}

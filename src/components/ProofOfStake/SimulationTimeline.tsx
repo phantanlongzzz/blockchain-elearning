@@ -71,9 +71,9 @@ export const SimulationTimeline: React.FC<SimulationTimelineProps> = ({
                 onClick={() => onSelectStep?.(step.id)}
                 className={`flex-1 p-3.5 rounded-xl border text-left transition-all cursor-pointer flex items-center justify-between gap-3 ${
                   isActive
-                    ? 'bg-[rgba(0,201,141,0.08)] border-[#00C98D] text-[#00C98D] ring-1 ring-[#00C98D]'
+                    ? 'bg-[#0B0E12] border-emerald-500/60 ring-1 ring-emerald-500/30 text-slate-100'
                     : isCompleted
-                    ? 'bg-[rgba(0,201,141,0.04)] border-[rgba(0,201,141,0.35)] text-[#00C98D] hover:border-[rgba(0,201,141,0.6)]'
+                    ? 'bg-[#0F131A] border-[#1C2430] hover:border-slate-700 text-slate-300'
                     : 'bg-[#0F131A] border-[#1C2430] text-[#A5AFBF] hover:border-[#2C384A]'
                 }`}
               >
@@ -81,9 +81,9 @@ export const SimulationTimeline: React.FC<SimulationTimelineProps> = ({
                   <div
                     className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold text-sm shrink-0 border ${
                       isActive
-                        ? 'bg-[#00C98D] text-[#090A0F] border-[#00C98D] shadow-sm'
+                        ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-400'
                         : isCompleted
-                        ? 'bg-[rgba(0,201,141,0.15)] border-[rgba(0,201,141,0.4)] text-[#00C98D]'
+                        ? 'bg-[#0B0F15] border-[#1C2430] text-slate-300'
                         : 'bg-[#0B0F15] border-[#1C2430] text-[#717B8C]'
                     }`}
                   >
@@ -95,7 +95,15 @@ export const SimulationTimeline: React.FC<SimulationTimelineProps> = ({
                         {step.title}
                       </span>
                     </div>
-                    <p className="text-[11px] text-[#A5AFBF] truncate mt-0.5 font-sans">
+                    <p
+                      className={`text-[11px] truncate mt-0.5 font-sans ${
+                        step.id === 3 && scenarioOutcome === 'honest'
+                          ? 'text-amber-400 font-semibold font-mono'
+                          : step.id === 3 && scenarioOutcome === 'fraud'
+                          ? 'text-rose-400 font-semibold font-mono'
+                          : 'text-[#A5AFBF]'
+                      }`}
+                    >
                       {step.desc}
                     </p>
                   </div>
@@ -103,9 +111,9 @@ export const SimulationTimeline: React.FC<SimulationTimelineProps> = ({
 
                 <div className="shrink-0">
                   {isCompleted ? (
-                    <CheckCircle2 className="w-4 h-4 text-[#00C98D]" />
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                   ) : isActive ? (
-                    <span className="w-2 h-2 rounded-full bg-[#00C98D] animate-pulse block" />
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse block" />
                   ) : (
                     <span className="text-[10px] font-mono text-[#717B8C] font-bold">
                       #{step.num}

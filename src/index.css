@@ -432,7 +432,7 @@ html body,
   }
 }
 
-/* Custom Neon Pink-Red Cursor - Hide default browser cursor only when active on fine-pointer devices */
+/* Custom Pink-Red Precision Cursor - Hide default browser cursor only when active on fine-pointer devices */
 @media (pointer: fine) and (hover: hover) {
   html.custom-cursor-active,
   html.custom-cursor-active * {

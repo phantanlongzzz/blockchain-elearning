@@ -95,15 +95,16 @@ export const formatHashrate = (hr: number): string => {
   return `${(hr / 1000).toFixed(2)} KH/s`;
 };
 
-function getWorkerConfig(power: number) {
+function getWorkerConfig(power: number, speedMult: number = 1) {
   const norm = Math.max(1, Math.min(100, power));
   // Batch size and speed throttles mapped to give realistic, distinct hardware speeds:
   // Alice (CPU 10%): ~200 H/s
   // Bob (GPU 40%): ~1.1 KH/s
   // Charlie (ASIC 80%): ~5.0 KH/s
   // Dave (Quantum 100%): ~11.6 KH/s
-  const batchSize = Math.max(3, Math.round(norm * 0.35));
-  const speedThrottleMs = Math.max(3, Math.round(16 - (norm / 100) * 13));
+  const baseBatch = Math.max(3, Math.round(norm * 0.35));
+  const batchSize = Math.max(3, Math.round(baseBatch * speedMult));
+  const speedThrottleMs = Math.max(2, Math.round((16 - (norm / 100) * 13) / speedMult));
   return { batchSize, speedThrottleMs };
 }
 
@@ -121,6 +122,7 @@ export const PowLesson: React.FC = () => {
   const [appState, setAppState] = useState<AppState>('idle');
   const [duration, setDuration] = useState<number>(30);
   const [remainingTime, setRemainingTime] = useState<number>(30);
+  const [playSpeed, setPlaySpeed] = useState<number>(1);
   const [difficulty, setDifficulty] = useState<number>(3);
   
   const [miners, setMiners] = useState<MinerVisual[]>([]);
@@ -306,6 +308,7 @@ export const PowLesson: React.FC = () => {
   useEffect(() => {
     let interval: ReturnType<typeof setInterval>;
     if (appState === 'mining' || appState === 'animating_win') {
+      const stepMs = Math.round(1000 / playSpeed);
       interval = setInterval(() => {
         setRemainingTime(prev => {
           if (prev <= 1) {
@@ -319,10 +322,10 @@ export const PowLesson: React.FC = () => {
           }
           return prev - 1;
         });
-      }, 1000);
+      }, stepMs);
     }
     return () => clearInterval(interval);
-  }, [appState, addLog, isVi, terminateWorkers]);
+  }, [appState, playSpeed, addLog, isVi, terminateWorkers]);
 
   const userScrolledAwayRef = useRef(false);
   const isProgrammaticScrollRef = useRef(false);
@@ -387,7 +390,7 @@ export const PowLesson: React.FC = () => {
       blobUrlRef.current = createMiningWorkerBlob();
     }
     
-    const config = getWorkerConfig(miner.power);
+    const config = getWorkerConfig(miner.power, playSpeed);
     const targetPrefix = '0'.repeat(difficultyRef.current);
     const salt = freshSalt || currentBlockSaltRef.current;
     const randomNonce = Math.floor(Math.random() * 0x7FFFFFFF);
@@ -432,7 +435,7 @@ export const PowLesson: React.FC = () => {
         resume: true
       });
     }
-  }, []);
+  }, [playSpeed]);
 
   const handleWinner = useCallback((msg: any) => { 
     if (appStateRef.current !== 'mining' || isHandlingWinnerRef.current) return; 
@@ -713,27 +716,59 @@ export const PowLesson: React.FC = () => {
         </header>
 
         {/* Compact Configuration & Execution Bar */}
-        <div className="p-3.5 sm:p-4 bg-[#0C0F14] rounded-2xl border border-slate-800 flex flex-col lg:flex-row lg:items-center justify-between gap-3 shadow-sm">
-          {/* Controls: Duration & Difficulty */}
-          <div className="flex flex-wrap items-center gap-4">
+        <div className="p-3.5 sm:p-4 bg-[#0C0F14] rounded-2xl border border-slate-800 flex flex-col xl:flex-row xl:items-center justify-between gap-3 shadow-sm">
+          {/* Controls: Duration, Playback Speed & Difficulty */}
+          <div className="flex flex-wrap items-center gap-3 sm:gap-4">
             {/* Duration Selector */}
             <div className="flex items-center gap-2">
               <span className="text-xs font-display font-semibold text-slate-400">
-                {isVi ? 'Thời gian:' : 'Duration:'}
+                {isVi ? 'Thời lượng:' : 'Duration:'}
               </span>
               <div className="flex bg-[#11161D] p-0.5 rounded-lg border border-slate-800">
-                {[30, 45, 60].map(val => (
+                {[
+                  { label: '30s', val: 30 },
+                  { label: isVi ? '1 phút' : '1 min', val: 60 },
+                  { label: isVi ? '2 phút' : '2 min', val: 120 },
+                  { label: isVi ? '5 phút' : '5 min', val: 300 },
+                ].map(item => (
                   <button 
-                    key={val}
-                    onClick={() => setDuration(val)}
+                    key={item.val}
+                    onClick={() => {
+                      setDuration(item.val);
+                      if (appState === 'idle' || appState === 'completed') {
+                        setRemainingTime(item.val);
+                      }
+                    }}
                     disabled={appState !== 'idle' && appState !== 'completed'}
                     className={`px-2 py-1 rounded-md text-xs font-mono font-semibold transition-all ${
-                      duration === val 
-                        ? 'bg-emerald-500/20 text-emerald-400 font-bold' 
+                      duration === item.val 
+                        ? 'bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/30' 
                         : 'text-slate-400 hover:text-slate-200'
                     } disabled:opacity-50 cursor-pointer`}
                   >
-                    {val}s
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Playback Speed Controls */}
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs font-display font-semibold text-slate-400">
+                {isVi ? 'Tốc độ:' : 'Speed:'}
+              </span>
+              <div className="flex bg-[#11161D] p-0.5 rounded-lg border border-slate-800">
+                {[1, 2, 4].map(spd => (
+                  <button
+                    key={spd}
+                    onClick={() => setPlaySpeed(spd)}
+                    className={`px-2 py-0.5 rounded-md text-xs font-mono font-semibold transition-all ${
+                      playSpeed === spd
+                        ? 'bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/30'
+                        : 'text-slate-400 hover:text-slate-200'
+                    } cursor-pointer`}
+                  >
+                    {spd}×
                   </button>
                 ))}
               </div>
@@ -763,15 +798,21 @@ export const PowLesson: React.FC = () => {
             </div>
 
             {/* Target Prefix Summary Pill */}
-            <div className="hidden sm:flex items-center gap-2 bg-[#11161D] px-3 py-1.5 rounded-lg border border-slate-800 text-xs font-mono">
-              <span className="text-slate-500">{isVi ? 'Tiền tố mục tiêu:' : 'Target Prefix:'}</span>
+            <div className="hidden sm:flex items-center gap-2 bg-[#11161D] px-2.5 py-1 rounded-lg border border-slate-800 text-xs font-mono">
+              <span className="text-slate-500">{isVi ? 'Tiền tố:' : 'Prefix:'}</span>
               <span className="text-emerald-400 font-bold">"{'0'.repeat(difficulty)}"</span>
             </div>
           </div>
 
           {/* Timer & Start / Stop Buttons */}
-          <div className="flex items-center gap-2 self-end lg:self-auto">
-            {/* Timer */}
+          <div className="flex items-center gap-2 self-end xl:self-auto">
+            {/* Status & Timer */}
+            {appState === 'completed' && (
+              <span className="px-2 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold">
+                ✓ {isVi ? 'Hoàn Tất' : 'Complete'}
+              </span>
+            )}
+
             <div className="flex items-center gap-1.5 bg-[#11161D] border border-slate-800 px-3 py-1.5 rounded-xl text-xs font-mono" title={isVi ? 'Thời gian còn lại' : 'Remaining time'}>
               <Clock size={13} className={appState === 'mining' ? 'text-emerald-400 animate-pulse' : 'text-slate-500'} />
               <span className={`tabular-nums font-bold ${appState === 'mining' ? 'text-white' : 'text-slate-300'}`}>
@@ -786,7 +827,7 @@ export const PowLesson: React.FC = () => {
                 disabled={miners.length === 0} 
                 className="py-1.5 px-4 bg-emerald-500 hover:bg-emerald-400 text-black font-display font-bold text-xs rounded-xl flex items-center gap-1.5 transition-all disabled:opacity-50 cursor-pointer shadow-sm"
               >
-                <Play size={13} className="fill-current" /> {isVi ? 'Bắt Đầu' : 'Start Mining'}
+                <Play size={13} className="fill-current" /> {isVi ? 'Bắt Đầu' : 'Start Simulation'}
               </button>
             ) : appState === 'completed' ? (
               <button 

@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
-import { Play, Pause, RotateCcw, ArrowRight, ArrowLeft } from 'lucide-react';
+import { Play, Pause, RotateCcw, ArrowRight, ArrowLeft, Clock } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { getMinerColorTheme, GENESIS_THEME } from '../../utils/minerColors';
 
@@ -46,14 +46,39 @@ const INITIAL_MEMPOOL_TXS: MempoolTx[] = [
   { id: 'tx-6', txCode: 'TX-06', from: 'Frank', to: 'Grace', amount: 0.8, fee: 0.0002, status: 'mempool' },
 ];
 
+// Thresholds for each stage: [startProgress, centerProgress]
+const STAGE_CONFIG = [
+  { stage: 1, minProgress: 0.00, centerProgress: 0.05, titleVi: 'Hàng đợi Mempool', titleEn: 'Mempool Queue' },
+  { stage: 2, minProgress: 0.12, centerProgress: 0.18, titleVi: 'Khối ứng viên', titleEn: 'Candidate Block' },
+  { stage: 3, minProgress: 0.25, centerProgress: 0.33, titleVi: 'Khai thác khối mới', titleEn: 'Mining Blocks' },
+  { stage: 4, minProgress: 0.42, centerProgress: 0.50, titleVi: 'Phân nhánh (Fork)', titleEn: 'Fork Occurs' },
+  { stage: 5, minProgress: 0.58, centerProgress: 0.66, titleVi: 'Kéo dài nhánh', titleEn: 'Branch Extension' },
+  { stage: 6, minProgress: 0.74, centerProgress: 0.81, titleVi: 'Chuỗi dài nhất & Khối cũ', titleEn: 'Longest Chain & Stale' },
+  { stage: 7, minProgress: 0.88, centerProgress: 0.94, titleVi: 'Đồng thuận & Hoàn trả Mempool', titleEn: 'Consensus & Recovery' },
+];
+
+function getStageFromProgress(progress: number): number {
+  if (progress < 0.12) return 1;
+  if (progress < 0.25) return 2;
+  if (progress < 0.42) return 3;
+  if (progress < 0.58) return 4;
+  if (progress < 0.74) return 5;
+  if (progress < 0.88) return 6;
+  return 7;
+}
+
 export const P2PForkConsensusVisualizer: React.FC = () => {
   const { language } = useLanguage();
   const isVi = language === 'vi';
 
+  // Master Simulation Clock State
+  const [duration, setDuration] = useState<number>(60); // Default 1 minute (60s)
+  const [elapsedSeconds, setElapsedSeconds] = useState<number>(0);
+  const [playSpeed, setPlaySpeed] = useState<number>(1);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+
   // Active Stage (1 to 7)
   const [currentStage, setCurrentStage] = useState<number>(1);
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [playSpeed, setPlaySpeed] = useState<number>(1);
   const [selectedBlock, setSelectedBlock] = useState<P2PBlock | null>(null);
   const [selectedTx, setSelectedTx] = useState<MempoolTx | null>(null);
   const [interactiveWinnerBranch, setInteractiveWinnerBranch] = useState<'branchA' | 'branchB'>('branchA');
@@ -62,57 +87,137 @@ export const P2PForkConsensusVisualizer: React.FC = () => {
   const [autoCamera, setAutoCamera] = useState<boolean>(true);
   const [cameraPaused, setCameraPaused] = useState<boolean>(false);
 
-  const timerRef = useRef<number | null>(null);
-  const mempoolScrollRef = useRef<HTMLDivElement>(null);
+  // Refs for tracking simulation loop without stale closures
+  const isPlayingRef = useRef<boolean>(isPlaying);
+  isPlayingRef.current = isPlaying;
+  
+  const playSpeedRef = useRef<number>(playSpeed);
+  playSpeedRef.current = playSpeed;
+
+  const durationRef = useRef<number>(duration);
+  durationRef.current = duration;
+
+  const elapsedRef = useRef<number>(elapsedSeconds);
+  elapsedRef.current = elapsedSeconds;
+
+  const currentStageRef = useRef<number>(currentStage);
+  currentStageRef.current = currentStage;
+
+  // Element Refs for Auto Focus
+  const mempoolPanelRef = useRef<HTMLDivElement>(null);
+  const blockchainPanelRef = useRef<HTMLDivElement>(null);
   const treeScrollRef = useRef<HTMLDivElement>(null);
+  const mempoolScrollRef = useRef<HTMLDivElement>(null);
   const forkJunctionRef = useRef<HTMLDivElement>(null);
   const leadingTipRef = useRef<HTMLDivElement>(null);
+  const staleBlockRef = useRef<HTMLDivElement>(null);
+  const candidateRef = useRef<HTMLDivElement>(null);
+  const trunkEndRef = useRef<HTMLDivElement>(null);
   const isProgrammaticScrollRef = useRef<boolean>(false);
 
-  // Auto-focus camera controller (Event-driven)
-  const moveCameraToFocus = useCallback((target?: 'fork' | 'leading' | 'mempool' | 'start') => {
+  // Remaining time in seconds derived from duration and elapsed
+  const remainingTime = useMemo(() => {
+    return Math.max(0, Math.ceil(duration - elapsedSeconds));
+  }, [duration, elapsedSeconds]);
+
+  // Smooth Auto-Focus Camera Controller
+  const moveCameraToFocus = useCallback((stageOverride?: number) => {
+    const stage = stageOverride ?? currentStageRef.current;
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const behavior = prefersReducedMotion ? 'auto' : 'smooth';
+    const behavior: ScrollBehavior = prefersReducedMotion ? 'auto' : 'smooth';
 
     isProgrammaticScrollRef.current = true;
     setTimeout(() => {
       isProgrammaticScrollRef.current = false;
     }, 500);
 
-    if (target === 'mempool' || currentStage === 1) {
-      if (mempoolScrollRef.current) {
-        mempoolScrollRef.current.scrollTo({ left: 0, behavior });
+    // Stage 1 & Stage 7: Guide attention to Mempool
+    if (stage === 1 || stage === 7) {
+      if (mempoolPanelRef.current) {
+        mempoolPanelRef.current.scrollIntoView({ behavior, block: 'nearest' });
       }
-      if (treeScrollRef.current) {
+      if (mempoolScrollRef.current) {
+        if (stage === 7) {
+          // Scroll towards returned transactions on the right
+          mempoolScrollRef.current.scrollTo({ left: mempoolScrollRef.current.scrollWidth, behavior });
+        } else {
+          mempoolScrollRef.current.scrollTo({ left: 0, behavior });
+        }
+      }
+    } 
+    // Stage 2: Candidate block
+    else if (stage === 2) {
+      if (candidateRef.current) {
+        candidateRef.current.scrollIntoView({ behavior, block: 'center', inline: 'center' });
+      } else if (treeScrollRef.current) {
         treeScrollRef.current.scrollTo({ left: 0, behavior });
       }
-    } else if (target === 'fork' || currentStage === 4) {
+    } 
+    // Stage 3: Trunk Blocks (Block #1 -> #2 -> #3)
+    else if (stage === 3) {
+      if (trunkEndRef.current) {
+        trunkEndRef.current.scrollIntoView({ behavior, block: 'center', inline: 'center' });
+      } else if (treeScrollRef.current) {
+        treeScrollRef.current.scrollTo({ left: treeScrollRef.current.scrollWidth * 0.35, behavior });
+      }
+    } 
+    // Stage 4: Fork Occurs (Bob #4A vs Dave #4B)
+    else if (stage === 4) {
       if (forkJunctionRef.current) {
-        forkJunctionRef.current.scrollIntoView({ behavior, block: 'nearest', inline: 'center' });
+        forkJunctionRef.current.scrollIntoView({ behavior, block: 'center', inline: 'center' });
       } else if (treeScrollRef.current) {
         treeScrollRef.current.scrollTo({ left: treeScrollRef.current.scrollWidth * 0.5, behavior });
       }
-    } else if (target === 'leading' || currentStage >= 5) {
+    } 
+    // Stage 5 & 6: Branch extension & Canonical Tip
+    else if (stage >= 5) {
       if (leadingTipRef.current) {
-        leadingTipRef.current.scrollIntoView({ behavior, block: 'nearest', inline: 'center' });
+        leadingTipRef.current.scrollIntoView({ behavior, block: 'center', inline: 'center' });
       } else if (treeScrollRef.current) {
         treeScrollRef.current.scrollTo({ left: treeScrollRef.current.scrollWidth, behavior });
       }
-    } else if (treeScrollRef.current) {
-      treeScrollRef.current.scrollTo({ left: treeScrollRef.current.scrollWidth * 0.3, behavior });
     }
-  }, [currentStage]);
+  }, []);
 
-  // Trigger camera on stage changes
+  // MASTER SIMULATION CLOCK: Single authoritative interval loop
   useEffect(() => {
-    if (autoCamera && !cameraPaused) {
-      const timer = setTimeout(() => {
-        moveCameraToFocus();
-      }, 100);
-      return () => clearTimeout(timer);
-    }
-  }, [currentStage, interactiveWinnerBranch, autoCamera, cameraPaused, moveCameraToFocus]);
+    if (!isPlaying) return;
 
+    const tickIntervalMs = 250; // 4 ticks per second for smooth, responsive timeline
+
+    const interval = setInterval(() => {
+      const spd = playSpeedRef.current;
+      const dur = durationRef.current;
+      const stepSeconds = (tickIntervalMs / 1000) * spd;
+
+      setElapsedSeconds((prevElapsed) => {
+        const nextElapsed = prevElapsed + stepSeconds;
+
+        if (nextElapsed >= dur) {
+          // Simulation complete
+          setIsPlaying(false);
+          setCurrentStage(7);
+          return dur;
+        }
+
+        const progress = nextElapsed / dur;
+        const targetStage = getStageFromProgress(progress);
+
+        if (targetStage !== currentStageRef.current) {
+          setCurrentStage(targetStage);
+          if (autoCamera && !cameraPaused) {
+            moveCameraToFocus(targetStage);
+          }
+        }
+
+        return nextElapsed;
+      });
+    }, tickIntervalMs);
+
+    return () => clearInterval(interval);
+  }, [isPlaying, autoCamera, cameraPaused, moveCameraToFocus]);
+
+  // Handle manual scroll pause & auto-follow resume
   const handleTreeScroll = () => {
     if (isProgrammaticScrollRef.current) return;
     if (autoCamera && !cameraPaused) {
@@ -123,32 +228,12 @@ export const P2PForkConsensusVisualizer: React.FC = () => {
   const handleResumeCamera = () => {
     setCameraPaused(false);
     setAutoCamera(true);
-    moveCameraToFocus();
+    moveCameraToFocus(currentStage);
   };
-
-  // Auto-play timer
-  useEffect(() => {
-    if (isPlaying) {
-      const delay = 3200 / playSpeed;
-      timerRef.current = window.setTimeout(() => {
-        setCurrentStage((prev) => {
-          if (prev >= 7) {
-            setIsPlaying(false);
-            return 7;
-          }
-          return prev + 1;
-        });
-      }, delay);
-    } else if (timerRef.current) {
-      clearTimeout(timerRef.current);
-    }
-    return () => {
-      if (timerRef.current) clearTimeout(timerRef.current);
-    };
-  }, [isPlaying, currentStage, playSpeed]);
 
   const handleReset = () => {
     setIsPlaying(false);
+    setElapsedSeconds(0);
     setCurrentStage(1);
     setSelectedBlock(null);
     setSelectedTx(null);
@@ -159,15 +244,38 @@ export const P2PForkConsensusVisualizer: React.FC = () => {
       if (treeScrollRef.current) {
         treeScrollRef.current.scrollTo({ left: 0, behavior: 'smooth' });
       }
+      if (mempoolScrollRef.current) {
+        mempoolScrollRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+      }
     }, 50);
   };
 
+  const handleSelectStage = (stgNum: number) => {
+    setCameraPaused(false);
+    setCurrentStage(stgNum);
+    const targetConfig = STAGE_CONFIG.find((s) => s.stage === stgNum);
+    if (targetConfig) {
+      setElapsedSeconds(duration * targetConfig.centerProgress);
+    }
+    moveCameraToFocus(stgNum);
+  };
+
   const handleNext = () => {
-    setCurrentStage((prev) => Math.min(7, prev + 1));
+    if (currentStage < 7) {
+      handleSelectStage(currentStage + 1);
+    }
   };
 
   const handlePrev = () => {
-    setCurrentStage((prev) => Math.max(1, prev - 1));
+    if (currentStage > 1) {
+      handleSelectStage(currentStage - 1);
+    }
+  };
+
+  const formatTime = (sec: number) => {
+    const mins = Math.floor(sec / 60);
+    const secs = sec % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
   // Dynamic Mempool transactions based on stages
@@ -420,32 +528,91 @@ export const P2PForkConsensusVisualizer: React.FC = () => {
     return blocks;
   }, [currentStage, interactiveWinnerBranch]);
 
-  // Clean 7-Stage Flow
-  const STAGES = [
-    { num: 1, titleVi: 'Hàng đợi Mempool', titleEn: 'Mempool Queue' },
-    { num: 2, titleVi: 'Khối Ứng Viên', titleEn: 'Candidate Block' },
-    { num: 3, titleVi: 'Cuộc Đua Khai Thác', titleEn: 'Mining Race' },
-    { num: 4, titleVi: 'Phân Nhánh (Fork)', titleEn: 'Fork Occurs' },
-    { num: 5, titleVi: 'Kéo Dài Nhánh', titleEn: 'Branch Extension' },
-    { num: 6, titleVi: 'Chuỗi Dài Nhất & Stale', titleEn: 'Longest Chain & Stale' },
-    { num: 7, titleVi: 'Đồng Thuận & Khôi Phục TX', titleEn: 'Consensus & Recovery' },
-  ];
-
   return (
     <div id="p2p-fork-consensus-visualizer" className="bg-[#07090E] border border-slate-800 rounded-2xl p-4 sm:p-5 text-slate-100 font-sans shadow-2xl space-y-4">
       
-      {/* 1. TOP SIMULATION CONTROLS (COMPACT) */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800/80 pb-3">
-        <div>
+      {/* 1. TOP SIMULATION CONTROLS */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 border-b border-slate-800/80 pb-3.5">
+        <div className="flex items-center gap-3">
           <h2 className="text-sm sm:text-base font-display font-bold text-white tracking-wide">
             {isVi ? 'Phân Nhánh & Đồng Thuận Nakamoto' : 'Fork & Nakamoto Consensus'}
           </h2>
         </div>
 
-        {/* Minimal Controls: Play/Pause, Reset, Speed, Step indicator */}
-        <div className="flex items-center gap-2 self-end sm:self-auto">
+        {/* Controls: Duration, Speed, Step indicator, Play/Pause, Reset */}
+        <div className="flex flex-wrap items-center gap-2.5 self-start lg:self-auto">
+          
+          {/* Duration Selector: 30s, 1m, 2m, 5m */}
+          <div className="flex items-center gap-1.5">
+            <span className="text-xs font-display font-semibold text-slate-400">
+              {isVi ? 'Thời lượng:' : 'Duration:'}
+            </span>
+            <div className="flex bg-[#0C0F14] border border-slate-800 rounded-xl p-0.5 text-xs font-mono">
+              {[
+                { label: '30s', val: 30 },
+                { label: isVi ? '1 phút' : '1 min', val: 60 },
+                { label: isVi ? '2 phút' : '2 min', val: 120 },
+                { label: isVi ? '5 phút' : '5 min', val: 300 },
+              ].map((item) => (
+                <button
+                  key={item.val}
+                  onClick={() => {
+                    setDuration(item.val);
+                    if (!isPlaying) {
+                      setElapsedSeconds(0);
+                      setCurrentStage(1);
+                    } else {
+                      // Recalculate elapsed to preserve current stage progress ratio
+                      const targetConfig = STAGE_CONFIG.find((s) => s.stage === currentStage);
+                      if (targetConfig) {
+                        setElapsedSeconds(item.val * targetConfig.centerProgress);
+                      }
+                    }
+                  }}
+                  className={`px-2 py-0.5 rounded-lg font-semibold transition-all ${
+                    duration === item.val
+                      ? 'bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/30'
+                      : 'text-slate-400 hover:text-slate-200'
+                  } cursor-pointer`}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Speed: 1x, 2x */}
+          <div className="flex items-center gap-1.5">
+            <span className="text-xs font-display font-semibold text-slate-400">
+              {isVi ? 'Tốc độ:' : 'Speed:'}
+            </span>
+            <div className="flex bg-[#0C0F14] border border-slate-800 rounded-xl p-0.5 text-xs font-mono">
+              {[1, 2].map((spd) => (
+                <button
+                  key={spd}
+                  onClick={() => setPlaySpeed(spd)}
+                  className={`px-2 py-0.5 rounded-lg font-semibold transition-all ${
+                    playSpeed === spd
+                      ? 'bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/30'
+                      : 'text-slate-400 hover:text-slate-200'
+                  } cursor-pointer`}
+                >
+                  {spd}×
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Countdown Clock */}
+          <div className="flex items-center gap-1.5 bg-[#0C0F14] border border-slate-800 px-2.5 py-1 rounded-xl text-xs font-mono">
+            <Clock size={12} className={isPlaying ? 'text-emerald-400 animate-pulse' : 'text-slate-500'} />
+            <span className={`tabular-nums font-bold ${isPlaying ? 'text-white' : 'text-slate-300'}`}>
+              {formatTime(remainingTime)}
+            </span>
+          </div>
+
           {/* Step Indicator */}
-          <div className="flex items-center bg-[#0C0F14] border border-slate-800 rounded-xl px-2 py-1 text-xs font-mono">
+          <div className="flex items-center bg-[#0C0F14] border border-slate-800 rounded-xl px-1.5 py-0.5 text-xs font-mono">
             <button
               onClick={handlePrev}
               disabled={currentStage === 1}
@@ -454,7 +621,7 @@ export const P2PForkConsensusVisualizer: React.FC = () => {
             >
               <ArrowLeft size={12} />
             </button>
-            <span className="font-bold px-2 text-emerald-400">
+            <span className="font-bold px-1.5 text-emerald-400">
               {currentStage}/7
             </span>
             <button
@@ -467,24 +634,16 @@ export const P2PForkConsensusVisualizer: React.FC = () => {
             </button>
           </div>
 
-          {/* Speed */}
-          <div className="flex bg-[#0C0F14] border border-slate-800 rounded-xl p-0.5 text-xs font-mono">
-            {[1, 2].map((spd) => (
-              <button
-                key={spd}
-                onClick={() => setPlaySpeed(spd)}
-                className={`px-2 py-0.5 rounded-lg font-semibold transition-all ${
-                  playSpeed === spd ? 'bg-emerald-500/20 text-emerald-400 font-bold' : 'text-slate-400 hover:text-slate-200'
-                }`}
-              >
-                {spd}x
-              </button>
-            ))}
-          </div>
-
           {/* Play / Pause */}
           <button
-            onClick={() => setIsPlaying(!isPlaying)}
+            onClick={() => {
+              if (!isPlaying && elapsedSeconds >= duration) {
+                // If ended, restart from beginning
+                setElapsedSeconds(0);
+                setCurrentStage(1);
+              }
+              setIsPlaying(!isPlaying);
+            }}
             className={`px-3 py-1.5 rounded-xl font-display font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer shadow-sm ${
               isPlaying 
                 ? 'bg-amber-500 hover:bg-amber-400 text-black' 
@@ -492,7 +651,7 @@ export const P2PForkConsensusVisualizer: React.FC = () => {
             }`}
           >
             {isPlaying ? <Pause size={12} className="fill-current" /> : <Play size={12} className="fill-current" />}
-            <span>{isPlaying ? (isVi ? 'Tạm Dừng' : 'Pause') : (isVi ? 'Tự Động' : 'Start')}</span>
+            <span>{isPlaying ? (isVi ? 'Tạm Dừng' : 'Pause') : (isVi ? 'Bắt Đầu' : 'Start')}</span>
           </button>
 
           {/* Reset */}
@@ -508,17 +667,14 @@ export const P2PForkConsensusVisualizer: React.FC = () => {
 
       {/* 2. COMPACT STAGE PROGRESS INDICATOR (FLOW PILLS) */}
       <div className="flex items-center overflow-x-auto gap-1.5 py-0.5 no-scrollbar">
-        {STAGES.map((stg, idx) => {
-          const isActive = currentStage === stg.num;
-          const isPassed = currentStage > stg.num;
+        {STAGE_CONFIG.map((stg, idx) => {
+          const isActive = currentStage === stg.stage;
+          const isPassed = currentStage > stg.stage;
 
           return (
-            <React.Fragment key={stg.num}>
+            <React.Fragment key={stg.stage}>
               <button
-                onClick={() => {
-                  setCurrentStage(stg.num);
-                  setIsPlaying(false);
-                }}
+                onClick={() => handleSelectStage(stg.stage)}
                 className={`px-2.5 py-1 rounded-lg text-xs font-display font-medium shrink-0 transition-all cursor-pointer flex items-center gap-1.5 ${
                   isActive
                     ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/50 font-bold ring-1 ring-emerald-500/20'
@@ -528,11 +684,11 @@ export const P2PForkConsensusVisualizer: React.FC = () => {
                 }`}
               >
                 <span className={`text-[10px] font-mono ${isActive ? 'text-emerald-400' : 'text-slate-500'}`}>
-                  {stg.num}
+                  {stg.stage}
                 </span>
                 <span>{isVi ? stg.titleVi : stg.titleEn}</span>
               </button>
-              {idx < STAGES.length - 1 && (
+              {idx < STAGE_CONFIG.length - 1 && (
                 <span className="text-slate-700 text-xs shrink-0 select-none">→</span>
               )}
             </React.Fragment>
@@ -540,12 +696,192 @@ export const P2PForkConsensusVisualizer: React.FC = () => {
         })}
       </div>
 
-      {/* 3. MEMPOOL SEPARATE VISUAL PANEL */}
-      <div className="p-3 sm:p-4 rounded-xl bg-[#090C11] border border-slate-800/90 space-y-2">
+      {/* 3. BLOCKCHAIN NETWORK & FORK TREE (MAIN LARGE VISUAL AREA) */}
+      <div 
+        ref={blockchainPanelRef}
+        className="p-3.5 sm:p-5 rounded-xl bg-[#090C11] border border-slate-800/90 space-y-3"
+      >
+        <div className="flex items-center justify-between border-b border-slate-800/60 pb-2">
+          <span className="text-xs font-display font-bold text-slate-300 uppercase tracking-wider">
+            {isVi ? 'MẠNG LƯỚI BLOCKCHAIN' : 'BLOCKCHAIN NETWORK'}
+          </span>
+
+          <div className="flex items-center gap-2">
+            {(currentStage >= 4 && currentStage <= 6) && (
+              <div className="flex items-center gap-1.5 bg-[#11161D] border border-slate-800 p-1 rounded-lg text-xs font-mono">
+                <span className="text-slate-400 text-[10px] mr-0.5">{isVi ? 'Nhánh thắng:' : 'Winner:'}</span>
+                <button
+                  onClick={() => {
+                    setInteractiveWinnerBranch('branchA');
+                    setCameraPaused(false);
+                  }}
+                  className={`px-1.5 py-0.5 rounded text-[11px] font-bold cursor-pointer ${
+                    interactiveWinnerBranch === 'branchA'
+                      ? 'bg-sky-500/20 text-sky-300 border border-sky-500/40'
+                      : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  Bob (#4A)
+                </button>
+                <button
+                  onClick={() => {
+                    setInteractiveWinnerBranch('branchB');
+                    setCameraPaused(false);
+                  }}
+                  className={`px-1.5 py-0.5 rounded text-[11px] font-bold cursor-pointer ${
+                    interactiveWinnerBranch === 'branchB'
+                      ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40'
+                      : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  Dave (#4B)
+                </button>
+              </div>
+            )}
+
+            {cameraPaused && (
+              <button
+                onClick={handleResumeCamera}
+                className="px-2 py-0.5 rounded bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-[11px] font-mono font-bold transition-all cursor-pointer flex items-center gap-1 animate-pulse"
+                title={isVi ? 'Tự động theo dõi khối mới nhất' : 'Follow latest block'}
+              >
+                <span>↳</span>
+                <span>{isVi ? 'Theo dõi mới nhất' : 'Follow Latest'}</span>
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Blockchain Tree Canvas */}
+        <div 
+          ref={treeScrollRef}
+          onScroll={handleTreeScroll}
+          className="p-3 sm:p-5 overflow-x-auto min-h-[230px] bg-[#07090E] rounded-xl border border-slate-855 flex items-center custom-scrollbar"
+        >
+          <div className="flex items-center gap-2 min-w-max mx-auto py-2">
+            
+            {/* Trunk: Genesis (#0) -> #1 -> #2 -> #3 */}
+            <div className="flex items-center gap-2">
+              {trunkBlocks.map((blk, idx) => {
+                const isTrunkEnd = idx === trunkBlocks.length - 1;
+                return (
+                  <React.Fragment key={blk.id}>
+                    <div ref={isTrunkEnd ? trunkEndRef : undefined}>
+                      <CompactBlockCard 
+                        block={blk} 
+                        onClick={() => setSelectedBlock(blk)} 
+                        isVi={isVi} 
+                      />
+                    </div>
+                    {idx < trunkBlocks.length - 1 && (
+                      <div className="w-3 h-0.5 bg-slate-700 shrink-0" />
+                    )}
+                  </React.Fragment>
+                );
+              })}
+            </div>
+
+            {/* Candidate Block Indicator (Stage 2) or Mining Placeholder (Stage 3) */}
+            {currentStage === 2 ? (
+              <div ref={candidateRef} className="flex items-center gap-2">
+                <div className="w-3 h-0.5 bg-slate-700" />
+                <div className="p-2 rounded-xl border border-dashed border-emerald-500/50 bg-emerald-950/20 text-emerald-300 flex flex-col items-center justify-center min-w-[80px] h-[60px] animate-pulse">
+                  <span className="text-xs font-mono font-bold">#2 ?</span>
+                  <span className="text-[10px] font-sans">{isVi ? 'Ứng viên' : 'Candidate'}</span>
+                </div>
+              </div>
+            ) : currentStage === 3 ? (
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-0.5 bg-slate-700" />
+                <div className="w-16 h-[56px] rounded-xl border border-dashed border-slate-800 bg-[#0C0F14]/40 flex items-center justify-center text-center">
+                  <span className="text-[10px] font-mono text-slate-500">#4 ?</span>
+                </div>
+              </div>
+            ) : null}
+
+            {/* Fork Junction Connector (Stage >= 4) */}
+            {currentStage >= 4 && (
+              <div ref={forkJunctionRef} className="flex items-center relative z-0 px-1">
+                <div className="w-4 h-0.5 bg-slate-700" />
+                <div className="w-0.5 h-[140px] bg-slate-700 relative flex flex-col justify-between items-center">
+                  <div className="w-4 h-0.5 bg-slate-700 self-start absolute top-0 left-0" />
+                  <div className="w-4 h-0.5 bg-slate-700 self-start absolute bottom-0 left-0" />
+                  
+                  <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 bg-[#0C0F14] border border-amber-500/40 text-amber-300 text-[9px] font-mono px-1.5 py-0.2 rounded z-20">
+                    Fork
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Branches: Branch A (Top) & Branch B (Bottom) */}
+            {currentStage >= 4 && (
+              <div className="flex flex-col gap-5 z-10 py-1">
+                
+                {/* BRANCH A (Bob #4A -> Charlie #5A -> Alice #6A) */}
+                <div className="flex items-center gap-2 min-h-[70px]">
+                  {branchABlocks.map((blk, bIdx) => {
+                    const isTheLeadingTip = blk.isLeading;
+                    const isStale = blk.status === 'stale';
+                    return (
+                      <React.Fragment key={blk.id}>
+                        <div 
+                          ref={isTheLeadingTip ? leadingTipRef : (isStale ? staleBlockRef : undefined)}
+                        >
+                          <CompactBlockCard 
+                            block={blk} 
+                            onClick={() => setSelectedBlock(blk)} 
+                            isVi={isVi} 
+                          />
+                        </div>
+                        {bIdx < branchABlocks.length - 1 && (
+                          <div className="w-3 h-0.5 bg-slate-700 shrink-0" />
+                        )}
+                      </React.Fragment>
+                    );
+                  })}
+                </div>
+
+                {/* BRANCH B (Dave #4B) */}
+                <div className="flex items-center gap-2 min-h-[70px]">
+                  {branchBBlocks.map((blk, bIdx) => {
+                    const isTheLeadingTip = blk.isLeading && interactiveWinnerBranch === 'branchB';
+                    const isStale = blk.status === 'stale';
+                    return (
+                      <React.Fragment key={blk.id}>
+                        <div 
+                          ref={isTheLeadingTip ? leadingTipRef : (isStale ? staleBlockRef : undefined)}
+                        >
+                          <CompactBlockCard 
+                            block={blk} 
+                            onClick={() => setSelectedBlock(blk)} 
+                            isVi={isVi} 
+                          />
+                        </div>
+                        {bIdx < branchBBlocks.length - 1 && (
+                          <div className="w-3 h-0.5 bg-slate-700 shrink-0" />
+                        )}
+                      </React.Fragment>
+                    );
+                  })}
+                </div>
+
+              </div>
+            )}
+
+          </div>
+        </div>
+      </div>
+
+      {/* 4. MEMPOOL SEPARATE VISUAL PANEL */}
+      <div 
+        ref={mempoolPanelRef}
+        className="p-3 sm:p-4 rounded-xl bg-[#090C11] border border-slate-800/90 space-y-2"
+      >
         <div className="flex items-center justify-between border-b border-slate-800/60 pb-1.5">
           <div className="flex items-center gap-2">
             <span className="text-xs font-display font-bold text-slate-300 uppercase tracking-wider">
-              MEMPOOL
+              {isVi ? 'HÀNG ĐỢI MEMPOOL' : 'MEMPOOL QUEUE'}
             </span>
             <span className="text-[10px] font-mono text-slate-500 px-1.5 py-0.2 rounded bg-slate-800/60">
               {mempoolTxs.length} TX
@@ -604,154 +940,6 @@ export const P2PForkConsensusVisualizer: React.FC = () => {
               </div>
             );
           })}
-        </div>
-      </div>
-
-      {/* 4. BLOCKCHAIN NETWORK & FORK TREE VISUAL PANEL */}
-      <div className="p-3.5 sm:p-5 rounded-xl bg-[#090C11] border border-slate-800/90 space-y-3">
-        <div className="flex items-center justify-between border-b border-slate-800/60 pb-2">
-          <span className="text-xs font-display font-bold text-slate-300 uppercase tracking-wider">
-            {isVi ? 'MẠNG LƯỚI BLOCKCHAIN' : 'BLOCKCHAIN NETWORK'}
-          </span>
-
-          <div className="flex items-center gap-2">
-            {(currentStage >= 4 && currentStage <= 6) && (
-              <div className="flex items-center gap-1.5 bg-[#11161D] border border-slate-800 p-1 rounded-lg text-xs font-mono">
-                <span className="text-slate-400 text-[10px] mr-0.5">{isVi ? 'Nhánh thắng:' : 'Winner:'}</span>
-                <button
-                  onClick={() => setInteractiveWinnerBranch('branchA')}
-                  className={`px-1.5 py-0.5 rounded text-[11px] font-bold cursor-pointer ${
-                    interactiveWinnerBranch === 'branchA'
-                      ? 'bg-sky-500/20 text-sky-300 border border-sky-500/40'
-                      : 'text-slate-400 hover:text-white'
-                  }`}
-                >
-                  Bob (#4A)
-                </button>
-                <button
-                  onClick={() => setInteractiveWinnerBranch('branchB')}
-                  className={`px-1.5 py-0.5 rounded text-[11px] font-bold cursor-pointer ${
-                    interactiveWinnerBranch === 'branchB'
-                      ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40'
-                      : 'text-slate-400 hover:text-white'
-                  }`}
-                >
-                  Dave (#4B)
-                </button>
-              </div>
-            )}
-
-            {cameraPaused && (
-              <button
-                onClick={handleResumeCamera}
-                className="px-2 py-0.5 rounded bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-[11px] font-mono font-bold transition-all cursor-pointer flex items-center gap-1 animate-pulse"
-                title={isVi ? 'Cuộn đến khối mới nhất' : 'Jump to latest block'}
-              >
-                <span>↳</span>
-                <span>{isVi ? 'Đến khối mới nhất' : 'Jump to Latest'}</span>
-              </button>
-            )}
-          </div>
-        </div>
-
-        {/* Tree Canvas */}
-        <div 
-          ref={treeScrollRef}
-          onScroll={handleTreeScroll}
-          className="p-3 sm:p-5 overflow-x-auto min-h-[220px] bg-[#07090E] rounded-xl border border-slate-850 flex items-center custom-scrollbar"
-        >
-          <div className="flex items-center gap-2 min-w-max mx-auto py-2">
-            
-            {/* Trunk: Genesis (#0) -> #1 -> #2 -> #3 */}
-            <div className="flex items-center gap-2">
-              {trunkBlocks.map((blk, idx) => {
-                return (
-                  <React.Fragment key={blk.id}>
-                    <CompactBlockCard 
-                      block={blk} 
-                      onClick={() => setSelectedBlock(blk)} 
-                      isVi={isVi} 
-                    />
-                    {idx < trunkBlocks.length - 1 && (
-                      <div className="w-3 h-0.5 bg-slate-700 shrink-0" />
-                    )}
-                  </React.Fragment>
-                );
-              })}
-            </div>
-
-            {/* Fork Junction Connector */}
-            {currentStage >= 4 ? (
-              <div ref={forkJunctionRef} className="flex items-center relative z-0 px-1">
-                <div className="w-4 h-0.5 bg-slate-700" />
-                <div className="w-0.5 h-[140px] bg-slate-700 relative flex flex-col justify-between items-center">
-                  <div className="w-4 h-0.5 bg-slate-700 self-start absolute top-0 left-0" />
-                  <div className="w-4 h-0.5 bg-slate-700 self-start absolute bottom-0 left-0" />
-                  
-                  <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 bg-[#0C0F14] border border-amber-500/40 text-amber-300 text-[9px] font-mono px-1.5 py-0.2 rounded z-20">
-                    Fork
-                  </div>
-                </div>
-              </div>
-            ) : currentStage === 3 ? (
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-0.5 bg-slate-700" />
-                <div className="w-16 h-[56px] rounded-xl border border-dashed border-slate-800 bg-[#0C0F14]/40 flex items-center justify-center text-center">
-                  <span className="text-[10px] font-mono text-slate-500">#4 ?</span>
-                </div>
-              </div>
-            ) : null}
-
-            {/* Branches: Branch A (Top) & Branch B (Bottom) */}
-            {currentStage >= 4 && (
-              <div className="flex flex-col gap-5 z-10 py-1">
-                
-                {/* BRANCH A (Bob #4A -> Charlie #5A -> Alice #6A) */}
-                <div className="flex items-center gap-2 min-h-[70px]">
-                  {branchABlocks.map((blk, bIdx) => {
-                    const isTheLeadingTip = blk.isLeading;
-                    return (
-                      <React.Fragment key={blk.id}>
-                        <div ref={isTheLeadingTip ? leadingTipRef : undefined}>
-                          <CompactBlockCard 
-                            block={blk} 
-                            onClick={() => setSelectedBlock(blk)} 
-                            isVi={isVi} 
-                          />
-                        </div>
-                        {bIdx < branchABlocks.length - 1 && (
-                          <div className="w-3 h-0.5 bg-slate-700 shrink-0" />
-                        )}
-                      </React.Fragment>
-                    );
-                  })}
-                </div>
-
-                {/* BRANCH B (Dave #4B) */}
-                <div className="flex items-center gap-2 min-h-[70px]">
-                  {branchBBlocks.map((blk, bIdx) => {
-                    const isTheLeadingTip = blk.isLeading && interactiveWinnerBranch === 'branchB';
-                    return (
-                      <React.Fragment key={blk.id}>
-                        <div ref={isTheLeadingTip ? leadingTipRef : undefined}>
-                          <CompactBlockCard 
-                            block={blk} 
-                            onClick={() => setSelectedBlock(blk)} 
-                            isVi={isVi} 
-                          />
-                        </div>
-                        {bIdx < branchBBlocks.length - 1 && (
-                          <div className="w-3 h-0.5 bg-slate-700 shrink-0" />
-                        )}
-                      </React.Fragment>
-                    );
-                  })}
-                </div>
-
-              </div>
-            )}
-
-          </div>
         </div>
       </div>
 
@@ -842,12 +1030,12 @@ const BlockDetailModal: React.FC<{ block: P2PBlock; onClose: () => void; isVi: b
             </span>
             {block.status === 'canonical' && (
               <span className="px-1.5 py-0.2 rounded text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-                ✓ Canonical
+                ✓ {isVi ? 'Chuỗi chính' : 'Canonical'}
               </span>
             )}
             {block.status === 'stale' && (
               <span className="px-1.5 py-0.2 rounded text-[10px] font-mono font-bold bg-slate-800 text-slate-400 border border-slate-700">
-                ✕ Stale
+                ✕ {isVi ? 'Khối cũ (Stale)' : 'Stale'}
               </span>
             )}
           </div>
@@ -871,7 +1059,7 @@ const BlockDetailModal: React.FC<{ block: P2PBlock; onClose: () => void; isVi: b
             </div>
             <div className="flex justify-between">
               <span className="text-slate-500">{isVi ? 'PoW tích lũy:' : 'Cumulative Work:'}</span>
-              <span className="text-emerald-400 font-bold">{block.cumulativeWork} blocks</span>
+              <span className="text-emerald-400 font-bold">{block.cumulativeWork} {isVi ? 'khối' : 'blocks'}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-slate-500">{isVi ? 'Thưởng Coinbase:' : 'Coinbase Reward:'}</span>

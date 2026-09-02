@@ -82,9 +82,6 @@ export const StakeDistributionBar: React.FC<StakeDistributionBarProps> = ({
     const preset = getValidatorPreset(val.id, val.name);
     const isSelected = selectedProposerId === val.id;
 
-    // Distinct restrained palette: bright emerald for winner, restrained dark emerald/teal/slate for normal
-    const sliceColor = isSelected ? '#22C55E' : preset.color;
-
     return {
       validator: val,
       preset,
@@ -92,7 +89,7 @@ export const StakeDistributionBar: React.FC<StakeDistributionBarProps> = ({
       pathData,
       labelX,
       labelY,
-      colorHex: sliceColor,
+      colorHex: preset.color,
       colorGlow: preset.glow,
       textClass: preset.textClass,
       isHovered: hoveredId === val.id,
@@ -120,8 +117,8 @@ export const StakeDistributionBar: React.FC<StakeDistributionBarProps> = ({
             </h3>
             <p className="text-xs text-[#A5AFBF] mt-0.5">
               {language === 'vi'
-                ? 'Hệ thống quay vòng xác suất: ai đặt cọc càng nhiều ETH thì diện tích ô càng lớn, xác suất được chọn càng cao.'
-                : 'Weighted lottery wheel: participants with more deposited ETH have a proportionally larger slice and higher selection probability.'}
+                ? 'Validator có lượng ETH đặt cọc cao hơn sẽ có xác suất được chọn cao hơn.'
+                : 'Validators with higher ETH stake have a higher probability of being selected.'}
             </p>
           </div>
         </div>
@@ -195,12 +192,12 @@ export const StakeDistributionBar: React.FC<StakeDistributionBarProps> = ({
                         opacity={isDimmed ? 0.35 : 1}
                         stroke={
                           slice.isSelected
-                            ? '#FFFFFF'
+                            ? '#FBBF24'
                             : slice.isHovered
                             ? '#FFFFFF'
                             : '#090A0F'
                         }
-                        strokeWidth={slice.isSelected ? 3 : slice.isHovered ? 2 : 1.5}
+                        strokeWidth={slice.isSelected ? 3.5 : slice.isHovered ? 2 : 1.5}
                         className="transition-opacity duration-150"
                       />
 
@@ -234,8 +231,8 @@ export const StakeDistributionBar: React.FC<StakeDistributionBarProps> = ({
                 </div>
               ) : selectedValidator ? (
                 <div className="animate-in fade-in zoom-in-95 duration-200 flex flex-col items-center">
-                  <div className="w-7 h-7 rounded-full bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 mb-0.5">
-                    <Trophy className="w-4 h-4 text-emerald-400" />
+                  <div className="w-7 h-7 rounded-full bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-0.5">
+                    <Trophy className="w-4 h-4 text-amber-400" />
                   </div>
                   <span className="text-sm font-black text-[#F2F4F7] font-display">
                     {selectedName}
@@ -257,53 +254,54 @@ export const StakeDistributionBar: React.FC<StakeDistributionBarProps> = ({
               )}
             </div>
           </div>
-
-          {/* Educational Note directly under Visualization */}
-          <div className="mt-3 text-center">
-            <p className="text-xs sm:text-sm font-semibold text-emerald-400 font-sans">
-              {language === 'vi'
-                ? 'Đặt cọc càng nhiều ETH → xác suất được chọn càng cao.'
-                : 'More ETH deposited → higher chance of being selected.'}
-            </p>
-          </div>
         </div>
 
         {/* Right: Legend & Winner Announcement */}
         <div className="lg:col-span-6 flex flex-col gap-3">
           {/* Winner Announcement Banner */}
           {selectedValidator ? (
-            <div className="p-4 rounded-xl bg-[#10151D] border border-emerald-500/40 shadow-sm space-y-1.5 animate-in fade-in duration-200">
-              <div className="flex items-center gap-2 text-[#22C55E] font-bold text-sm">
-                <Trophy className="w-4 h-4 text-[#22C55E] shrink-0" />
+            <div className="p-3.5 sm:p-4 rounded-xl bg-[#10151D] border border-amber-500/40 shadow-sm space-y-1 animate-in fade-in duration-200">
+              <div className="flex items-center gap-2 text-amber-400 font-bold text-sm">
+                <Trophy className="w-4 h-4 text-amber-400 shrink-0" />
                 <span>
-                  <strong className="text-[#F2F4F7]">{selectedName}</strong> {language === 'vi' ? 'được chọn giải khối!' : 'was selected as Block Solver!'}
+                  {selectedName} {language === 'vi' ? 'được chọn giải khối!' : 'was selected as Block Solver!'}
                 </span>
               </div>
-              <p className="text-xs text-[#A5AFBF] leading-relaxed">
+              <p className="text-xs text-[#A5AFBF]">
                 {language === 'vi' ? (
                   <>
-                    <span className="text-[#F2F4F7] font-semibold">{selectedName}</span> có xác suất được chọn là{' '}
-                    <span className="text-amber-400 font-mono font-bold">{((selectedValidator.stake / totalActiveStake) * 100).toFixed(1)}%</span>, tương ứng với{' '}
-                    <span className="text-amber-400 font-mono font-bold">{selectedValidator.stake.toFixed(0)} ETH</span> đặt cọc.
+                    Xác suất:{' '}
+                    <span className="text-amber-400 font-mono font-bold">
+                      {((selectedValidator.stake / totalActiveStake) * 100).toFixed(1)}%
+                    </span>{' '}
+                    · Đặt cọc:{' '}
+                    <span className="text-amber-400 font-mono font-bold">
+                      {selectedValidator.stake.toFixed(0)} ETH
+                    </span>
                   </>
                 ) : (
                   <>
-                    <span className="text-[#F2F4F7] font-semibold">{selectedName}</span> has a selection probability of{' '}
-                    <span className="text-amber-400 font-mono font-bold">{((selectedValidator.stake / totalActiveStake) * 100).toFixed(1)}%</span>, corresponding to{' '}
-                    <span className="text-amber-400 font-mono font-bold">{selectedValidator.stake.toFixed(0)} ETH</span> deposited.
+                    Probability:{' '}
+                    <span className="text-amber-400 font-mono font-bold">
+                      {((selectedValidator.stake / totalActiveStake) * 100).toFixed(1)}%
+                    </span>{' '}
+                    · Stake:{' '}
+                    <span className="text-amber-400 font-mono font-bold">
+                      {selectedValidator.stake.toFixed(0)} ETH
+                    </span>
                   </>
                 )}
               </p>
             </div>
           ) : (
-            <div className="p-4 rounded-xl bg-[#0F131A] border border-[#1C2430] text-xs text-[#A5AFBF] leading-relaxed">
+            <div className="p-3.5 sm:p-4 rounded-xl bg-[#0F131A] border border-[#1C2430] text-xs text-[#A5AFBF] leading-relaxed">
               <div className="font-bold text-[#F2F4F7] mb-1 flex items-center gap-1.5">
                 <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
                 <span>{language === 'vi' ? 'Cách thức lựa chọn:' : 'How Selection Works:'}</span>
               </div>
               {language === 'vi'
-                ? 'Nhấn nút "Bắt đầu chọn người giải khối" phía trên. Hệ thống sẽ chọn ngẫu nhiên một người — ai đặt cọc càng nhiều ETH thì cơ hội trúng càng lớn.'
-                : 'Click "Select Block Solver" above. The system randomly selects one block solver — higher ETH deposit gives a higher winning probability.'}
+                ? 'Nhấn nút "Bắt đầu chọn người giải khối" phía trên để tiến hành quay xác suất.'
+                : 'Click "Select Block Solver" above to run the weighted selection.'}
             </div>
           )}
 
@@ -320,7 +318,7 @@ export const StakeDistributionBar: React.FC<StakeDistributionBarProps> = ({
                   key={val.id}
                   className={`p-2.5 rounded-xl border text-left transition-all ${
                     isSelected
-                      ? 'bg-[#10151D] border-[#22C55E] ring-1 ring-[#22C55E]/60 text-white shadow-sm'
+                      ? 'bg-[#10151D] border-amber-500 ring-1 ring-amber-500/60 text-white shadow-sm'
                       : isZeroStake
                       ? 'bg-[#0B0E12] border-[#1C2430]/60 opacity-45'
                       : 'bg-[#0F131A] border-[#1C2430] hover:border-[#2C384A]'
@@ -330,14 +328,14 @@ export const StakeDistributionBar: React.FC<StakeDistributionBarProps> = ({
                     <div className="flex items-center gap-1.5 min-w-0">
                       <div
                         className="w-2.5 h-2.5 rounded-full shrink-0"
-                        style={{ backgroundColor: isSelected ? '#22C55E' : isZeroStake ? '#64748B' : preset.color }}
+                        style={{ backgroundColor: isZeroStake ? '#64748B' : preset.color }}
                       />
                       <span className={`text-xs font-bold truncate ${isZeroStake ? 'text-[#717B8C]' : isSelected ? 'text-white' : 'text-[#F2F4F7]'}`}>
                         {val.name}
                       </span>
                     </div>
                     {isSelected && (
-                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">
+                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/40">
                         ✓ {language === 'vi' ? 'Được chọn' : 'Selected'}
                       </span>
                     )}
@@ -346,7 +344,7 @@ export const StakeDistributionBar: React.FC<StakeDistributionBarProps> = ({
                     <span className={isZeroStake ? 'text-[#717B8C]' : isSelected ? 'text-amber-400 font-bold' : 'text-[#A5AFBF]'}>
                       {val.stake.toFixed(0)} ETH
                     </span>
-                    <span className={isZeroStake ? 'text-[#717B8C]' : isSelected ? 'text-emerald-400 font-bold' : preset.textClass}>
+                    <span className={isZeroStake ? 'text-[#717B8C]' : isSelected ? 'text-amber-400 font-bold' : preset.textClass}>
                       {percentage.toFixed(1)}%
                     </span>
                   </div>

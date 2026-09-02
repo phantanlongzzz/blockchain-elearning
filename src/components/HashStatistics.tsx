@@ -34,9 +34,9 @@ export const HashStatistics: React.FC<HashStatisticsProps> = () => {
         ? 'Không gian mẫu khổng lồ vượt qua tổng số nguyên tử trong vũ trụ quan sát được.'
         : 'Colossal state space exceeding the total atoms in the observable universe.',
       icon: Database,
-      color: 'text-purple-400',
-      borderColor: 'border-purple-500/30',
-      bgGlow: 'hover:border-purple-400 hover:shadow-[0_0_20px_rgba(168,85,247,0.2)]',
+      color: 'text-emerald-400',
+      borderColor: 'border-emerald-500/30',
+      bgGlow: 'hover:border-emerald-500/40',
     },
     {
       title: isVi ? 'MỘT CHIỀU' : 'ONE-WAY',
@@ -45,9 +45,9 @@ export const HashStatistics: React.FC<HashStatisticsProps> = () => {
         ? 'Dễ dàng tính mã băm từ dữ liệu, nhưng bất khả thi về mặt toán học để giải ngược lại.'
         : 'Computationally trivial to hash forward; practically impossible to reverse.',
       icon: Lock,
-      color: 'text-blue-400',
-      borderColor: 'border-blue-500/30',
-      bgGlow: 'hover:border-blue-400 hover:shadow-[0_0_20px_rgba(59,130,246,0.2)]',
+      color: 'text-emerald-400',
+      borderColor: 'border-emerald-500/30',
+      bgGlow: 'hover:border-emerald-500/40',
     },
     {
       title: isVi ? 'KHÁNG VA CHẠM' : 'COLLISION-FREE',
@@ -58,7 +58,7 @@ export const HashStatistics: React.FC<HashStatisticsProps> = () => {
       icon: ShieldCheck,
       color: 'text-emerald-400',
       borderColor: 'border-emerald-500/30',
-      bgGlow: 'hover:border-emerald-400 hover:shadow-[0_0_20px_rgba(16,185,129,0.2)]',
+      bgGlow: 'hover:border-emerald-500/40',
     },
   ];
 

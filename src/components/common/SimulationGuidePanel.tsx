@@ -96,7 +96,7 @@ export const SimulationGuidePanel: React.FC<SimulationGuidePanelProps> = ({
       qEn: '2. What to do next?',
       aVi: questions.whatShouldIClickVi,
       aEn: questions.whatShouldIClickEn,
-      color: 'border-blue-500/30 bg-slate-900/90 text-blue-400',
+      color: 'border-emerald-500/30 bg-slate-900/90 text-emerald-400',
     },
     {
       id: 3,
@@ -280,11 +280,11 @@ export const SimulationGuidePanel: React.FC<SimulationGuidePanelProps> = ({
           className="w-full p-3.5 sm:p-4 flex items-center justify-between text-left hover:bg-slate-900/50 transition-all cursor-pointer"
         >
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-blue-950/80 border border-blue-500/40 flex items-center justify-center text-blue-400 shrink-0">
+            <div className="w-8 h-8 rounded-lg bg-emerald-950/80 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shrink-0">
               <HelpCircle className="w-4 h-4" />
             </div>
             <div>
-              <div className="text-xs font-mono uppercase tracking-wider text-blue-400 font-bold">
+              <div className="text-xs font-mono uppercase tracking-wider text-emerald-400 font-bold">
                 {isVi ? 'HỎI ĐÁP NHANH & THUẬT NGỮ' : 'QUICK Q&A & CORE CONCEPTS'}
               </div>
               <div className="text-xs sm:text-sm font-bold text-slate-200">

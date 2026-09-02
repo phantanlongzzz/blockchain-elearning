@@ -860,14 +860,14 @@ export const BlockchainVisualizer: React.FC = () => {
                           <>
                             <RefreshCw className="w-3 h-3 animate-spin text-[#00C98D]" />
                             <span className="font-mono text-[11px] text-[#00C98D]">
-                              {isVi ? 'Đang đào...' : 'Mining...'} Nonce:{' '}
+                              {isVi ? 'Đang giải block...' : 'Mining...'} Nonce:{' '}
                               {simulatedNonce ? simulatedNonce.toLocaleString() : block.nonce.toLocaleString()}
                             </span>
                           </>
                         ) : (
                           <>
                             <RefreshCw className="w-3 h-3 opacity-70" />
-                            <span>{isVi ? 'Đào lại khối' : 'Re-mine block'}</span>
+                            <span>{isVi ? 'Giải lại khối' : 'Re-mine block'}</span>
                           </>
                         )}
                       </button>

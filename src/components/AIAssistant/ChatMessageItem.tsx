@@ -107,10 +107,10 @@ export const ChatMessageItem: React.FC<ChatMessageItemProps> = ({
       <div
         className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center shrink-0 shadow-md ${
           isUser
-            ? 'bg-gradient-to-tr from-emerald-600 to-blue-600 text-white'
+            ? 'bg-emerald-600 text-white'
             : message.isError
             ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30'
-            : 'bg-gradient-to-br from-indigo-500/20 to-emerald-500/20 border border-emerald-500/30 text-emerald-300'
+            : 'bg-emerald-500/20 border border-emerald-500/30 text-emerald-400'
         }`}
       >
         {isUser ? (
@@ -118,7 +118,7 @@ export const ChatMessageItem: React.FC<ChatMessageItemProps> = ({
         ) : message.isError ? (
           <AlertCircle className="w-4 h-4 text-rose-400" />
         ) : (
-          <Bot className="w-4 h-4 text-emerald-300" />
+          <Bot className="w-4 h-4 text-emerald-400" />
         )}
       </div>
 
@@ -126,10 +126,10 @@ export const ChatMessageItem: React.FC<ChatMessageItemProps> = ({
       <div
         className={`max-w-[85%] sm:max-w-[80%] rounded-2xl p-3 sm:p-3.5 transition-all relative group ${
           isUser
-            ? 'bg-gradient-to-r from-emerald-600 to-blue-600 text-white rounded-tr-sm shadow-md shadow-emerald-900/20'
+            ? 'bg-emerald-600 text-white rounded-tr-sm shadow-md shadow-emerald-950/20'
             : message.isError
             ? 'bg-rose-950/40 border border-rose-800/60 text-rose-200 rounded-tl-sm'
-            : 'bg-slate-900/90 border border-slate-800/80 text-slate-200 rounded-tl-sm shadow-sm'
+            : 'bg-[#0B0E12] border border-slate-800 text-slate-200 rounded-tl-sm shadow-sm'
         }`}
       >
         {/* Content */}

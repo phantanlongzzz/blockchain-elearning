@@ -156,7 +156,7 @@ export const TransactionDetailModal: React.FC<TransactionDetailModalProps> = ({
             <span className="text-[#68717D] block mb-1 uppercase text-[10px] font-semibold">
               {isVi ? 'Đường cong Elliptic' : 'Elliptic Curve'}
             </span>
-            <strong className="text-purple-300 text-xs sm:text-sm font-mono">{transaction.ellipticCurve}</strong>
+            <strong className="text-emerald-300 text-xs sm:text-sm font-mono">{transaction.ellipticCurve}</strong>
           </div>
           <div className="p-3 rounded-xl bg-[#090C10] border border-[#1B2027]">
             <span className="text-[#68717D] block mb-1 uppercase text-[10px] font-semibold">
@@ -200,7 +200,7 @@ export const TransactionDetailModal: React.FC<TransactionDetailModalProps> = ({
           <div className="p-3.5 rounded-xl bg-[#090C10] border border-[#1B2027] space-y-1">
             <div className="flex items-center justify-between text-[#9AA2AE] text-[10px] uppercase font-semibold font-sans">
               <span className="flex items-center gap-1.5">
-                <Key className="w-3.5 h-3.5 text-purple-400" />
+                <Key className="w-3.5 h-3.5 text-[#00D084]" />
                 <span>{isVi ? 'ĐỊA CHỈ VÍ / KHÓA CÔNG KHAI NGƯỜI NHẬN:' : 'RECEIVER PUBLIC KEY / WALLET ADDRESS:'}</span>
               </span>
               <button

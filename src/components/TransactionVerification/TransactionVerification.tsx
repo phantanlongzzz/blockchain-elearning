@@ -187,7 +187,7 @@ export const TransactionVerification: React.FC = () => {
               : 'bg-[#0B0E12] text-[#9AA2AE] hover:text-[#E7E9ED] border-[#1B2027] hover:border-[#252B33]'
           }`}
         >
-          <Boxes className="w-4 h-4 text-purple-400" />
+          <Boxes className="w-4 h-4 text-[#00D084]" />
           <span>{strings.verification.tabLedger}</span>
         </button>
       </div>
@@ -274,7 +274,7 @@ export const TransactionVerification: React.FC = () => {
           <div>
             <div className="flex items-center justify-between border-b border-[#1B2027] pb-3 mb-4">
               <span className="text-xs font-mono font-bold text-[#C5CBD3] uppercase tracking-wider flex items-center gap-2">
-                <Boxes className="w-4 h-4 text-purple-400" />
+                <Boxes className="w-4 h-4 text-[#00D084]" />
                 <span>{strings.verification.chainIntegrity}</span>
               </span>
               <span

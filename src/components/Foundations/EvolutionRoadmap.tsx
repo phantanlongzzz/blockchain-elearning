@@ -22,7 +22,7 @@ export const EvolutionRoadmap: React.FC = () => {
       title: strings.foundations.evolution.step1Title,
       desc: strings.foundations.evolution.step1Desc,
       icon: ListTree,
-      color: 'from-blue-500/20 to-emerald-500/10 border-blue-500/40 text-blue-400',
+      color: 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400',
       badge: 'RAM Array',
       code: 'my_list = [10, "Alice", True]',
     },
@@ -31,7 +31,7 @@ export const EvolutionRoadmap: React.FC = () => {
       title: strings.foundations.evolution.step2Title,
       desc: strings.foundations.evolution.step2Desc,
       icon: Layers,
-      color: 'from-indigo-500/20 to-blue-500/10 border-indigo-500/40 text-indigo-400',
+      color: 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400',
       badge: 'Pointer Chain',
       code: 'head -> Node_A -> Node_B -> None',
     },
@@ -40,7 +40,7 @@ export const EvolutionRoadmap: React.FC = () => {
       title: strings.foundations.evolution.step3Title,
       desc: strings.foundations.evolution.step3Desc,
       icon: GitCommit,
-      color: 'from-emerald-500/20 to-teal-500/10 border-emerald-500/40 text-emerald-400',
+      color: 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400',
       badge: 'Node Class',
       code: 'class Node: data, next',
     },
@@ -49,7 +49,7 @@ export const EvolutionRoadmap: React.FC = () => {
       title: strings.foundations.evolution.step4Title,
       desc: strings.foundations.evolution.step4Desc,
       icon: Cpu,
-      color: 'from-amber-500/20 to-yellow-500/10 border-amber-500/40 text-amber-400',
+      color: 'bg-amber-500/10 border-amber-500/30 text-amber-400',
       badge: 'SHA-256 Digest',
       code: 'hash_ptr = SHA256(prev_data)',
     },
@@ -58,7 +58,7 @@ export const EvolutionRoadmap: React.FC = () => {
       title: strings.foundations.evolution.step5Title,
       desc: strings.foundations.evolution.step5Desc,
       icon: Boxes,
-      color: 'from-emerald-500/20 to-teal-500/10 border-emerald-500/40 text-emerald-400',
+      color: 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400',
       badge: 'Block Header',
       code: 'Block: { index, prev_hash, data, hash }',
     },
@@ -67,7 +67,7 @@ export const EvolutionRoadmap: React.FC = () => {
       title: strings.foundations.evolution.step6Title,
       desc: strings.foundations.evolution.step6Desc,
       icon: Lock,
-      color: 'from-purple-500/20 to-pink-500/10 border-purple-500/40 text-purple-400',
+      color: 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400',
       badge: 'Consensus & Ledger',
       code: 'Blockchain = Hash Pointers + PoW/PoS + Merkle',
     },
@@ -76,7 +76,7 @@ export const EvolutionRoadmap: React.FC = () => {
   return (
     <div className="space-y-6 animate-in fade-in duration-300">
       {/* Header */}
-      <div className="p-5 rounded-2xl bg-gradient-to-r from-emerald-950/40 via-slate-900 to-slate-900 border border-emerald-500/30">
+      <div className="p-5 rounded-2xl bg-[#0B0E12] border border-emerald-500/30">
         <div className="flex items-center gap-2 text-emerald-400 text-xs font-mono font-bold uppercase tracking-wider mb-1">
           <Sparkles className="w-4 h-4" />
           <span>{strings.foundations.tabs.evolution}</span>

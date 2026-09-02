@@ -242,7 +242,7 @@ export const ForkAndLongestChainLab: React.FC<{onInteracted?: () => void}> = ({ 
               </div>
               <div className="flex justify-between items-center">
                 <span>Status</span>
-                <span className={isFinished ? 'text-blue-400' : currentEvent.isFork ? 'text-amber-400' : 'text-emerald-400'}>
+                <span className={isFinished ? 'text-emerald-400' : currentEvent.isFork ? 'text-amber-400' : 'text-emerald-400'}>
                   {isFinished ? 'Resolved' : currentEvent.isFork ? 'Competing' : 'Stable'}
                 </span>
               </div>
@@ -259,7 +259,7 @@ export const ForkAndLongestChainLab: React.FC<{onInteracted?: () => void}> = ({ 
               {logs.map((log, idx) => (
                 <div key={idx} className="font-mono text-[10px] flex gap-2 items-start leading-relaxed opacity-90 hover:opacity-100 transition-opacity">
                   <span className="text-zinc-600 shrink-0">{log.time}</span>
-                  <span className={`shrink-0 ${log.level === 'WARN' ? 'text-amber-500' : log.level === 'DONE' ? 'text-blue-400' : 'text-emerald-500'}`}>
+                  <span className={`shrink-0 ${log.level === 'WARN' ? 'text-amber-500' : log.level === 'DONE' ? 'text-emerald-400' : 'text-emerald-500'}`}>
                     {log.level.padEnd(4)}
                   </span>
                   <span className="text-zinc-300">{log.msg}</span>
@@ -324,7 +324,7 @@ const BlockNode: React.FC<{ node: SimpleBlockNode }> = ({ node }) => {
       isCanonical ? 'border-zinc-600 bg-zinc-800/20 text-zinc-100' :
       'border-zinc-700 bg-zinc-900/50 text-zinc-300'
     }`}>
-      {isCanonical && <div className="absolute inset-0 bg-blue-500/5 rounded-lg pointer-events-none" />}
+      {isCanonical && <div className="absolute inset-0 bg-emerald-500/5 rounded-lg pointer-events-none" />}
       
       <div className="flex justify-between items-center mb-1">
         <span className="font-medium text-xs text-zinc-200">{node.number}</span>

@@ -34,9 +34,9 @@ export const TheoryToPracticeBridge: React.FC = () => {
       href: '#transactions',
       title: strings.foundations.theoryToPractice.labTxTitle,
       description: strings.foundations.theoryToPractice.labTxDesc,
-      icon: <KeyRound className="w-5 h-5 text-purple-400" />,
+      icon: <KeyRound className="w-5 h-5 text-emerald-400" />,
       badge: 'SECP256k1 ECDSA',
-      badgeColor: 'bg-purple-500/10 text-purple-300 border-purple-500/30',
+      badgeColor: 'bg-emerald-500/10 text-emerald-300 border-emerald-500/30',
       difficulty: language === 'vi' ? 'Nâng cao · Ký số số hóa' : 'Advanced · Digital Signatures',
     },
     {
@@ -64,9 +64,9 @@ export const TheoryToPracticeBridge: React.FC = () => {
       href: '#proof-of-work',
       title: strings.foundations.theoryToPractice.labPowTitle,
       description: strings.foundations.theoryToPractice.labPowDesc,
-      icon: <Cpu className="w-5 h-5 text-orange-400" />,
+      icon: <Cpu className="w-5 h-5 text-amber-400" />,
       badge: 'Nakamoto Consensus',
-      badgeColor: 'bg-orange-500/10 text-orange-300 border-orange-500/30',
+      badgeColor: 'bg-amber-500/10 text-amber-300 border-amber-500/30',
       difficulty: language === 'vi' ? 'Nghiên cứu · Đào khối' : 'Deep Dive · Mining Simulator',
     },
     {
@@ -74,9 +74,9 @@ export const TheoryToPracticeBridge: React.FC = () => {
       href: '#proof-of-stake',
       title: strings.foundations.theoryToPractice.labPosTitle,
       description: strings.foundations.theoryToPractice.labPosDesc,
-      icon: <Coins className="w-5 h-5 text-indigo-400" />,
+      icon: <Coins className="w-5 h-5 text-emerald-400" />,
       badge: 'Casper & Slashing',
-      badgeColor: 'bg-indigo-500/10 text-indigo-300 border-indigo-500/30',
+      badgeColor: 'bg-emerald-500/10 text-emerald-300 border-emerald-500/30',
       difficulty: language === 'vi' ? 'Hiện đại · Đặt cọc xác thực' : 'Modern · Validator Staking',
     },
   ];
@@ -84,9 +84,9 @@ export const TheoryToPracticeBridge: React.FC = () => {
   return (
     <div className="space-y-8 animate-in fade-in duration-300">
       {/* Header */}
-      <div className="p-5 rounded-2xl bg-gradient-to-r from-blue-950/40 via-slate-900 to-slate-900 border border-blue-500/30 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="p-5 rounded-2xl bg-[#0B0E12] border border-emerald-500/30 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 text-blue-400 text-xs font-mono font-bold uppercase tracking-wider mb-1">
+          <div className="flex items-center gap-2 text-emerald-400 text-xs font-mono font-bold uppercase tracking-wider mb-1">
             <GraduationCap className="w-4 h-4" />
             <span>{strings.foundations.theoryToPractice.badge}</span>
           </div>

@@ -178,7 +178,7 @@ export const BitcoinEcosystemLab: React.FC<BitcoinEcosystemLabProps> = ({
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="p-6 rounded-2xl bg-gradient-to-b from-[#18130c] to-[#080c16] border border-amber-500/20 shadow-2xl">
+      <div className="p-6 rounded-2xl bg-[#0B0E12] border border-amber-500/20 shadow-2xl">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-1.5">
             <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-mono font-bold uppercase">
@@ -201,7 +201,7 @@ export const BitcoinEcosystemLab: React.FC<BitcoinEcosystemLabProps> = ({
             <button
               type="button"
               onClick={() => setPipelineStep(1)}
-              className="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-mono text-slate-300 flex items-center gap-1.5 cursor-pointer"
+              className="px-3 py-1.5 rounded-lg bg-[#0F1217] hover:bg-[#161D26] border border-slate-700 text-xs font-mono text-slate-300 flex items-center gap-1.5 cursor-pointer"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>{language === 'vi' ? 'Làm lại quy trình' : 'Reset Flow'}</span>
@@ -284,7 +284,7 @@ export const BitcoinEcosystemLab: React.FC<BitcoinEcosystemLabProps> = ({
 
             {pipelineStep === 2 && (
               <div className="text-center space-y-3 animate-fadeIn max-w-md">
-                <div className="w-12 h-12 rounded-xl bg-blue-500/20 text-blue-400 border border-blue-500/40 mx-auto flex items-center justify-center">
+                <div className="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 mx-auto flex items-center justify-center">
                   <Radio className="w-6 h-6 animate-pulse" />
                 </div>
                 <div className="text-sm font-bold text-white font-mono">
@@ -316,7 +316,7 @@ export const BitcoinEcosystemLab: React.FC<BitcoinEcosystemLabProps> = ({
 
             {pipelineStep === 4 && (
               <div className="text-center space-y-3 animate-fadeIn max-w-md">
-                <div className="w-12 h-12 rounded-xl bg-purple-500/20 text-purple-400 border border-purple-500/40 mx-auto flex items-center justify-center">
+                <div className="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 mx-auto flex items-center justify-center">
                   <Boxes className="w-6 h-6" />
                 </div>
                 <div className="text-sm font-bold text-white font-mono">

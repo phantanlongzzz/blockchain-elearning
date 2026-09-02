@@ -914,7 +914,7 @@ export const PoWConsensusSection: React.FC<PoWConsensusSectionProps> = ({
                             : 'WINNER 🏆'
                           : miner.status === 'mining'
                           ? isVi
-                            ? 'Đang đào...'
+                            ? 'Đang giải block...'
                             : 'Mining...'
                           : isVi
                           ? 'Sẵn sàng'

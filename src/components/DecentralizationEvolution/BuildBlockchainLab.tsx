@@ -463,7 +463,7 @@ export const BuildBlockchainLab: React.FC<BuildBlockchainLabProps> = ({
               </div>
               <div className="p-3 rounded-xl bg-[#05070c] border border-slate-800 space-y-1">
                 <div className="text-[10px] font-mono text-slate-500">KIỂM SOÁT & ĐỒNG THUẬN:</div>
-                <div className="text-xs font-mono font-bold text-purple-300">{activeTypeInfo.control[language]}</div>
+                <div className="text-xs font-mono font-bold text-amber-300">{activeTypeInfo.control[language]}</div>
               </div>
               <div className="p-3 rounded-xl bg-[#05070c] border border-slate-800 space-y-1">
                 <div className="text-[10px] font-mono text-slate-500">MỤC ĐÍCH ỨNG DỤNG:</div>

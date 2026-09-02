@@ -96,10 +96,10 @@ export const TrustProblemSimulation: React.FC<TrustProblemSimulationProps> = ({
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="p-6 rounded-2xl bg-gradient-to-b from-[#140e1d] to-[#080c16] border border-purple-500/20 shadow-2xl">
+      <div className="p-6 rounded-2xl bg-[#0B0E12] border border-emerald-500/20 shadow-2xl">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-1.5">
-            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-purple-500/10 border border-purple-500/30 text-purple-400 text-xs font-mono font-bold uppercase">
+            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold uppercase">
               <ShieldAlert className="w-3.5 h-3.5" />
               <span>{language === 'vi' ? 'PHẦN 02 · NGHỊCH LÝ NIỀM TIN' : 'PART 02 · THE TRUST PARADOX'}</span>
             </div>
@@ -119,7 +119,7 @@ export const TrustProblemSimulation: React.FC<TrustProblemSimulationProps> = ({
             <button
               type="button"
               onClick={handleReset}
-              className="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-mono text-slate-300 flex items-center gap-1.5 cursor-pointer transition-all"
+              className="px-3 py-1.5 rounded-lg bg-[#0F1217] hover:bg-[#161D26] border border-slate-700 text-xs font-mono text-slate-300 flex items-center gap-1.5 cursor-pointer transition-all"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>{language === 'vi' ? 'Làm lại thí nghiệm' : 'Reset Experiment'}</span>
@@ -141,7 +141,7 @@ export const TrustProblemSimulation: React.FC<TrustProblemSimulationProps> = ({
               onClick={s.action}
               className={`p-3 rounded-xl border text-left transition-all duration-200 cursor-pointer flex flex-col justify-between ${
                 step === s.num
-                  ? 'bg-purple-950/40 border-purple-500 text-purple-300 ring-2 ring-purple-500/20'
+                  ? 'bg-emerald-950/40 border-emerald-500 text-emerald-300 ring-2 ring-emerald-500/20'
                   : step > s.num
                   ? 'bg-slate-950/60 border-slate-800 text-slate-400'
                   : 'bg-[#05070c] border-slate-900 text-slate-600'
@@ -258,7 +258,7 @@ export const TrustProblemSimulation: React.FC<TrustProblemSimulationProps> = ({
             <div className="p-4 rounded-xl bg-[#05070c] border border-slate-800 space-y-2">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-xs">
+                  <div className="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs">
                     B
                   </div>
                   <span className="font-mono font-bold text-xs text-white">Bob (Merchant)</span>
@@ -275,7 +275,7 @@ export const TrustProblemSimulation: React.FC<TrustProblemSimulationProps> = ({
             <div className="p-4 rounded-xl bg-[#05070c] border border-slate-800 space-y-2">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-xs">
+                  <div className="w-7 h-7 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-xs">
                     C
                   </div>
                   <span className="font-mono font-bold text-xs text-white">Charlie (Borrower)</span>
@@ -309,7 +309,7 @@ export const TrustProblemSimulation: React.FC<TrustProblemSimulationProps> = ({
                     else if (step === 2) handleStep3();
                     else if (step === 3) handleStep4();
                   }}
-                  className="px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-mono text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-md transition-all"
+                  className="px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black font-mono text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-md transition-all"
                 >
                   <span>{language === 'vi' ? 'Tiếp tục diễn biến →' : 'Next Step →'}</span>
                 </button>
@@ -329,7 +329,7 @@ export const TrustProblemSimulation: React.FC<TrustProblemSimulationProps> = ({
         {/* Right Column: Educational Breakdown Card */}
         <div className="lg:col-span-4 p-6 rounded-2xl bg-[#090d16] border border-slate-800 shadow-xl flex flex-col justify-between space-y-4">
           <div className="space-y-4">
-            <div className="flex items-center gap-2 text-xs font-mono font-bold text-purple-400 uppercase">
+            <div className="flex items-center gap-2 text-xs font-mono font-bold text-emerald-400 uppercase">
               <Sparkles className="w-4 h-4" />
               <span>{language === 'vi' ? 'BÀI HỌC VỀ NIỀM TIN' : 'TRUST LESSON'}</span>
             </div>

@@ -155,10 +155,10 @@ export const ForkAndLongestChainPipeline: React.FC<ForkAndLongestChainPipelinePr
             type="button"
             onClick={() => onMineNextOnBranch('branchB')}
             disabled={isMining}
-            className="px-3 py-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-purple-400 text-xs font-medium transition-colors disabled:opacity-50 cursor-pointer flex items-center gap-1.5"
+            className="px-3 py-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-amber-400 text-xs font-medium transition-colors disabled:opacity-50 cursor-pointer flex items-center gap-1.5"
           >
             <Flame className="w-3.5 h-3.5" />
-            <span>+ {language === 'vi' ? 'Đào trên Nhánh B' : 'Mine on Branch B'}</span>
+            <span>+ {language === 'vi' ? 'Khai thác trên Nhánh B' : 'Mine on Branch B'}</span>
           </button>
 
           <button
@@ -191,7 +191,7 @@ export const ForkAndLongestChainPipeline: React.FC<ForkAndLongestChainPipelinePr
             <span className="text-emerald-400 font-medium">
               Nhánh A (Alice): {cumulativeWorkA.toLocaleString()} PoW ({percentA}%)
             </span>
-            <span className="text-purple-400 font-medium">
+            <span className="text-amber-400 font-medium">
               Nhánh B (Bob): {cumulativeWorkB.toLocaleString()} PoW ({percentB}%)
             </span>
           </div>
@@ -202,7 +202,7 @@ export const ForkAndLongestChainPipeline: React.FC<ForkAndLongestChainPipelinePr
               style={{ width: `${percentA}%` }}
             />
             <div
-              className="bg-purple-500 h-full transition-all duration-300"
+              className="bg-amber-500 h-full transition-all duration-300"
               style={{ width: `${percentB}%` }}
             />
           </div>
@@ -260,19 +260,19 @@ export const ForkAndLongestChainPipeline: React.FC<ForkAndLongestChainPipelinePr
           <div
             className={`p-4 rounded-xl border transition-colors ${
               activeMainBranch === 'branchB'
-                ? 'bg-[#080c16] border-purple-500/50 shadow-sm'
+                ? 'bg-[#080c16] border-amber-500/50 shadow-sm'
                 : 'bg-[#080c16] border-zinc-800'
             }`}
           >
             <div className="flex items-center justify-between pb-2 mb-3 border-b border-zinc-800">
               <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-purple-400" />
+                <span className="w-2.5 h-2.5 rounded-full bg-amber-400" />
                 <span className="font-semibold text-zinc-100 text-xs">
                   Nhánh B (Bob Node)
                 </span>
               </div>
               {activeMainBranch === 'branchB' && (
-                <span className="px-2 py-0.5 rounded text-[10px] bg-purple-950/60 text-purple-300 border border-purple-500/30 font-medium">
+                <span className="px-2 py-0.5 rounded text-[10px] bg-amber-950/60 text-amber-300 border border-amber-500/30 font-medium">
                   {language === 'vi' ? 'Chuỗi chính (Canonical)' : 'Canonical Chain'}
                 </span>
               )}
@@ -285,7 +285,7 @@ export const ForkAndLongestChainPipeline: React.FC<ForkAndLongestChainPipelinePr
               </div>
               <div className="flex items-center justify-between text-zinc-400">
                 <span>PoW tích lũy:</span>
-                <span className="font-mono text-purple-400 font-semibold">{cumulativeWorkB.toLocaleString()} work</span>
+                <span className="font-mono text-amber-400 font-semibold">{cumulativeWorkB.toLocaleString()} work</span>
               </div>
 
               <div className="pt-2 border-t border-zinc-800/80 space-y-1.5">

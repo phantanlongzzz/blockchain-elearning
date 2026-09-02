@@ -451,7 +451,7 @@ export const InteractiveBlockHandsOnLab: React.FC<{
     setIsMining(true);
     setFeedback({
       type: 'info',
-      title: isVi ? 'Đang đào tìm Nonce hợp lệ...' : 'Mining for Valid Nonce...',
+      title: isVi ? 'Đang giải tìm Nonce hợp lệ...' : 'Mining for Valid Nonce...',
       description: isVi
         ? 'Đang thử nghiệm liên tục các giá trị Nonce để tạo mã băm Block Header thỏa mãn độ khó.'
         : 'Iterating through Nonce values to find a Block Header hash meeting difficulty criteria.',

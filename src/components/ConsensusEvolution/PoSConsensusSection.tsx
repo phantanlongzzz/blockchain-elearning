@@ -140,7 +140,7 @@ export const PoSConsensusSection: React.FC<PoSConsensusSectionProps> = ({
       </div>
 
       {/* 2. Interactive Staking Sandbox */}
-      <div className="p-5 rounded-xl bg-[#0c101c] border border-slate-800 space-y-5">
+      <div className="p-5 rounded-xl bg-[#0B0E12] border border-slate-800 space-y-5">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800">
           <div>
             <span className="text-xs font-medium text-slate-300">
@@ -199,7 +199,7 @@ export const PoSConsensusSection: React.FC<PoSConsensusSectionProps> = ({
                     ? 'bg-rose-950/20 border-rose-500/30 opacity-60'
                     : isWinner
                     ? 'bg-emerald-950/30 border-emerald-500/60'
-                    : 'bg-[#080c16] border-slate-800'
+                    : 'bg-[#080C10] border-slate-800'
                 }`}
               >
                 <div>
@@ -245,14 +245,14 @@ export const PoSConsensusSection: React.FC<PoSConsensusSectionProps> = ({
                       <button
                         type="button"
                         onClick={() => handleUpdateStake(val.id, -10)}
-                        className="w-5 h-5 rounded bg-[#04060b] hover:bg-slate-800 border border-slate-800 text-slate-300 flex items-center justify-center cursor-pointer text-xs"
+                        className="w-5 h-5 rounded bg-[#080C10] hover:bg-slate-800 border border-slate-800 text-slate-300 flex items-center justify-center cursor-pointer text-xs"
                       >
                         -
                       </button>
                       <button
                         type="button"
                         onClick={() => handleUpdateStake(val.id, 10)}
-                        className="w-5 h-5 rounded bg-[#04060b] hover:bg-slate-800 border border-slate-800 text-slate-300 flex items-center justify-center cursor-pointer text-xs"
+                        className="w-5 h-5 rounded bg-[#080C10] hover:bg-slate-800 border border-slate-800 text-slate-300 flex items-center justify-center cursor-pointer text-xs"
                       >
                         +
                       </button>
@@ -266,7 +266,7 @@ export const PoSConsensusSection: React.FC<PoSConsensusSectionProps> = ({
 
         {/* Slashing outcome banner */}
         {slashingSimulated && (
-          <div className="p-3.5 rounded-lg bg-[#080c16] border border-rose-500/40 text-xs flex items-center gap-3">
+          <div className="p-3.5 rounded-lg bg-[#080C10] border border-rose-500/40 text-xs flex items-center gap-3">
             <span className="w-2 h-2 rounded-full bg-rose-400 shrink-0" />
             <div>
               <span className="font-semibold text-rose-300">
@@ -285,7 +285,7 @@ export const PoSConsensusSection: React.FC<PoSConsensusSectionProps> = ({
       {/* Full PoS Lab Modal */}
       {showFullPoSLabModal && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#0b0f19] border border-slate-800 rounded-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto p-6 space-y-6 shadow-2xl relative">
+          <div className="bg-[#0B0E12] border border-slate-800 rounded-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto p-6 space-y-6 shadow-2xl relative">
             <div className="flex items-center justify-between pb-4 border-b border-slate-800">
               <h3 className="text-base font-semibold text-slate-100">
                 {isVi ? 'Phòng thí nghiệm Proof of Stake' : 'Proof of stake laboratory'}

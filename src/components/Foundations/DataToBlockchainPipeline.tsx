@@ -881,7 +881,7 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
               <div className="lg:col-span-6 p-5 rounded-2xl bg-[#05070c] border border-slate-800 flex flex-col justify-between space-y-4">
                 <div className="flex items-center justify-between pb-3 border-b border-slate-800">
                   <span className="text-xs font-mono font-bold text-slate-300 uppercase flex items-center gap-2">
-                    <Layers className="w-4 h-4 text-blue-400" />
+                    <Layers className="w-4 h-4 text-emerald-400" />
                     <span>{language === 'vi' ? 'Đối Tượng Giao Dịch Được Tạo' : 'Transaction Object'}</span>
                   </span>
                   <span className="text-[10px] font-mono text-emerald-400 bg-emerald-950/30 px-2 py-0.5 rounded border border-emerald-500/30">
@@ -1262,7 +1262,7 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
               >
                 <div className="flex items-center justify-between pb-2 border-b border-slate-800">
                   <span className="text-xs font-mono font-bold text-slate-300">BLOCK #2</span>
-                  <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                  <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                     Linked
                   </span>
                 </div>
@@ -1290,8 +1290,8 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
                     </div>
                   </div>
                   <div>
-                    <span className="text-[10px] text-blue-400 block font-bold">BLOCK HASH (Hash #2)</span>
-                    <div className="p-2 rounded bg-blue-950/30 text-blue-300 text-[10px] break-all border border-blue-500/30 font-bold">
+                    <span className="text-[10px] text-emerald-400 block font-bold">BLOCK HASH (Hash #2)</span>
+                    <div className="p-2 rounded bg-emerald-950/30 text-emerald-300 text-[10px] break-all border border-emerald-500/30 font-bold">
                       {fastSha256Hex(`2|${block1InitialHash}|Charlie -> Dave : 5 BTC|0|0`)}
                     </div>
                   </div>
@@ -1300,9 +1300,9 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
             </div>
 
             {/* Linked List vs Blockchain Conceptual Comparison Bridge */}
-            <div className="p-5 rounded-2xl bg-gradient-to-r from-blue-950/30 via-slate-900 to-indigo-950/30 border border-blue-500/30 space-y-4">
-              <div className="flex items-center gap-2 text-blue-300 font-bold text-sm font-mono uppercase">
-                <Link2 className="w-4 h-4 text-blue-400" />
+            <div className="p-5 rounded-2xl bg-[#0B0E12] border border-emerald-500/30 space-y-4">
+              <div className="flex items-center gap-2 text-emerald-300 font-bold text-sm font-mono uppercase">
+                <Link2 className="w-4 h-4 text-emerald-400" />
                 <span>
                   {language === 'vi'
                     ? 'Cầu Nối Khái Niệm: Linked List (Buổi 1) ➔ Blockchain'
@@ -1687,7 +1687,7 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
             </div>
 
             {/* Bit Distance Calculation Metric */}
-            <div className="p-5 rounded-2xl bg-gradient-to-r from-emerald-950/30 via-slate-900 to-indigo-950/30 border border-emerald-500/30 space-y-4 font-mono text-xs">
+            <div className="p-5 rounded-2xl bg-[#0B0E12] border border-emerald-500/30 space-y-4 font-mono text-xs">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-800">
                 <span className="font-bold text-white uppercase flex items-center gap-2">
                   <Zap className="w-4 h-4 text-emerald-400" />
@@ -1764,7 +1764,7 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
                     type="button"
                     disabled={isVerifying}
                     onClick={handleRunVerification}
-                    className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-400 hover:to-blue-400 text-black font-bold font-mono text-xs flex items-center gap-2 transition-all cursor-pointer shadow-lg shadow-emerald-950/40"
+                    className="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold font-mono text-xs flex items-center gap-2 transition-all cursor-pointer shadow-lg shadow-emerald-950/40"
                   >
                     <CheckCircle2 className="w-4 h-4" />
                     <span>

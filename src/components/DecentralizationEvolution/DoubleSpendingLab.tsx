@@ -130,7 +130,7 @@ export const DoubleSpendingLab: React.FC<DoubleSpendingLabProps> = ({
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="p-6 rounded-2xl bg-gradient-to-b from-[#1a111a] to-[#080c16] border border-rose-500/20 shadow-2xl">
+      <div className="p-6 rounded-2xl bg-[#0B0E12] border border-rose-500/20 shadow-2xl">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-1.5">
             <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs font-mono font-bold uppercase">
@@ -153,7 +153,7 @@ export const DoubleSpendingLab: React.FC<DoubleSpendingLabProps> = ({
             <button
               type="button"
               onClick={handleReset}
-              className="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-mono text-slate-300 flex items-center gap-1.5 cursor-pointer"
+              className="px-3 py-1.5 rounded-lg bg-[#0F1217] hover:bg-[#161D26] border border-slate-700 text-xs font-mono text-slate-300 flex items-center gap-1.5 cursor-pointer"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>{language === 'vi' ? 'Đặt lại' : 'Reset'}</span>
@@ -172,7 +172,7 @@ export const DoubleSpendingLab: React.FC<DoubleSpendingLabProps> = ({
               onClick={() => handleSwitchMode('centralized')}
               className={`px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
                 authorityMode === 'centralized'
-                  ? 'bg-blue-600 text-white shadow-md'
+                  ? 'bg-emerald-600 text-white shadow-md'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
@@ -236,7 +236,7 @@ export const DoubleSpendingLab: React.FC<DoubleSpendingLabProps> = ({
               <div className="flex items-center justify-between gap-3">
                 <div className="space-y-1">
                   <div className="text-xs font-mono font-bold text-white flex items-center gap-1.5">
-                    <span className="px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300">TX A</span>
+                    <span className="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300">TX A</span>
                     <span>Alice → Bob: 10 COIN</span>
                   </div>
                   <div className="text-[11px] text-slate-400">
@@ -249,7 +249,7 @@ export const DoubleSpendingLab: React.FC<DoubleSpendingLabProps> = ({
                     <button
                       type="button"
                       onClick={handleSubmitTxA}
-                      className="px-3.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-mono text-xs font-bold cursor-pointer flex items-center gap-1 shadow-md"
+                      className="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-mono text-xs font-bold cursor-pointer flex items-center gap-1 shadow-md"
                     >
                       <Send className="w-3 h-3" />
                       <span>{language === 'vi' ? 'GỬI TX A' : 'SUBMIT A'}</span>
@@ -280,7 +280,7 @@ export const DoubleSpendingLab: React.FC<DoubleSpendingLabProps> = ({
               <div className="flex items-center justify-between gap-3">
                 <div className="space-y-1">
                   <div className="text-xs font-mono font-bold text-white flex items-center gap-1.5">
-                    <span className="px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300">TX B</span>
+                    <span className="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300">TX B</span>
                     <span>Alice → Charlie: 10 COIN</span>
                   </div>
                   <div className="text-[11px] text-slate-400">
@@ -293,7 +293,7 @@ export const DoubleSpendingLab: React.FC<DoubleSpendingLabProps> = ({
                     <button
                       type="button"
                       onClick={handleSubmitTxB}
-                      className="px-3.5 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-mono text-xs font-bold cursor-pointer flex items-center gap-1 shadow-md"
+                      className="px-3.5 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-500 text-white font-mono text-xs font-bold cursor-pointer flex items-center gap-1 shadow-md"
                     >
                       <Send className="w-3 h-3" />
                       <span>{language === 'vi' ? 'GỬI TX B' : 'SUBMIT B'}</span>
@@ -317,13 +317,13 @@ export const DoubleSpendingLab: React.FC<DoubleSpendingLabProps> = ({
           {/* Recipients Result Grid */}
           <div className="grid grid-cols-2 gap-3 pt-2">
             <div className="p-3 rounded-xl bg-[#05070c] border border-slate-800">
-              <div className="text-xs font-mono font-bold text-blue-400">Bob (Merchant A)</div>
+              <div className="text-xs font-mono font-bold text-emerald-400">Bob (Merchant A)</div>
               <div className="text-sm font-bold font-mono text-white mt-1">
                 {bobBalance} COIN {bobBalance > 0 && '(Giao hàng ✓)'}
               </div>
             </div>
             <div className="p-3 rounded-xl bg-[#05070c] border border-slate-800">
-              <div className="text-xs font-mono font-bold text-purple-400">Charlie (Merchant B)</div>
+              <div className="text-xs font-mono font-bold text-amber-400">Charlie (Merchant B)</div>
               <div className="text-sm font-bold font-mono text-white mt-1">
                 {charlieBalance} COIN {charlieBalance > 0 && '(Giao hàng ✓)'}
               </div>
@@ -363,7 +363,7 @@ export const DoubleSpendingLab: React.FC<DoubleSpendingLabProps> = ({
                     ? 'Ngân hàng đóng vai trò Trọng tài Duy nhất. Khi Alice gửi TX A, ngân hàng trừ ngay 10 coin trong database. Khi Alice gửi tiếp TX B, ngân hàng thấy số dư = 0 và LẬP TỨC TỪ CHỐI.'
                     : 'The bank acts as the sole referee. When TX A arrives, it decrements Alice balance to 0. When TX B arrives, it sees 0 balance and instantly rejects it.'}
                 </p>
-                <div className="p-3 rounded-lg bg-blue-950/20 border border-blue-500/30 text-xs text-blue-300">
+                <div className="p-3 rounded-lg bg-emerald-950/20 border border-emerald-500/30 text-xs text-emerald-300">
                   {language === 'vi'
                     ? '✓ Tiêu đúp được giải quyết dễ dàng nhờ 1 máy chủ độc quyền nắm quyền sinh sát.'
                     : '✓ Double spending is trivial to prevent when 1 central boss controls the database.'}
@@ -389,7 +389,7 @@ export const DoubleSpendingLab: React.FC<DoubleSpendingLabProps> = ({
                       setSolutionRevealed(true);
                       onInteracted?.();
                     }}
-                    className="w-full py-2.5 rounded-xl bg-gradient-to-r from-rose-600 to-purple-600 hover:from-rose-500 hover:to-purple-500 text-white font-mono text-xs font-bold uppercase tracking-wider shadow-lg shadow-rose-950/50 cursor-pointer transition-all hover:scale-[1.02]"
+                    className="w-full py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-mono text-xs font-bold uppercase tracking-wider shadow-lg cursor-pointer transition-all hover:scale-[1.02]"
                   >
                     {language === 'vi' ? '💡 TÌM CÁCH GIẢI BÀI TOÁN NÀY' : '💡 DISCOVER THE SOLUTION'}
                   </button>

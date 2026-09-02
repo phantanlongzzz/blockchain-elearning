@@ -60,27 +60,27 @@ export const MINER_THEMES: Record<string, MinerTheme> = {
   },
   bob: {
     name: 'Bob',
-    text: 'text-sky-400',
-    border: 'border-sky-500/40',
-    bg: 'bg-sky-500/5',
-    badge: 'bg-sky-500/10 text-sky-400 border-sky-500/25',
-    progressBar: 'bg-sky-500'
+    text: 'text-emerald-300',
+    border: 'border-emerald-500/40',
+    bg: 'bg-emerald-500/5',
+    badge: 'bg-emerald-500/10 text-emerald-300 border-emerald-500/25',
+    progressBar: 'bg-emerald-500'
   },
   charlie: {
     name: 'Charlie',
-    text: 'text-violet-400',
-    border: 'border-violet-500/40',
-    bg: 'bg-violet-500/5',
-    badge: 'bg-violet-500/10 text-violet-400 border-violet-500/25',
-    progressBar: 'bg-violet-500'
-  },
-  dave: {
-    name: 'Dave',
-    text: 'text-amber-500',
+    text: 'text-amber-400',
     border: 'border-amber-500/40',
     bg: 'bg-amber-500/5',
     badge: 'bg-amber-500/10 text-amber-400 border-amber-500/25',
     progressBar: 'bg-amber-500'
+  },
+  dave: {
+    name: 'Dave',
+    text: 'text-emerald-400',
+    border: 'border-emerald-500/40',
+    bg: 'bg-emerald-500/5',
+    badge: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/25',
+    progressBar: 'bg-emerald-500'
   },
   eve: {
     name: 'Eve',
@@ -100,35 +100,35 @@ export const MINER_THEMES: Record<string, MinerTheme> = {
   },
   grace: {
     name: 'Grace',
-    text: 'text-pink-400',
-    border: 'border-pink-500/40',
-    bg: 'bg-pink-500/5',
-    badge: 'bg-pink-500/10 text-pink-400 border-pink-500/25',
-    progressBar: 'bg-pink-500'
+    text: 'text-emerald-400',
+    border: 'border-emerald-500/40',
+    bg: 'bg-emerald-500/5',
+    badge: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/25',
+    progressBar: 'bg-emerald-500'
   },
   hannah: {
     name: 'Hannah',
-    text: 'text-indigo-400',
-    border: 'border-indigo-500/40',
-    bg: 'bg-indigo-500/5',
-    badge: 'bg-indigo-500/10 text-indigo-400 border-indigo-500/25',
-    progressBar: 'bg-indigo-500'
+    text: 'text-teal-300',
+    border: 'border-teal-500/40',
+    bg: 'bg-teal-500/5',
+    badge: 'bg-teal-500/10 text-teal-300 border-teal-500/25',
+    progressBar: 'bg-teal-500'
   },
   ian: {
     name: 'Ian',
-    text: 'text-cyan-400',
-    border: 'border-cyan-500/40',
-    bg: 'bg-cyan-500/5',
-    badge: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/25',
-    progressBar: 'bg-cyan-500'
+    text: 'text-lime-300',
+    border: 'border-lime-500/40',
+    bg: 'bg-lime-500/5',
+    badge: 'bg-lime-500/10 text-lime-300 border-lime-500/25',
+    progressBar: 'bg-lime-500'
   },
   jack: {
     name: 'Jack',
-    text: 'text-orange-400',
-    border: 'border-orange-500/40',
-    bg: 'bg-orange-500/5',
-    badge: 'bg-orange-500/10 text-orange-400 border-orange-500/25',
-    progressBar: 'bg-orange-500'
+    text: 'text-amber-500',
+    border: 'border-amber-500/40',
+    bg: 'bg-amber-500/5',
+    badge: 'bg-amber-500/10 text-amber-500 border-amber-500/25',
+    progressBar: 'bg-amber-500'
   },
   'charlie-pool': {
     name: '51% Attacker Pool',
@@ -193,8 +193,8 @@ export const ALPHABET_MINER_POOL = [
 const EXTRA_THEMES: MinerTheme[] = [
   { name: 'Teal', text: 'text-teal-400', border: 'border-teal-500/40', bg: 'bg-teal-500/5', badge: 'bg-teal-500/10 text-teal-400 border-teal-500/25', progressBar: 'bg-teal-500' },
   { name: 'Lime', text: 'text-lime-400', border: 'border-lime-500/40', bg: 'bg-lime-500/5', badge: 'bg-lime-500/10 text-lime-400 border-lime-500/25', progressBar: 'bg-lime-500' },
-  { name: 'Pink', text: 'text-pink-400', border: 'border-pink-500/40', bg: 'bg-pink-500/5', badge: 'bg-pink-500/10 text-pink-400 border-pink-500/25', progressBar: 'bg-pink-500' },
-  { name: 'Indigo', text: 'text-indigo-400', border: 'border-indigo-500/40', bg: 'bg-indigo-500/5', badge: 'bg-indigo-500/10 text-indigo-400 border-indigo-500/25', progressBar: 'bg-indigo-500' },
+  { name: 'Emerald', text: 'text-emerald-400', border: 'border-emerald-500/40', bg: 'bg-emerald-500/5', badge: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/25', progressBar: 'bg-emerald-500' },
+  { name: 'Amber', text: 'text-amber-400', border: 'border-amber-500/40', bg: 'bg-amber-500/5', badge: 'bg-amber-500/10 text-amber-400 border-amber-500/25', progressBar: 'bg-amber-500' },
 ];
 
 export const getMinerTheme = (nameOrId: string, index?: number): MinerTheme => {

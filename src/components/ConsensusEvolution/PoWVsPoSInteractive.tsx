@@ -97,7 +97,7 @@ export const PoWVsPoSInteractive: React.FC<PoWVsPoSInteractiveProps> = ({
       </div>
 
       {/* B. Minimal Head-to-Head Summary Strip */}
-      <div className="rounded-xl bg-[#0c101c] border border-zinc-800 p-4 sm:p-5">
+      <div className="rounded-xl bg-[#0B0E12] border border-zinc-800 p-4 sm:p-5">
         <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] items-center gap-4 sm:gap-6">
           {/* PoW Core Model */}
           <div className="space-y-1.5">
@@ -155,10 +155,10 @@ export const PoWVsPoSInteractive: React.FC<PoWVsPoSInteractiveProps> = ({
           {isVi ? 'Bảng đối chiếu tiêu chí kỹ thuật' : 'Technical Comparison Matrix'}
         </div>
 
-        <div className="rounded-xl bg-[#0c101c] border border-zinc-800 overflow-hidden">
+        <div className="rounded-xl bg-[#0B0E12] border border-zinc-800 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs font-sans">
-              <thead className="bg-[#080c16] text-zinc-400 text-[11px] font-medium border-b border-zinc-800">
+              <thead className="bg-[#080C10] text-zinc-400 text-[11px] font-medium border-b border-zinc-800">
                 <tr>
                   <th scope="col" className="py-3 px-4 w-1/4 font-semibold text-zinc-300">
                     {isVi ? 'Tiêu chí' : 'Criteria'}

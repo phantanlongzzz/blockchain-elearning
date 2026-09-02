@@ -212,7 +212,7 @@ export const ConsensusFinalChallenge: React.FC<ConsensusFinalChallengeProps> = (
 
       {/* 3 & 4. Block & Transactions (Steps 1 & 2) */}
       {(step === 1 || step === 2) && (
-        <div className="rounded-xl bg-[#0c101c] border border-slate-800 p-6 space-y-6">
+        <div className="rounded-xl bg-[#0B0E12] border border-slate-800 p-6 space-y-6">
           {/* Block Header */}
           <div className="flex items-center justify-between text-sm pb-4 border-b border-slate-800">
             <span className="font-semibold text-slate-200 font-mono">
@@ -237,7 +237,7 @@ export const ConsensusFinalChallenge: React.FC<ConsensusFinalChallengeProps> = (
           </div>
 
           {/* Transactions List: Flat horizontal rows separated by subtle dividers */}
-          <div className="divide-y divide-slate-800/80 border border-slate-800/80 rounded-lg overflow-hidden bg-[#080c16]">
+          <div className="divide-y divide-slate-800/80 border border-slate-800/80 rounded-lg overflow-hidden bg-[#080C10]">
             {candidateBlock.txs.map((tx) => {
               const isSelected = selectedTxId === tx.id;
               const isInspected = inspectedTxId === tx.id;
@@ -288,7 +288,7 @@ export const ConsensusFinalChallenge: React.FC<ConsensusFinalChallengeProps> = (
 
                   {/* Compact Technical Evidence Panel (Revealed on click) */}
                   {isInspected && (
-                    <div className="px-4 py-3.5 bg-[#060911] border-t border-slate-800/80 text-xs space-y-3">
+                    <div className="px-4 py-3.5 bg-[#080C10] border-t border-slate-800/80 text-xs space-y-3">
                       {/* Evidence Grid: Neutral data fields */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-[11px] font-mono">
                         <div className="space-y-0.5">
@@ -338,13 +338,7 @@ export const ConsensusFinalChallenge: React.FC<ConsensusFinalChallengeProps> = (
                           <span className="text-slate-500 font-sans text-[10px] block">
                             {isVi ? 'So khớp băm dữ liệu & chữ ký:' : 'Digest & Signature Match:'}
                           </span>
-                          <span
-                            className={
-                              tx.dataHash === tx.signedHash
-                                ? 'text-slate-300'
-                                : 'text-slate-300'
-                            }
-                          >
+                          <span className="text-slate-300">
                             {tx.dataHash === tx.signedHash
                               ? isVi
                                 ? 'Trùng khớp (0x... = 0x...)'
@@ -430,7 +424,7 @@ export const ConsensusFinalChallenge: React.FC<ConsensusFinalChallengeProps> = (
 
       {/* 5. Step 3: Choose Consensus Protocol */}
       {step === 3 && (
-        <div className="rounded-xl bg-[#0c101c] border border-slate-800 p-6 space-y-6">
+        <div className="rounded-xl bg-[#0B0E12] border border-slate-800 p-6 space-y-6">
           <div>
             <h3 className="text-sm font-medium text-slate-200">
               {isVi ? 'Cơ chế đồng thuận' : 'Consensus mechanism'}
@@ -471,8 +465,8 @@ export const ConsensusFinalChallenge: React.FC<ConsensusFinalChallengeProps> = (
                   onClick={() => setSelectedProtocol(proto.id as any)}
                   className={`p-4 rounded-lg border text-left transition-colors cursor-pointer ${
                     isSelected
-                      ? 'bg-[#080c16] border-emerald-500/50 text-slate-100'
-                      : 'bg-[#080c16] border-slate-800/80 hover:border-slate-700 text-slate-300'
+                      ? 'bg-[#080C10] border-emerald-500/50 text-slate-100'
+                      : 'bg-[#080C10] border-slate-800/80 hover:border-slate-700 text-slate-300'
                   }`}
                 >
                   <div className="flex items-center justify-between text-xs font-medium">
@@ -526,7 +520,7 @@ export const ConsensusFinalChallenge: React.FC<ConsensusFinalChallengeProps> = (
 
       {/* 6. Step 4: Restrained, Precise Feedback */}
       {step === 4 && (
-        <div className="rounded-xl bg-[#0c101c] border border-slate-800 p-6 space-y-6">
+        <div className="rounded-xl bg-[#0B0E12] border border-slate-800 p-6 space-y-6">
           {/* Main Outcome */}
           <div className="space-y-1.5 pb-4 border-b border-slate-800">
             <div className="flex items-center gap-2">
@@ -562,7 +556,7 @@ export const ConsensusFinalChallenge: React.FC<ConsensusFinalChallengeProps> = (
               {isVi ? 'Chi tiết giao dịch trong block:' : 'Transaction verification details:'}
             </span>
 
-            <div className="divide-y divide-slate-800/80 border border-slate-800/80 rounded-lg overflow-hidden bg-[#080c16]">
+            <div className="divide-y divide-slate-800/80 border border-slate-800/80 rounded-lg overflow-hidden bg-[#080C10]">
               {candidateBlock.txs.map((tx) => {
                 const isSelectedByLearner = selectedTxId === tx.id;
 

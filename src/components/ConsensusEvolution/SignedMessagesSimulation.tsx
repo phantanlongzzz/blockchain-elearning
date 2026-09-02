@@ -85,7 +85,7 @@ export const SignedMessagesSimulation: React.FC<SignedMessagesSimulationProps> =
       {/* 2. Interactive Message Verification */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left: Message Payload & Verification */}
-        <div className="lg:col-span-7 bg-[#0c101c] border border-slate-800 rounded-xl p-5 flex flex-col justify-between space-y-4">
+        <div className="lg:col-span-7 bg-[#0B0E12] border border-slate-800 rounded-xl p-5 flex flex-col justify-between space-y-4">
           <div className="space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-slate-800 text-xs">
               <span className="text-slate-300 font-medium">
@@ -98,7 +98,7 @@ export const SignedMessagesSimulation: React.FC<SignedMessagesSimulationProps> =
             <div
               className={`p-4 rounded-lg border transition-colors space-y-3.5 ${
                 verificationStatus === 'valid'
-                  ? 'bg-[#080c16] border-slate-800'
+                  ? 'bg-[#080C10] border-slate-800'
                   : 'bg-rose-950/20 border-rose-500/40'
               }`}
             >
@@ -123,7 +123,7 @@ export const SignedMessagesSimulation: React.FC<SignedMessagesSimulationProps> =
                 <div className="flex items-center justify-between">
                   <span
                     className={`font-mono text-sm font-semibold ${
-                      messageData === 'ATTACK' ? 'text-rose-400' : 'text-blue-400'
+                      messageData === 'ATTACK' ? 'text-rose-400' : 'text-emerald-400'
                     }`}
                   >
                     {messageData === 'ATTACK'
@@ -162,7 +162,7 @@ export const SignedMessagesSimulation: React.FC<SignedMessagesSimulationProps> =
           </div>
 
           {/* Verification Banner */}
-          <div className="p-3.5 rounded-lg bg-[#080c16] border border-slate-800 flex items-center gap-3 text-xs">
+          <div className="p-3.5 rounded-lg bg-[#080C10] border border-slate-800 flex items-center gap-3 text-xs">
             <span
               className={`w-2 h-2 rounded-full shrink-0 ${
                 verificationStatus === 'valid' ? 'bg-emerald-400' : 'bg-rose-400'
@@ -188,7 +188,7 @@ export const SignedMessagesSimulation: React.FC<SignedMessagesSimulationProps> =
         </div>
 
         {/* Right: Why signatures are not enough */}
-        <div className="lg:col-span-5 bg-[#0c101c] border border-slate-800 rounded-xl p-5 flex flex-col justify-between space-y-4">
+        <div className="lg:col-span-5 bg-[#0B0E12] border border-slate-800 rounded-xl p-5 flex flex-col justify-between space-y-4">
           <div className="space-y-4">
             <div className="pb-3 border-b border-slate-800">
               <h3 className="text-xs font-medium text-slate-300 font-sans">
@@ -203,7 +203,7 @@ export const SignedMessagesSimulation: React.FC<SignedMessagesSimulationProps> =
             </p>
 
             <div className="space-y-2.5">
-              <div className="p-3 rounded-lg bg-[#080c16] border border-slate-800/80 space-y-1">
+              <div className="p-3 rounded-lg bg-[#080C10] border border-slate-800/80 space-y-1">
                 <div className="text-xs font-medium text-slate-200">
                   {isVi ? '1. Chi tiêu kép (Double spending)' : '1. Double spending'}
                 </div>
@@ -214,7 +214,7 @@ export const SignedMessagesSimulation: React.FC<SignedMessagesSimulationProps> =
                 </p>
               </div>
 
-              <div className="p-3 rounded-lg bg-[#080c16] border border-slate-800/80 space-y-1">
+              <div className="p-3 rounded-lg bg-[#080C10] border border-slate-800/80 space-y-1">
                 <div className="text-xs font-medium text-slate-200">
                   {isVi ? '2. Tấn công Sybil (Sybil attack)' : '2. Sybil attack'}
                 </div>
@@ -226,7 +226,7 @@ export const SignedMessagesSimulation: React.FC<SignedMessagesSimulationProps> =
               </div>
             </div>
 
-            <div className="p-3 rounded-lg bg-[#080c16] border border-emerald-500/20 text-slate-400 text-xs leading-relaxed">
+            <div className="p-3 rounded-lg bg-[#080C10] border border-emerald-500/20 text-slate-400 text-xs leading-relaxed">
               <span className="font-medium text-emerald-400">
                 {isVi ? 'Đột phá của Nakamoto: ' : 'Nakamoto’s breakthrough: '}
               </span>

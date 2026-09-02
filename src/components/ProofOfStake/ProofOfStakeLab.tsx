@@ -104,16 +104,16 @@ export const ProofOfStakeLab: React.FC = () => {
           id,
           name,
           defaultStake,
-          color: '#3B82F6',
-          glow: 'rgba(59, 130, 246, 0.5)',
-          textClass: 'text-blue-400',
+          color: '#00C98D',
+          glow: 'rgba(0, 201, 141, 0.3)',
+          textClass: 'text-emerald-400',
         };
       }
 
       const newValidator: PoSValidator = {
         id: nextPreset.id,
         name: nextPreset.name,
-        avatarColor: `bg-gradient-to-br from-emerald-600 to-blue-700`,
+        avatarColor: `bg-emerald-700`,
         stake: nextPreset.defaultStake,
         isOnline: nextPreset.defaultStake > 0,
         isActive: nextPreset.defaultStake > 0,

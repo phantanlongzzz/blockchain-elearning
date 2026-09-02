@@ -139,7 +139,7 @@ export const ConsensusFundamentals: React.FC<ConsensusFundamentalsProps> = ({
         </p>
 
         {showDefinition && (
-          <div className="mt-2 text-xs text-slate-300 bg-[#080c16] border border-slate-800 p-3 rounded-lg leading-relaxed">
+          <div className="mt-2 text-xs text-slate-300 bg-[#080C10] border border-slate-800 p-3 rounded-lg leading-relaxed">
             {isVi
               ? 'Consensus là cơ chế giúp các node trong mạng thống nhất về trạng thái chung của blockchain mà không cần người điều phối trung tâm.'
               : 'Consensus is the mechanism that helps network nodes agree on the shared blockchain state without a central coordinator.'}
@@ -150,7 +150,7 @@ export const ConsensusFundamentals: React.FC<ConsensusFundamentalsProps> = ({
       {/* 2. Main Layout: Interactive Simulation (Primary) + Theory (Tertiary) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left: 4 Node Interactive Simulation (Primary) */}
-        <div className="lg:col-span-7 bg-[#0c101c] border border-slate-800 rounded-xl p-5 space-y-5">
+        <div className="lg:col-span-7 bg-[#0B0E12] border border-slate-800 rounded-xl p-5 space-y-5">
           <div className="flex items-center justify-between pb-3 border-b border-slate-800">
             <span className="text-xs font-medium text-slate-300 font-sans">
               {isVi ? 'Các nút mạng' : 'Network nodes'}
@@ -167,7 +167,7 @@ export const ConsensusFundamentals: React.FC<ConsensusFundamentalsProps> = ({
               return (
                 <div
                   key={node.id}
-                  className="p-3.5 rounded-lg bg-[#080c16] border border-slate-800/80 space-y-3"
+                  className="p-3.5 rounded-lg bg-[#080C10] border border-slate-800/80 space-y-3"
                 >
                   <div className="flex items-center justify-between text-xs">
                     <span className="font-medium text-slate-200">{node.name}</span>
@@ -183,7 +183,7 @@ export const ConsensusFundamentals: React.FC<ConsensusFundamentalsProps> = ({
                   </div>
 
                   {/* Compact Segmented Control */}
-                  <div className="grid grid-cols-2 p-0.5 rounded-md bg-[#04060b] border border-slate-800 text-xs">
+                  <div className="grid grid-cols-2 p-0.5 rounded-md bg-[#080C10] border border-slate-800 text-xs">
                     <button
                       type="button"
                       onClick={() => setNodeVote(node.id, 'ATTACK')}
@@ -200,7 +200,7 @@ export const ConsensusFundamentals: React.FC<ConsensusFundamentalsProps> = ({
                       onClick={() => setNodeVote(node.id, 'RETREAT')}
                       className={`py-1 px-2 rounded text-[11px] font-medium transition-colors cursor-pointer ${
                         !isAttack
-                          ? 'bg-blue-950/70 border border-blue-500/40 text-blue-300'
+                          ? 'bg-emerald-950/70 border border-emerald-500/40 text-emerald-300'
                           : 'text-slate-400 hover:text-slate-200'
                       }`}
                     >
@@ -214,7 +214,7 @@ export const ConsensusFundamentals: React.FC<ConsensusFundamentalsProps> = ({
 
           {/* Secondary: Compact Consensus Result Bar */}
           <div className="pt-2">
-            <div className="p-4 rounded-lg bg-[#080c16] border border-slate-800/90 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+            <div className="p-4 rounded-lg bg-[#080C10] border border-slate-800/90 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
                   <span
@@ -262,7 +262,7 @@ export const ConsensusFundamentals: React.FC<ConsensusFundamentalsProps> = ({
         </div>
 
         {/* Right: Tertiary Theory Section (Flattened List with Progressive Disclosure) */}
-        <div className="lg:col-span-5 bg-[#0c101c] border border-slate-800 rounded-xl p-5 space-y-4">
+        <div className="lg:col-span-5 bg-[#0B0E12] border border-slate-800 rounded-xl p-5 space-y-4">
           <div className="pb-3 border-b border-slate-800">
             <h3 className="text-xs font-medium text-slate-300 font-sans">
               {isVi ? '4 thách thức của mạng phân tán' : '4 distributed network challenges'}
@@ -274,7 +274,7 @@ export const ConsensusFundamentals: React.FC<ConsensusFundamentalsProps> = ({
             </p>
           </div>
 
-          <div className="divide-y divide-slate-800/80 border border-slate-800/80 rounded-lg overflow-hidden bg-[#080c16]">
+          <div className="divide-y divide-slate-800/80 border border-slate-800/80 rounded-lg overflow-hidden bg-[#080C10]">
             {theoryItems.map((item, idx) => {
               const isExpanded = expandedTheoryIndex === idx;
               return (
@@ -297,7 +297,7 @@ export const ConsensusFundamentals: React.FC<ConsensusFundamentalsProps> = ({
                   </div>
 
                   {isExpanded && (
-                    <div className="px-3 pb-3 pt-1 text-xs text-slate-400 bg-[#060911] leading-relaxed border-t border-slate-800/60">
+                    <div className="px-3 pb-3 pt-1 text-xs text-slate-400 bg-[#0B0E12] leading-relaxed border-t border-slate-800/60">
                       {isVi ? item.descVi : item.descEn}
                     </div>
                   )}

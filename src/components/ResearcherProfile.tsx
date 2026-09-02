@@ -75,10 +75,10 @@ export const ResearcherProfile: React.FC = () => {
                 {/* Student ID */}
                 <div className="p-4 rounded-xl bg-slate-950 border border-slate-800">
                   <div className="flex items-center gap-2 text-slate-500 text-xs uppercase font-semibold mb-1 font-display">
-                    <IdCard className="w-4 h-4 text-blue-400" />
+                    <IdCard className="w-4 h-4 text-emerald-400" />
                     <span>{strings.researcherProfile.studentIdLabel}</span>
                   </div>
-                  <div className="text-xl font-bold text-blue-300 tracking-wider font-mono">
+                  <div className="text-xl font-bold text-emerald-300 tracking-wider font-mono">
                     {researcher.studentId}
                   </div>
                   <span className="text-[10px] text-slate-500 block mt-1 font-sans">

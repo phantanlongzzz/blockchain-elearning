@@ -226,7 +226,7 @@ export const ConsensusEvolutionLab: React.FC = () => {
       <div
         role="tablist"
         aria-label={isVi ? 'Danh sách bài học đồng thuận' : 'Consensus lesson modules'}
-        className="flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth p-1 bg-[#07090e] border border-slate-800 rounded-xl"
+        className="flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth p-1 bg-[#0B0E12] border border-slate-800 rounded-xl"
       >
         {STAGES_CONFIG.map((stage) => {
           const isActive = activeStage === stage.id;
@@ -252,8 +252,8 @@ export const ConsensusEvolutionLab: React.FC = () => {
                 isActive
                   ? 'bg-emerald-950/30 border-emerald-500/50 text-slate-100'
                   : stage.isSub
-                  ? 'bg-[#0a0d16]/70 border-slate-800/60 hover:border-slate-700 text-slate-400 hover:text-slate-200'
-                  : 'bg-[#0c101c] border-slate-800/80 hover:border-slate-700 text-slate-400 hover:text-slate-200'
+                  ? 'bg-[#080C10] border-slate-800/60 hover:border-slate-700 text-slate-400 hover:text-slate-200'
+                  : 'bg-[#080C10] border-slate-800/80 hover:border-slate-700 text-slate-400 hover:text-slate-200'
               }`}
             >
               <div className="flex items-center justify-between gap-1.5">

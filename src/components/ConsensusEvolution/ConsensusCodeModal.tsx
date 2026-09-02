@@ -143,9 +143,9 @@ export const ConsensusCodeModal: React.FC<ConsensusCodeModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="bg-[#0b0f19] border border-slate-800 rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col shadow-2xl">
+      <div className="bg-[#0B0E12] border border-slate-800 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col shadow-2xl">
         {/* Header */}
-        <div className="p-4 sm:p-5 border-b border-slate-800 flex items-center justify-between bg-[#070a11]">
+        <div className="p-4 sm:p-5 border-b border-slate-800 flex items-center justify-between bg-[#080C10]">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
               <Terminal className="w-4 h-4" />
@@ -174,7 +174,7 @@ export const ConsensusCodeModal: React.FC<ConsensusCodeModalProps> = ({
         </div>
 
         {/* Tab switcher */}
-        <div className="flex items-center gap-2 p-3 bg-slate-950/60 border-b border-slate-800/80 px-4 sm:px-6">
+        <div className="flex items-center gap-2 p-3 bg-[#080C10] border-b border-slate-800/80 px-4 sm:px-6">
           <button
             type="button"
             onClick={() => setActiveTab('byzantine')}
@@ -191,7 +191,7 @@ export const ConsensusCodeModal: React.FC<ConsensusCodeModalProps> = ({
             onClick={() => setActiveTab('pow')}
             className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer ${
               activeTab === 'pow'
-                ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
+                ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
                 : 'text-slate-400 hover:text-white'
             }`}
           >
@@ -211,7 +211,7 @@ export const ConsensusCodeModal: React.FC<ConsensusCodeModalProps> = ({
         </div>
 
         {/* Code Content Container */}
-        <div className="p-4 sm:p-6 overflow-y-auto max-h-[60vh]">
+        <div className="p-4 sm:p-6 overflow-y-auto max-h-[60vh] bg-[#0B0E12]">
           {activeTab === 'byzantine' && (
             <CodeViewer code={BYZANTINE_CODE_PY} language="python" filename="byzantine_consensus.py" />
           )}
@@ -224,7 +224,7 @@ export const ConsensusCodeModal: React.FC<ConsensusCodeModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="p-3 bg-[#070a11] border-t border-slate-800 flex justify-end">
+        <div className="p-3 bg-[#080C10] border-t border-slate-800 flex justify-end">
           <button
             type="button"
             onClick={onClose}

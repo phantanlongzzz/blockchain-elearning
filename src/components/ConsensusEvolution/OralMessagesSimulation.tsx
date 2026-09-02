@@ -92,7 +92,7 @@ export const OralMessagesSimulation: React.FC<OralMessagesSimulationProps> = ({
       {/* 2. Interactive Flow & Theoretical Context */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Visual Diagram */}
-        <div className="lg:col-span-8 bg-[#0c101c] border border-slate-800 rounded-xl p-5 flex flex-col justify-between min-h-[400px] space-y-4">
+        <div className="lg:col-span-8 bg-[#0B0E12] border border-slate-800 rounded-xl p-5 flex flex-col justify-between min-h-[400px] space-y-4">
           <div className="flex items-center justify-between text-xs pb-3 border-b border-slate-800">
             <span className="text-slate-300 font-medium">
               {isVi ? 'Đường truyền thông điệp không bảo vệ' : 'Unsigned transmission path'}
@@ -106,7 +106,7 @@ export const OralMessagesSimulation: React.FC<OralMessagesSimulationProps> = ({
           <div className="space-y-6 my-auto py-2">
             {/* Commander */}
             <div className="flex justify-center">
-              <div className="p-3 rounded-lg bg-[#080c16] border border-emerald-500/40 text-center min-w-[180px]">
+              <div className="p-3 rounded-lg bg-[#080C10] border border-emerald-500/40 text-center min-w-[180px]">
                 <div className="text-[10px] text-emerald-400 font-medium">
                   {isVi ? 'Chỉ huy' : 'Commander'}
                 </div>
@@ -122,7 +122,7 @@ export const OralMessagesSimulation: React.FC<OralMessagesSimulationProps> = ({
               <div
                 className={`p-3 rounded-lg border text-center min-w-[200px] transition-colors ${
                   simState === 'idle'
-                    ? 'bg-[#080c16] border-slate-800 text-slate-300'
+                    ? 'bg-[#080C10] border-slate-800 text-slate-300'
                     : 'bg-rose-950/30 border-rose-500/50 text-rose-200'
                 }`}
               >
@@ -143,7 +143,7 @@ export const OralMessagesSimulation: React.FC<OralMessagesSimulationProps> = ({
 
             {/* Recipients (Alice & Bob) */}
             <div className="grid grid-cols-2 gap-4 max-w-md mx-auto">
-              <div className="p-3 rounded-lg bg-[#080c16] border border-slate-800 text-center">
+              <div className="p-3 rounded-lg bg-[#080C10] border border-slate-800 text-center">
                 <div className="text-xs font-medium text-slate-200">Alice</div>
                 <div className="text-xs mt-1.5 font-mono">
                   {lieutenantAliceOrder ? (
@@ -156,11 +156,11 @@ export const OralMessagesSimulation: React.FC<OralMessagesSimulationProps> = ({
                 </div>
               </div>
 
-              <div className="p-3 rounded-lg bg-[#080c16] border border-slate-800 text-center">
+              <div className="p-3 rounded-lg bg-[#080C10] border border-slate-800 text-center">
                 <div className="text-xs font-medium text-slate-200">Bob</div>
                 <div className="text-xs mt-1.5 font-mono">
                   {lieutenantBobOrder ? (
-                    <span className="text-blue-400 font-medium">
+                    <span className="text-emerald-400 font-medium">
                       {isVi ? 'Nhận: Rút lui' : 'Got: Retreat'}
                     </span>
                   ) : (
@@ -173,7 +173,7 @@ export const OralMessagesSimulation: React.FC<OralMessagesSimulationProps> = ({
 
           {/* Outcome Status */}
           {simState === 'failed' && (
-            <div className="p-3.5 rounded-lg bg-[#080c16] border border-slate-800 flex items-center gap-3 text-xs">
+            <div className="p-3.5 rounded-lg bg-[#080C10] border border-slate-800 flex items-center gap-3 text-xs">
               <span className="w-2 h-2 rounded-full bg-rose-400 shrink-0" />
               <div>
                 <span className="font-semibold text-slate-100">
@@ -190,7 +190,7 @@ export const OralMessagesSimulation: React.FC<OralMessagesSimulationProps> = ({
         </div>
 
         {/* Right Side: Theory */}
-        <div className="lg:col-span-4 bg-[#0c101c] border border-slate-800 rounded-xl p-5 flex flex-col justify-between space-y-4">
+        <div className="lg:col-span-4 bg-[#0B0E12] border border-slate-800 rounded-xl p-5 flex flex-col justify-between space-y-4">
           <div className="space-y-4">
             <div className="pb-3 border-b border-slate-800">
               <h3 className="text-xs font-medium text-slate-300 font-sans">
@@ -199,7 +199,7 @@ export const OralMessagesSimulation: React.FC<OralMessagesSimulationProps> = ({
             </div>
 
             <div className="space-y-2.5">
-              <div className="p-3 rounded-lg bg-[#080c16] border border-slate-800/80 space-y-1">
+              <div className="p-3 rounded-lg bg-[#080C10] border border-slate-800/80 space-y-1">
                 <div className="text-xs font-medium text-slate-200">
                   {isVi ? '1. Tính kháng chối bỏ (Non-repudiation)' : '1. Non-repudiation'}
                 </div>
@@ -210,7 +210,7 @@ export const OralMessagesSimulation: React.FC<OralMessagesSimulationProps> = ({
                 </p>
               </div>
 
-              <div className="p-3 rounded-lg bg-[#080c16] border border-slate-800/80 space-y-1">
+              <div className="p-3 rounded-lg bg-[#080C10] border border-slate-800/80 space-y-1">
                 <div className="text-xs font-medium text-slate-200">
                   {isVi ? '2. Tính toàn vẹn (Integrity)' : '2. Integrity'}
                 </div>
@@ -222,7 +222,7 @@ export const OralMessagesSimulation: React.FC<OralMessagesSimulationProps> = ({
               </div>
             </div>
 
-            <div className="p-3 rounded-lg bg-[#080c16] border border-emerald-500/20 text-slate-400 text-xs leading-relaxed">
+            <div className="p-3 rounded-lg bg-[#080C10] border border-emerald-500/20 text-slate-400 text-xs leading-relaxed">
               <span className="font-medium text-emerald-400">
                 {isVi ? 'Giải pháp: ' : 'Solution: '}
               </span>

@@ -570,7 +570,7 @@ export const MempoolDashboard: React.FC = () => {
           <button
             onClick={runPresetReplayAttack}
             disabled={isVerifying}
-            className="px-4 py-2.5 rounded-lg bg-[#0F1217] hover:bg-[#1A2028] active:bg-[#1A2028] border border-[#252B33] hover:border-purple-500/40 text-[#E7E9ED] hover:text-purple-300 text-xs font-medium transition-all text-center cursor-pointer disabled:opacity-50"
+            className="px-4 py-2.5 rounded-lg bg-[#0F1217] hover:bg-[#1A2028] active:bg-[#1A2028] border border-[#252B33] hover:border-emerald-500/40 text-[#E7E9ED] hover:text-emerald-300 text-xs font-medium transition-all text-center cursor-pointer disabled:opacity-50"
           >
             {vStr.attack4Title}
           </button>

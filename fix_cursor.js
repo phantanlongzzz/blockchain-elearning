@@ -1,4 +1,7 @@
-import React, { useEffect, useState, useRef } from 'react';
+import fs from 'fs';
+
+const file = 'src/components/CustomCursor.tsx';
+const content = `import React, { useEffect, useState, useRef } from 'react';
 
 /**
  * CustomCursor — Uses the static /cursor.webp image
@@ -53,7 +56,7 @@ export const CustomCursor: React.FC = () => {
 
     const updatePosition = () => {
       if (cursorRef.current) {
-        cursorRef.current.style.transform = `translate3d(${latestX}px, ${latestY}px, 0)`;
+        cursorRef.current.style.transform = \`translate3d(\${latestX}px, \${latestY}px, 0)\`;
       }
       scheduledAnimationFrame = false;
     };
@@ -112,11 +115,12 @@ export const CustomCursor: React.FC = () => {
         alt=""
         style={{
           display: 'block',
-          width: '40px',
-          height: 'auto',
           transform: 'translate(-2px, -2px)' // slight offset if arrow tip has anti-aliasing padding, usually -2 is perfect
         }}
       />
     </div>
   );
 };
+`;
+
+fs.writeFileSync(file, content);

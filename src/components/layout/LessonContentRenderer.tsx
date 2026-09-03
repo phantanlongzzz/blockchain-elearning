@@ -24,6 +24,7 @@ const ConsensusEvolutionLab = lazy(() => import('../ConsensusEvolution/Consensus
 
 // Simulation
 const TransactionVerification = lazy(() => import('../TransactionVerification/TransactionVerification').then(m => ({ default: m.TransactionVerification })));
+const TransactionLifecycleLab = lazy(() => import('../TransactionLifecycle/TransactionLifecycleLab').then(m => ({ default: m.TransactionLifecycleLab })));
 const ProofOfWorkLab = lazy(() => import('../ProofOfWork/ProofOfWorkLab').then(m => ({ default: m.ProofOfWorkLab })));
 const ProofOfStakeLab = lazy(() => import('../ProofOfStake/ProofOfStakeLab').then(m => ({ default: m.ProofOfStakeLab })));
 const EndToEndConsensusLab = lazy(() => import('../EndToEndConsensus/EndToEndConsensusLab').then(m => ({ default: m.EndToEndConsensusLab })));
@@ -77,6 +78,8 @@ export const LessonContentRenderer: React.FC = () => {
       // 3. SIMULATION
       case 'transactions':
         return <TransactionVerification key="sim-transactions" />;
+      case 'transaction-lifecycle':
+        return <TransactionLifecycleLab key="sim-transaction-lifecycle" />;
       case 'proof-of-work':
         return <ProofOfWorkLab key="sim-proof-of-work" />;
       case 'proof-of-stake':

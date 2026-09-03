@@ -25,6 +25,7 @@ export type LessonId =
   | 'consensus-evolution'
   // Simulation
   | 'transactions'
+  | 'transaction-lifecycle'
   | 'proof-of-work'
   | 'proof-of-stake'
   | 'end-to-end'
@@ -230,10 +231,22 @@ export const MODULES_REGISTRY: ModuleMeta[] = [
         iconName: 'CheckCircle2',
       },
       {
+        id: 'transaction-lifecycle',
+        moduleId: 'simulation',
+        titleVi: '3.2 Vòng đời Giao dịch UTXO Toàn trình',
+        titleEn: '3.2 End-to-End UTXO Transaction Lifecycle',
+        shortTitleVi: 'Vòng đời Giao dịch UTXO',
+        shortTitleEn: 'UTXO Transaction Lifecycle',
+        descriptionVi: 'Mô phỏng trực quan hành trình từ UTXO, Mempool, Cây Merkle đến khi khối gia nhập Blockchain.',
+        descriptionEn: 'Visual journey of a transaction from UTXO, Mempool, Merkle Tree to Blockchain inclusion.',
+        estimatedMinutes: 15,
+        iconName: 'Activity',
+      },
+      {
         id: 'proof-of-work',
         moduleId: 'simulation',
-        titleVi: '3.2 Phòng Khai thác Proof of Work (Đa luồng Web Workers & Longest Chain)',
-        titleEn: '3.2 Proof of Work Mining Arena (Multi-threaded Web Workers & Longest Chain)',
+        titleVi: '3.3 Phòng Khai thác Proof of Work (Đa luồng Web Workers & Longest Chain)',
+        titleEn: '3.3 Proof of Work Mining Arena (Multi-threaded Web Workers & Longest Chain)',
         shortTitleVi: 'Khai thác PoW Đa luồng',
         shortTitleEn: 'PoW Mining Arena',
         descriptionVi: 'Cuộc đua đào khối thời gian thực liên tục, phân nhánh chuỗi (Fork) và quy tắc chuỗi dài nhất.',
@@ -244,8 +257,8 @@ export const MODULES_REGISTRY: ModuleMeta[] = [
       {
         id: 'proof-of-stake',
         moduleId: 'simulation',
-        titleVi: '3.3 Phòng Đặt cọc Proof of Stake (Validators, Slots & Slashing)',
-        titleEn: '3.3 Proof of Stake Staking Lab (Validators, Slots & Slashing)',
+        titleVi: '3.4 Phòng Đặt cọc Proof of Stake (Validators, Slots & Slashing)',
+        titleEn: '3.4 Proof of Stake Staking Lab (Validators, Slots & Slashing)',
         shortTitleVi: 'Đặt cọc PoS',
         shortTitleEn: 'PoS Staking Lab',
         descriptionVi: 'Mô phỏng bầu chọn Validator theo tỷ lệ Stake, phần thưởng khối và cơ chế phạt Slashing.',
@@ -257,7 +270,7 @@ export const MODULES_REGISTRY: ModuleMeta[] = [
         id: 'end-to-end',
         moduleId: 'simulation',
         titleVi: '3.4 Mô phỏng Đồng thuận Toàn trình End-to-End (Mempool → Finality)',
-        titleEn: '3.4 End-to-End Consensus Pipeline (Mempool → Finality)',
+        titleEn: '3.5 End-to-End Consensus Pipeline (Mempool → Finality)',
         shortTitleVi: 'Đồng thuận Toàn trình',
         shortTitleEn: 'End-to-End Consensus',
         descriptionVi: 'Quy trình 5 bước: Phát sinh → Mempool → Đua Worker → Đóng gói → Sổ cái.',

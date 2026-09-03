@@ -313,21 +313,9 @@ export const ProofOfStakeLab: React.FC = () => {
       {/* 1. Header Bar with Mode Toggles and Quick Actions */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-3 border-b border-[#1C2430]">
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-[rgba(0,201,141,0.08)] text-[#00C98D] border border-[rgba(0,201,141,0.35)] font-semibold tracking-wide">
-              {isVi ? 'CƠ CHẾ ĐỒNG THUẬN HIỆN ĐẠI' : 'MODERN CONSENSUS MECHANISM'}
-            </span>
-            <span className="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-[#0F131A] text-[#A5AFBF] border border-[#1C2430]">
-              {isVi ? 'BẰNG CHỨNG CỔ PHẦN' : 'PROOF OF STAKE'}
-            </span>
-          </div>
           <h2 className="text-xl sm:text-2xl font-black font-display tracking-tight text-[#F2F4F7] flex items-center gap-2">
             <Layers className="w-6 h-6 text-[#00C98D] shrink-0" />
-            <span>
-              {isVi
-                ? 'MÔ PHỎNG PROOF OF STAKE (BẰNG CHỨNG CỔ PHẦN)'
-                : 'PROOF OF STAKE (PoS) SIMULATION'}
-            </span>
+            <span>Proof of Stake</span>
           </h2>
         </div>
 
@@ -416,9 +404,6 @@ export const ProofOfStakeLab: React.FC = () => {
           </button>
         </div>
       </div>
-
-      {/* 2. Compact Interactive Terminology Bar (Replaces bulky concept cards) */}
-      <PoSTerminologyBar />
 
       {/* 3. The 3-Step Lifecycle Visual Guide */}
       <SimulationTimeline
@@ -572,9 +557,6 @@ export const ProofOfStakeLab: React.FC = () => {
               </button>
             </div>
           </div>
-
-          {/* Compact Terminology in Fullscreen */}
-          <PoSTerminologyBar />
 
           {/* Timeline in Simulation Mode */}
           <SimulationTimeline

@@ -1279,14 +1279,9 @@ export const EndToEndConsensusLab: React.FC = () => {
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-sm" />
               <h2 className="text-xl sm:text-2xl font-bold text-zinc-100 font-sans tracking-tight">
-                Blockchain Consensus Lab
+                Blockchain Consensus
               </h2>
             </div>
-            <p className="text-xs sm:text-sm text-zinc-400 mt-1">
-              {language === 'vi'
-                ? 'Phòng thí nghiệm tương tác công nghệ cao mô phỏng toàn diện quy trình đồng thuận phi tập trung.'
-                : 'High-precision interactive blockchain consensus laboratory.'}
-            </p>
           </div>
 
           {/* Top Utility Actions */}

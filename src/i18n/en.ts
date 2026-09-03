@@ -776,7 +776,7 @@ export const enTranslations: TranslationSchema = {
     studentName: 'Phan Tan Long',
     studentId: '',
     instructorLabel: 'Instructor',
-    instructorName: 'Dr. Nguyen Hoai Duc',
+    instructorName: 'Nguyen Hoai Duc',
     techStandardLabel: 'TECHNOLOGY & STANDARD',
     techPlatformName: 'Blockchain Learning',
     techStandardName: 'NIST FIPS 180-4 Standard',

@@ -776,7 +776,7 @@ export const viTranslations: TranslationSchema = {
     "studentName": "Phan Tấn Long",
     "studentId": "",
     "instructorLabel": "Giảng viên hướng dẫn",
-    "instructorName": "TS. Nguyễn Hoài Đức",
+    "instructorName": "Nguyễn Hoài Đức",
     "techStandardLabel": "CÔNG NGHỆ & TIÊU CHUẨN",
     "techPlatformName": "Blockchain Learning",
     "techStandardName": "Chuẩn NIST FIPS 180-4",

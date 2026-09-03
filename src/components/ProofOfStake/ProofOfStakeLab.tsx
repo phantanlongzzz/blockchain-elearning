@@ -41,6 +41,7 @@ export const ProofOfStakeLab: React.FC = () => {
   const [activeStep, setActiveStep] = useState<1 | 2 | 3>(1);
   const [validators, setValidators] = useState<PoSValidator[]>(INITIAL_POS_VALIDATORS);
   const [selectedProposerId, setSelectedProposerId] = useState<string | null>('bob');
+  const [hasSpun, setHasSpun] = useState<boolean>(false);
   const [isSelecting, setIsSelecting] = useState<boolean>(false);
   const [scenarioOutcome, setScenarioOutcome] = useState<'honest' | 'fraud' | null>('honest');
 
@@ -199,6 +200,7 @@ export const ProofOfStakeLab: React.FC = () => {
     const activeNodes = validators.filter((v) => v.stake > 0);
     if (activeNodes.length === 0) return;
 
+    setHasSpun(true);
     setIsSelecting(true);
     setSelectedProposerId(null);
 
@@ -248,6 +250,7 @@ export const ProofOfStakeLab: React.FC = () => {
 
     setValidators(INITIAL_POS_VALIDATORS);
     setSelectedProposerId('bob');
+    setHasSpun(false);
     setIsSelecting(false);
     setScenarioOutcome('honest');
     setActiveStep(1);
@@ -275,7 +278,7 @@ export const ProofOfStakeLab: React.FC = () => {
       instructionEn: 'A weighted pseudo-random lottery selects a single validator to solve the next block.',
       targetActionVi: 'Bấm nút "Bắt đầu chọn người giải khối", sau đó bấm "Tiếp tục: Ghi & Kiểm tra khối".',
       targetActionEn: 'Click "Select Block Solver", then click "Continue: Verify Block".',
-      isCompleted: activeStep >= 2 && !isSelecting,
+      isCompleted: (activeStep === 2 && hasSpun && !isSelecting) || activeStep > 2,
     },
     {
       stepNumber: 3,
@@ -467,7 +470,7 @@ export const ProofOfStakeLab: React.FC = () => {
         {activeStep === 2 && (
           <StakeDistributionBar
             validators={validators}
-            selectedProposerId={selectedProposerId}
+            selectedProposerId={hasSpun ? selectedProposerId : null}
             isSelecting={isSelecting}
             onStartSelection={handleStartSelection}
             onProceedToStep3={() => setActiveStep(3)}
@@ -598,7 +601,7 @@ export const ProofOfStakeLab: React.FC = () => {
             {activeStep === 2 && (
               <StakeDistributionBar
                 validators={validators}
-                selectedProposerId={selectedProposerId}
+                selectedProposerId={hasSpun ? selectedProposerId : null}
                 isSelecting={isSelecting}
                 onStartSelection={handleStartSelection}
                 onProceedToStep3={() => setActiveStep(3)}

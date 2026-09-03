@@ -192,7 +192,7 @@ export const StakeDistributionBar: React.FC<StakeDistributionBarProps> = ({
                         opacity={isDimmed ? 0.35 : 1}
                         stroke={
                           slice.isSelected
-                            ? '#FBBF24'
+                            ? '#FFFFFF'
                             : slice.isHovered
                             ? '#FFFFFF'
                             : '#090A0F'
@@ -260,7 +260,7 @@ export const StakeDistributionBar: React.FC<StakeDistributionBarProps> = ({
         <div className="lg:col-span-6 flex flex-col gap-3">
           {/* Winner Announcement Banner */}
           {selectedValidator ? (
-            <div className="p-3.5 sm:p-4 rounded-xl bg-[#10151D] border border-amber-500/40 shadow-sm space-y-1 animate-in fade-in duration-200">
+            <div className="p-3.5 sm:p-4 rounded-xl bg-[#10151D] border border-white/40 shadow-sm space-y-1 animate-in fade-in duration-200">
               <div className="flex items-center gap-2 text-amber-400 font-bold text-sm">
                 <Trophy className="w-4 h-4 text-amber-400 shrink-0" />
                 <span>
@@ -318,7 +318,7 @@ export const StakeDistributionBar: React.FC<StakeDistributionBarProps> = ({
                   key={val.id}
                   className={`p-2.5 rounded-xl border text-left transition-all ${
                     isSelected
-                      ? 'bg-[#10151D] border-amber-500 ring-1 ring-amber-500/60 text-white shadow-sm'
+                      ? 'bg-[#10151D] border-white ring-1 ring-white/60 text-white shadow-sm'
                       : isZeroStake
                       ? 'bg-[#0B0E12] border-[#1C2430]/60 opacity-45'
                       : 'bg-[#0F131A] border-[#1C2430] hover:border-[#2C384A]'
@@ -335,7 +335,7 @@ export const StakeDistributionBar: React.FC<StakeDistributionBarProps> = ({
                       </span>
                     </div>
                     {isSelected && (
-                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/40">
+                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-white/40">
                         ✓ {language === 'vi' ? 'Được chọn' : 'Selected'}
                       </span>
                     )}

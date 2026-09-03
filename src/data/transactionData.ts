@@ -14,26 +14,26 @@ initSecp256k1Hashes();
 // Deterministic academic research seed wallets
 const rawPrivKeys = [
   {
-    id: 'wallet-long',
-    name: 'Phan Tấn Long (Lead Researcher)',
+    id: 'wallet-alice',
+    name: 'Alice',
     role: 'Student Node #01',
     priv: '4f3edf983ac636a65a842ce7c78d9aa706d3b113bce9c46f30d7d21715b23b1d',
   },
   {
-    id: 'wallet-ctk47b',
-    name: 'CTK47B Academic Node',
+    id: 'wallet-bob',
+    name: 'Bob',
     role: 'Faculty Node #02',
     priv: '6cbed15c793ce57650b9877cfbebef0ac96453970161c136d6979d457c0f1e09',
   },
   {
-    id: 'wallet-treasury',
-    name: 'Faculty Research Treasury',
+    id: 'wallet-charlie',
+    name: 'Charlie',
     role: 'Validator Node #03',
     priv: '8b9c6d4e2f1a0b3c5d7e9f1a3b5c7d9e1f3a5b7c9d1e3f5a7b9c1d3e5f7a9b1c',
   },
   {
-    id: 'wallet-auditor',
-    name: 'Peer Review Verification Node',
+    id: 'wallet-dave',
+    name: 'Dave',
     role: 'Audit Node #04',
     priv: '1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b',
   },
@@ -57,12 +57,12 @@ export const RESEARCH_WALLETS: WalletAccount[] = rawPrivKeys.map((item) => {
 
 // Initial Seed Transactions Generator
 export const createInitialTransactions = async (): Promise<TransactionItem[]> => {
-  const w1 = RESEARCH_WALLETS[0]; // Phan Tấn Long
-  const w2 = RESEARCH_WALLETS[1]; // CTK47B
-  const w3 = RESEARCH_WALLETS[2]; // Treasury
-  const w4 = RESEARCH_WALLETS[3]; // Auditor
+  const w1 = RESEARCH_WALLETS[0]; // Alice
+  const w2 = RESEARCH_WALLETS[1]; // Bob
+  const w3 = RESEARCH_WALLETS[2]; // Charlie
+  const w4 = RESEARCH_WALLETS[3]; // Dave
 
-  // Transaction 1: Valid - Long -> CTK47B
+  // Transaction 1: Valid - Alice -> Bob
   const tx1Raw = {
     id: 'tx-001',
     txNumber: 'TX-001',
@@ -81,7 +81,7 @@ export const createInitialTransactions = async (): Promise<TransactionItem[]> =>
   const d1 = await computeTransactionDigest(tx1Raw);
   const s1 = await signTransactionDigest(d1.hex, w1.privateKey);
 
-  // Transaction 2: Valid - Treasury -> Long (Research Grant)
+  // Transaction 2: Valid - Charlie -> Alice
   const tx2Raw = {
     id: 'tx-002',
     txNumber: 'TX-002',
@@ -100,7 +100,7 @@ export const createInitialTransactions = async (): Promise<TransactionItem[]> =>
   const d2 = await computeTransactionDigest(tx2Raw);
   const s2 = await signTransactionDigest(d2.hex, w3.privateKey);
 
-  // Transaction 3: Valid - CTK47B -> Auditor (Dataset Publication Fee)
+  // Transaction 3: Valid - Bob -> Dave
   const tx3Raw = {
     id: 'tx-003',
     txNumber: 'TX-003',
@@ -136,7 +136,7 @@ export const createInitialTransactions = async (): Promise<TransactionItem[]> =>
   };
   const d4Tampered = await computeTransactionDigest(tx4Tampered);
 
-  // Transaction 5: Valid - Auditor -> Treasury (Audit Clearance Escrow)
+  // Transaction 5: Valid - Dave -> Charlie
   const tx5Raw = {
     id: 'tx-005',
     txNumber: 'TX-005',
@@ -285,7 +285,7 @@ export const createInitialTransactions = async (): Promise<TransactionItem[]> =>
       sender: tx6Tampered.sender,
       senderName: w2.name,
       receiver: tx6Tampered.receiver, // Rogue address
-      receiverName: 'Unauthorized Attacker Address',
+      receiverName: 'Eve (Attacker)',
       amount: tx6Tampered.amount,
       timestamp: tx6Tampered.timestamp,
       signature: s6Orig.signatureHex, // Signature belongs to original receiver

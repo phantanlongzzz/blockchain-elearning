@@ -379,7 +379,7 @@ export const viTranslations: TranslationSchema = {
     "presetSci": "Khoa Học → Blockchain",
     "presetFac": "Khoa → Sinh Viên",
     "presetVal": "Validator → Mạng Lưới",
-    "presetPeer": "Phan → Peer",
+    "presetPeer": "Heidi → Ivan",
     "poolTitle": "DANH SÁCH GIAO DỊCH LÁ",
     "canvasTitle": "BẢN ĐỒ TRỰC QUAN CÂY MERKLE",
     "canvasDesc": "Cây phân cấp SHA-256 tương tác. Chọn nút để phân tích phương trình băm.",

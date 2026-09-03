@@ -379,7 +379,7 @@ export const enTranslations: TranslationSchema = {
     presetSci: 'Scientific → Blockchain',
     presetFac: 'Faculty → Student',
     presetVal: 'Validator → Network',
-    presetPeer: 'Phan → Peer',
+    presetPeer: 'Heidi → Ivan',
     poolTitle: 'LEAF TRANSACTIONS POOL',
     canvasTitle: 'MERKLE TREE VISUALIZATION CANVAS',
     canvasDesc: 'Interactive SHA-256 tree hierarchy. Click any node to inspect combined hashing equations.',

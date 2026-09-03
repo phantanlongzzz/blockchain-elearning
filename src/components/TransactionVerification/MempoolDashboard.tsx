@@ -71,8 +71,8 @@ const INITIAL_ACCOUNTS: LedgerAccount[] = [
     balance: 10.0,
   },
   {
-    name: 'Phan Tấn Long',
-    address: '0xLong2312679CTK47B91038472910482910394820',
+    name: 'Charlie',
+    address: '0xCharlie2312679CTK47B91038472910482910394820',
     publicKey: '04f3487993f80fa3e0b31ea74eaa98e2f2333ef868d3f4fa57bb571bb3bd86142ba6f8d3c890b3c6a24f36c6224431877d94f0cef73aafeebcff18a35324d3f076',
     privateKey: '11223344556677889900aabbccddeeff11223344556677889900aabbccddeeff',
     balance: 15.0,

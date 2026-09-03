@@ -758,13 +758,8 @@ export const PowLesson: React.FC = () => {
         <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800/80 pb-4">
           <div>
             <h1 className="text-xl sm:text-2xl font-bold font-display text-white tracking-tight">
-              {isVi ? 'Phòng Thí Nghiệm Khai Thác Proof of Work' : 'Proof of Work Mining Lab'}
+              Proof of Work
             </h1>
-            <p className="text-slate-400 mt-0.5 text-xs sm:text-sm">
-              {isVi 
-                ? 'Mô phỏng cuộc đua khai thác đa thợ đào với Web Workers thực tế.' 
-                : 'Run a multi-miner Proof of Work race using real Web Workers.'}
-            </p>
           </div>
           
           <div className="flex items-center gap-2">

@@ -149,7 +149,7 @@ export const StakeDistributionBar: React.FC<StakeDistributionBarProps> = ({
             ) : (
               <>
                 <Play className="w-4 h-4 fill-current text-[#090A0F]" />
-                <span>{language === 'vi' ? 'Bắt đầu chọn người giải khối' : 'Select Block Solver'}</span>
+                <span>{language === 'vi' ? 'Quay chọn người giải khối' : 'Select Block Solver'}</span>
               </>
             )}
           </button>
@@ -231,7 +231,7 @@ export const StakeDistributionBar: React.FC<StakeDistributionBarProps> = ({
                 </div>
               ) : selectedValidator ? (
                 <div className="animate-in fade-in zoom-in-95 duration-200 flex flex-col items-center">
-                  <div className="w-7 h-7 rounded-full bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-0.5">
+                  <div className="w-7 h-7 rounded-full bg-amber-500/15 border border-white/40 flex items-center justify-center text-amber-400 mb-0.5">
                     <Trophy className="w-4 h-4 text-amber-400" />
                   </div>
                   <span className="text-sm font-black text-[#F2F4F7] font-display">
@@ -259,7 +259,7 @@ export const StakeDistributionBar: React.FC<StakeDistributionBarProps> = ({
         {/* Right: Legend & Winner Announcement */}
         <div className="lg:col-span-6 flex flex-col gap-3">
           {/* Winner Announcement Banner */}
-          {selectedValidator ? (
+          {selectedValidator && !isSelecting ? (
             <div className="p-3.5 sm:p-4 rounded-xl bg-[#10151D] border border-white/40 shadow-sm space-y-1 animate-in fade-in duration-200">
               <div className="flex items-center gap-2 text-amber-400 font-bold text-sm">
                 <Trophy className="w-4 h-4 text-amber-400 shrink-0" />
@@ -300,7 +300,7 @@ export const StakeDistributionBar: React.FC<StakeDistributionBarProps> = ({
                 <span>{language === 'vi' ? 'Cách thức lựa chọn:' : 'How Selection Works:'}</span>
               </div>
               {language === 'vi'
-                ? 'Nhấn nút "Bắt đầu chọn người giải khối" phía trên để tiến hành quay xác suất.'
+                ? 'Nhấn nút "Quay chọn người giải khối" phía trên để tiến hành quay xác suất.'
                 : 'Click "Select Block Solver" above to run the weighted selection.'}
             </div>
           )}

@@ -276,7 +276,7 @@ export const ProofOfStakeLab: React.FC = () => {
       titleEn: 'Step 2: Select Block Solver',
       instructionVi: 'Thuật toán ngẫu nhiên có trọng số (Weighted Lottery) chọn 1 Validator giải khối tiếp theo.',
       instructionEn: 'A weighted pseudo-random lottery selects a single validator to solve the next block.',
-      targetActionVi: 'Bấm nút "Bắt đầu chọn người giải khối", sau đó bấm "Tiếp tục: Ghi & Kiểm tra khối".',
+      targetActionVi: 'Bấm nút "Quay chọn người giải khối", sau đó bấm "Tiếp tục: Ghi & Kiểm tra khối".',
       targetActionEn: 'Click "Select Block Solver", then click "Continue: Verify Block".',
       isCompleted: (activeStep === 2 && hasSpun && !isSelecting) || activeStep > 2,
     },

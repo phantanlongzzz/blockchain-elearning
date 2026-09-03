@@ -395,7 +395,7 @@ export const CryptographyFoundations: React.FC<CryptographyFoundationsProps> = (
               <div className="flex items-center justify-between">
                 <span className="text-xs font-mono font-medium text-zinc-200 uppercase flex items-center gap-1.5">
                   <Unlock className="w-3.5 h-3.5 text-zinc-400" />
-                  <span>Khóa công khai (Public Key)</span>
+                  <span>Khóa công khai</span>
                 </span>
                 <span className="px-1.5 py-0.5 rounded text-[10px] font-mono bg-zinc-800 text-zinc-400 border border-zinc-700">
                   Chia sẻ công khai
@@ -418,7 +418,7 @@ export const CryptographyFoundations: React.FC<CryptographyFoundationsProps> = (
               <div className="flex items-center justify-between">
                 <span className="text-xs font-mono font-medium text-zinc-200 uppercase flex items-center gap-1.5">
                   <Lock className="w-3.5 h-3.5 text-amber-400" />
-                  <span>Khóa bí mật (Private Key)</span>
+                  <span>Khóa riêng (Private Key)</span>
                 </span>
                 <span className="px-1.5 py-0.5 rounded text-[10px] font-mono bg-zinc-800 text-amber-400 border border-zinc-700">
                   Tuyệt mật 100%

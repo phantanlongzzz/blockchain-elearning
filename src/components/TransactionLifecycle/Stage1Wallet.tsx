@@ -54,12 +54,11 @@ export const Stage1Wallet: React.FC<Props> = ({ utxos, selectedUtxoIds, setSelec
       </div>
 
       <div className="bg-[#101419] rounded-2xl border border-slate-800 p-5">
-        <p className="text-sm text-slate-300 mb-4">
+        <p className="text-sm text-slate-300 mb-4 whitespace-pre-line">
           {isVi
-            ? 'Bitcoin không lưu trữ số dư tĩnh. Nó lưu trữ các Đầu ra chưa chi tiêu (UTXO). Chọn các UTXO đủ 10 BTC để tạo giao dịch.'
-            : 'Bitcoin does not store static balances. It stores Unspent Transaction Outputs (UTXOs). Select enough UTXOs to cover 10 BTC.'}
+            ? 'Bitcoin không lưu trữ tiền dưới dạng một số dư cố định.\nTài sản được thể hiện thông qua các UTXO chưa được chi tiêu.\n\nHãy chọn các UTXO đủ để tạo giao dịch gửi 10 BTC cho Bob.'
+            : 'Bitcoin does not store static balances. It stores Unspent Transaction Outputs (UTXOs).\nSelect enough UTXOs to cover 10 BTC.'}
         </p>
-
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {aliceUtxos.map((utxo) => {
             const isSelected = selectedUtxoIds.includes(utxo.id);
@@ -69,20 +68,20 @@ export const Stage1Wallet: React.FC<Props> = ({ utxos, selectedUtxoIds, setSelec
                 onClick={() => toggleSelection(utxo.id)}
                 className={`p-4 rounded-xl border cursor-pointer transition-all ${
                   isSelected
-                    ? 'bg-blue-500/10 border-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.1)]'
+                    ? 'bg-[#F5C451]/10 border-[#F5C451] shadow-[0_0_15px_rgba(214,168,74,0.1)]'
                     : 'bg-[#0B0E12] border-slate-800 hover:border-slate-600'
                 }`}
               >
                 <div className="flex justify-between items-start mb-3">
-                  <span className="text-2xl font-bold text-white">{utxo.value} BTC</span>
-                  <div className={`w-5 h-5 rounded flex items-center justify-center ${isSelected ? 'bg-blue-500 text-white' : 'bg-slate-800 text-transparent'}`}>
+                  <span className="text-2xl font-bold text-money">{utxo.value} BTC</span>
+                  <div className={`w-5 h-5 rounded flex items-center justify-center ${isSelected ? 'bg-[#F5C451] text-amber-950' : 'bg-slate-800 text-transparent'}`}>
                     <Check className="w-3.5 h-3.5" />
                   </div>
                 </div>
                 <div className="space-y-1">
                   <div className="flex justify-between text-xs">
                     <span className="text-slate-500">TxID:</span>
-                    <span className="text-slate-300 font-mono">{utxo.txid.slice(0, 8)}...</span>
+                    <span className="text-blue-400 font-mono">{utxo.txid.slice(0, 8)}...</span>
                   </div>
                   <div className="flex justify-between text-xs">
                     <span className="text-slate-500">Index:</span>
@@ -99,13 +98,18 @@ export const Stage1Wallet: React.FC<Props> = ({ utxos, selectedUtxoIds, setSelec
         <div>
           <p className="text-sm text-slate-400 mb-1">{isVi ? 'Tổng đã chọn' : 'Selected Total'}</p>
           <div className="flex items-end gap-2">
-            <span className={`text-2xl font-bold ${canProceed ? 'text-emerald-400' : 'text-white'}`}>
+            <span className={`text-2xl font-bold text-money`}>
               {currentTotal} BTC
             </span>
             <span className="text-sm text-slate-500 mb-1">/ 10 BTC</span>
           </div>
+          {canProceed && (
+            <div className="flex items-center gap-1 text-emerald-400 text-xs font-medium mt-1">
+              <Check className="w-3.5 h-3.5" />
+              {isVi ? 'Đủ để tạo giao dịch' : 'Sufficient to build transaction'}
+            </div>
+          )}
         </div>
-
         <button
           id="proceed-button"
           disabled={!canProceed}

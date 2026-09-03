@@ -75,7 +75,7 @@ export const Stage3Mempool: React.FC<Props> = ({ currentTransaction, mempool, se
 
                 <div className="flex items-center gap-2 text-sm">
                   <span className="text-slate-400 font-mono">Total:</span>
-                  <span className="font-bold text-emerald-400">
+                  <span className="font-bold text-money">
                     {tx.outputs.reduce((sum, o) => sum + o.value, 0).toFixed(2)} BTC
                   </span>
                 </div>

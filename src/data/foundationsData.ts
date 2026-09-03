@@ -454,7 +454,7 @@ export const FUNDAMENTAL_CRYPTO_CONCEPTS: CryptoConceptItem[] = [
       en: 'A cryptographic mechanism proving two critical facts: (1) Who authorized a transaction (Authentication), and (2) That the transaction was not modified after signing (Integrity).',
     },
     example: {
-      vi: 'Khóa Bí Mật (Private Key) → KÝ (SIGN) → [Giao dịch + Chữ ký số] → XÁC MINH (VERIFY) ← Khóa Công Khai (Public Key).',
+      vi: 'Khóa riêng → KÝ (SIGN) → [Giao dịch + Chữ ký số] → XÁC MINH (VERIFY) ← Khóa công khai.',
       en: 'Private Key → SIGN → [Transaction + Signature] → VERIFY ← Public Key.',
     },
     whyBlockchain: {

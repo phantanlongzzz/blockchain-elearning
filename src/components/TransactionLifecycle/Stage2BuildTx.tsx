@@ -181,15 +181,15 @@ export const Stage2BuildTx: React.FC<Props> = ({ utxos, selectedUtxoIds, current
               {currentTransaction.inputs.map((input, idx) => (
                 <div key={idx} className="p-3 bg-[#0B0E12] border border-slate-700/50 rounded-xl relative">
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-xs font-mono text-slate-500">TxID: {input.txid.slice(0, 8)}...</span>
-                    <span className="text-sm font-bold text-white">{input.value} BTC</span>
+                    <span className="text-xs font-mono text-blue-400">TxID: {input.txid.slice(0, 8)}...</span>
+                    <span className="text-sm font-bold text-money">{input.value} BTC</span>
                   </div>
                   <div className="text-[10px] text-slate-400 font-mono break-all bg-[#0A0D11] p-1.5 rounded border border-slate-800">
                     <span className="text-amber-400/70">Sig: </span>{input.sig}
                   </div>
                 </div>
               ))}
-              <div className="text-right text-sm font-bold text-emerald-400 pr-2">
+              <div className="text-right text-sm font-bold text-money pr-2">
                 Total: {totalInput} BTC
               </div>
             </div>
@@ -206,11 +206,11 @@ export const Stage2BuildTx: React.FC<Props> = ({ utxos, selectedUtxoIds, current
                 <div key={idx} className={`p-3 rounded-xl border ${currentTransaction.tampered && idx === 0 ? 'bg-rose-950/20 border-rose-500/50' : 'bg-[#0B0E12] border-slate-700/50'}`}>
                   <div className="flex justify-between items-center mb-1">
                     <span className="text-xs font-bold text-slate-300">{output.address}</span>
-                    <span className={`text-sm font-bold ${currentTransaction.tampered && idx === 0 ? 'text-rose-400' : 'text-white'}`}>{output.value} BTC</span>
+                    <span className={`text-sm font-bold ${currentTransaction.tampered && idx === 0 ? 'text-rose-400' : 'text-money'}`}>{output.value} BTC</span>
                   </div>
                 </div>
               ))}
-              <div className="text-right text-sm font-bold text-emerald-400 pr-2">
+              <div className="text-right text-sm font-bold text-money pr-2">
                 Total: {totalOutput} BTC
               </div>
             </div>
@@ -266,13 +266,13 @@ export const Stage2BuildTx: React.FC<Props> = ({ utxos, selectedUtxoIds, current
       {/* Tampering Scenarios */}
       {!isVerifying && !currentTransaction.valid && (
         <div className="bg-[#151111] rounded-2xl border border-rose-900/30 p-5 mt-6">
-          <h4 className="text-sm font-bold text-rose-400 mb-3">{isVi ? 'Mô phỏng Lỗi (Kịch bản)' : 'Error Scenarios (Tampering)'}</h4>
+          <h4 className="text-sm font-bold text-rose-400 mb-3">{isVi ? 'Mô phỏng lỗi' : 'Error Scenarios'}</h4>
           <div className="flex flex-wrap gap-3">
             <button onClick={tamperOutputValue} className="px-3 py-1.5 rounded-lg bg-rose-500/10 text-rose-400 border border-rose-500/20 text-xs hover:bg-rose-500/20 transition-all cursor-pointer">
               {isVi ? 'Sửa số tiền sai (> Đầu vào)' : 'Invalid Amount (> Inputs)'}
             </button>
             <button onClick={tamperSignature} className="px-3 py-1.5 rounded-lg bg-rose-500/10 text-rose-400 border border-rose-500/20 text-xs hover:bg-rose-500/20 transition-all cursor-pointer">
-              {isVi ? 'Làm hỏng chữ ký mật mã' : 'Corrupt Signature'}
+              {isVi ? 'Làm hỏng chữ ký ECDSA' : 'Corrupt Signature'}
             </button>
             <button onClick={handleDoubleSpend} className="px-3 py-1.5 rounded-lg bg-rose-500/10 text-rose-400 border border-rose-500/20 text-xs hover:bg-rose-500/20 transition-all cursor-pointer">
               {isVi ? 'Mô phỏng Double Spending' : 'Simulate Double Spend'}

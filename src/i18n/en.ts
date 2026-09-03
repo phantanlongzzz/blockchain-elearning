@@ -308,7 +308,7 @@ export const enTranslations: TranslationSchema = {
     attack4Title: 'Replay',
     attack4Desc: 'Re-broadcasts an already executed valid signature payload.',
     attack4Exp: 'Expected: Replay detected',
-    ledgerTitle: 'Wallets & balances',
+    ledgerTitle: 'User Wallets',
     liveAccounts: 'Active accounts',
     roleTitle: 'Public key vs private key',
     roleDesc: 'Private keys sign transactions securely. Public keys verify signatures mathematically across all decentralized nodes.',

@@ -65,9 +65,9 @@ export const Stage4MineBlock: React.FC<Props> = ({ mempool, setMempool, blockcha
           <Pickaxe className="w-5 h-5 text-orange-400" />
         </div>
         <div>
-          <h2 className="text-lg font-bold text-white">{isVi ? 'Đóng Khối & Merkle Tree' : 'Mine Block & Merkle Tree'}</h2>
+          <h2 className="text-lg font-bold text-white">{isVi ? 'Đào khối & Merkle Tree' : 'Mine Block & Merkle Tree'}</h2>
           <p className="text-sm text-slate-400">
-            {isVi ? 'Tính toán Merkle Root và Header để gia nhập chuỗi.' : 'Calculate Merkle Root and Header to join the chain.'}
+            {isVi ? 'Tính toán Merkle Root và Block Header để gia nhập chuỗi.' : 'Calculate Merkle Root and Header to join the chain.'}
           </p>
         </div>
       </div>
@@ -138,7 +138,7 @@ export const Stage4MineBlock: React.FC<Props> = ({ mempool, setMempool, blockcha
               }`}
             >
               <Pickaxe className="w-4 h-4" />
-              <span>{isVi ? 'Khớp Nonce & Đóng Khối' : 'Find Nonce & Mine Block'}</span>
+              <span>{isVi ? 'Khớp Nonce & Đóng khối' : 'Find Nonce & Mine Block'}</span>
             </button>
           </div>
         </div>

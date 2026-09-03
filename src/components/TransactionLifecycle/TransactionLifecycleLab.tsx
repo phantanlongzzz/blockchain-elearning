@@ -51,9 +51,9 @@ export const TransactionLifecycleLab: React.FC = () => {
 
   const stages = [
     { id: 1, title: isVi ? '1. Ví & UTXO' : '1. Wallet & UTXO', icon: Wallet },
-    { id: 2, title: isVi ? '2. Tạo Giao dịch' : '2. Build Transaction', icon: PenTool },
+    { id: 2, title: isVi ? '2. Tạo giao dịch' : '2. Build Transaction', icon: PenTool },
     { id: 3, title: isVi ? '3. Mempool' : '3. Mempool', icon: Database },
-    { id: 4, title: isVi ? '4. Đào Khối & Merkle' : '4. Mine Block & Merkle', icon: Pickaxe },
+    { id: 4, title: isVi ? '4. Đào khối & Merkle Tree' : '4. Mine Block & Merkle Tree', icon: Pickaxe },
   ];
 
   return (
@@ -69,7 +69,7 @@ export const TransactionLifecycleLab: React.FC = () => {
           onClick={resetSimulation}
           className="px-4 py-2 rounded-xl bg-[#0F131A] hover:bg-[#11161E] text-[#A5AFBF] hover:text-[#F2F4F7] border border-[#1C2430] text-xs font-bold transition-all"
         >
-          {isVi ? 'Làm mới (Reset)' : 'Reset Simulation'}
+          {isVi ? 'Đặt lại mô phỏng' : 'Reset Simulation'}
         </button>
       </div>
 

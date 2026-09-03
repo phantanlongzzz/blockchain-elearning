@@ -146,7 +146,7 @@ export const DigitalSignatureMiniLab: React.FC<DigitalSignatureMiniLabProps> = (
           {/* Step 3: Private Key */}
           <div className="p-3 rounded-lg bg-[#10151D] border border-[#1C2430] space-y-2 text-xs">
             <div className="text-[#717B8C] font-mono text-[10px] uppercase font-medium">
-              3. {isVi ? 'Khóa bí mật' : 'Private key'}
+              3. {isVi ? 'Khóa riêng' : 'Private key'}
             </div>
             <div className="font-mono text-xs text-[#A5AFBF] truncate">
               0x8f12... (Alice)

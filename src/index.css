@@ -2,6 +2,7 @@
 @import "katex/dist/katex.min.css";
 
 :root {
+  --color-money: #D6A84A;
   --bg-primary: #0A0D0F;
   --bg-secondary: #0E1210;
   --bg-surface: #121713;
@@ -446,3 +447,8 @@ html body,
   }
 }
 
+
+
+@utility text-money {
+  color: var(--color-money);
+}

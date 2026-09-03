@@ -199,7 +199,7 @@ export const ALL_QUIZ_QUESTIONS: QuizQuestion[] = [
     correctOptionId: 'opt-a',
     explanation: {
       en: 'Asymmetric cryptography solves key exchange: Public Key is shared openly for address creation and signature verification, while Private Key is kept secret to generate valid signatures.',
-      vi: 'Mật mã bất đối xứng giải quyết bài toán trao đổi khóa: Khóa công khai được chia sẻ rộng rãi để nhận diện địa chỉ và xác minh chữ ký, trong khi Khóa bí mật được giữ kín để ký duyệt giao dịch.',
+      vi: 'Mật mã bất đối xứng giải quyết bài toán trao đổi khóa: Khóa công khai được chia sẻ rộng rãi để nhận diện địa chỉ và xác minh chữ ký, trong khi Khóa riêng được giữ kín để ký duyệt giao dịch.',
     },
   },
   {
@@ -364,8 +364,8 @@ export const ALL_QUIZ_QUESTIONS: QuizQuestion[] = [
       vi: 'Khóa nào được dùng để KÝ giao dịch, và khóa nào được các node dùng để XÁC THỰC chữ ký đó?',
     },
     options: [
-      { id: 'opt-a', en: 'Sign with Private Key; Verify with Public Key', vi: 'Ký bằng Khóa Bí Mật (Private Key); Xác thực bằng Khóa Công Khai (Public Key)' },
-      { id: 'opt-b', en: 'Sign with Public Key; Verify with Private Key', vi: 'Ký bằng Khóa Công Khai (Public Key); Xác thực bằng Khóa Bí Mật (Private Key)' },
+      { id: 'opt-a', en: 'Sign with Private Key; Verify with Public Key', vi: 'Ký bằng Khóa riêng; Xác thực bằng Khóa công khai' },
+      { id: 'opt-b', en: 'Sign with Public Key; Verify with Private Key', vi: 'Ký bằng Khóa công khai; Xác thực bằng Khóa riêng' },
       { id: 'opt-c', en: 'Sign with Password; Verify with Email', vi: 'Ký bằng Mật khẩu; Xác thực bằng Email' },
       { id: 'opt-d', en: 'Sign with Symmetric Secret Key; Verify with the same Secret Key', vi: 'Ký bằng Khóa Đối Xứng; Xác thực bằng chính Khóa Đối Xứng đó' },
     ],

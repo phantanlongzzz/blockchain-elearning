@@ -131,7 +131,7 @@ export const MerkleTreeVisualizer: React.FC<Props> = ({ transactions, onRootCalc
             }`}
           >
             <div className="text-[10px] font-bold text-slate-300 mb-1">{tx.id}</div>
-            <div className="text-[9px] text-slate-500 mb-2">
+            <div className="text-[9px] text-money mb-2 font-bold">
               {tx.outputs.reduce((sum, o) => sum + o.value, 0).toFixed(2)} BTC
             </div>
             

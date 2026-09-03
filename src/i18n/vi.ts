@@ -308,10 +308,10 @@ export const viTranslations: TranslationSchema = {
     "attack4Title": "Replay",
     "attack4Desc": "Truyền phát lại một chữ ký giao dịch hợp lệ đã thực hiện trước đó.",
     "attack4Exp": "Kỳ vọng: Phát hiện phát lại",
-    "ledgerTitle": "Ví & số dư",
+    "ledgerTitle": "Ví người dùng",
     "liveAccounts": "Tài khoản hoạt động",
-    "roleTitle": "Khóa công khai & Khóa bí mật",
-    "roleDesc": "Khóa bí mật dùng để ký giao dịch an toàn. Khóa công khai dùng để xác thực toán học trên mọi nút phi tập trung.",
+    "roleTitle": "Khóa công khai & Khóa riêng",
+    "roleDesc": "Khóa riêng dùng để ký giao dịch an toàn. Khóa công khai dùng để xác thực toán học trên mọi nút phi tập trung.",
     "auditEngineTitle": "Xác thực giao dịch",
     "auditRules": "6 Tiêu chí",
     "auditReady": "Động cơ kiểm định sẵn sàng",
@@ -654,7 +654,7 @@ export const viTranslations: TranslationSchema = {
         "category": "P3: Signatures",
         "question": "Tại sao khóa bí mật phải được giữ hoàn toàn bảo mật và không bao giờ được chia sẻ?",
         "answer": "Trong ECDSA trên SECP256K1, khóa bí mật là một số nguyên vô hướng 256-bit d ∈ [1, n-1]. Sở hữu d cho phép bất kỳ ai tạo ra chữ ký mật mã hợp lệ (r, s) cho bất kỳ bản tóm tắt giao dịch e = SHA-256(m). Nếu khóa bí mật bị lộ, kẻ tấn công có thể ủy quyền chuyển nhượng tài sản không thể đảo ngược thay cho chủ tài khoản.",
-        "keyTakeaway": "Khóa bí mật = quyền lực duy nhất để ký và chi tiêu. Lộ khóa bí mật làm thỏa hiệp toàn bộ ví."
+        "keyTakeaway": "Khóa riêng = quyền lực duy nhất để ký và chi tiêu. Lộ khóa bí mật làm thỏa hiệp toàn bộ ví."
       },
       {
         "id": "p3-2",

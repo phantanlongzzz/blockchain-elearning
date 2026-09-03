@@ -94,6 +94,7 @@ interface TraceStep {
   rejected: MempoolTransaction[];
   seenSignatures: Set<string>;
   focusId?: string;
+  baseDelay?: number;
 }
 
 export const MempoolDashboard: React.FC = () => {
@@ -228,10 +229,10 @@ export const MempoolDashboard: React.FC = () => {
     
     const cloneAccounts = (accs: any) => JSON.parse(JSON.stringify(accs));
     
-    newTrace.push({ activeStep: 0, lastVerifiedTx: null, mempool: [...baseMempool], rejected: [...baseRejected], seenSignatures: new Set(baseSeen), accounts: cloneAccounts(baseAccounts) });
-    newTrace.push({ activeStep: 1, lastVerifiedTx: null, mempool: [...baseMempool], rejected: [...baseRejected], seenSignatures: new Set(baseSeen), accounts: cloneAccounts(baseAccounts), focusId: 'pipeline-viz' });
-    newTrace.push({ activeStep: 2, lastVerifiedTx: null, mempool: [...baseMempool], rejected: [...baseRejected], seenSignatures: new Set(baseSeen), accounts: cloneAccounts(baseAccounts) });
-    newTrace.push({ activeStep: 3, lastVerifiedTx: null, mempool: [...baseMempool], rejected: [...baseRejected], seenSignatures: new Set(baseSeen), accounts: cloneAccounts(baseAccounts) });
+    newTrace.push({ activeStep: 0, lastVerifiedTx: null, mempool: [...baseMempool], rejected: [...baseRejected], seenSignatures: new Set(baseSeen), accounts: cloneAccounts(baseAccounts), baseDelay: 900 });
+    newTrace.push({ activeStep: 1, lastVerifiedTx: null, mempool: [...baseMempool], rejected: [...baseRejected], seenSignatures: new Set(baseSeen), accounts: cloneAccounts(baseAccounts), focusId: 'pipeline-viz', baseDelay: 1400 });
+    newTrace.push({ activeStep: 2, lastVerifiedTx: null, mempool: [...baseMempool], rejected: [...baseRejected], seenSignatures: new Set(baseSeen), accounts: cloneAccounts(baseAccounts), baseDelay: 900 });
+    newTrace.push({ activeStep: 3, lastVerifiedTx: null, mempool: [...baseMempool], rejected: [...baseRejected], seenSignatures: new Set(baseSeen), accounts: cloneAccounts(baseAccounts), baseDelay: 1000 });
     
     const formatPass = Boolean(alice.address && bob.address && broadcastPayload.amount > 0 && broadcastPayload.timestamp);
     const publicKeyPass = Boolean(alice.publicKey && alice.publicKey.startsWith('04'));
@@ -266,7 +267,8 @@ export const MempoolDashboard: React.FC = () => {
         activeStep: 4,
         lastVerifiedTx: createTxObj(currentChecks),
         mempool: [...baseMempool], rejected: [...baseRejected], seenSignatures: new Set(baseSeen), accounts: cloneAccounts(baseAccounts),
-        focusId: 'audit-panel'
+        focusId: 'audit-panel',
+        baseDelay: 1000
       });
       return result;
     };
@@ -309,7 +311,8 @@ export const MempoolDashboard: React.FC = () => {
       rejected: finalRejected,
       seenSignatures: finalSeen,
       accounts: finalAccounts,
-      focusId: 'result-panel'
+      focusId: 'result-panel',
+      baseDelay: 1500
     });
     
     setTrace(newTrace);
@@ -333,18 +336,38 @@ export const MempoolDashboard: React.FC = () => {
     setRevealedKeyAccount(null);
   };
 
+  const speedRef = React.useRef(playbackSpeed);
   useEffect(() => {
-    let timer: any;
-    if (isPlaying && trace.length > 0 && stepIndex < trace.length - 1) {
-      const delay = 800 / playbackSpeed;
-      timer = setTimeout(() => {
-        setStepIndex(s => s + 1);
-      }, delay);
-    } else if (isPlaying && stepIndex >= trace.length - 1) {
-      setIsPlaying(false);
-    }
-    return () => clearTimeout(timer);
-  }, [isPlaying, stepIndex, trace, playbackSpeed]);
+    speedRef.current = playbackSpeed;
+  }, [playbackSpeed]);
+
+  useEffect(() => {
+    let active = true;
+    let timer: ReturnType<typeof setTimeout>;
+
+    const runDelay = async () => {
+      if (isPlaying && trace.length > 0 && stepIndex < trace.length - 1) {
+        const baseDelay = trace[stepIndex].baseDelay || 1000;
+        const scaledDelay = baseDelay / speedRef.current;
+        
+        await new Promise(resolve => {
+          timer = setTimeout(resolve, scaledDelay);
+        });
+        
+        if (active) {
+          setStepIndex(s => s + 1);
+        }
+      } else if (isPlaying && stepIndex >= trace.length - 1) {
+        setIsPlaying(false);
+      }
+    };
+    
+    runDelay();
+    return () => {
+      active = false;
+      clearTimeout(timer);
+    };
+  }, [isPlaying, stepIndex, trace]);
 
   useEffect(() => {
     const current = trace[stepIndex];
@@ -466,17 +489,23 @@ export const MempoolDashboard: React.FC = () => {
                   </button>
                 </div>
 
-                <div className="flex items-center gap-2 pl-2 border-l border-[#252B33]">
-                  <span className="text-xs text-[#68717D]">Speed:</span>
-                  <select
-                    value={playbackSpeed}
-                    onChange={(e) => setPlaybackSpeed(Number(e.target.value))}
-                    className="bg-transparent text-xs text-[#E7E9ED] border border-[#252B33] rounded p-1 outline-none"
-                  >
-                    <option value={0.5}>0.5x</option>
-                    <option value={1}>1x</option>
-                    <option value={2}>2x</option>
-                  </select>
+                <div className="flex items-center gap-1 pl-3 sm:pl-4 border-l border-[#252B33]">
+                  <span className="text-xs text-[#68717D] mr-1 hidden sm:inline">Speed:</span>
+                  <div className="flex items-center bg-[#090a0f] border border-[#252B33] rounded overflow-hidden">
+                    {[0.5, 1, 2].map((speed) => (
+                      <button
+                        key={speed}
+                        onClick={() => setPlaybackSpeed(speed)}
+                        className={`px-2.5 py-1 text-xs font-mono transition-colors ${
+                          playbackSpeed === speed
+                            ? 'bg-[#1A2028] text-[#E7E9ED] border-b-2 border-[#00D084]'
+                            : 'bg-transparent text-[#68717D] hover:bg-[#1A2028]/50 hover:text-[#9AA2AE] border-b-2 border-transparent'
+                        }`}
+                      >
+                        {speed}×
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </>
             )}

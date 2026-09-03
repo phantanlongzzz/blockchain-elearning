@@ -21,6 +21,7 @@ import {
   CheckCircle2,
   PlayCircle,
   RotateCcw,
+  Github,
 } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 import { useNavigation, MODULES_REGISTRY, ModuleId, LessonId } from '../context/NavigationContext';
@@ -417,6 +418,16 @@ export const Hero: React.FC = () => {
             <span>CTK47B</span>
             <span className="text-[#3f3f46]">·</span>
             <span className="font-mono">ID: 2312679</span>
+            <span className="text-[#3f3f46]">·</span>
+            <a
+              href="https://github.com/phantanlongzzz/blockchain-elearning"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-[#00C98D] hover:text-[#00C98D] hover:brightness-110 border-b border-transparent hover:border-[#00C98D]/40 transition-all duration-200 cursor-pointer"
+            >
+              <Github className="w-3 h-3" />
+              <span>Source Code ↗</span>
+            </a>
           </div>
         </div>
     </section>

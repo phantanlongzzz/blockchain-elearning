@@ -1,4 +1,11 @@
+const fs = require('fs');
 
+const original = fs.readFileSync('src/components/TransactionVerification/MempoolDashboard.tsx', 'utf-8');
+
+// We will write the new content.
+// Since it's a huge rewrite of the component logic, we'll construct the file manually.
+
+const newContent = `
 import React, { useState, useEffect, useRef } from 'react';
 import {
   RotateCcw,
@@ -59,28 +66,28 @@ const INITIAL_ACCOUNTS: LedgerAccount[] = [
   {
     name: 'Alice',
     address: '0xAlice7192aBcD8910482019482710492837194029',
-    publicKey: '044646ae5047316b4230d0086c8acec687f00b1cd9d1dc634f6cb358ac0a9a8ffffe77b4dd0a4bfb95851f3b7355c781dd60f8418fc8a65d14907aff47c903a559',
+    publicKey: '04a1b2c3d4e5f60718293a4b5c6d7e8f90123456789abcdef0123456789abcde04a1b2c3d4e5f60718293a4b5c6d7e8f90123456789abcdef0123456789abcde',
     privateKey: '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef',
     balance: 20.0,
   },
   {
     name: 'Bob',
     address: '0xBob83910fEcD7194028472910482910394820193',
-    publicKey: '0488e2ddeb04657dbd0edadf9c1f98da3b3895faa1f00527934dd35d17542ffe9b1e7640d7737e24e36d208effb77e86affe670a9a497aa7fb52bf4e687a17fff4',
+    publicKey: '04f0e1d2c3b4a5968778695a4b3c2d1e0f9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c04f0e1d2c3b4a5968778695a4b3c2d1e0f9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c',
     privateKey: 'fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210',
     balance: 10.0,
   },
   {
     name: 'Phan Tấn Long',
     address: '0xLong2312679CTK47B91038472910482910394820',
-    publicKey: '04f3487993f80fa3e0b31ea74eaa98e2f2333ef868d3f4fa57bb571bb3bd86142ba6f8d3c890b3c6a24f36c6224431877d94f0cef73aafeebcff18a35324d3f076',
+    publicKey: '04394810293847192837461928374619283746192837461928374619283746190439481029384719283746192837461928374619283746192837461928374619',
     privateKey: '11223344556677889900aabbccddeeff11223344556677889900aabbccddeeff',
     balance: 15.0,
   },
   {
     name: 'Kho Bạc Mạng Lưới (Treasury)',
     address: '0xTreasury889900112233445566778899aabbccdd',
-    publicKey: '04e68da570b51f8234f0906d39368a3406868fe25f418fd7b1b66d69e5928ba293a4bf54bbd213b62bf17953f99657841e74970053825152a219a373de79e8f822',
+    publicKey: '048899aabbccddeeff00112233445566778899aabbccddeeff00112233445566048899aabbccddeeff00112233445566778899aabbccddeeff00112233445566',
     privateKey: '99887766554433221100ffeeddccbbaa99887766554433221100ffeeddccbbaa',
     balance: 50.0,
   },
@@ -138,7 +145,7 @@ export const MempoolDashboard: React.FC = () => {
 
   const truncateAddress = (addr: string) => {
     if (!addr || addr.length <= 16) return addr;
-    return `${addr.slice(0, 8)}...${addr.slice(-5)}`;
+    return \`\${addr.slice(0, 8)}...\${addr.slice(-5)}\`;
   };
 
   const buildSimulationTrace = async (scenario: 'VALID' | 'TAMPERED' | 'INSUFFICIENT' | 'REPLAY') => {
@@ -167,7 +174,7 @@ export const MempoolDashboard: React.FC = () => {
     const timestamp = new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC';
     
     const signedPayload = {
-      id: `tx-${Date.now()}`,
+      id: \`tx-\${Date.now()}\`,
       sender: alice.address,
       receiver: bob.address,
       amount: signedAmount,
@@ -180,14 +187,12 @@ export const MempoolDashboard: React.FC = () => {
     
     let targetNonce = txNonce;
     let targetSig = signature;
-    let broadcastPayload = scenario === 'TAMPERED' 
-      ? { ...signedPayload, amount: 100.0 } 
-      : { ...signedPayload };
+    let broadcastPayload = { ...signedPayload, amount: broadcastAmount };
     
     // Scenario Replay: inject a valid tx first
     if (scenario === 'REPLAY') {
       const firstPayload = {
-        id: `tx-${Date.now() - 10000}`,
+        id: \`tx-\${Date.now() - 10000}\`,
         sender: alice.address,
         receiver: bob.address,
         amount: 5.0,
@@ -237,7 +242,7 @@ export const MempoolDashboard: React.FC = () => {
     const publicKeyPass = Boolean(alice.publicKey && alice.publicKey.startsWith('04'));
     const signaturePass = await verifyTransactionSignature(broadcastDigestRes.hex, targetSig, alice.publicKey);
     const balancePass = baseAccounts[0].balance >= broadcastPayload.amount;
-    const replayPass = scenario === 'REPLAY' ? false : !baseSeen.has(targetSig);
+    const replayPass = !baseSeen.has(targetSig);
     const fieldsPass = Boolean(broadcastPayload.nonce && alice.address !== bob.address);
     
     const createTxObj = (checks: any): MempoolTransaction => ({
@@ -375,7 +380,8 @@ export const MempoolDashboard: React.FC = () => {
     { step: 2, title: vStr.stepSign, desc: vStr.stepSignDesc, active: activeStep === 2 },
     { step: 3, title: vStr.stepBroadcast, desc: vStr.stepBroadcastDesc, active: activeStep === 3 },
     { step: 4, title: vStr.stepAudit, desc: vStr.stepAuditDesc, active: activeStep === 4 },
-    { step: 5, title: activeStep === 6 ? vStr.stepRejected : vStr.stepMempool, desc: activeStep === 6 ? vStr.stepRejectedDesc : vStr.stepMempoolDesc, active: activeStep === 5 || activeStep === 6, failed: activeStep === 6 },
+    { step: 5, title: vStr.stepMempool, desc: vStr.stepMempoolDesc, active: activeStep === 5 },
+    { step: 6, title: vStr.stepRejected, desc: vStr.stepRejectedDesc, active: activeStep === 6, failed: true },
   ];
 
   return (
@@ -392,25 +398,25 @@ export const MempoolDashboard: React.FC = () => {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
           <button
             onClick={() => setSelectedScenario('VALID')}
-            className={`px-4 py-2.5 rounded-lg border text-xs font-medium transition-all text-center cursor-pointer ${selectedScenario === 'VALID' ? 'bg-[#1A2028] border-[#00D084] text-[#00D084]' : 'bg-[#0F1217] border-[#252B33] text-[#E7E9ED] hover:bg-[#1A2028] hover:border-[#00D084]/40 hover:text-[#00D084]'}`}
+            className={\`px-4 py-2.5 rounded-lg border text-xs font-medium transition-all text-center cursor-pointer \${selectedScenario === 'VALID' ? 'bg-[#1A2028] border-[#00D084] text-[#00D084]' : 'bg-[#0F1217] border-[#252B33] text-[#E7E9ED] hover:bg-[#1A2028] hover:border-[#00D084]/40 hover:text-[#00D084]'}\`}
           >
             {vStr.attack1Title}
           </button>
           <button
             onClick={() => setSelectedScenario('TAMPERED')}
-            className={`px-4 py-2.5 rounded-lg border text-xs font-medium transition-all text-center cursor-pointer ${selectedScenario === 'TAMPERED' ? 'bg-[#1A2028] border-rose-500 text-rose-400' : 'bg-[#0F1217] border-[#252B33] text-[#E7E9ED] hover:bg-[#1A2028] hover:border-rose-500/40 hover:text-rose-400'}`}
+            className={\`px-4 py-2.5 rounded-lg border text-xs font-medium transition-all text-center cursor-pointer \${selectedScenario === 'TAMPERED' ? 'bg-[#1A2028] border-rose-500 text-rose-400' : 'bg-[#0F1217] border-[#252B33] text-[#E7E9ED] hover:bg-[#1A2028] hover:border-rose-500/40 hover:text-rose-400'}\`}
           >
             {vStr.attack2Title}
           </button>
           <button
             onClick={() => setSelectedScenario('INSUFFICIENT')}
-            className={`px-4 py-2.5 rounded-lg border text-xs font-medium transition-all text-center cursor-pointer ${selectedScenario === 'INSUFFICIENT' ? 'bg-[#1A2028] border-amber-500 text-amber-400' : 'bg-[#0F1217] border-[#252B33] text-[#E7E9ED] hover:bg-[#1A2028] hover:border-amber-500/40 hover:text-amber-400'}`}
+            className={\`px-4 py-2.5 rounded-lg border text-xs font-medium transition-all text-center cursor-pointer \${selectedScenario === 'INSUFFICIENT' ? 'bg-[#1A2028] border-amber-500 text-amber-400' : 'bg-[#0F1217] border-[#252B33] text-[#E7E9ED] hover:bg-[#1A2028] hover:border-amber-500/40 hover:text-amber-400'}\`}
           >
             {vStr.attack3Title}
           </button>
           <button
             onClick={() => setSelectedScenario('REPLAY')}
-            className={`px-4 py-2.5 rounded-lg border text-xs font-medium transition-all text-center cursor-pointer ${selectedScenario === 'REPLAY' ? 'bg-[#1A2028] border-purple-500 text-purple-400' : 'bg-[#0F1217] border-[#252B33] text-[#E7E9ED] hover:bg-[#1A2028] hover:border-purple-500/40 hover:text-purple-400'}`}
+            className={\`px-4 py-2.5 rounded-lg border text-xs font-medium transition-all text-center cursor-pointer \${selectedScenario === 'REPLAY' ? 'bg-[#1A2028] border-purple-500 text-purple-400' : 'bg-[#0F1217] border-[#252B33] text-[#E7E9ED] hover:bg-[#1A2028] hover:border-purple-500/40 hover:text-purple-400'}\`}
           >
             {vStr.attack4Title}
           </button>
@@ -455,7 +461,7 @@ export const MempoolDashboard: React.FC = () => {
                     <SkipBack className="w-4 h-4" />
                   </button>
                   <span className="text-xs text-[#9AA2AE] font-mono min-w-[60px] text-center">
-                    {isVi ? 'Bước' : 'Step'} {Math.max(1, Math.min(5, activeStep))} / 5
+                    {stepIndex + 1} / {trace.length}
                   </span>
                   <button
                     onClick={() => setStepIndex(Math.min(trace.length - 1, stepIndex + 1))}
@@ -492,32 +498,32 @@ export const MempoolDashboard: React.FC = () => {
             {steps.map((s, idx) => (
               <React.Fragment key={s.step}>
                 <div
-                  className={`flex flex-col items-center gap-2 relative ${
+                  className={\`flex flex-col items-center gap-2 relative \${
                     s.active ? 'scale-110 z-10' : 'opacity-50 grayscale'
-                  } transition-all duration-300`}
+                  } transition-all duration-300\`}
                 >
                   <div
-                    className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center border-2 font-mono text-sm sm:text-base font-bold shadow-lg
-                    ${
+                    className={\`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center border-2 font-mono text-sm sm:text-base font-bold shadow-lg
+                    \${
                       s.active
                         ? s.failed
                           ? 'bg-rose-500/20 border-rose-500 text-rose-400 shadow-rose-500/20'
                           : 'bg-[#00D084]/20 border-[#00D084] text-[#00D084] shadow-[#00D084]/20'
                         : 'bg-[#090C10] border-[#252B33] text-[#68717D]'
                     }
-                  `}
+                  \`}
                   >
                     {s.step}
                   </div>
                   <div className="text-center absolute top-14 w-24">
                     <div
-                      className={`text-[10px] sm:text-xs font-semibold ${
+                      className={\`text-[10px] sm:text-xs font-semibold \${
                         s.active
                           ? s.failed
                             ? 'text-rose-400'
                             : 'text-[#00D084]'
                           : 'text-[#68717D]'
-                      }`}
+                      }\`}
                     >
                       {s.title}
                     </div>
@@ -534,81 +540,6 @@ export const MempoolDashboard: React.FC = () => {
             ))}
           </div>
         </div>
-
-
-        {/* Current Transaction Simulation Context */}
-        {activeStep >= 1 && (
-          <div id="step-create" className="lg:col-span-3 p-5 rounded-xl bg-[#090C10] border border-[#1B2027] space-y-4">
-            <div className="flex items-center justify-between pb-2 border-b border-[#1B2027]">
-              <span className="text-sm font-semibold text-[#E7E9ED]">
-                {isVi ? 'Giao dịch đang mô phỏng' : 'Current Simulation Context'}
-              </span>
-              <span className="text-xs text-[#00D084] font-mono">
-                {activeStep === 1 && (isVi ? 'Đang tạo...' : 'Creating...')}
-                {activeStep === 2 && (isVi ? 'Đang ký...' : 'Signing...')}
-                {activeStep === 3 && (isVi ? 'Truyền P2P...' : 'Broadcasting...')}
-                {activeStep === 4 && (isVi ? 'Đang xác thực...' : 'Validating...')}
-                {activeStep === 5 && (isVi ? 'Đã chấp nhận' : 'Accepted')}
-                {activeStep === 6 && (isVi ? 'Bị từ chối' : 'Rejected')}
-              </span>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-               {/* Payload block */}
-               <div className="p-3 rounded-lg bg-[#0F1217] border border-[#252B33] flex flex-col gap-2">
-                 <div className="text-xs text-[#68717D]">{isVi ? 'Người gửi' : 'Sender'}</div>
-                 <div className="text-sm font-semibold text-[#E7E9ED]">Alice</div>
-                 <div className="text-xs text-[#68717D] mt-2">{isVi ? 'Người nhận' : 'Receiver'}</div>
-                 <div className="text-sm font-semibold text-[#E7E9ED]">Bob</div>
-                 <div className="text-xs text-[#68717D] mt-2">{isVi ? 'Số tiền' : 'Amount'}</div>
-                 <div className="text-sm font-mono font-semibold text-[#00D084]">
-                   {selectedScenario === 'TAMPERED' && activeStep >= 3 ? (
-                      <span className="text-rose-400">100.0 BTC (Bị sửa đổi!)</span>
-                   ) : selectedScenario === 'INSUFFICIENT' ? (
-                      <span className="text-amber-400">100.0 BTC</span>
-                   ) : (
-                      <span>10.0 BTC</span>
-                   )}
-                 </div>
-               </div>
-
-               {/* Signing block */}
-               {activeStep >= 2 && (
-                 <div id="step-sign" className="p-3 rounded-lg bg-[#0F1217] border border-[#252B33] flex flex-col gap-2 col-span-1 sm:col-span-2 lg:col-span-3">
-                   <div className="text-xs text-[#68717D]">{isVi ? 'Quá trình ký (Mô phỏng)' : 'Signing Process (Simulated)'}</div>
-                   <div className="grid grid-cols-1 md:grid-cols-3 gap-3 items-center">
-                     <div className="p-2 bg-[#0B0E12] rounded border border-[#1B2027] text-[10px] font-mono text-[#9AA2AE] break-all">
-                       <span className="block text-[#68717D] mb-1">Transaction Digest (SHA-256)</span>
-                       a94f82c1...
-                     </div>
-                     <div className="hidden md:flex justify-center text-[#68717D]">
-                        <span className="text-xs font-mono">+ Private Key (Alice)</span>
-                     </div>
-                     <div className="p-2 bg-[#0B0E12] rounded border border-[#00D084]/30 text-[10px] font-mono text-[#00D084] break-all">
-                       <span className="block text-[#00D084]/70 mb-1">Digital Signature (ECDSA)</span>
-                       30450221008f...9e21
-                     </div>
-                   </div>
-                 </div>
-               )}
-            </div>
-
-            {/* P2P Broadcast animation block */}
-            {activeStep === 3 && (
-               <div id="step-broadcast" className="p-4 rounded-lg bg-[#0F1217] border border-[#252B33] flex items-center justify-center h-24">
-                  <div className="flex items-center gap-6 animate-pulse">
-                     <div className="text-xs font-semibold text-[#E7E9ED]">Alice</div>
-                     <div className="text-[#00D084] text-xs">───► (P2P Network) ───►</div>
-                     <div className="flex gap-4 text-xs font-mono text-[#68717D]">
-                       <span>Node A</span>
-                       <span>Node B</span>
-                       <span>Node C</span>
-                     </div>
-                  </div>
-               </div>
-            )}
-          </div>
-        )}
 
         {/* Global Network Stats */}
         <div className="p-5 rounded-xl bg-[#0B0E12] border border-[#1B2027] space-y-4">
@@ -922,3 +853,7 @@ export const MempoolDashboard: React.FC = () => {
     </div>
   );
 };
+`
+
+fs.writeFileSync('src/components/TransactionVerification/MempoolDashboard.tsx', newContent);
+console.log('MempoolDashboard generated successfully');

@@ -65,6 +65,7 @@ export interface TransactionPayload {
   receiver: string;
   amount: number;
   timestamp: string;
+  nonce?: number;
   blockIndex?: number;
 }
 
@@ -75,10 +76,11 @@ export const computeTransactionDigest = async (tx: {
   receiver: string;
   amount: number;
   timestamp: string;
+  nonce?: number;
   blockIndex?: number;
 }): Promise<{ hex: string; bytes: Uint8Array }> => {
   // Canonical serialization format
-  const canonicalString = `${tx.id}|${tx.sender}|${tx.receiver}|${Number(tx.amount).toFixed(4)}|${tx.timestamp}`;
+  const canonicalString = `${tx.id}|${tx.sender}|${tx.receiver}|${Number(tx.amount).toFixed(4)}|${tx.timestamp}|${tx.nonce || 0}`;
   const hashResult = await hashSha256(canonicalString);
   const bytes = hexToBytes(hashResult.hex);
   return {

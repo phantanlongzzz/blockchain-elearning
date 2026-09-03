@@ -799,150 +799,176 @@ export const PowLesson: React.FC = () => {
         </header>
 
         {/* Compact Configuration & Execution Bar */}
-        <div className="p-3.5 sm:p-4 bg-[#0C0F14] rounded-2xl border border-slate-800 flex flex-col xl:flex-row xl:items-center justify-between gap-3 shadow-sm">
-          {/* Controls: Duration, Playback Speed & Difficulty */}
-          <div className="flex flex-wrap items-center gap-3 sm:gap-4">
-            {/* Duration Selector */}
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-display font-semibold text-slate-400">
-                {isVi ? 'Thời lượng:' : 'Duration:'}
-              </span>
-              <div className="flex bg-[#11161D] p-0.5 rounded-lg border border-slate-800">
-                {[
-                  { label: '30s', val: 30 },
-                  { label: isVi ? '1 phút' : '1 min', val: 60 },
-                  { label: isVi ? '2 phút' : '2 min', val: 120 },
-                  { label: isVi ? '5 phút' : '5 min', val: 300 },
-                ].map(item => (
-                  <button 
-                    key={item.val}
-                    onClick={() => {
-                      setDuration(item.val);
-                      if (appState === 'idle' || appState === 'completed') {
-                        setRemainingTime(item.val);
-                      }
-                    }}
-                    disabled={appState !== 'idle' && appState !== 'completed'}
-                    className={`px-2 py-1 rounded-md text-xs font-mono font-semibold transition-all ${
-                      duration === item.val 
-                        ? 'bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/30' 
-                        : 'text-slate-400 hover:text-slate-200'
-                    } disabled:opacity-50 cursor-pointer`}
-                  >
-                    {item.label}
-                  </button>
-                ))}
+        <div className="flex flex-col gap-4 p-4 sm:p-5 bg-[#0A0D11] rounded-xl border border-slate-800 shadow-sm">
+          {/* CẤU HÌNH THÍ NGHIỆM */}
+          <div className="flex flex-col gap-2.5">
+            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest select-none">
+              {isVi ? 'Cấu hình thí nghiệm' : 'Experiment Configuration'}
+            </span>
+            <div className="grid grid-cols-2 sm:flex sm:flex-row items-center gap-3">
+              {/* Duration Selector */}
+              <div className="flex flex-col gap-1.5 w-full sm:w-auto">
+                <label className="text-[11px] font-medium text-slate-400 select-none">{isVi ? 'Thời lượng' : 'Duration'}</label>
+                <select 
+                  value={duration} 
+                  onChange={(e) => {
+                    const val = Number(e.target.value);
+                    setDuration(val);
+                    if (appState === 'idle' || appState === 'completed') {
+                      setRemainingTime(val);
+                    }
+                  }}
+                  disabled={appState !== 'idle' && appState !== 'completed'}
+                  className="h-10 px-3 py-2 bg-[#11161D] border border-slate-700/60 rounded-lg text-sm font-medium text-slate-200 outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30 transition-all cursor-pointer appearance-none pr-8 relative disabled:opacity-50 disabled:cursor-not-allowed"
+                  style={{ backgroundImage: `url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2364748b%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.75rem top 50%', backgroundSize: '0.65rem auto' }}
+                >
+                  <option value={30}>30 {isVi ? 'giây' : 'sec'}</option>
+                  <option value={60}>1 {isVi ? 'phút' : 'min'}</option>
+                  <option value={120}>2 {isVi ? 'phút' : 'min'}</option>
+                  <option value={300}>5 {isVi ? 'phút' : 'min'}</option>
+                </select>
               </div>
-            </div>
 
-            {/* Playback Speed Controls */}
-            <div className="flex items-center gap-1.5">
-              <span className="text-xs font-display font-semibold text-slate-400">
-                {isVi ? 'Tốc độ:' : 'Speed:'}
-              </span>
-              <div className="flex bg-[#11161D] p-0.5 rounded-lg border border-slate-800">
-                {[1, 2, 4].map(spd => (
-                  <button
-                    key={spd}
-                    onClick={() => setPlaySpeed(spd)}
-                    className={`px-2 py-0.5 rounded-md text-xs font-mono font-semibold transition-all ${
-                      playSpeed === spd
-                        ? 'bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/30'
-                        : 'text-slate-400 hover:text-slate-200'
-                    } cursor-pointer`}
-                  >
-                    {spd}×
-                  </button>
-                ))}
+              {/* Playback Speed Controls */}
+              <div className="flex flex-col gap-1.5 w-full sm:w-auto">
+                <label className="text-[11px] font-medium text-slate-400 select-none">{isVi ? 'Tốc độ' : 'Speed'}</label>
+                <div className="h-10 flex bg-[#11161D] p-1 rounded-lg border border-slate-700/60">
+                  {[1, 2, 4].map(spd => (
+                    <button
+                      key={spd}
+                      onClick={() => setPlaySpeed(spd)}
+                      className={`flex-1 sm:px-4 flex items-center justify-center rounded-md text-sm font-mono transition-colors ${
+                        playSpeed === spd
+                          ? 'bg-emerald-500/15 text-emerald-400 font-semibold shadow-sm'
+                          : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+                      } cursor-pointer`}
+                    >
+                      {spd}×
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
 
-            {/* Difficulty Selector */}
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-display font-semibold text-slate-400">
-                {isVi ? 'Độ khó:' : 'Difficulty:'}
-              </span>
-              <div className="flex bg-[#11161D] p-0.5 rounded-lg border border-slate-800">
-                {[1, 2, 3, 4].map(val => (
-                  <button 
-                    key={val}
-                    onClick={() => setDifficulty(val)}
-                    disabled={appState !== 'idle' && appState !== 'completed'}
-                    className={`px-2.5 py-1 rounded-md text-xs font-mono font-semibold transition-all ${
-                      difficulty === val 
-                        ? 'bg-emerald-500/20 text-emerald-400 font-bold' 
-                        : 'text-slate-400 hover:text-slate-200'
-                    } disabled:opacity-50 cursor-pointer`}
-                  >
-                    {val}
-                  </button>
-                ))}
+              {/* Difficulty Selector */}
+              <div className="flex flex-col gap-1.5 w-full sm:w-auto">
+                <label className="text-[11px] font-medium text-slate-400 select-none">{isVi ? 'Độ khó' : 'Difficulty'}</label>
+                <select 
+                  value={difficulty} 
+                  onChange={(e) => setDifficulty(Number(e.target.value))}
+                  disabled={appState !== 'idle' && appState !== 'completed'}
+                  className="h-10 px-3 py-2 bg-[#11161D] border border-slate-700/60 rounded-lg text-sm font-medium text-slate-200 outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30 transition-all cursor-pointer appearance-none pr-8 relative disabled:opacity-50 disabled:cursor-not-allowed"
+                  style={{ backgroundImage: `url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2364748b%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.75rem top 50%', backgroundSize: '0.65rem auto' }}
+                >
+                  <option value={1}>1 — {isVi ? 'Dễ' : 'Easy'}</option>
+                  <option value={2}>2 — {isVi ? 'Trung bình' : 'Medium'}</option>
+                  <option value={3}>3 — {isVi ? 'Khó' : 'Hard'}</option>
+                  <option value={4}>4 — {isVi ? 'Rất khó' : 'Very Hard'}</option>
+                </select>
               </div>
-            </div>
 
-            {/* Target Prefix Summary Pill */}
-            <div className="hidden sm:flex items-center gap-2 bg-[#11161D] px-2.5 py-1 rounded-lg border border-slate-800 text-xs font-mono">
-              <span className="text-slate-500">{isVi ? 'Tiền tố:' : 'Prefix:'}</span>
-              <span className="text-emerald-400 font-bold">"{'0'.repeat(difficulty)}"</span>
+              {/* Target Prefix Summary */}
+              <div className="flex flex-col gap-1.5 w-full sm:w-auto">
+                <label className="text-[11px] font-medium text-slate-400 select-none">{isVi ? 'Tiền tố' : 'Prefix'}</label>
+                <div className="h-10 flex items-center px-4 bg-[#11161D] border border-slate-700/60 rounded-lg text-sm text-slate-300 font-mono select-none">
+                  "{'0'.repeat(difficulty)}"
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Timer & Start / Stop Buttons */}
-          <div className="flex items-center gap-2 self-end xl:self-auto">
-            {/* Status & Timer */}
-            {appState === 'completed' && (
-              <span className="px-2 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold">
-                ✓ {isVi ? 'Hoàn Tất' : 'Complete'}
-              </span>
-            )}
+          <div className="h-px w-full bg-slate-800/80 my-0.5" />
 
-            <div className="flex items-center gap-1.5 bg-[#11161D] border border-slate-800 px-3 py-1.5 rounded-xl text-xs font-mono" title={isVi ? 'Thời gian còn lại' : 'Remaining time'}>
-              <Clock size={13} className={appState === 'mining' ? 'text-emerald-400 animate-pulse' : 'text-slate-500'} />
-              <span className={`tabular-nums font-bold ${appState === 'mining' ? 'text-white' : 'text-slate-300'}`}>
-                {formatTime(remainingTime)}
-              </span>
-            </div>
-
-            {/* Action button */}
-            {appState === 'idle' ? (
-              <button 
-                onClick={handleStart} 
-                disabled={miners.length === 0} 
-                className="py-1.5 px-4 bg-emerald-500 hover:bg-emerald-400 text-black font-display font-bold text-xs rounded-xl flex items-center gap-1.5 transition-all disabled:opacity-50 cursor-pointer shadow-sm"
-              >
-                <Play size={13} className="fill-current" /> {isVi ? 'Bắt Đầu' : 'Start Simulation'}
-              </button>
-            ) : appState === 'completed' ? (
-              <button 
-                onClick={handleReset} 
-                className="py-1.5 px-4 bg-emerald-500 hover:bg-emerald-400 text-black font-display font-bold text-xs rounded-xl flex items-center gap-1.5 transition-all cursor-pointer shadow-sm"
-              >
-                <RotateCcw size={13} /> {isVi ? 'Chạy Lại' : 'Run Again'}
-              </button>
-            ) : appState === 'mining' ? (
-              <button 
-                onClick={handlePause} 
-                className="py-1.5 px-4 bg-amber-500 hover:bg-amber-400 text-black font-display font-bold text-xs rounded-xl flex items-center gap-1.5 transition-all cursor-pointer shadow-sm"
-              >
-                <Pause size={13} className="fill-current" /> {isVi ? 'Tạm Dừng' : 'Pause'}
-              </button>
-            ) : (
-              <button 
-                onClick={handleStart} 
-                disabled={appState === 'animating_win'} 
-                className="py-1.5 px-4 bg-emerald-500 hover:bg-emerald-400 text-black font-display font-bold text-xs rounded-xl flex items-center gap-1.5 transition-all disabled:opacity-50 cursor-pointer shadow-sm"
-              >
-                <Play size={13} className="fill-current" /> {isVi ? 'Tiếp Tục' : 'Resume'}
-              </button>
-            )}
+          {/* ĐIỀU KHIỂN */}
+          <div className="flex flex-col gap-2.5">
+            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest select-none">
+              {isVi ? 'Điều khiển' : 'Controls'}
+            </span>
             
-            <button 
-              onClick={handleReset} 
-              className="p-1.5 bg-[#11161D] hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 rounded-xl transition-all cursor-pointer"
-              title={isVi ? 'Khởi tạo lại' : 'Reset'}
-            >
-              <RotateCcw size={13} />
-            </button>
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="flex items-center gap-4 sm:gap-6">
+                {/* Status Indicator */}
+                <div className="flex items-center gap-2.5 min-w-[120px] select-none">
+                  {appState === 'idle' && (
+                    <>
+                      <div className="w-1.5 h-1.5 rounded-full bg-slate-500" />
+                      <span className="text-sm font-medium text-slate-400">{isVi ? 'Sẵn sàng' : 'Ready'}</span>
+                    </>
+                  )}
+                  {appState === 'mining' && (
+                    <>
+                      <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.4)]" />
+                      <span className="text-sm font-medium text-emerald-400">{isVi ? 'Đang khai thác' : 'Mining'}</span>
+                    </>
+                  )}
+                  {(appState === 'completed' || appState === 'animating_win') && (
+                    <>
+                      <Check size={16} strokeWidth={2.5} className="text-slate-400" />
+                      <span className="text-sm font-medium text-slate-300">{isVi ? 'Hoàn tất' : 'Completed'}</span>
+                    </>
+                  )}
+                  {appState === 'paused' && (
+                    <>
+                      <div className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+                      <span className="text-sm font-medium text-slate-400">{isVi ? 'Tạm dừng' : 'Paused'}</span>
+                    </>
+                  )}
+                </div>
+
+                {/* Timer */}
+                <div className="flex items-center gap-2 select-none" title={isVi ? 'Thời gian còn lại' : 'Remaining time'}>
+                  <Clock size={16} className={appState === 'mining' ? 'text-emerald-500/80' : 'text-slate-500'} />
+                  <span className={`font-mono font-semibold text-base tracking-wider ${appState === 'mining' ? 'text-white' : 'text-slate-300'}`}>
+                    {formatTime(remainingTime)}
+                  </span>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex items-center gap-2 w-full sm:w-auto mt-2 sm:mt-0">
+                {appState === 'idle' ? (
+                  <button 
+                    onClick={handleStart} 
+                    disabled={miners.length === 0} 
+                    className="flex-1 sm:flex-none h-10 px-6 bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-sm rounded-lg flex items-center justify-center gap-2 transition-colors disabled:opacity-50 cursor-pointer shadow-sm"
+                  >
+                    <Play size={14} className="fill-current" /> {isVi ? 'Bắt Đầu' : 'Start'}
+                  </button>
+                ) : appState === 'completed' || appState === 'animating_win' ? (
+                  <button 
+                    onClick={handleReset} 
+                    className="flex-1 sm:flex-none h-10 px-6 bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-sm rounded-lg flex items-center justify-center gap-2 transition-colors cursor-pointer shadow-sm"
+                  >
+                    <RotateCcw size={14} /> {isVi ? 'Chạy Lại' : 'Run Again'}
+                  </button>
+                ) : appState === 'mining' ? (
+                  <button 
+                    onClick={handlePause} 
+                    className="flex-1 sm:flex-none h-10 px-6 bg-slate-700 hover:bg-slate-600 text-white font-medium text-sm rounded-lg flex items-center justify-center gap-2 transition-colors cursor-pointer shadow-sm"
+                  >
+                    <Pause size={14} className="fill-current" /> {isVi ? 'Dừng' : 'Pause'}
+                  </button>
+                ) : (
+                  <button 
+                    onClick={handleStart} 
+                    disabled={appState === 'animating_win'} 
+                    className="flex-1 sm:flex-none h-10 px-6 bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-sm rounded-lg flex items-center justify-center gap-2 transition-colors disabled:opacity-50 cursor-pointer shadow-sm"
+                  >
+                    <Play size={14} className="fill-current" /> {isVi ? 'Tiếp Tục' : 'Resume'}
+                  </button>
+                )}
+
+                {/* Reset button only visible if not completed and not idle */}
+                {(appState === 'mining' || appState === 'paused') && (
+                  <button 
+                    onClick={handleReset} 
+                    className="h-10 px-4 bg-transparent hover:bg-slate-800 text-slate-400 hover:text-slate-200 border border-slate-700 hover:border-slate-600 rounded-lg flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                    title={isVi ? 'Đặt lại' : 'Reset'}
+                  >
+                    <RotateCcw size={14} /> <span className="hidden sm:inline text-sm font-medium">{isVi ? 'Đặt lại' : 'Reset'}</span>
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
         </div>
 

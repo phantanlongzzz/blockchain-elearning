@@ -107,16 +107,11 @@ export const StakeDistributionBar: React.FC<StakeDistributionBarProps> = ({
       className="space-y-6 font-sans"
     >
       {/* 1. Header & Primary Selection Trigger */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-2 border-b border-white/[0.08]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-white/[0.08]">
         <div>
           <h3 className="text-base sm:text-lg font-semibold text-[#F2F4F7]">
             {isVi ? 'Chọn người giải khối theo xác suất' : 'Probability-Weighted Selection'}
           </h3>
-          <p className="text-xs text-[#9AA5B5] mt-0.5">
-            {isVi
-              ? 'Validator có lượng ETH đặt cọc cao hơn sẽ có xác suất được chọn cao hơn.'
-              : 'Validators with higher ETH stake have a higher probability of being selected.'}
-          </p>
         </div>
 
         {/* Action Button to trigger selection */}
@@ -264,8 +259,8 @@ export const StakeDistributionBar: React.FC<StakeDistributionBarProps> = ({
         {/* Right: Legend & Selected Winner Details */}
         <div className="lg:col-span-6 flex flex-col gap-3">
           {/* Winner Announcement Callout (Minimalist, Amber/Teal Palette) */}
-          {selectedValidator && !isSelecting ? (
-            <div className="p-4 rounded-xl bg-[#0C0F14] border border-white/[0.08] shadow-sm space-y-1 animate-in fade-in duration-200">
+          {selectedValidator && !isSelecting && (
+            <div className="p-3.5 rounded-xl bg-[#0C0F14] border border-white/[0.08] shadow-sm space-y-1 animate-in fade-in duration-200">
               <div className="flex items-center gap-2 text-[#F2F4F7] font-semibold text-sm">
                 <Trophy className="w-4 h-4 text-amber-400 shrink-0" />
                 <span>
@@ -298,19 +293,10 @@ export const StakeDistributionBar: React.FC<StakeDistributionBarProps> = ({
                 )}
               </p>
             </div>
-          ) : (
-            <div className="border-l-2 border-[#00C98D] pl-3.5 py-1 text-xs text-[#9AA5B5] leading-relaxed">
-              <strong className="text-[#00C98D] font-semibold block mb-0.5">
-                {isVi ? '💡 Cơ chế ngẫu nhiên có trọng số:' : '💡 Weighted Random Mechanism:'}
-              </strong>
-              {isVi
-                ? 'Nhấn nút "Quay chọn người giải khối" để chọn ngẫu nhiên dựa theo tỷ lệ % cổ phần ETH.'
-                : 'Click "Select Solver" to randomly pick a node based on their ETH stake percentage.'}
-            </div>
           )}
 
           {/* Participant Mini Cards */}
-          <div className="grid grid-cols-2 gap-2 max-h-[220px] overflow-y-auto pr-1">
+          <div className="grid grid-cols-2 gap-2 max-h-[250px] overflow-y-auto pr-1">
             {validators.map((val) => {
               const preset = getValidatorPreset(val.id, val.name);
               const isSelected = selectedProposerId === val.id;

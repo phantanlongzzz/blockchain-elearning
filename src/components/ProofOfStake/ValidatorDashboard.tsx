@@ -31,16 +31,11 @@ export const ValidatorDashboard: React.FC<ValidatorDashboardProps> = ({
   return (
     <div className="space-y-6 font-sans">
       {/* 1. Section Header & Actions (Clean Hierarchy, Whitespace Driven) */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-2 border-b border-white/[0.08]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-white/[0.08]">
         <div>
           <h3 className="text-base sm:text-lg font-semibold text-[#F2F4F7]">
             {isVi ? 'Danh sách người tham gia' : 'Participants & Stake Distribution'}
           </h3>
-          <p className="text-xs text-[#9AA5B5] mt-0.5">
-            {isVi
-              ? 'Điều chỉnh số ETH đặt cọc để quan sát xác suất được chọn thay đổi.'
-              : 'Adjust deposited ETH to observe probability changes in real-time.'}
-          </p>
         </div>
 
         {/* Action Controls: Add, Remove, Total Stake Info */}
@@ -196,17 +191,7 @@ export const ValidatorDashboard: React.FC<ValidatorDashboardProps> = ({
         })}
       </div>
 
-      {/* 3. Core Principle Callout (Lightweight, No Heavy Outer Card) */}
-      <div className="border-l-2 border-[#00C98D] pl-3.5 py-1 text-xs text-[#9AA5B5] leading-relaxed">
-        <strong className="text-[#00C98D] font-semibold">
-          {isVi ? '💡 Quy luật cốt lõi: ' : '💡 Core Principle: '}
-        </strong>
-        {isVi
-          ? 'Đặt cọc càng nhiều ETH → xác suất được chọn giải khối tiếp theo càng cao.'
-          : 'More ETH deposited → higher probability of being chosen as block solver.'}
-      </div>
-
-      {/* 4. Primary CTA: Continue to Step 2 (Right-aligned, Clean Divider) */}
+      {/* 3. Primary CTA: Continue to Step 2 (Right-aligned, Clean Divider) */}
       {onProceedToStep2 && (
         <div className="border-t border-white/[0.08] pt-4 flex justify-end">
           <button

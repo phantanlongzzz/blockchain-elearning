@@ -271,10 +271,10 @@ export const ProofOfStakeLab: React.FC = () => {
   const posGuideSteps: GuideStep[] = [
     {
       stepNumber: 1,
-      titleVi: 'Bước 1: Quản lý Validator & Đặt Cọc (Stake)',
+      titleVi: 'Bước 1: Quản lý Validator & Đặt Cọc',
       titleEn: 'Step 1: Validator Management & Staking',
-      instructionVi: 'Người xác thực (Validator) ký gửi tài sản (ETH) vào hợp đồng Staking để nhận quyền biểu quyết tương ứng.',
-      instructionEn: 'Validators deposit collateral into the staking contract to gain proportional voting weight.',
+      instructionVi: '',
+      instructionEn: '',
       targetActionVi: 'Thử tăng/giảm Stake hoặc thêm Validator, sau đó bấm "Tiếp tục: Chọn người giải khối".',
       targetActionEn: 'Adjust stakes or add validators, then click "Continue: Select Block Solver".',
       isCompleted: activeStep >= 1,
@@ -283,8 +283,8 @@ export const ProofOfStakeLab: React.FC = () => {
       stepNumber: 2,
       titleVi: 'Bước 2: Chọn Người Giải Khối',
       titleEn: 'Step 2: Select Block Solver',
-      instructionVi: 'Thuật toán ngẫu nhiên có trọng số (Weighted Lottery) chọn 1 Validator giải khối tiếp theo.',
-      instructionEn: 'A weighted pseudo-random lottery selects a single validator to solve the next block.',
+      instructionVi: '',
+      instructionEn: '',
       targetActionVi: 'Bấm nút "Quay chọn người giải khối", sau đó bấm "Tiếp tục: Ghi & Kiểm tra khối".',
       targetActionEn: 'Click "Select Block Solver", then click "Continue: Verify Block".',
       isCompleted: (activeStep === 2 && hasSpun && !isSelecting) || activeStep > 2,
@@ -472,9 +472,11 @@ export const ProofOfStakeLab: React.FC = () => {
                 : currentStepGuide.titleEn.replace(/^Step \d+:\s*/i, '')}
             </h4>
           </div>
-          <p className="text-xs text-[#9AA5B5] mt-0.5 max-w-3xl leading-relaxed">
-            {isVi ? currentStepGuide.instructionVi : currentStepGuide.instructionEn}
-          </p>
+          {(isVi ? currentStepGuide.instructionVi : currentStepGuide.instructionEn) ? (
+            <p className="text-xs text-[#9AA5B5] mt-0.5 max-w-3xl leading-relaxed">
+              {isVi ? currentStepGuide.instructionVi : currentStepGuide.instructionEn}
+            </p>
+          ) : null}
         </div>
       )}
 

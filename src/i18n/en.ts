@@ -2,9 +2,9 @@ import { TranslationSchema } from './types';
 
 export const enTranslations: TranslationSchema = {
   nav: {
-    brandName: 'Blockchain Lab',
-    brandSubtitle: 'Dalat University · Faculty of Information Technology',
-    projectTitle: 'Blockchain Lab',
+    brandName: 'Dalat University',
+    brandSubtitle: 'Faculty of Information Technology',
+    projectTitle: 'Blockchain',
     home: 'Home',
     hashLab: 'Hash Test',
     properties: '4 Hash Properties',

@@ -131,7 +131,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   };
 
   const isVi = language === 'vi';
-  const brandName = strings?.nav?.brandName || 'Blockchain Lab';
+  const brandName = strings?.nav?.brandName || (isVi ? 'Trường Đại học Đà Lạt' : 'Dalat University');
+  const brandSubtitle = strings?.nav?.brandSubtitle || (isVi ? 'Khoa Công nghệ Thông tin' : 'Faculty of Information Technology');
 
   // User initial avatar letter
   const userInitial = user?.name ? user.name.trim().charAt(0).toUpperCase() : 'P';
@@ -141,24 +142,29 @@ export const Navbar: React.FC<NavbarProps> = ({
     <header className="sticky top-0 z-50 bg-[#090D12]/95 backdrop-blur-md border-b border-white/[0.08] font-sans">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14 sm:h-16" ref={navRef}>
-          {/* Left: Brand Logo & Project Title */}
+          {/* Left: Brand Logo & Institution / Faculty Title */}
           <div className="flex items-center shrink-0">
             <button
               onClick={() => navigateTo('home', 'overview')}
-              className="flex items-center gap-2.5 text-left rounded-lg group cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#00C98D]"
+              className="flex items-center gap-3 text-left rounded-lg group cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#00C98D]"
               id="nav-brand-button"
-              aria-label={`${brandName} - ${isVi ? 'Trang chủ' : 'Home'}`}
+              aria-label={`${brandName} - ${brandSubtitle}`}
             >
-              <div className="w-8 h-8 rounded-lg bg-[#0C0F14] border border-white/[0.08] group-hover:border-[#00C98D]/40 transition-colors p-1 shrink-0 flex items-center justify-center">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-[#0C0F14] border border-white/[0.08] group-hover:border-[#00C98D]/40 transition-colors p-1 shrink-0 flex items-center justify-center">
                 <img
                   src="/logo.png"
-                  alt="Blockchain Lab"
+                  alt={brandName}
                   className="w-full h-full object-contain"
                 />
               </div>
-              <span className="font-semibold text-[#F2F4F7] text-sm sm:text-[15px] tracking-tight whitespace-nowrap group-hover:text-white transition-colors">
-                {brandName}
-              </span>
+              <div className="flex flex-col justify-center">
+                <span className="font-sans font-bold text-sm sm:text-base leading-tight text-[#F2F4F7] tracking-tight group-hover:text-white transition-colors">
+                  {brandName}
+                </span>
+                <span className="font-sans font-normal sm:font-medium text-[11px] sm:text-xs leading-tight text-[#9AA5B5] group-hover:text-[#C8D0DB] transition-colors mt-0.5 whitespace-nowrap">
+                  {brandSubtitle}
+                </span>
+              </div>
             </button>
           </div>
 

@@ -2,9 +2,9 @@ import { TranslationSchema } from './types';
 
 export const viTranslations: TranslationSchema = {
   "nav": {
-    "brandName": "Blockchain Lab",
-    "brandSubtitle": "Trường Đại học Đà Lạt · Khoa CNTT",
-    "projectTitle": "Blockchain Lab",
+    "brandName": "Trường Đại học Đà Lạt",
+    "brandSubtitle": "Khoa Công nghệ Thông tin",
+    "projectTitle": "Blockchain",
     "home": "Trang chủ",
     "hashLab": "Thử nghiệm Hash",
     "properties": "4 tính chất của hàm băm",

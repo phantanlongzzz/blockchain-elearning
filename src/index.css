@@ -109,6 +109,12 @@
   --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   
   --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  --font-roboto-mono: "Roboto Mono", monospace;
+}
+
+.font-roboto-mono {
+  font-family: var(--font-roboto-mono) !important;
 }
 
 @layer base {

@@ -433,43 +433,159 @@ html body,
   }
 }
 
-/* Custom Cursor - Hide default browser cursor only when active on fine-pointer devices */
+/* Custom Cursor - Replace ONLY default cursor with /cursor.webp while preserving native semantic cursors */
 @media (pointer: fine) and (hover: hover) {
+  /* Default cursor replacement on structural root and general content */
+  html.custom-cursor-enabled,
+  html.custom-cursor-enabled body,
+  html.custom-cursor-enabled #root,
+  html.custom-cursor-enabled main,
+  html.custom-cursor-enabled section,
+  html.custom-cursor-enabled header,
+  html.custom-cursor-enabled footer,
+  html.custom-cursor-enabled nav,
+  html.custom-cursor-enabled aside,
+  html.custom-cursor-enabled article,
+  html.custom-cursor-enabled div:not(button):not(a):not(input):not(textarea):not(select):not([role="button"]):not([role="tab"]):not([role="link"]):not(.cursor-pointer):not(.scrollable-horizontal):not(.overflow-x-auto) {
+    cursor: url('/cursor.webp') 0 0, url('/cursor.png') 0 0, auto;
+  }
+
+  /* Support legacy/alias class .custom-cursor-active */
   html.custom-cursor-active,
-  html.custom-cursor-active body {
-    cursor: none;
+  html.custom-cursor-active body,
+  html.custom-cursor-active #root,
+  html.custom-cursor-active main,
+  html.custom-cursor-active section {
+    cursor: url('/cursor.webp') 0 0, url('/cursor.png') 0 0, auto;
   }
 
-  html.custom-cursor-active button,
-  html.custom-cursor-active a,
-  html.custom-cursor-active [role="button"],
-  html.custom-cursor-active [type="button"],
-  html.custom-cursor-active .cursor-pointer {
-    cursor: none;
+  /* Interactive Elements - Preserve Native Pointer Cursor */
+  .custom-cursor-enabled a,
+  .custom-cursor-enabled a *,
+  .custom-cursor-enabled button,
+  .custom-cursor-enabled button *,
+  .custom-cursor-enabled [role="button"],
+  .custom-cursor-enabled [role="button"] *,
+  .custom-cursor-enabled [role="tab"],
+  .custom-cursor-enabled [role="tab"] *,
+  .custom-cursor-enabled [role="link"],
+  .custom-cursor-enabled [role="link"] *,
+  .custom-cursor-enabled [role="menuitem"],
+  .custom-cursor-enabled [type="button"],
+  .custom-cursor-enabled [type="submit"],
+  .custom-cursor-enabled [type="reset"],
+  .custom-cursor-enabled summary,
+  .custom-cursor-enabled .cursor-pointer,
+  .custom-cursor-enabled .cursor-pointer * {
+    cursor: pointer;
   }
 
-  /* Preserve native browser cursor on text inputs, textareas, selects, and text-selectable areas */
-  html.custom-cursor-active input,
-  html.custom-cursor-active textarea,
-  html.custom-cursor-active select,
-  html.custom-cursor-active [contenteditable="true"],
-  html.custom-cursor-active [contenteditable=""],
-  html.custom-cursor-active [role="textbox"],
-  html.custom-cursor-active .text-selectable {
-    cursor: auto !important;
+  /* Text Inputs & Editable Areas - Preserve Native Text (I-beam) Cursor */
+  .custom-cursor-enabled input,
+  .custom-cursor-enabled textarea,
+  .custom-cursor-enabled [contenteditable="true"],
+  .custom-cursor-enabled [contenteditable=""],
+  .custom-cursor-enabled [role="textbox"],
+  .custom-cursor-enabled .cursor-text,
+  .custom-cursor-enabled .select-text {
+    cursor: text;
   }
 
-  html.custom-cursor-active input[type="text"],
-  html.custom-cursor-active input[type="search"],
-  html.custom-cursor-active input[type="email"],
-  html.custom-cursor-active input[type="password"],
-  html.custom-cursor-active textarea {
-    cursor: text !important;
+  /* Interactive input types */
+  .custom-cursor-enabled input[type="button"],
+  .custom-cursor-enabled input[type="submit"],
+  .custom-cursor-enabled input[type="reset"],
+  .custom-cursor-enabled input[type="checkbox"],
+  .custom-cursor-enabled input[type="radio"],
+  .custom-cursor-enabled input[type="file"],
+  .custom-cursor-enabled input[type="range"],
+  .custom-cursor-enabled input[type="color"] {
+    cursor: pointer;
   }
 
-  html.custom-cursor-active select {
-    cursor: default !important;
+  /* Select dropdowns */
+  .custom-cursor-enabled select,
+  .custom-cursor-enabled select option {
+    cursor: default;
   }
+
+  /* Disabled & Non-interactive Elements - Preserve Native Not-Allowed Cursor */
+  .custom-cursor-enabled [disabled],
+  .custom-cursor-enabled [disabled] *,
+  .custom-cursor-enabled [aria-disabled="true"],
+  .custom-cursor-enabled [aria-disabled="true"] *,
+  .custom-cursor-enabled button:disabled,
+  .custom-cursor-enabled button:disabled *,
+  .custom-cursor-enabled input:disabled,
+  .custom-cursor-enabled textarea:disabled,
+  .custom-cursor-enabled select:disabled,
+  .custom-cursor-enabled .cursor-not-allowed,
+  .custom-cursor-enabled .cursor-not-allowed * {
+    cursor: not-allowed;
+  }
+
+  /* Horizontal & Drag Scroll Areas - Grab and Grabbing */
+  .custom-cursor-enabled .scrollable-horizontal,
+  .custom-cursor-enabled [data-scrollable="horizontal"],
+  .custom-cursor-enabled .overflow-x-auto,
+  .custom-cursor-enabled .cursor-grab {
+    cursor: grab;
+  }
+
+  .custom-cursor-enabled .scrollable-horizontal:active,
+  .custom-cursor-enabled [data-scrollable="horizontal"]:active,
+  .custom-cursor-enabled .overflow-x-auto:active,
+  .custom-cursor-enabled .cursor-grabbing,
+  html.custom-cursor-enabled.is-dragging,
+  html.custom-cursor-enabled.is-dragging *,
+  html.custom-cursor-active.is-dragging,
+  html.custom-cursor-active.is-dragging * {
+    cursor: grabbing !important;
+  }
+
+  /* Interactive elements inside horizontal scrollable containers retain pointer / text */
+  .custom-cursor-enabled .scrollable-horizontal a,
+  .custom-cursor-enabled .scrollable-horizontal button,
+  .custom-cursor-enabled .scrollable-horizontal [role="button"],
+  .custom-cursor-enabled .scrollable-horizontal .cursor-pointer,
+  .custom-cursor-enabled .overflow-x-auto a,
+  .custom-cursor-enabled .overflow-x-auto button,
+  .custom-cursor-enabled .overflow-x-auto [role="button"],
+  .custom-cursor-enabled .overflow-x-auto .cursor-pointer {
+    cursor: pointer;
+  }
+
+  .custom-cursor-enabled .scrollable-horizontal input,
+  .custom-cursor-enabled .scrollable-horizontal textarea,
+  .custom-cursor-enabled .overflow-x-auto input,
+  .custom-cursor-enabled .overflow-x-auto textarea {
+    cursor: text;
+  }
+
+  /* Loading & Progress States */
+  .custom-cursor-enabled .cursor-wait,
+  .custom-cursor-enabled [aria-busy="true"],
+  .custom-cursor-enabled .is-loading {
+    cursor: wait;
+  }
+  .custom-cursor-enabled .cursor-progress {
+    cursor: progress;
+  }
+
+  /* Semantic Resizing & Spatial Movement */
+  .custom-cursor-enabled .cursor-move { cursor: move; }
+  .custom-cursor-enabled .cursor-col-resize { cursor: col-resize; }
+  .custom-cursor-enabled .cursor-row-resize { cursor: row-resize; }
+  .custom-cursor-enabled .cursor-ew-resize { cursor: ew-resize; }
+  .custom-cursor-enabled .cursor-ns-resize { cursor: ns-resize; }
+  .custom-cursor-enabled .cursor-nesw-resize { cursor: nesw-resize; }
+  .custom-cursor-enabled .cursor-nwse-resize { cursor: nwse-resize; }
+  .custom-cursor-enabled .cursor-zoom-in { cursor: zoom-in; }
+  .custom-cursor-enabled .cursor-zoom-out { cursor: zoom-out; }
+  .custom-cursor-enabled .cursor-crosshair { cursor: crosshair; }
+  .custom-cursor-enabled .cursor-help { cursor: help; }
+  .custom-cursor-enabled .cursor-default { cursor: default; }
+  .custom-cursor-enabled .cursor-auto { cursor: auto; }
 }
 
 @media (pointer: coarse), (hover: none) {

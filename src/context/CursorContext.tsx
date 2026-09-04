@@ -80,6 +80,17 @@ export const CursorProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     };
   }, []);
 
+  // Synchronize custom cursor classes on <html>
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      if (customCursorEnabled) {
+        document.documentElement.classList.add('custom-cursor-enabled', 'custom-cursor-active');
+      } else {
+        document.documentElement.classList.remove('custom-cursor-enabled', 'custom-cursor-active', 'is-dragging');
+      }
+    }
+  }, [customCursorEnabled]);
+
   return (
     <CursorContext.Provider
       value={{

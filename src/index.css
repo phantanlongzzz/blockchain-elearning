@@ -436,8 +436,39 @@ html body,
 /* Custom Cursor - Hide default browser cursor only when active on fine-pointer devices */
 @media (pointer: fine) and (hover: hover) {
   html.custom-cursor-active,
-  html.custom-cursor-active * {
-    cursor: none !important;
+  html.custom-cursor-active body {
+    cursor: none;
+  }
+
+  html.custom-cursor-active button,
+  html.custom-cursor-active a,
+  html.custom-cursor-active [role="button"],
+  html.custom-cursor-active [type="button"],
+  html.custom-cursor-active .cursor-pointer {
+    cursor: none;
+  }
+
+  /* Preserve native browser cursor on text inputs, textareas, selects, and text-selectable areas */
+  html.custom-cursor-active input,
+  html.custom-cursor-active textarea,
+  html.custom-cursor-active select,
+  html.custom-cursor-active [contenteditable="true"],
+  html.custom-cursor-active [contenteditable=""],
+  html.custom-cursor-active [role="textbox"],
+  html.custom-cursor-active .text-selectable {
+    cursor: auto !important;
+  }
+
+  html.custom-cursor-active input[type="text"],
+  html.custom-cursor-active input[type="search"],
+  html.custom-cursor-active input[type="email"],
+  html.custom-cursor-active input[type="password"],
+  html.custom-cursor-active textarea {
+    cursor: text !important;
+  }
+
+  html.custom-cursor-active select {
+    cursor: default !important;
   }
 }
 

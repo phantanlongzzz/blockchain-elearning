@@ -30,12 +30,14 @@ import {
   BookOpen,
   HelpCircle,
   Search,
+  Sliders,
 } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigation, MODULES_REGISTRY, ModuleId, LessonId } from '../../context/NavigationContext';
 import { useProgressStore } from '../../stores/progressStore';
 import { LanguageToggle } from '../LanguageToggle';
+import { CursorToggle } from '../CursorToggle';
 
 const ICON_MAP: Record<string, React.ElementType> = {
   Home,
@@ -84,11 +86,13 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const [openDropdown, setOpenDropdown] = useState<ModuleId | null>(null);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileExpandedGroup, setMobileExpandedGroup] = useState<ModuleId | null>(null);
 
   const navRef = useRef<HTMLDivElement>(null);
   const userMenuRef = useRef<HTMLDivElement>(null);
+  const settingsMenuRef = useRef<HTMLDivElement>(null);
   const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Click outside to close dropdowns
@@ -99,6 +103,9 @@ export const Navbar: React.FC<NavbarProps> = ({
       }
       if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
         setUserDropdownOpen(false);
+      }
+      if (settingsMenuRef.current && !settingsMenuRef.current.contains(event.target as Node)) {
+        setSettingsOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -111,6 +118,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       if (event.key === 'Escape') {
         setOpenDropdown(null);
         setUserDropdownOpen(false);
+        setSettingsOpen(false);
         setMobileMenuOpen(false);
       }
     };
@@ -312,6 +320,41 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             <LanguageToggle />
 
+            {/* Interface Settings Dropdown */}
+            <div className="relative" ref={settingsMenuRef}>
+              <button
+                type="button"
+                id="interface-settings-button"
+                onClick={() => setSettingsOpen(!settingsOpen)}
+                className={`w-9 h-9 flex items-center justify-center rounded-lg border transition-all cursor-pointer shrink-0 active:scale-95 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#00C98D] ${
+                  settingsOpen
+                    ? 'bg-[#11161E] border-[#00C98D]/40 text-[#00C98D]'
+                    : 'bg-[#0C0F14] border-[#1C2430] hover:bg-[#11161E] hover:border-[#1C2430] text-[#A5AFBF] hover:text-[#F2F4F7]'
+                }`}
+                title={isVi ? 'Cài đặt giao diện' : 'Interface Settings'}
+                aria-label={isVi ? 'Cài đặt giao diện' : 'Interface Settings'}
+                aria-expanded={settingsOpen}
+              >
+                <Sliders className="w-4 h-4" />
+              </button>
+
+              {settingsOpen && (
+                <div
+                  className="absolute right-0 top-full mt-1.5 w-64 bg-[#0C0F14] backdrop-blur-md border border-[#1C2430] rounded-xl shadow-2xl p-3 z-50 font-sans text-xs animate-in fade-in slide-in-from-top-1 duration-150"
+                  role="dialog"
+                  aria-label="Cài đặt giao diện"
+                >
+                  <div className="flex items-center justify-between pb-2 mb-2.5 border-b border-[#1C2430]">
+                    <span className="font-semibold text-[#F2F4F7] uppercase tracking-wider text-[11px] flex items-center gap-1.5">
+                      <Sliders className="w-3.5 h-3.5 text-[#00C98D]" />
+                      <span>{isVi ? 'Cài đặt giao diện' : 'Interface'}</span>
+                    </span>
+                  </div>
+                  <CursorToggle showSubtitle={true} />
+                </div>
+              )}
+            </div>
+
             {/* User Profile / Login */}
             {isAuthenticated && user ? (
               <div className="relative" ref={userMenuRef}>
@@ -331,7 +374,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
                 {userDropdownOpen && (
                   <div
-                    className="absolute right-0 top-full mt-1.5 w-56 bg-[#0C0F14] backdrop-blur-md border border-[#1C2430] rounded-lg shadow-2xl p-1 z-50 font-sans text-xs animate-in fade-in slide-in-from-top-1 duration-150"
+                    className="absolute right-0 top-full mt-1.5 w-60 bg-[#0C0F14] backdrop-blur-md border border-[#1C2430] rounded-lg shadow-2xl p-1 z-50 font-sans text-xs animate-in fade-in slide-in-from-top-1 duration-150"
                     role="menu"
                     aria-label="User menu"
                   >
@@ -376,6 +419,11 @@ export const Navbar: React.FC<NavbarProps> = ({
                         <Award className="w-4 h-4 text-[#F59E0B]" />
                         <span>{isVi ? 'Chứng chỉ' : 'Certificates'}</span>
                       </button>
+
+                      {/* Cursor toggle in user menu */}
+                      <div className="border-t border-[#1C2430] my-1 pt-1 px-2.5 py-1.5">
+                        <CursorToggle compact={true} />
+                      </div>
 
                       <div className="border-t border-[#1C2430] my-1" />
 
@@ -486,6 +534,11 @@ export const Navbar: React.FC<NavbarProps> = ({
               </div>
             );
           })}
+
+          {/* Mobile Cursor Toggle */}
+          <div className="rounded-lg border border-[#1C2430] bg-[#0C0F14] p-3 mt-2">
+            <CursorToggle showSubtitle={true} />
+          </div>
 
           {/* Mobile GitHub Repository Link */}
           <div className="rounded-lg border border-[#1C2430] bg-[#0C0F14] overflow-hidden mt-2">

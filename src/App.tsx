@@ -8,6 +8,7 @@ import { LanguageProvider } from './i18n/LanguageContext';
 import { AuthProvider } from './context/AuthContext';
 import { SimulationProvider } from './context/SimulationContext';
 import { NavigationProvider } from './context/NavigationContext';
+import { CursorProvider, useCursor } from './context/CursorContext';
 
 // Application Shell
 import { Navbar } from './components/layout/Navbar';
@@ -29,6 +30,7 @@ import { QuizReviewModal } from './components/Quiz/QuizReviewModal';
 function AppContent() {
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
   const searchTriggerRef = useRef<HTMLButtonElement>(null);
+  const { customCursorEnabled } = useCursor();
 
   // Global keyboard shortcut for Command Palette (Ctrl+K / Cmd+K)
   useEffect(() => {
@@ -92,8 +94,8 @@ function AppContent() {
       <Footer />
       <BackToTop />
 
-      {/* Global Modern Neon Cursor */}
-      <CustomCursor />
+      {/* Global Modern Neon Cursor (Only mounted when enabled) */}
+      {customCursorEnabled && <CustomCursor />}
     </div>
   );
 }
@@ -104,7 +106,9 @@ export default function App() {
       <AuthProvider>
         <SimulationProvider>
           <NavigationProvider>
-            <AppContent />
+            <CursorProvider>
+              <AppContent />
+            </CursorProvider>
           </NavigationProvider>
         </SimulationProvider>
       </AuthProvider>

@@ -18,14 +18,16 @@ import {
   BookOpen,
   ArrowRight,
   Sparkles,
+  MousePointer,
 } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 import { useNavigation, ModuleId, LessonId } from '../context/NavigationContext';
 
 export interface PaletteItem {
   id: string;
-  moduleId: ModuleId;
-  lessonId: LessonId;
+  moduleId?: ModuleId;
+  lessonId?: LessonId;
+  onSelect?: () => void;
   titleVi: string;
   titleEn: string;
   categoryVi: string;
@@ -243,6 +245,20 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
         keywords: ['academic', 'hoc thuat', 'nghien cuu', 'de cuong', 'phan tan long', 'dai hoc da lat', 'dlu'],
         icon: BookOpen,
       },
+      {
+        id: 'toggle-custom-cursor',
+        onSelect: () => {
+          window.dispatchEvent(new CustomEvent('custom-cursor-toggle-req'));
+        },
+        titleVi: 'Bật / Tắt con trỏ tùy chỉnh',
+        titleEn: 'Toggle Custom Cursor (ON / OFF)',
+        categoryVi: 'Cài đặt giao diện',
+        categoryEn: 'Interface Settings',
+        descriptionVi: 'Chuyển đổi giữa con trỏ vàng đặc trưng và con trỏ chuột mặc định của hệ điều hành.',
+        descriptionEn: 'Switch between yellow custom cursor and default system cursor.',
+        keywords: ['con tro', 'con tro tuy chinh', 'cursor', 'mouse', 'chuot', 'pointer', 'giao dien', 'settings'],
+        icon: MousePointer,
+      },
     ],
     []
   );
@@ -269,7 +285,11 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
   const handleSelectItem = useCallback(
     (item: PaletteItem) => {
       onClose();
-      navigateTo(item.moduleId, item.lessonId);
+      if (item.onSelect) {
+        item.onSelect();
+      } else if (item.moduleId && item.lessonId) {
+        navigateTo(item.moduleId, item.lessonId);
+      }
     },
     [navigateTo, onClose]
   );

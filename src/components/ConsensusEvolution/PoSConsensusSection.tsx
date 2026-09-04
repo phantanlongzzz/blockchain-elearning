@@ -148,7 +148,7 @@ export const PoSConsensusSection: React.FC<PoSConsensusSectionProps> = ({
             </span>
             <div className="text-xs text-slate-500 mt-0.5">
               {isVi ? 'Tổng tiền cọc: ' : 'Total active stake: '}
-              <span className="text-emerald-400 font-medium font-mono">{totalStake} ETH</span>
+              <span className="text-financial font-medium font-mono">{totalStake} ETH</span>
             </div>
           </div>
 
@@ -173,7 +173,7 @@ export const PoSConsensusSection: React.FC<PoSConsensusSectionProps> = ({
               type="button"
               onClick={handleRunProposerSelection}
               disabled={isSelecting}
-              className="px-4 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-medium text-xs flex items-center gap-1.5 transition-colors cursor-pointer disabled:opacity-50"
+ className="px-4 py-1.5 rounded-lg bg-financial hover:bg-financial/90 text-black font-semibold font-medium text-xs flex items-center gap-1.5 transition-colors cursor-pointer disabled:opacity-50"
             >
               <Play className="w-3 h-3 fill-current" />
               <span>
@@ -198,7 +198,7 @@ export const PoSConsensusSection: React.FC<PoSConsensusSectionProps> = ({
                   val.isSlashed
                     ? 'bg-rose-950/20 border-rose-500/30 opacity-60'
                     : isWinner
-                    ? 'bg-emerald-950/30 border-emerald-500/60'
+                    ? 'bg-white/[0.06] border-border-primary'
                     : 'bg-[#080C10] border-slate-800'
                 }`}
               >
@@ -220,12 +220,12 @@ export const PoSConsensusSection: React.FC<PoSConsensusSectionProps> = ({
                   <div className="space-y-1 text-xs">
                     <div className="flex items-center justify-between text-slate-400">
                       <span>{isVi ? 'Tiền cọc:' : 'Stake:'}</span>
-                      <span className="text-slate-200 font-mono font-medium">{val.stake} ETH</span>
+                      <span className="text-financial font-mono font-medium">{val.stake} ETH</span>
                     </div>
 
                     <div className="flex items-center justify-between text-slate-400">
                       <span>{isVi ? 'Tỉ lệ chọn:' : 'Probability:'}</span>
-                      <span className="text-emerald-400 font-mono font-medium">{percentage}%</span>
+                      <span className="text-text-primary font-mono font-medium">{percentage}%</span>
                     </div>
 
                     {/* Progress Bar */}
@@ -321,7 +321,7 @@ export const PoSConsensusSection: React.FC<PoSConsensusSectionProps> = ({
           <button
             type="button"
             onClick={onNextStage}
-            className="px-5 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-medium text-xs flex items-center gap-2 transition-colors cursor-pointer"
+ className="px-5 py-2 rounded-lg bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-medium text-xs flex items-center gap-2 transition-colors cursor-pointer"
           >
             <span>{isVi ? 'Tiếp tục: So sánh PoW vs PoS' : 'Next: Compare PoW vs PoS'}</span>
             <ArrowRight className="w-3.5 h-3.5" />

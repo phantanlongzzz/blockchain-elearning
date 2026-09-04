@@ -89,9 +89,9 @@ export const EducationalInsightBanner: React.FC<EducationalInsightBannerProps> =
   return (
     <div
       id="e2e-educational-insight-banner"
-      className="bg-emerald-950/20 border border-emerald-500/30 rounded-xl p-3 flex items-start gap-3 text-xs font-sans animate-in fade-in duration-300"
+      className="bg-bg-elevated border border-border-primary rounded-xl p-3 flex items-start gap-3 text-xs font-sans animate-in fade-in duration-300"
     >
-      <div className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 shrink-0 mt-0.5">
+      <div className="p-1.5 rounded-lg bg-bg-secondary border border-border-secondary text-text-secondary shrink-0 mt-0.5">
         <Lightbulb className="w-4 h-4" />
       </div>
       <div className="flex-1 min-w-0">

@@ -47,7 +47,7 @@ export const ValidatorDashboard: React.FC<ValidatorDashboardProps> = ({
               id="pos-add-participant-btn"
               onClick={onAddParticipant}
               disabled={!canAddMore}
-              className="px-3 py-1.5 rounded-lg bg-[#00C98D] hover:bg-[#00B982] text-[#090A0F] font-semibold text-xs flex items-center gap-1.5 disabled:opacity-40 transition-colors cursor-pointer shadow-sm"
+ className="px-3 py-1.5 rounded-lg bg-financial hover:bg-financial/90 text-black font-semibold font-semibold text-xs flex items-center gap-1.5 disabled:opacity-40 transition-colors cursor-pointer shadow-sm"
               title={isVi ? 'Thêm người tham gia mới' : 'Add new participant'}
             >
               <UserPlus className="w-3.5 h-3.5" />
@@ -185,7 +185,7 @@ export const ValidatorDashboard: React.FC<ValidatorDashboardProps> = ({
             type="button"
             id="pos-proceed-to-step2-btn"
             onClick={onProceedToStep2}
-            className="px-5 py-2.5 rounded-lg bg-[#00C98D] hover:bg-[#00B982] text-[#090A0F] font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-colors cursor-pointer shrink-0 shadow-sm"
+ className="px-5 py-2.5 rounded-lg bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-colors cursor-pointer shrink-0 shadow-sm"
           >
             <span>{isVi ? 'Tiếp tục: Chọn người giải khối' : 'Continue: Select Block Solver'}</span>
             <ArrowRight className="w-4 h-4 text-[#090A0F]" />

@@ -80,7 +80,7 @@ export const InternalPipelineVisualizer: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-10 font-sans">
-          <div className="flex items-center justify-center gap-2 text-[#00C98D] text-xs font-mono tracking-wider uppercase mb-3 font-semibold">
+          <div className="flex items-center justify-center gap-2 text-text-muted text-xs font-mono tracking-wider uppercase mb-3 font-semibold">
             <span>{strings.pipeline.badge}</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-bold text-[#F2F4F7] tracking-tight font-sans mb-2">
@@ -104,7 +104,7 @@ export const InternalPipelineVisualizer: React.FC = () => {
               onClick={() => setActiveStage(stage.id as any)}
               className={`p-3.5 rounded-lg text-left border transition-all cursor-pointer ${
                 activeStage === stage.id
-                  ? 'bg-[#0F131A] border-[#00C98D]/50 shadow-sm text-[#00C98D]'
+                  ? 'bg-bg-elevated border-border-primary shadow-sm text-text-primary'
                   : 'bg-[#0C0F14] border-[#1C2430] text-[#A5AFBF] hover:border-[#2A3649] hover:text-[#F2F4F7]'
               }`}
             >
@@ -117,7 +117,7 @@ export const InternalPipelineVisualizer: React.FC = () => {
         {/* Input Controller inside Pipeline */}
         <div className="rounded-lg bg-[#0C0F14] border border-[#1C2430] p-4 mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-sans">
           <div className="flex items-center gap-2">
-            <span className="text-[#00C98D] font-bold uppercase font-sans">{strings.pipeline.testMessage}:</span>
+            <span className="text-text-secondary font-bold uppercase font-sans">{strings.pipeline.testMessage}:</span>
             <input
               type="text"
               value={pipelineInput}
@@ -126,13 +126,13 @@ export const InternalPipelineVisualizer: React.FC = () => {
                 setSelectedRound(0);
               }}
               placeholder={labels.placeholder}
-              className="bg-[#0B0F15] border border-[#1C2430] rounded-md px-3 py-1.5 text-[#F2F4F7] focus:outline-none focus:border-[#00C98D] w-48 font-mono"
+              className="bg-[#0B0F15] border border-[#1C2430] rounded-md px-3 py-1.5 text-[#F2F4F7] focus:outline-none focus:border-teach-1 w-48 font-mono"
             />
           </div>
           <div className="text-[#A5AFBF] flex items-center gap-3 font-sans">
-            <span>{strings.pipeline.originalBits}: <strong className="text-[#00C98D] font-mono">{breakdown.originalBitsLength}</strong></span>
-            <span>{strings.pipeline.paddedBits}: <strong className="text-[#00C98D] font-mono">{breakdown.paddedBitsLength}</strong></span>
-            <span>{strings.pipeline.blocksCount}: <strong className="text-[#00C98D] font-mono">{breakdown.blockCount} × 512b</strong></span>
+            <span>{strings.pipeline.originalBits}: <strong className="text-text-primary font-mono">{breakdown.originalBitsLength}</strong></span>
+            <span>{strings.pipeline.paddedBits}: <strong className="text-text-primary font-mono">{breakdown.paddedBitsLength}</strong></span>
+            <span>{strings.pipeline.blocksCount}: <strong className="text-text-primary font-mono">{breakdown.blockCount} × 512b</strong></span>
           </div>
         </div>
 
@@ -140,7 +140,7 @@ export const InternalPipelineVisualizer: React.FC = () => {
         {activeStage === 'padding' && (
           <div className="rounded-xl bg-[#0C0F14] border border-[#1C2430] p-6 sm:p-7 shadow-sm space-y-5 font-sans">
             <div className="flex items-center justify-between border-b border-[#1C2430] pb-3">
-              <h3 className="font-sans text-base font-bold text-[#00C98D]">
+              <h3 className="font-sans text-base font-bold text-text-primary">
                 {strings.pipeline.stage1Title}
               </h3>
               <span className="text-xs font-mono px-2.5 py-0.5 rounded-md bg-[#0F131A] text-[#A5AFBF] border border-[#1C2430]">
@@ -168,7 +168,7 @@ export const InternalPipelineVisualizer: React.FC = () => {
                       key={idx}
                       className={`p-1 rounded text-[10px] border ${
                         isMsg
-                          ? 'bg-[#00C98D]/20 border-[#00C98D]/50 text-[#00C98D] font-medium'
+                          ? 'bg-teach-1/20 border-teach-1/50 text-teach-1 font-medium'
                           : isOneBit
                             ? 'bg-amber-950/80 border-amber-500/50 text-amber-200 font-bold'
                             : isLength
@@ -185,7 +185,7 @@ export const InternalPipelineVisualizer: React.FC = () => {
 
               <div className="flex flex-wrap items-center gap-4 text-[11px] pt-3 border-t border-[#1C2430] text-[#A5AFBF] font-sans">
                 <span className="flex items-center gap-1">
-                  <span className="w-2.5 h-2.5 rounded-sm bg-[#00C98D] inline-block" /> {labels.msgBytes} ({new TextEncoder().encode(pipelineInput).length})
+                  <span className="w-2.5 h-2.5 rounded-sm bg-teach-1 inline-block" /> {labels.msgBytes} ({new TextEncoder().encode(pipelineInput).length})
                 </span>
                 <span className="flex items-center gap-1">
                   <span className="w-2.5 h-2.5 rounded-sm bg-amber-500 inline-block" /> {labels.appended1}
@@ -205,7 +205,7 @@ export const InternalPipelineVisualizer: React.FC = () => {
         {activeStage === 'schedule' && (
           <div className="rounded-xl bg-[#0C0F14] border border-[#1C2430] p-6 sm:p-7 shadow-sm space-y-5 font-sans">
             <div className="flex items-center justify-between border-b border-[#1C2430] pb-3">
-              <h3 className="font-sans text-base font-bold text-[#00C98D]">
+              <h3 className="font-sans text-base font-bold text-text-primary">
                 {strings.pipeline.stage2Title}
               </h3>
               <span className="text-xs font-mono px-2.5 py-0.5 rounded-md bg-[#0F131A] text-[#A5AFBF] border border-[#1C2430]">
@@ -215,7 +215,7 @@ export const InternalPipelineVisualizer: React.FC = () => {
 
             <div className="text-xs text-[#A5AFBF] leading-relaxed font-sans">
               {labels.stage2IntroPre}<InlineMath math="W_0 \dots W_{15}" />{labels.stage2IntroPost}
-              <div className="mt-2 p-2.5 bg-[#090A0F] rounded-lg border border-[#1C2430] text-[#00C98D]">
+              <div className="mt-2 p-2.5 bg-[#090A0F] rounded-lg border border-[#1C2430] text-teach-1">
                 <InlineMath math="W[t] = \sigma_1(W[t-2]) + W[t-7] + \sigma_0(W[t-15]) + W[t-16] \pmod{2^{32}}" />
               </div>
             </div>
@@ -226,7 +226,7 @@ export const InternalPipelineVisualizer: React.FC = () => {
                   key={idx}
                   className={`p-2 rounded-lg border ${
                     idx < 16
-                      ? 'bg-[#00C98D]/10 border-[#00C98D]/30 text-[#00C98D]'
+                      ? 'bg-teach-1/10 border-teach-1/30 text-teach-1'
                       : 'bg-[#090A0F] border-[#1C2430] text-[#F2F4F7]'
                   }`}
                 >
@@ -244,7 +244,7 @@ export const InternalPipelineVisualizer: React.FC = () => {
             {/* Header & Round Selector Controls */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#1C2430] pb-4">
               <div>
-                <h3 className="font-sans text-base font-bold text-[#00C98D] flex items-center gap-2">
+                <h3 className="font-sans text-base font-bold text-text-primary flex items-center gap-2">
                   <span>{labels.compressionRound} #{selectedRound} / 63</span>
                 </h3>
                 <p className="text-xs text-[#A5AFBF] mt-0.5 font-sans">
@@ -256,7 +256,7 @@ export const InternalPipelineVisualizer: React.FC = () => {
               <div className="flex items-center gap-2 font-sans">
                 <button
                   onClick={() => setIsPlaying(!isPlaying)}
-                  className="px-3 py-1.5 rounded-lg bg-[#00C98D]/15 hover:bg-[#00C98D]/25 border border-[#00C98D]/40 text-[#00C98D] text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer"
+                  className="px-3 py-1.5 rounded-lg bg-teach-1/15 hover:bg-teach-1/25 border border-teach-1/40 text-teach-1 text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer"
                 >
                   {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
                   <span>{isPlaying ? strings.pipeline.pause : strings.pipeline.autoPlay}</span>
@@ -282,7 +282,7 @@ export const InternalPipelineVisualizer: React.FC = () => {
             <div className="font-sans">
               <div className="flex justify-between text-xs text-[#A5AFBF] mb-1.5">
                 <span>{labels.initialState}</span>
-                <span className="text-[#00C98D] font-bold font-mono">{labels.roundPrefix} {selectedRound}</span>
+                <span className="text-teach-1 font-bold font-mono">{labels.roundPrefix} {selectedRound}</span>
                 <span>{labels.finalRound}</span>
               </div>
               <input
@@ -294,7 +294,7 @@ export const InternalPipelineVisualizer: React.FC = () => {
                   setSelectedRound(Number(e.target.value));
                   setIsPlaying(false);
                 }}
-                className="w-full accent-[#00C98D] bg-[#0F131A] h-2 rounded-lg cursor-pointer"
+                className="w-full accent-teach-1 bg-[#0F131A] h-2 rounded-lg cursor-pointer"
               />
             </div>
 
@@ -302,14 +302,14 @@ export const InternalPipelineVisualizer: React.FC = () => {
             {currentRoundState && (
               <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2.5 font-sans">
                 {[
-                  { label: 'a', val: currentRoundState.a, color: 'text-[#00C98D]' },
-                  { label: 'b', val: currentRoundState.b, color: 'text-[#00C98D]' },
-                  { label: 'c', val: currentRoundState.c, color: 'text-[#F2F4F7]' },
-                  { label: 'd', val: currentRoundState.d, color: 'text-[#A5AFBF]' },
-                  { label: 'e', val: currentRoundState.e, color: 'text-[#00C98D]' },
-                  { label: 'f', val: currentRoundState.f, color: 'text-[#00C98D]' },
-                  { label: 'g', val: currentRoundState.g, color: 'text-[#F2F4F7]' },
-                  { label: 'h', val: currentRoundState.h, color: 'text-[#A5AFBF]' },
+                  { label: 'a', val: currentRoundState.a, color: 'text-teach-1' },
+                  { label: 'b', val: currentRoundState.b, color: 'text-teach-1' },
+                  { label: 'c', val: currentRoundState.c, color: 'text-teach-5' },
+                  { label: 'd', val: currentRoundState.d, color: 'text-teach-6' },
+                  { label: 'e', val: currentRoundState.e, color: 'text-teach-2' },
+                  { label: 'f', val: currentRoundState.f, color: 'text-teach-2' },
+                  { label: 'g', val: currentRoundState.g, color: 'text-teach-5' },
+                  { label: 'h', val: currentRoundState.h, color: 'text-teach-6' },
                 ].map((item) => (
                   <div
                     key={item.label}
@@ -335,7 +335,7 @@ export const InternalPipelineVisualizer: React.FC = () => {
                 </div>
                 <div>
                   <span className="text-[#A5AFBF] block mb-0.5">{labels.scheduleWord} <span className="font-mono">W[{selectedRound}]</span>:</span>
-                  <span className="text-[#00C98D] font-bold font-mono">0x{uint32ToHex(currentRoundState.w)}</span>
+                  <span className="text-teach-3 font-bold font-mono">0x{uint32ToHex(currentRoundState.w)}</span>
                 </div>
                 <div>
                   <span className="text-[#A5AFBF] block mb-0.5"><InlineMath math="T_1 = h + \Sigma_1 + \text{Ch} + K + W" />:</span>
@@ -343,7 +343,7 @@ export const InternalPipelineVisualizer: React.FC = () => {
                 </div>
                 <div>
                   <span className="text-[#A5AFBF] block mb-0.5"><InlineMath math="T_2 = \Sigma_0 + \text{Maj}" />:</span>
-                  <span className="text-[#00C98D] font-bold font-mono">0x{uint32ToHex(currentRoundState.t2)}</span>
+                  <span className="text-teach-1 font-bold font-mono">0x{uint32ToHex(currentRoundState.t2)}</span>
                 </div>
               </div>
             )}
@@ -354,17 +354,17 @@ export const InternalPipelineVisualizer: React.FC = () => {
         {activeStage === 'output' && (
           <div className="rounded-xl bg-[#0C0F14] border border-[#1C2430] p-6 sm:p-7 shadow-sm space-y-5 font-sans">
             <div className="flex items-center justify-between border-b border-[#1C2430] pb-3">
-              <h3 className="font-sans text-base font-bold text-[#00C98D]">
+              <h3 className="font-sans text-base font-bold text-text-primary">
                 {strings.pipeline.stage4Title}
               </h3>
-              <span className="text-xs font-mono px-2.5 py-0.5 rounded-md bg-[#0F131A] text-[#00C98D] border border-[#1C2430]">
+              <span className="text-xs font-mono px-2.5 py-0.5 rounded-md bg-bg-elevated text-text-secondary border border-border-primary">
                 {labels.outputBadge}
               </span>
             </div>
 
             <div className="text-xs text-[#A5AFBF] leading-relaxed font-sans">
               {labels.stage4IntroPre}<InlineMath math="a \dots h" />{labels.stage4IntroMid}<InlineMath math="2^{32}" />{labels.stage4IntroPost}
-              <div className="mt-2 p-2.5 bg-[#090A0F] rounded-lg border border-[#1C2430] text-[#00C98D] font-mono text-xs">
+              <div className="mt-2 p-2.5 bg-[#090A0F] rounded-lg border border-[#1C2430] text-teach-1 font-mono text-xs">
                 <InlineMath math="H_0 = H_0 + a, \quad H_1 = H_1 + b, \quad \dots, \quad H_7 = H_7 + h \pmod{2^{32}}" />
               </div>
             </div>
@@ -373,7 +373,7 @@ export const InternalPipelineVisualizer: React.FC = () => {
               <span className="text-[11px] font-sans text-[#A5AFBF] uppercase font-semibold block mb-2">
                 {labels.synthesizedDigest}
               </span>
-              <div className="font-mono text-base sm:text-xl font-bold text-[#00C98D] break-all select-all">
+              <div className="font-mono text-base sm:text-xl font-bold text-teach-1 break-all select-all">
                 {breakdown.finalHashHex}
               </div>
             </div>

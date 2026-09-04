@@ -182,7 +182,7 @@ export const ProfileModal: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="absolute inset-0 rounded-full bg-[#090A0F]/80 flex flex-col items-center justify-center text-[#00C98D] cursor-pointer"
+                  className="absolute inset-0 rounded-full bg-[#090A0F]/80 flex flex-col items-center justify-center text-teach-1 cursor-pointer"
                   title={strings.profile?.changeAvatar || (language === 'vi' ? 'Đổi ảnh' : 'Change Avatar')}
                 >
                   <Camera className="w-5 h-5" />
@@ -231,7 +231,7 @@ export const ProfileModal: React.FC = () => {
         ) : null}
 
         {notification ? (
-          <div className="my-4 p-3 bg-[#00C98D]/10 border border-[#00C98D]/30 rounded-xl text-[#00C98D] text-xs flex items-center gap-2">
+          <div className="my-4 p-3 bg-teach-1/10 border border-teach-1/30 rounded-xl text-teach-1 text-xs flex items-center gap-2">
             <CheckCircle2 className="w-4 h-4 flex-shrink-0" />
             <span>{notification}</span>
           </div>
@@ -278,7 +278,7 @@ export const ProfileModal: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="flex items-center gap-1.5 px-3 py-1.5 bg-[#00C98D]/10 hover:bg-[#00C98D]/20 text-[#00C98D] border border-[#00C98D]/30 rounded-lg text-xs font-medium transition-colors cursor-pointer"
+                  className="flex items-center gap-1.5 px-3 py-1.5 bg-teach-1/10 hover:bg-teach-1/20 text-teach-1 border border-teach-1/30 rounded-lg text-xs font-medium transition-colors cursor-pointer"
                 >
                   <Upload className="w-3.5 h-3.5" />
                   <span>{strings.profile?.uploadAvatar || (language === 'vi' ? 'Tải ảnh lên' : 'Upload')}</span>
@@ -294,7 +294,7 @@ export const ProfileModal: React.FC = () => {
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full px-3 py-2 bg-[#0B0F15] border border-[#1C2430] focus:border-[#00C98D] rounded-lg text-[#F2F4F7] text-xs focus:outline-none transition-colors font-sans"
+                className="w-full px-3 py-2 bg-[#0B0F15] border border-[#1C2430] focus:border-teach-1 rounded-lg text-[#F2F4F7] text-xs focus:outline-none transition-colors font-sans"
               />
             </div>
 
@@ -312,7 +312,7 @@ export const ProfileModal: React.FC = () => {
               </button>
               <button
                 type="submit"
-                className="flex items-center gap-1.5 px-4 py-1.5 text-xs font-medium bg-[#00C98D] text-[#090A0F] hover:bg-[#00B982] rounded-lg transition-colors cursor-pointer"
+ className="flex items-center gap-1.5 px-4 py-1.5 text-xs font-medium bg-info hover:bg-info/90 text-white font-semibold rounded-lg transition-colors cursor-pointer"
               >
                 <Save className="w-3.5 h-3.5" />
                 <span>{strings.profile?.saveChanges || (language === 'vi' ? 'Lưu' : 'Save')}</span>
@@ -351,11 +351,11 @@ export const ProfileModal: React.FC = () => {
           <div className="flex items-center gap-3 mb-6">
             <div className="flex-1 h-2 bg-[#1C2430] rounded-full overflow-hidden">
               <div 
-                className="h-full bg-[#00C98D] rounded-full transition-all duration-500 ease-out" 
+                className="h-full bg-teach-1 rounded-full transition-all duration-500 ease-out" 
                 style={{ width: `${progressPercentage}%` }}
               />
             </div>
-            <span className="text-sm font-mono text-[#00C98D]">{progressPercentage}%</span>
+            <span className="text-sm font-mono text-teach-1">{progressPercentage}%</span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-3 font-sans">
@@ -364,7 +364,7 @@ export const ProfileModal: React.FC = () => {
                 {topic.isLocked ? (
                    <span className="text-xs shrink-0">🔒</span>
                 ) : topic.isCompleted ? (
-                   <span className="text-[#00C98D] shrink-0 font-bold">✓</span>
+                   <span className="text-success shrink-0 font-bold">✓</span>
                 ) : (
                    <span className="w-3.5 h-3.5 rounded-full border border-[#4D5665] opacity-50 inline-block shrink-0"></span>
                 )}

@@ -140,7 +140,7 @@ export const LinkedListVsBlockchain: React.FC<LinkedListVsBlockchainProps> = ({
                 onClick={() => setSelectedEntity(morphStep === 2 ? 'block' : 'node')}
                 className={`w-44 p-3.5 rounded-lg border transition-colors cursor-pointer ${
                   morphStep === 2
-                    ? 'bg-zinc-900 border-emerald-500/80'
+                    ? 'bg-zinc-900 border-border-primary ring-1 ring-white/20'
                     : morphStep === 1
                     ? 'bg-zinc-900 border-zinc-700'
                     : 'bg-zinc-900/90 border-zinc-800'
@@ -201,7 +201,7 @@ export const LinkedListVsBlockchain: React.FC<LinkedListVsBlockchainProps> = ({
                 onClick={() => setSelectedEntity(morphStep === 2 ? 'block' : 'node')}
                 className={`w-44 p-3.5 rounded-lg border transition-colors cursor-pointer ${
                   morphStep === 2
-                    ? 'bg-zinc-900 border-emerald-500/80'
+                    ? 'bg-zinc-900 border-border-primary ring-1 ring-white/20'
                     : morphStep === 1
                     ? 'bg-zinc-900 border-zinc-700'
                     : 'bg-zinc-900/90 border-zinc-800'

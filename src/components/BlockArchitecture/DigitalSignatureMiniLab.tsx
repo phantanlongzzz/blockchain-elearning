@@ -229,7 +229,7 @@ export const DigitalSignatureMiniLab: React.FC<DigitalSignatureMiniLabProps> = (
           <button
             type="button"
             onClick={onNextStage}
-            className="px-5 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-medium text-xs flex items-center gap-2 transition-colors cursor-pointer"
+ className="px-5 py-2 rounded-lg bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-medium text-xs flex items-center gap-2 transition-colors cursor-pointer"
           >
             <span>{isVi ? 'Tiếp tục: Dấu thời gian' : 'Next: Timestamp'}</span>
             <ArrowRight className="w-3.5 h-3.5" />

@@ -716,7 +716,7 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
       <div className="p-4 sm:p-5 rounded-xl bg-[#090a0f] border border-zinc-800 space-y-4">
         <div className="flex items-center justify-between text-xs font-mono">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-400" />
+            <span className="w-2 h-2 rounded-full bg-teach-1" />
             <span className="text-zinc-300 font-medium">
               {language === 'vi' ? 'Lộ trình 8 bước thực nghiệm' : '8-Step Pipeline Workflow'}
             </span>
@@ -820,7 +820,7 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
               <div className="lg:col-span-6 p-5 rounded-2xl bg-[#05070c] border border-slate-800 space-y-4">
                 <div className="flex items-center justify-between pb-3 border-b border-slate-800">
                   <span className="text-xs font-mono font-bold text-slate-300 uppercase flex items-center gap-2">
-                    <FileText className="w-4 h-4 text-emerald-400" />
+                    <FileText className="w-4 h-4 text-teach-1" />
                     <span>{language === 'vi' ? 'Dữ Liệu Giao Dịch Thô' : 'Raw Transaction Payload'}</span>
                   </span>
                   <span className="text-[10px] font-mono text-slate-400 bg-slate-900 px-2 py-0.5 rounded border border-slate-800">
@@ -837,7 +837,7 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
                       type="text"
                       value={txSender}
                       onChange={(e) => setTxSender(e.target.value)}
-                      className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-emerald-300 font-bold focus:outline-none focus:border-emerald-400"
+                      className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-teach-1 font-bold focus:outline-none focus:border-teach-1"
                       placeholder="e.g. Alice"
                     />
                   </div>
@@ -864,7 +864,7 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
                         type="number"
                         value={txAmount}
                         onChange={(e) => setTxAmount(parseFloat(e.target.value) || 0)}
-                        className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-emerald-300 font-bold focus:outline-none focus:border-emerald-400"
+                        className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-financial font-bold focus:outline-none focus:border-financial"
                       />
                     </div>
                     <div>
@@ -883,7 +883,7 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
                   <button
                     type="button"
                     onClick={handleCreateTransaction}
-                    className="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold font-mono text-xs flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg shadow-emerald-950/40"
+ className="w-full py-3 rounded-xl bg-financial hover:bg-financial/90 text-black font-semibold font-bold font-mono text-xs flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg "
                   >
                     <Plus className="w-4 h-4" />
                     <span>{language === 'vi' ? 'TẠO GIAO DỊCH' : 'CREATE TRANSACTION'}</span>
@@ -895,10 +895,10 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
               <div className="lg:col-span-6 p-5 rounded-2xl bg-[#05070c] border border-slate-800 flex flex-col justify-between space-y-4">
                 <div className="flex items-center justify-between pb-3 border-b border-slate-800">
                   <span className="text-xs font-mono font-bold text-slate-300 uppercase flex items-center gap-2">
-                    <Layers className="w-4 h-4 text-emerald-400" />
+                    <Layers className="w-4 h-4 text-teach-1" />
                     <span>{language === 'vi' ? 'Đối Tượng Giao Dịch Được Tạo' : 'Transaction Object'}</span>
                   </span>
-                  <span className="text-[10px] font-mono text-emerald-400 bg-emerald-950/30 px-2 py-0.5 rounded border border-emerald-500/30">
+                  <span className="text-[10px] font-mono text-teach-1 bg-teach-1/10 px-2 py-0.5 rounded border border-teach-1/30">
                     Active Object
                   </span>
                 </div>
@@ -906,14 +906,14 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
                 <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-3 font-mono text-xs">
                   <div className="flex items-center justify-between text-slate-400 text-[11px]">
                     <span>Transaction ID:</span>
-                    <span className="text-emerald-300 font-bold">{createdTx.id}</span>
+                    <span className="text-teach-1 font-bold">{createdTx.id}</span>
                   </div>
 
                   <div className="p-3 rounded-lg bg-black/60 border border-slate-800 flex items-center justify-between">
-                    <span className="text-emerald-400 font-bold">{createdTx.sender}</span>
+                    <span className="text-teach-1 font-bold">{createdTx.sender}</span>
                     <ArrowRight className="w-4 h-4 text-slate-500" />
                     <span className="text-amber-400 font-bold">{createdTx.recipient}</span>
-                    <span className="text-emerald-400 font-bold bg-emerald-950/50 px-2 py-0.5 rounded border border-emerald-500/30">
+                    <span className="text-financial font-bold bg-financial/10 px-2 py-0.5 rounded border border-financial/30">
                       {createdTx.amount} {createdTx.unit}
                     </span>
                   </div>
@@ -924,9 +924,9 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
                   </div>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-emerald-950/20 border border-emerald-500/20 text-xs text-slate-300 font-sans">
+                <div className="p-3.5 rounded-xl bg-bg-elevated border border-border-primary text-xs text-text-secondary font-sans">
                   <p className="flex items-start gap-2">
-                    <Info className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                    <Info className="w-4 h-4 text-info shrink-0 mt-0.5" />
                     <span>
                       {language === 'vi'
                         ? 'Đây là dữ liệu thô trước khi được mã hóa bằng hàm băm. Bấm "Tiếp Tục" để chuyển sang bước băm SHA-256.'
@@ -947,10 +947,10 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
               <div className="lg:col-span-6 p-5 rounded-2xl bg-[#05070c] border border-slate-800 space-y-4">
                 <div className="flex items-center justify-between pb-3 border-b border-slate-800">
                   <span className="text-xs font-mono font-bold text-slate-300 uppercase flex items-center gap-2">
-                    <Binary className="w-4 h-4 text-emerald-400" />
+                    <Binary className="w-4 h-4 text-teach-1" />
                     <span>{language === 'vi' ? 'Quy Trình Băm SHA-256' : 'SHA-256 Flow'}</span>
                   </span>
-                  <span className="text-[10px] font-mono text-emerald-400 bg-emerald-950/40 px-2 py-0.5 rounded border border-emerald-500/30">
+                  <span className="text-[10px] font-mono text-teach-1 bg-teach-1/10 px-2 py-0.5 rounded border border-teach-1/30">
                     256-bit Digest
                   </span>
                 </div>
@@ -962,22 +962,22 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
                     <span className="text-slate-200 font-bold">{rawTxString}</span>
                   </div>
 
-                  <div className="flex justify-center my-1 text-emerald-400">
+                  <div className="flex justify-center my-1 text-teach-1">
                     <ArrowDown className="w-4 h-4" />
                   </div>
 
-                  <div className="p-2.5 rounded-lg bg-emerald-950/30 border border-emerald-500/30 flex items-center justify-between">
-                    <span className="text-emerald-300 font-bold">SHA-256 ENGINE</span>
-                    <span className="text-[10px] text-emerald-400">64 Compression Rounds</span>
+                  <div className="p-2.5 rounded-lg bg-teach-1/10 border border-teach-1/30 flex items-center justify-between">
+                    <span className="text-teach-1 font-bold">SHA-256 ENGINE</span>
+                    <span className="text-[10px] text-teach-1">64 Compression Rounds</span>
                   </div>
 
-                  <div className="flex justify-center my-1 text-emerald-400">
+                  <div className="flex justify-center my-1 text-teach-1">
                     <ArrowDown className="w-4 h-4" />
                   </div>
 
-                  <div className="p-3 rounded-lg bg-black border border-emerald-500/40 space-y-1">
+                  <div className="p-3 rounded-lg bg-black border border-teach-1/40 space-y-1">
                     <span className="text-[10px] text-slate-400 block">TRANSACTION HASH (OUTPUT)</span>
-                    <div className="break-all text-xs font-bold text-emerald-300 font-mono">
+                    <div className="break-all text-xs font-bold text-teach-1 font-mono">
                       {originalTxHash}
                     </div>
                   </div>
@@ -986,7 +986,7 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
                 <button
                   type="button"
                   onClick={handleComputeStep2Hash}
-                  className="w-full py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold font-mono text-xs flex items-center justify-center gap-2 transition-all cursor-pointer"
+ className="w-full py-2.5 rounded-xl bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-bold font-mono text-xs flex items-center justify-center gap-2 transition-all cursor-pointer"
                 >
                   <Zap className="w-4 h-4" />
                   <span>{language === 'vi' ? 'TÍNH SHA-256' : 'COMPUTE SHA-256'}</span>
@@ -1068,10 +1068,10 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
               <div className="lg:col-span-5 p-5 rounded-2xl bg-[#05070c] border border-slate-800 space-y-4">
                 <div className="flex items-center justify-between pb-3 border-b border-slate-800">
                   <span className="text-xs font-mono font-bold text-slate-300 uppercase flex items-center gap-2">
-                    <Boxes className="w-4 h-4 text-emerald-400" />
+                    <Boxes className="w-4 h-4 text-teach-1" />
                     <span>{language === 'vi' ? 'Đóng Gói Khối' : 'Package Block'}</span>
                   </span>
-                  <span className="text-[10px] font-mono text-emerald-400 bg-emerald-950/40 px-2 py-0.5 rounded border border-emerald-500/30">
+                  <span className="text-[10px] font-mono text-teach-1 bg-teach-1/10 px-2 py-0.5 rounded border border-teach-1/30">
                     Block #1
                   </span>
                 </div>
@@ -1085,7 +1085,7 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
                 <div className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 font-mono text-xs space-y-2">
                   <div className="flex justify-between">
                     <span className="text-slate-400">Previous Hash (Khối 0):</span>
-                    <span className="text-emerald-300 font-bold">{genesisHash.slice(0, 12)}...</span>
+                    <span className="text-teach-1 font-bold">{genesisHash.slice(0, 12)}...</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-400">Transactions:</span>
@@ -1100,7 +1100,7 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
                 <button
                   type="button"
                   onClick={handlePackBlock}
-                  className="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold font-mono text-xs flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg shadow-emerald-950/40"
+ className="w-full py-3 rounded-xl bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-bold font-mono text-xs flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg "
                 >
                   <Boxes className="w-4 h-4" />
                   <span>{language === 'vi' ? 'ĐÓNG GÓI BLOCK #1' : 'PACK BLOCK #1'}</span>
@@ -1108,15 +1108,15 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
               </div>
 
               {/* Right: Visual Block Card */}
-              <div className="lg:col-span-7 p-5 rounded-2xl bg-[#05070c] border border-emerald-500/40 shadow-2xl space-y-4">
+              <div className="lg:col-span-7 p-5 rounded-2xl bg-[#05070c] border border-border-primary shadow-2xl space-y-4">
                 <div className="flex items-center justify-between pb-3 border-b border-slate-800">
                   <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
-                    <span className="text-sm font-mono font-bold text-emerald-300">
+                    <span className="w-2.5 h-2.5 rounded-full bg-teach-1" />
+                    <span className="text-sm font-mono font-bold text-teach-1">
                       BLOCK #1 (PACKAGED CONTAINER)
                     </span>
                   </div>
-                  <span className="px-2.5 py-0.5 rounded text-[10px] font-mono bg-emerald-950/40 text-emerald-400 border border-emerald-500/30 font-bold">
+                  <span className="px-2.5 py-0.5 rounded text-[10px] font-mono bg-teach-1/10 text-teach-1 border border-teach-1/30 font-bold">
                     VALID BLOCK
                   </span>
                 </div>
@@ -1126,7 +1126,7 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
                     <span className="text-[10px] text-slate-500 block font-bold uppercase">
                       PREVIOUS HASH (Trỏ tới Block #0 Genesis)
                     </span>
-                    <div className="p-2 rounded bg-slate-900/90 text-emerald-400 text-xs truncate border border-slate-800 font-bold">
+                    <div className="p-2 rounded bg-slate-900/90 text-teach-1 text-xs truncate border border-slate-800 font-bold">
                       {genesisHash}
                     </div>
                   </div>
@@ -1156,10 +1156,10 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
                   </div>
 
                   <div>
-                    <span className="text-[10px] text-emerald-400 block font-bold uppercase">
+                    <span className="text-[10px] text-teach-1 block font-bold uppercase">
                       BLOCK HASH = SHA256(Index + PrevHash + Data + Nonce)
                     </span>
-                    <div className="p-2.5 rounded bg-emerald-950/30 text-emerald-300 text-xs break-all border border-emerald-500/30 font-bold">
+                    <div className="p-2.5 rounded bg-teach-1/10 text-teach-1 text-xs break-all border border-teach-1/30 font-bold">
                       {block1InitialHash}
                     </div>
                   </div>
@@ -1178,7 +1178,7 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
               <div className="p-4 rounded-2xl bg-[#05070c] border border-slate-800 space-y-3">
                 <div className="flex items-center justify-between pb-2 border-b border-slate-800">
                   <span className="text-xs font-mono font-bold text-slate-300">BLOCK #0 (GENESIS)</span>
-                  <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                  <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-teach-1/10 text-teach-1 border border-teach-1/20">
                     Genesis
                   </span>
                 </div>
@@ -1196,14 +1196,14 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
                     </div>
                   </div>
                   <div>
-                    <span className="text-[10px] text-emerald-400 block font-bold">BLOCK HASH (Hash #0)</span>
+                    <span className="text-[10px] text-teach-1 block font-bold">BLOCK HASH (Hash #0)</span>
                     <div
                       onMouseEnter={() => setHoveredPointer('b0')}
                       onMouseLeave={() => setHoveredPointer(null)}
                       className={`p-2 rounded text-[10px] break-all border font-bold cursor-pointer transition-all ${
                         hoveredPointer === 'b0'
-                          ? 'bg-emerald-500/30 text-white border-emerald-400 ring-2 ring-emerald-400'
-                          : 'bg-emerald-950/30 text-emerald-300 border-emerald-500/30'
+                          ? 'bg-teach-1/30 text-white border-teach-1 ring-2 ring-teach-1'
+                          : 'bg-teach-1/10 text-teach-1 border border-teach-1/30'
                       }`}
                     >
                       {genesisHash}
@@ -1216,19 +1216,19 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
               <div
                 className={`p-4 rounded-2xl border transition-all space-y-3 ${
                   hoveredPointer === 'b0'
-                    ? 'bg-emerald-950/20 border-emerald-400 ring-2 ring-emerald-500/40 shadow-xl'
+                    ? 'bg-teach-1/10 border-teach-1 ring-2 ring-teach-1/40 shadow-xl'
                     : 'bg-[#05070c] border-slate-800'
                 }`}
               >
                 <div className="flex items-center justify-between pb-2 border-b border-slate-800">
-                  <span className="text-xs font-mono font-bold text-emerald-300">BLOCK #1</span>
-                  <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                  <span className="text-xs font-mono font-bold text-teach-1">BLOCK #1</span>
+                  <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-teach-1/10 text-teach-1 border border-teach-1/20">
                     Linked
                   </span>
                 </div>
                 <div className="space-y-2 font-mono text-xs">
                   <div>
-                    <span className="text-[10px] text-emerald-400 block font-bold">
+                    <span className="text-[10px] text-teach-1 block font-bold">
                       PREVIOUS HASH (Khớp với Hash #0 ☝️)
                     </span>
                     <div
@@ -1236,8 +1236,8 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
                       onMouseLeave={() => setHoveredPointer(null)}
                       className={`p-1.5 rounded text-[10px] truncate border cursor-pointer font-bold ${
                         hoveredPointer === 'b0'
-                          ? 'bg-emerald-500/30 text-white border-emerald-400 ring-2 ring-emerald-400'
-                          : 'bg-slate-900 text-emerald-300 border-slate-800'
+                          ? 'bg-teach-1/30 text-white border-teach-1 ring-2 ring-teach-1'
+                          : 'bg-slate-900 text-teach-1 border border-slate-800'
                       }`}
                     >
                       {genesisHash}
@@ -1250,14 +1250,14 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
                     </div>
                   </div>
                   <div>
-                    <span className="text-[10px] text-emerald-400 block font-bold">BLOCK HASH (Hash #1)</span>
+                    <span className="text-[10px] text-teach-1 block font-bold">BLOCK HASH (Hash #1)</span>
                     <div
                       onMouseEnter={() => setHoveredPointer('b1')}
                       onMouseLeave={() => setHoveredPointer(null)}
                       className={`p-2 rounded text-[10px] break-all border font-bold cursor-pointer transition-all ${
                         hoveredPointer === 'b1'
-                          ? 'bg-emerald-500/30 text-white border-emerald-400 ring-2 ring-emerald-400'
-                          : 'bg-emerald-950/30 text-emerald-300 border-emerald-500/30'
+                          ? 'bg-teach-1/30 text-white border-teach-1 ring-2 ring-teach-1'
+                          : 'bg-teach-1/10 text-teach-1 border border-teach-1/30'
                       }`}
                     >
                       {block1InitialHash}
@@ -1270,19 +1270,19 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
               <div
                 className={`p-4 rounded-2xl border transition-all space-y-3 ${
                   hoveredPointer === 'b1'
-                    ? 'bg-emerald-950/20 border-emerald-400 ring-2 ring-emerald-500/40 shadow-xl'
+                    ? 'bg-teach-1/10 border-teach-1 ring-2 ring-teach-1/40 shadow-xl'
                     : 'bg-[#05070c] border-slate-800'
                 }`}
               >
                 <div className="flex items-center justify-between pb-2 border-b border-slate-800">
                   <span className="text-xs font-mono font-bold text-slate-300">BLOCK #2</span>
-                  <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                  <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-teach-1/10 text-teach-1 border border-teach-1/20">
                     Linked
                   </span>
                 </div>
                 <div className="space-y-2 font-mono text-xs">
                   <div>
-                    <span className="text-[10px] text-emerald-400 block font-bold">
+                    <span className="text-[10px] text-teach-1 block font-bold">
                       PREVIOUS HASH (Khớp với Hash #1 ☝️)
                     </span>
                     <div
@@ -1290,8 +1290,8 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
                       onMouseLeave={() => setHoveredPointer(null)}
                       className={`p-1.5 rounded text-[10px] truncate border cursor-pointer font-bold ${
                         hoveredPointer === 'b1'
-                          ? 'bg-emerald-500/30 text-white border-emerald-400 ring-2 ring-emerald-400'
-                          : 'bg-slate-900 text-emerald-300 border-slate-800'
+                          ? 'bg-teach-1/30 text-white border-teach-1 ring-2 ring-teach-1'
+                          : 'bg-slate-900 text-teach-1 border border-slate-800'
                       }`}
                     >
                       {block1InitialHash}
@@ -1304,8 +1304,8 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
                     </div>
                   </div>
                   <div>
-                    <span className="text-[10px] text-emerald-400 block font-bold">BLOCK HASH (Hash #2)</span>
-                    <div className="p-2 rounded bg-emerald-950/30 text-emerald-300 text-[10px] break-all border border-emerald-500/30 font-bold">
+                    <span className="text-[10px] text-teach-1 block font-bold">BLOCK HASH (Hash #2)</span>
+                    <div className="p-2 rounded bg-teach-1/10 text-teach-1 text-[10px] break-all border border-teach-1/30 font-bold">
                       {fastSha256Hex(`2|${block1InitialHash}|Charlie -> Dave : 5 BTC|0|0`)}
                     </div>
                   </div>
@@ -1314,9 +1314,9 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
             </div>
 
             {/* Linked List vs Blockchain Conceptual Comparison Bridge */}
-            <div className="p-5 rounded-2xl bg-[#0B0E12] border border-emerald-500/30 space-y-4">
-              <div className="flex items-center gap-2 text-emerald-300 font-bold text-sm font-mono uppercase">
-                <Link2 className="w-4 h-4 text-emerald-400" />
+            <div className="p-5 rounded-2xl bg-[#0B0E12] border border-border-primary space-y-4">
+              <div className="flex items-center gap-2 text-teach-1 font-bold text-sm font-mono uppercase">
+                <Link2 className="w-4 h-4 text-teach-1" />
                 <span>
                   {language === 'vi'
                     ? 'Cầu Nối Khái Niệm: Linked List (Buổi 1) ➔ Blockchain'
@@ -1332,9 +1332,9 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
                     <span className="text-[10px] text-slate-500">RAM Pointer</span>
                   </div>
                   <div className="p-2.5 rounded bg-slate-900 text-slate-300 space-y-1">
-                    <div>Node A: DATA + <span className="text-emerald-400 font-bold">NEXT (0x7ffd98a10)</span></div>
+                    <div>Node A: DATA + <span className="text-teach-1 font-bold">NEXT (0x7ffd98a10)</span></div>
                     <div className="text-center text-slate-500">&darr; Trỏ ô nhớ RAM</div>
-                    <div>Node B: DATA + <span className="text-emerald-400 font-bold">NEXT (0x7ffd98a28)</span></div>
+                    <div>Node B: DATA + <span className="text-teach-1 font-bold">NEXT (0x7ffd98a28)</span></div>
                   </div>
                   <p className="text-[11px] text-slate-400 font-sans leading-relaxed">
                     {language === 'vi'
@@ -1344,15 +1344,15 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
                 </div>
 
                 {/* Blockchain */}
-                <div className="p-3.5 rounded-xl bg-emerald-950/30 border border-emerald-500/40 space-y-2">
-                  <div className="flex items-center justify-between text-emerald-300 font-bold">
+                <div className="p-3.5 rounded-xl bg-teach-1/10 border border-teach-1/40 space-y-2">
+                  <div className="flex items-center justify-between text-teach-1 font-bold">
                     <span>BLOCKCHAIN</span>
-                    <span className="text-[10px] text-emerald-400">Cryptographic Hash Pointer</span>
+                    <span className="text-[10px] text-teach-1">Cryptographic Hash Pointer</span>
                   </div>
                   <div className="p-2.5 rounded bg-black/60 text-slate-300 space-y-1">
-                    <div>Block #0: DATA + <span className="text-emerald-400 font-bold">Hash #0 (6a09e667...)</span></div>
-                    <div className="text-center text-emerald-400">&darr; Khóa chặt bằng SHA-256</div>
-                    <div>Block #1: <span className="text-emerald-400 font-bold">PrevHash = Hash #0</span> + DATA</div>
+                    <div>Block #0: DATA + <span className="text-teach-1 font-bold">Hash #0 (6a09e667...)</span></div>
+                    <div className="text-center text-teach-1">&darr; Khóa chặt bằng SHA-256</div>
+                    <div>Block #1: <span className="text-teach-1 font-bold">PrevHash = Hash #0</span> + DATA</div>
                   </div>
                   <p className="text-[11px] text-slate-300 font-sans leading-relaxed">
                     {language === 'vi'
@@ -1387,7 +1387,7 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
                   value={newBlockSender}
                   onChange={(e) => setNewBlockSender(e.target.value)}
                   placeholder="Sender"
-                  className="w-24 px-2.5 py-1.5 rounded bg-slate-900 border border-slate-700 text-emerald-300 font-bold"
+                  className="w-24 px-2.5 py-1.5 rounded bg-slate-900 border border-slate-700 text-teach-1 font-bold"
                 />
                 <span className="text-slate-500">&rarr;</span>
                 <input
@@ -1402,12 +1402,12 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
                   value={newBlockAmount}
                   onChange={(e) => setNewBlockAmount(parseFloat(e.target.value) || 0)}
                   placeholder="BTC"
-                  className="w-20 px-2.5 py-1.5 rounded bg-slate-900 border border-slate-700 text-emerald-300 font-bold"
+                  className="w-20 px-2.5 py-1.5 rounded bg-slate-900 border border-slate-700 text-financial font-bold"
                 />
                 <button
                   type="button"
                   onClick={handleAddBlockToChain}
-                  className="px-4 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black font-bold font-mono flex items-center gap-1.5 transition-all cursor-pointer shadow-md"
+ className="px-4 py-1.5 rounded-lg bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-bold font-mono flex items-center gap-1.5 transition-all cursor-pointer shadow-md"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   <span>{language === 'vi' ? '+ TẠO BLOCK MỚI' : '+ CREATE BLOCK'}</span>
@@ -1422,10 +1422,10 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
                   <React.Fragment key={blk.index}>
                     <div className="w-72 p-4 rounded-2xl bg-[#05070c] border border-slate-800 space-y-2.5 font-mono text-xs flex flex-col justify-between shadow-xl">
                       <div className="flex items-center justify-between pb-2 border-b border-slate-800">
-                        <span className="text-emerald-300 font-bold">
+                        <span className="text-teach-1 font-bold">
                           BLOCK #{blk.index} {blk.index === 0 ? '(GENESIS)' : ''}
                         </span>
-                        <span className="text-[10px] text-emerald-400 bg-emerald-950/40 px-2 py-0.5 rounded border border-emerald-500/30">
+                        <span className="text-[10px] text-teach-1 bg-teach-1/10 px-2 py-0.5 rounded border border-teach-1/30">
                           VALID
                         </span>
                       </div>
@@ -1446,8 +1446,8 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
                         </div>
 
                         <div>
-                          <span className="text-[10px] text-emerald-400 block font-bold">BLOCK HASH</span>
-                          <div className="p-1.5 rounded bg-emerald-950/30 text-emerald-300 text-[10px] break-all border border-emerald-500/30 font-bold">
+                          <span className="text-[10px] text-teach-1 block font-bold">BLOCK HASH</span>
+                          <div className="p-1.5 rounded bg-teach-1/10 text-teach-1 text-[10px] break-all border border-teach-1/30 font-bold">
                             {blk.hash}
                           </div>
                         </div>
@@ -1460,8 +1460,8 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
                     </div>
 
                     {idx < chainBlocks.length - 1 && (
-                      <div className="flex flex-col items-center justify-center text-emerald-400 px-1">
-                        <Link2 className="w-5 h-5 text-emerald-400" />
+                      <div className="flex flex-col items-center justify-center text-teach-1 px-1">
+                        <Link2 className="w-5 h-5 text-teach-1" />
                         <span className="text-[9px] font-mono mt-1 text-slate-500">Hash Pointer</span>
                       </div>
                     )}
@@ -1516,7 +1516,7 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
                   <select
                     value={tamperTargetBlock}
                     onChange={(e) => setTamperTargetBlock(parseInt(e.target.value) || 1)}
-                    className="w-full bg-transparent text-emerald-300 font-bold focus:outline-none mt-1"
+                    className="w-full bg-transparent text-teach-1 font-bold focus:outline-none mt-1"
                   >
                     <option value={1}>Block #1 (Alice -&gt; Bob)</option>
                     <option value={2}>Block #2 (Charlie -&gt; Dave)</option>
@@ -1574,7 +1574,7 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
                             ? 'bg-rose-500/20 text-rose-300 border-rose-500/40 font-bold'
                             : isDownstreamBroken
                             ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
-                            : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+                            : 'bg-success/10 text-success border-success/20'
                         }`}
                       >
                         {isTargetTampered
@@ -1615,7 +1615,7 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
                       <div>
                         <span
                           className={`text-[10px] block font-bold ${
-                            isTargetTampered ? 'text-rose-400' : 'text-emerald-400'
+                            isTargetTampered ? 'text-rose-400' : 'text-success'
                           }`}
                         >
                           BLOCK HASH
@@ -1624,7 +1624,7 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
                           className={`p-2 rounded text-[10px] break-all border font-bold ${
                             isTargetTampered
                               ? 'bg-rose-950/50 text-rose-200 border-rose-500/50'
-                              : 'bg-slate-900/80 text-emerald-300 border-slate-800'
+                              : 'bg-slate-900/80 text-success border-slate-800'
                           }`}
                         >
                           {blk.hash}
@@ -1662,18 +1662,18 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
               {/* String A */}
               <div className="lg:col-span-6 p-5 rounded-2xl bg-[#05070c] border border-slate-800 space-y-3 font-mono text-xs">
                 <div className="flex items-center justify-between pb-2 border-b border-slate-800">
-                  <span className="font-bold text-emerald-300">INPUT A (ORIGINAL)</span>
+                  <span className="font-bold text-teach-1">INPUT A (ORIGINAL)</span>
                   <span className="text-[10px] text-slate-500">64 Hex Output</span>
                 </div>
                 <input
                   type="text"
                   value={avalancheInputA}
                   onChange={(e) => setAvalancheInputA(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-emerald-300 font-bold focus:outline-none"
+                  className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-teach-1 font-bold focus:outline-none"
                 />
                 <div>
                   <span className="text-[10px] text-slate-500 block">SHA-256 HASH A:</span>
-                  <div className="p-2.5 rounded bg-black text-emerald-300 text-xs break-all border border-emerald-500/30 font-bold">
+                  <div className="p-2.5 rounded bg-black text-teach-1 text-xs break-all border border-teach-1/30 font-bold">
                     {avalancheHashA}
                   </div>
                 </div>
@@ -1701,17 +1701,17 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
             </div>
 
             {/* Bit Distance Calculation Metric */}
-            <div className="p-5 rounded-2xl bg-[#0B0E12] border border-emerald-500/30 space-y-4 font-mono text-xs">
+            <div className="p-5 rounded-2xl bg-[#0B0E12] border border-border-primary space-y-4 font-mono text-xs">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-800">
                 <span className="font-bold text-white uppercase flex items-center gap-2">
-                  <Zap className="w-4 h-4 text-emerald-400" />
+                  <Zap className="w-4 h-4 text-teach-1" />
                   <span>
                     {language === 'vi'
                       ? 'KẾT QUẢ TÍNH TOÁN HIỆU ỨNG THÁC ĐỔ (HAMMING BIT DISTANCE)'
                       : 'AVALANCHE EFFECT HAMMING DISTANCE'}
                   </span>
                 </span>
-                <span className="text-emerald-400 font-bold px-3 py-1 rounded bg-emerald-950/50 border border-emerald-500/30">
+                <span className="text-teach-1 font-bold px-3 py-1 rounded bg-teach-1/10 border border-teach-1/30">
                   Different Bits: {avalancheDiff.changedBits} / 256 ({avalancheDiff.percentage.toFixed(2)}%)
                 </span>
               </div>
@@ -1759,7 +1759,7 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-slate-800">
                 <div>
                   <div className="flex items-center gap-2">
-                    <ShieldCheck className="w-5 h-5 text-emerald-400" />
+                    <ShieldCheck className="w-5 h-5 text-success" />
                     <h4 className="text-sm font-bold text-white font-mono uppercase">
                       {language === 'vi'
                         ? 'XÁC MINH TÍNH TOÀN VẸN CỦA TOÀN BỘ BLOCKCHAIN'
@@ -1778,7 +1778,7 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
                     type="button"
                     disabled={isVerifying}
                     onClick={handleRunVerification}
-                    className="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold font-mono text-xs flex items-center gap-2 transition-all cursor-pointer shadow-lg shadow-emerald-950/40"
+ className="px-5 py-2.5 rounded-xl bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-bold font-mono text-xs flex items-center gap-2 transition-all cursor-pointer shadow-lg "
                   >
                     <CheckCircle2 className="w-4 h-4" />
                     <span>
@@ -1802,13 +1802,13 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
                       key={log.index}
                       className={`p-3 rounded-xl border flex items-center justify-between transition-all ${
                         log.valid
-                          ? 'bg-emerald-950/20 border-emerald-500/40 text-emerald-300'
+                          ? 'bg-success/15 border-success/40 text-success'
                           : 'bg-rose-950/30 border-rose-500/50 text-rose-300'
                       }`}
                     >
                       <div className="flex items-center gap-2.5">
                         {log.valid ? (
-                          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                          <CheckCircle2 className="w-4 h-4 text-success shrink-0" />
                         ) : (
                           <XCircle className="w-4 h-4 text-rose-400 shrink-0" />
                         )}
@@ -1831,14 +1831,14 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
                 <div
                   className={`p-4 rounded-xl border-2 space-y-2 animate-in fade-in ${
                     isChainValid
-                      ? 'bg-emerald-950/30 border-emerald-500/60 text-emerald-200'
+                      ? 'bg-success/15 border-success/60 text-success'
                       : 'bg-rose-950/40 border-rose-500/60 text-rose-200'
                   }`}
                 >
                   <div className="flex items-center gap-2 text-sm font-bold font-mono">
                     {isChainValid ? (
                       <>
-                        <ShieldCheck className="w-5 h-5 text-emerald-400" />
+                        <ShieldCheck className="w-5 h-5 text-success" />
                         <span>BLOCKCHAIN VALID ✓ — CHUỖI KHỐI TOÀN VẸN & HỢP LỆ</span>
                       </>
                     ) : (

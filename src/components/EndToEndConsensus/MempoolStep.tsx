@@ -229,7 +229,7 @@ export const MempoolStep: React.FC<MempoolStepProps> = ({
                             title="Sao chép TXID"
                           >
                             {copiedTxId === tx.id ? (
-                              <Check className="w-3 h-3 text-emerald-400" />
+                              <Check className="w-3 h-3 text-success" />
                             ) : (
                               <Copy className="w-3 h-3" />
                             )}

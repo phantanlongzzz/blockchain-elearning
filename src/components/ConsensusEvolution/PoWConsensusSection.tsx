@@ -71,7 +71,7 @@ const DEFAULT_MINERS_CONFIG = [
     hardware: 'CPU Core i7 (4 Cores)',
     hardwareEn: 'CPU Core i7 (4 Cores)',
     avatarColor: 'bg-emerald-500',
-    avatarBg: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+    avatarBg: 'bg-white/[0.06] text-text-primary border-border-secondary',
     step: 4,
     hashrateKHz: 480,
   },
@@ -608,7 +608,7 @@ export const PoWConsensusSection: React.FC<PoWConsensusSectionProps> = ({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <div className="flex items-center gap-2">
-              <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase tracking-wider">
+              <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-white/[0.04] text-text-primary border border-border-primary uppercase tracking-wider">
                 {isVi ? 'ĐỒNG THUẬN NAKAMOTO' : 'NAKAMOTO CONSENSUS'}
               </span>
               <span className="text-slate-500 text-xs font-mono">Stage 03 / 06</span>
@@ -641,7 +641,7 @@ export const PoWConsensusSection: React.FC<PoWConsensusSectionProps> = ({
                   finishRace();
                 }
               }}
-              className="px-4 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-medium text-xs flex items-center gap-1.5 transition-colors cursor-pointer active:scale-95 shadow-sm"
+ className="px-4 py-1.5 rounded-lg bg-financial hover:bg-financial/90 text-black font-semibold font-medium text-xs flex items-center gap-1.5 transition-colors cursor-pointer active:scale-95 shadow-sm"
             >
               <Flame className="w-3.5 h-3.5" />
               <span>
@@ -810,7 +810,7 @@ export const PoWConsensusSection: React.FC<PoWConsensusSectionProps> = ({
                 type="button"
                 id="btn-start-mining-section"
                 onClick={startMiningRace}
-                className="px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-medium text-xs flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer shadow-sm"
+ className="px-4 py-2 rounded-lg bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-medium text-xs flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer shadow-sm"
               >
                 <Play className="w-3.5 h-3.5 fill-current" />
                 <span>{isVi ? 'Bắt đầu đào' : 'Start Mining'}</span>
@@ -845,7 +845,7 @@ export const PoWConsensusSection: React.FC<PoWConsensusSectionProps> = ({
           <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
             <div className="flex items-center gap-2">
               <span className="text-slate-400">{isVi ? 'Tiền tố mục tiêu:' : 'Target prefix:'}</span>
-              <span className="px-2 py-0.5 rounded bg-emerald-950/40 border border-emerald-500/30 text-emerald-400 font-bold">
+              <span className="px-2 py-0.5 rounded bg-white/[0.04] border border-border-primary text-text-primary font-bold">
                 "{targetPrefix}..."
               </span>
               <span className="text-slate-500">
@@ -891,9 +891,9 @@ export const PoWConsensusSection: React.FC<PoWConsensusSectionProps> = ({
                   key={miner.id}
                   className={`p-4 rounded-xl border transition-all ${
                     isWinner
-                      ? 'bg-emerald-950/30 border-emerald-500/60 shadow-lg ring-1 ring-emerald-500/30'
+                      ? 'bg-[#0e1422] border-border-primary ring-1 ring-white/10 shadow-lg'
                       : miner.status === 'mining'
-                      ? 'bg-[#0e1422] border-emerald-500/30 shadow-sm'
+                      ? 'bg-[#0e1422] border-border-secondary shadow-sm'
                       : 'bg-[#080c14] border-slate-800/80'
                   }`}
                 >
@@ -916,7 +916,7 @@ export const PoWConsensusSection: React.FC<PoWConsensusSectionProps> = ({
                           isWinner
                             ? 'bg-emerald-400 text-slate-950 font-bold'
                             : miner.status === 'mining'
-                            ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30'
+                            ? 'bg-white/[0.08] text-text-primary border border-border-primary'
                             : 'bg-slate-800 text-slate-400'
                         }`}
                       >
@@ -986,10 +986,10 @@ export const PoWConsensusSection: React.FC<PoWConsensusSectionProps> = ({
 
         {/* 5. WINNER ANNOUNCEMENT & BLOCK RESULT */}
         {winnerBlock && (
-          <div className="p-5 rounded-xl bg-[#091118] border border-emerald-500/40 space-y-4 animate-in fade-in duration-300">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-emerald-500/20">
+          <div className="p-5 rounded-xl bg-[#091118] border border-border-primary space-y-4 animate-in fade-in duration-300">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-border-secondary">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
+                <div className="w-10 h-10 rounded-lg bg-white/[0.04] border border-border-primary flex items-center justify-center text-text-muted">
                   <Trophy className="w-5 h-5" />
                 </div>
                 <div>
@@ -1062,7 +1062,7 @@ export const PoWConsensusSection: React.FC<PoWConsensusSectionProps> = ({
         <div className="space-y-2.5 pt-2 border-t border-slate-800">
           <div className="flex items-center justify-between">
             <span className="text-xs font-mono font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-              <Layers className="w-3.5 h-3.5 text-emerald-400" />
+              <Layers className="w-3.5 h-3.5 text-text-muted" />
               <span>
                 {isVi ? 'Chuỗi khối chính thức:' : 'Official Canonical Chain:'}
               </span>
@@ -1104,7 +1104,7 @@ export const PoWConsensusSection: React.FC<PoWConsensusSectionProps> = ({
         {/* 7. DATA FLOW INTEGRATION BADGES */}
         <div className="p-3.5 rounded-lg bg-[#080c14] border border-slate-800 space-y-2">
           <div className="text-[11px] font-mono uppercase tracking-wider text-slate-400 font-semibold flex items-center gap-1.5">
-            <Share2 className="w-3.5 h-3.5 text-emerald-400" />
+            <Share2 className="w-3.5 h-3.5 text-text-muted" />
             <span>
               {isVi
                 ? 'Tích hợp luồng dữ liệu toàn hệ thống (Data Flow Connection)'
@@ -1159,16 +1159,16 @@ export const PoWConsensusSection: React.FC<PoWConsensusSectionProps> = ({
         <div className="p-3.5 rounded-lg bg-[#080c14] border border-slate-800 flex flex-col h-40">
           <div className="flex items-center justify-between pb-2 border-b border-slate-800 mb-2">
             <span className="text-xs font-mono font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-              <Terminal className="w-3.5 h-3.5 text-emerald-400" />
+              <Terminal className="w-3.5 h-3.5 text-text-muted" />
               <span>{isVi ? 'Nhật ký khai thác thời gian thực' : 'Real-time Mining Logs'}</span>
             </span>
             <button
               type="button"
               onClick={copyLogs}
-              className="text-[10px] font-mono text-slate-400 hover:text-emerald-300 flex items-center gap-1 transition-colors cursor-pointer"
+              className="text-[10px] font-mono text-slate-400 hover:text-text-primary flex items-center gap-1 transition-colors cursor-pointer"
             >
               {copiedLogs ? (
-                <Check className="w-3 h-3 text-emerald-400" />
+                <Check className="w-3 h-3 text-success" />
               ) : (
                 <Copy className="w-3 h-3" />
               )}
@@ -1228,7 +1228,7 @@ export const PoWConsensusSection: React.FC<PoWConsensusSectionProps> = ({
             type="button"
             id="btn-next-to-pos"
             onClick={onNextStage}
-            className="px-5 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-medium text-xs flex items-center gap-2 transition-all cursor-pointer shadow-sm active:scale-95"
+ className="px-5 py-2 rounded-lg bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-medium text-xs flex items-center gap-2 transition-all cursor-pointer shadow-sm active:scale-95"
           >
             <span>{isVi ? 'Tiếp tục: Bằng chứng cổ phần' : 'Next: Proof of Stake'}</span>
             <ArrowRight className="w-3.5 h-3.5" />

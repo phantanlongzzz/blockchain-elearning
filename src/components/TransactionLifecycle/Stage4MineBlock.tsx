@@ -96,14 +96,14 @@ export const Stage4MineBlock: React.FC<Props> = ({ mempool, setMempool, blockcha
         {/* Block Header Panel */}
         <div id="block-header-panel" className="bg-[#101419] rounded-2xl border border-slate-800 p-5 flex flex-col">
           <h3 className="text-sm font-bold text-white mb-4 flex items-center gap-2">
-            <Cpu className="w-4 h-4 text-emerald-400" />
+            <Cpu className="w-4 h-4 text-text-muted" />
             {isVi ? 'Block Header (Khối ứng cử viên)' : 'Block Header (Candidate)'}
           </h3>
           
           <div className="flex-1 space-y-3 font-mono text-[11px] sm:text-xs">
             <div className="p-2.5 bg-[#0B0E12] border border-slate-800 rounded-lg">
               <div className="text-slate-500 mb-0.5">Previous Hash</div>
-              <div className="text-emerald-400 break-all">{blockchain[blockchain.length - 1].hash}</div>
+              <div className="text-text-secondary break-all">{blockchain[blockchain.length - 1].hash}</div>
             </div>
             <div className={`p-2.5 rounded-lg border transition-colors ${merkleMismatch ? 'bg-rose-950/30 border-rose-500/50' : 'bg-[#0B0E12] border-slate-800'}`}>
               <div className="text-slate-500 mb-0.5">Merkle Root</div>
@@ -155,10 +155,10 @@ export const Stage4MineBlock: React.FC<Props> = ({ mempool, setMempool, blockcha
           <div className="flex items-center gap-4 min-w-max pb-4">
             {blockchain.slice(-4).map((block, idx, arr) => (
               <React.Fragment key={block.index}>
-                <div className={`w-48 p-4 rounded-xl border flex flex-col ${idx === arr.length - 1 ? 'bg-emerald-950/20 border-emerald-500/50 shadow-[0_0_15px_rgba(16,185,129,0.2)]' : 'bg-[#0B0E12] border-slate-800'}`}>
+                <div className={`w-48 p-4 rounded-xl border flex flex-col ${idx === arr.length - 1 ? 'bg-success/10 border-success shadow-[0_0_15px_rgba(46,204,113,0.2)]' : 'bg-[#0B0E12] border-border-primary'}`}>
                   <div className="text-xs font-bold text-slate-400 mb-2">Block #{block.index}</div>
                   <div className="text-[10px] text-slate-500 mb-1">Hash:</div>
-                  <div className={`text-[10px] font-mono break-all ${idx === arr.length - 1 ? 'text-emerald-400' : 'text-slate-300'}`}>
+                  <div className={`text-[10px] font-mono break-all ${idx === arr.length - 1 ? 'text-success' : 'text-slate-300'}`}>
                     {block.hash.slice(0, 16)}...
                   </div>
                   {block.transactions.length > 0 && (

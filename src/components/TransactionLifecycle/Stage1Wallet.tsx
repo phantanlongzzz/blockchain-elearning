@@ -101,7 +101,7 @@ export const Stage1Wallet: React.FC<Props> = ({ utxos, selectedUtxoIds, setSelec
             <span className={`text-2xl font-bold text-money`}>
               {currentTotal} BTC
             </span>
-            <span className="text-sm text-slate-500 mb-1">/ 10 BTC</span>
+            <span className="text-sm text-financial font-mono mb-1">/ 10 BTC</span>
           </div>
           {canProceed && (
             <div className="flex items-center gap-1 text-emerald-400 text-xs font-medium mt-1">

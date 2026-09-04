@@ -62,7 +62,7 @@ export const NodeInspectorModal: React.FC<NodeInspectorModalProps> = ({
         {/* Header */}
         <div className="p-4 bg-[#080c16] border-b border-zinc-800 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-xl bg-zinc-900 border border-zinc-800 text-emerald-400">
+            <div className="p-2 rounded-xl bg-zinc-900 border border-border-primary text-text-muted">
               <Radio className="w-5 h-5" />
             </div>
             <div>
@@ -115,7 +115,7 @@ export const NodeInspectorModal: React.FC<NodeInspectorModalProps> = ({
               onClick={() => onToggleOnline(node.id)}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors cursor-pointer ${
                 isOffline
-                  ? 'bg-emerald-950/40 hover:bg-emerald-900/40 border-emerald-500/40 text-emerald-300'
+                  ? 'bg-white/[0.08] hover:bg-white/[0.12] border-border-primary text-text-primary'
                   : 'bg-rose-950/40 hover:bg-rose-900/40 border-rose-500/40 text-rose-300'
               }`}
             >

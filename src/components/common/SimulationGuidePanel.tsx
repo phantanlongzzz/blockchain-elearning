@@ -88,7 +88,7 @@ export const SimulationGuidePanel: React.FC<SimulationGuidePanelProps> = ({
       qEn: '1. What are you seeing?',
       aVi: questions.whatAmILookingAtVi,
       aEn: questions.whatAmILookingAtEn,
-      color: 'border-emerald-500/30 bg-slate-900/90 text-emerald-400',
+      color: 'border-border-primary bg-slate-900/90 text-text-secondary',
     },
     {
       id: 2,
@@ -96,7 +96,7 @@ export const SimulationGuidePanel: React.FC<SimulationGuidePanelProps> = ({
       qEn: '2. What to do next?',
       aVi: questions.whatShouldIClickVi,
       aEn: questions.whatShouldIClickEn,
-      color: 'border-emerald-500/30 bg-slate-900/90 text-emerald-400',
+      color: 'border-border-primary bg-slate-900/90 text-text-secondary',
     },
     {
       id: 3,
@@ -112,7 +112,7 @@ export const SimulationGuidePanel: React.FC<SimulationGuidePanelProps> = ({
       qEn: '4. Why did it happen?',
       aVi: questions.whyDidItHappenVi,
       aEn: questions.whyDidItHappenEn,
-      color: 'border-emerald-500/30 bg-slate-900/90 text-emerald-400',
+      color: 'border-border-primary bg-slate-900/90 text-text-secondary',
     },
   ];
 
@@ -121,12 +121,12 @@ export const SimulationGuidePanel: React.FC<SimulationGuidePanelProps> = ({
       {/* 1. Mode Switcher & Top Bar */}
       <div className="bg-[#0c101c] border border-slate-800 rounded-xl p-4 sm:p-5 shadow-sm flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-emerald-950/80 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shrink-0">
+          <div className="w-9 h-9 rounded-lg bg-surface-primary border border-border-primary flex items-center justify-center text-text-secondary shrink-0">
             {mode === 'guided' ? <Compass className="w-4 h-4" /> : <Sliders className="w-4 h-4" />}
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-[11px] font-mono font-bold tracking-wider uppercase text-emerald-400">
+              <span className="text-[11px] font-mono font-bold tracking-wider uppercase text-teach-1">
                 {badgeTextVi && isVi ? badgeTextVi : badgeTextEn || (isVi ? 'PHƯƠNG PHÁP HỌC TRỰC QUAN' : 'VISUAL LEARNING')}
               </span>
             </div>
@@ -149,7 +149,7 @@ export const SimulationGuidePanel: React.FC<SimulationGuidePanelProps> = ({
             onClick={() => onModeChange('guided')}
             className={`px-3 py-1.5 rounded-md font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
               mode === 'guided'
-                ? 'bg-emerald-500 text-slate-950 shadow-sm'
+                ? 'bg-teach-1 text-slate-950 shadow-sm'
                 : 'text-slate-400 hover:text-slate-200'
             }`}
           >
@@ -162,7 +162,7 @@ export const SimulationGuidePanel: React.FC<SimulationGuidePanelProps> = ({
             onClick={() => onModeChange('free')}
             className={`px-3 py-1.5 rounded-md font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
               mode === 'free'
-                ? 'bg-emerald-500 text-slate-950 shadow-sm'
+                ? 'bg-teach-1 text-slate-950 shadow-sm'
                 : 'text-slate-400 hover:text-slate-200'
             }`}
           >
@@ -177,14 +177,14 @@ export const SimulationGuidePanel: React.FC<SimulationGuidePanelProps> = ({
         <div
           className={`p-4 sm:p-5 rounded-xl border transition-all shadow-sm animate-in fade-in duration-200 ${
             currentStep.isCompleted
-              ? 'bg-emerald-950/20 border-emerald-500/50 text-slate-100'
-              : 'bg-[#0d1322] border-emerald-500/40 text-slate-100'
+              ? 'bg-success/10 border-success text-slate-100'
+              : 'bg-[#0d1322] border-border-primary text-slate-100'
           }`}
         >
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
             <div className="space-y-1.5 max-w-3xl">
               <div className="flex items-center gap-2">
-                <span className="px-2 py-0.5 bg-emerald-500/15 border border-emerald-400/40 text-emerald-300 rounded-md text-xs font-mono font-bold uppercase">
+                <span className="px-2 py-0.5 bg-teach-1/15 border border-teach-1/30 text-teach-1 rounded-md text-xs font-mono font-bold uppercase">
                   {isVi
                     ? `BƯỚC ${currentStepIndex + 1}/${steps.length}`
                     : `STEP ${currentStepIndex + 1}/${steps.length}`}
@@ -193,7 +193,7 @@ export const SimulationGuidePanel: React.FC<SimulationGuidePanelProps> = ({
                   {isVi ? currentStep.titleVi : currentStep.titleEn}
                 </span>
                 {currentStep.isCompleted && (
-                  <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-emerald-950 text-emerald-300 border border-emerald-500/40 rounded-md text-[11px] font-mono font-bold">
+                  <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-success/20 text-success border border-success/40 rounded-md text-[11px] font-mono font-bold">
                     <Check className="w-3 h-3" />
                     <span>{isVi ? 'XONG' : 'DONE'}</span>
                   </span>
@@ -280,11 +280,11 @@ export const SimulationGuidePanel: React.FC<SimulationGuidePanelProps> = ({
           className="w-full p-3.5 sm:p-4 flex items-center justify-between text-left hover:bg-slate-900/50 transition-all cursor-pointer"
         >
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-emerald-950/80 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shrink-0">
-              <HelpCircle className="w-4 h-4" />
+            <div className="w-8 h-8 rounded-lg bg-[#151B24] border border-border-primary flex items-center justify-center text-text-secondary shrink-0">
+              <HelpCircle className="w-4 h-4 text-text-muted" />
             </div>
             <div>
-              <div className="text-xs font-mono uppercase tracking-wider text-emerald-400 font-bold">
+              <div className="text-xs font-mono uppercase tracking-wider text-teach-1 font-bold">
                 {isVi ? 'HỎI ĐÁP NHANH & THUẬT NGỮ' : 'QUICK Q&A & CORE CONCEPTS'}
               </div>
               <div className="text-xs sm:text-sm font-bold text-slate-200">
@@ -310,8 +310,8 @@ export const SimulationGuidePanel: React.FC<SimulationGuidePanelProps> = ({
                   key={item.id}
                   className={`p-3.5 rounded-lg border ${item.color} space-y-1.5 transition-all`}
                 >
-                  <div className="font-mono font-bold uppercase flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5" />
+                  <div className="font-mono font-bold uppercase flex items-center gap-1.5 text-text-secondary">
+                    <Sparkles className="w-3.5 h-3.5 text-text-muted" />
                     <span>{isVi ? item.qVi : item.qEn}</span>
                   </div>
                   <p className="text-[11px] text-slate-300 font-sans leading-relaxed">
@@ -330,11 +330,11 @@ export const SimulationGuidePanel: React.FC<SimulationGuidePanelProps> = ({
                 <div className="flex flex-wrap items-center gap-2 text-xs font-mono">
                   {microConcepts.map((concept, idx) => (
                     <div key={idx} className="group relative inline-block">
-                      <span className="px-2.5 py-1 bg-slate-900 border border-slate-700 text-emerald-300 rounded-md cursor-help hover:border-emerald-400 hover:text-emerald-200 transition-all font-semibold">
+                      <span className="px-2.5 py-1 bg-slate-900 border border-slate-700 text-teach-1 rounded-md cursor-help hover:border-border-primary hover:text-teach-1 transition-all font-semibold">
                         💡 {concept.term}
                       </span>
-                      <div className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-3 bg-[#0d1322] border border-emerald-500/50 rounded-lg text-xs font-sans text-slate-200 shadow-2xl opacity-0 group-hover:opacity-100 transition-all duration-200 z-50">
-                        <div className="font-bold font-mono text-emerald-300 mb-1 border-b border-slate-800 pb-1">
+                      <div className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-3 bg-[#0d1322] border border-border-primary rounded-lg text-xs font-sans text-slate-200 shadow-2xl opacity-0 group-hover:opacity-100 transition-all duration-200 z-50">
+                        <div className="font-bold font-mono text-teach-1 mb-1 border-b border-slate-800 pb-1">
                           {concept.term}
                         </div>
                         <div className="text-[11px] leading-relaxed text-slate-300">

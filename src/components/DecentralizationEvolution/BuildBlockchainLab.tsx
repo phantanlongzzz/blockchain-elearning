@@ -225,10 +225,10 @@ export const BuildBlockchainLab: React.FC<BuildBlockchainLabProps> = ({
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="p-6 rounded-2xl bg-gradient-to-b from-[#0e1d1f] to-[#080c16] border border-emerald-500/20 shadow-2xl">
+      <div className="p-6 rounded-2xl bg-gradient-to-b from-[#0e1d1f] to-[#080c16] border border-border-primary shadow-2xl">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-1.5">
-            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold uppercase">
+            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-white/[0.04] border border-border-primary text-text-primary text-xs font-mono font-bold uppercase">
               <Boxes className="w-3.5 h-3.5" />
               <span>{language === 'vi' ? 'PHẦN 05 · XÂY DỰNG CHUỖI BLOCKCHAIN' : 'PART 05 · BUILD A BLOCKCHAIN'}</span>
             </div>
@@ -258,7 +258,7 @@ export const BuildBlockchainLab: React.FC<BuildBlockchainLabProps> = ({
               <button
                 type="button"
                 onClick={handleRestoreChain}
-                className="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-black text-xs font-mono font-bold flex items-center gap-1.5 cursor-pointer shadow-lg transition-all"
+ className="px-3.5 py-2 rounded-xl bg-text-primary hover:bg-white/90 text-bg-primary font-semibold text-xs font-mono font-bold flex items-center gap-1.5 cursor-pointer shadow-lg transition-all"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 <span>{language === 'vi' ? 'Khôi phục tính toàn vẹn' : 'Restore Integrity'}</span>
@@ -273,14 +273,14 @@ export const BuildBlockchainLab: React.FC<BuildBlockchainLabProps> = ({
             className={`p-3 rounded-xl border flex items-center justify-between gap-3 text-xs font-mono ${
               isChainTampered
                 ? 'bg-rose-950/40 border-rose-500 text-rose-300 animate-pulse'
-                : 'bg-emerald-950/20 border-emerald-500/30 text-emerald-300'
+                : 'bg-[#0e1422] border-border-secondary text-text-secondary'
             }`}
           >
             <div className="flex items-center gap-2">
               {isChainTampered ? (
                 <XCircle className="w-4 h-4 text-rose-400 shrink-0" />
               ) : (
-                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-success shrink-0" />
               )}
               <span>
                 {isChainTampered
@@ -351,12 +351,12 @@ export const BuildBlockchainLab: React.FC<BuildBlockchainLabProps> = ({
                         block.isTampered ? 'text-rose-400 line-through' : 'text-white'
                       }`}
                     >
-                      {tx.sender} → {tx.receiver}: {tx.amount} BTC
+                      {tx.sender} → {tx.receiver}: <span className="text-financial font-mono font-semibold">{tx.amount} BTC</span>
                     </div>
                   ))}
                   {block.isTampered && (
                     <div className="text-rose-400 font-bold text-[11px]">
-                      👉 ĐÃ BỊ SỬA THÀNH: Alice → Bob: 1000 BTC!
+                      👉 ĐÃ BỊ SỬA THÀNH: Alice → Bob: <span className="text-financial font-mono font-semibold">1000 BTC</span>!
                     </div>
                   )}
                 </div>
@@ -392,7 +392,7 @@ export const BuildBlockchainLab: React.FC<BuildBlockchainLabProps> = ({
                   <div
                     className={`p-1.5 rounded text-[10px] break-all border font-bold ${
                       block.isValid
-                        ? 'bg-emerald-950/20 border-emerald-500/30 text-emerald-300'
+                        ? 'bg-[#0e1422] border-border-secondary text-text-secondary'
                         : 'bg-rose-950/40 border-rose-500 text-rose-300'
                     }`}
                   >
@@ -478,7 +478,7 @@ export const BuildBlockchainLab: React.FC<BuildBlockchainLabProps> = ({
 
           <div className="lg:col-span-4 p-4 rounded-xl bg-[#05070c] border border-slate-800 space-y-2 text-xs">
             <div className="font-bold text-white flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+              <Sparkles className="w-3.5 h-3.5 text-text-muted" />
               <span>{language === 'vi' ? 'Quy luật cốt lõi:' : 'Golden Rule:'}</span>
             </div>
             <p className="text-slate-400 text-[11px] leading-relaxed">
@@ -503,7 +503,7 @@ export const BuildBlockchainLab: React.FC<BuildBlockchainLabProps> = ({
             <button
               type="button"
               onClick={onNextStage}
-              className="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-mono text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all ml-auto shadow-md"
+ className="px-4 py-2 rounded-xl bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-mono text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all ml-auto shadow-md"
             >
               <span>{language === 'vi' ? 'Tiếp: Phần 06 · Hệ Sinh Thái Bitcoin' : 'Next: Part 06 · Bitcoin Ecosystem'}</span>
               <ArrowRight className="w-3.5 h-3.5" />

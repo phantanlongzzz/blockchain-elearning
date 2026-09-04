@@ -232,7 +232,7 @@ export const BitcoinEcosystemLab: React.FC<BitcoinEcosystemLabProps> = ({
                   pipelineStep === s.step
                     ? 'bg-amber-500 text-black border-amber-400 font-bold shadow-md shadow-amber-950/40'
                     : pipelineStep > s.step
-                    ? 'bg-[#0a0f1d] border-emerald-500/40 text-emerald-300'
+                    ? 'bg-[#0a0f1d] border-border-primary text-text-primary'
                     : 'bg-[#05070c] border-slate-900 text-slate-500'
                 }`}
               >
@@ -284,7 +284,7 @@ export const BitcoinEcosystemLab: React.FC<BitcoinEcosystemLabProps> = ({
 
             {pipelineStep === 2 && (
               <div className="text-center space-y-3 animate-fadeIn max-w-md">
-                <div className="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 mx-auto flex items-center justify-center">
+                <div className="w-12 h-12 rounded-xl bg-white/[0.04] text-text-muted border border-border-primary mx-auto flex items-center justify-center">
                   <Radio className="w-6 h-6 animate-pulse" />
                 </div>
                 <div className="text-sm font-bold text-white font-mono">
@@ -300,7 +300,7 @@ export const BitcoinEcosystemLab: React.FC<BitcoinEcosystemLabProps> = ({
 
             {pipelineStep === 3 && (
               <div className="text-center space-y-3 animate-fadeIn max-w-md">
-                <div className="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 mx-auto flex items-center justify-center">
+                <div className="w-12 h-12 rounded-xl bg-white/[0.04] text-text-muted border border-border-primary mx-auto flex items-center justify-center">
                   <Layers className="w-6 h-6" />
                 </div>
                 <div className="text-sm font-bold text-white font-mono">
@@ -316,7 +316,7 @@ export const BitcoinEcosystemLab: React.FC<BitcoinEcosystemLabProps> = ({
 
             {pipelineStep === 4 && (
               <div className="text-center space-y-3 animate-fadeIn max-w-md">
-                <div className="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 mx-auto flex items-center justify-center">
+                <div className="w-12 h-12 rounded-xl bg-white/[0.04] text-text-muted border border-border-primary mx-auto flex items-center justify-center">
                   <Boxes className="w-6 h-6" />
                 </div>
                 <div className="text-sm font-bold text-white font-mono">
@@ -348,8 +348,8 @@ export const BitcoinEcosystemLab: React.FC<BitcoinEcosystemLabProps> = ({
 
             {pipelineStep === 6 && (
               <div className="text-center space-y-3 animate-fadeIn max-w-md">
-                <div className="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 mx-auto flex items-center justify-center">
-                  <Radio className="w-6 h-6 text-emerald-400" />
+                <div className="w-12 h-12 rounded-xl bg-white/[0.04] text-text-muted border border-border-primary mx-auto flex items-center justify-center">
+                  <Radio className="w-6 h-6 text-text-muted" />
                 </div>
                 <div className="text-sm font-bold text-white font-mono">
                   Phát Sóng Khối Mới Lên Toàn Mạng Lưới
@@ -422,7 +422,7 @@ export const BitcoinEcosystemLab: React.FC<BitcoinEcosystemLabProps> = ({
             </div>
 
             <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800 text-xs text-slate-300 flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+              <CheckCircle2 className="w-4 h-4 text-success shrink-0" />
               <span>
                 {language === 'vi'
                   ? 'Kể cả khi 1 hoặc nhiều quốc gia mất điện hoặc ngắt kết nối Internet, hàng chục nghìn Full Nodes ở các châu lục khác vẫn tiếp tục duy trì mạng lưới 24/7!'
@@ -499,7 +499,7 @@ export const BitcoinEcosystemLab: React.FC<BitcoinEcosystemLabProps> = ({
               <button
                 type="button"
                 onClick={onNextStage}
-                className="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-mono text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all ml-auto shadow-md"
+ className="px-4 py-2 rounded-xl bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-mono text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all ml-auto shadow-md"
               >
                 <span>{language === 'vi' ? 'Tiếp: Phần 07 · Thử Thách Tổng Kết' : 'Next: Part 07 · Final Challenge'}</span>
                 <ArrowRight className="w-3.5 h-3.5" />

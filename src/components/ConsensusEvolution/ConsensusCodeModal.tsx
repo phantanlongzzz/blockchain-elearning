@@ -147,7 +147,7 @@ export const ConsensusCodeModal: React.FC<ConsensusCodeModalProps> = ({
         {/* Header */}
         <div className="p-4 sm:p-5 border-b border-slate-800 flex items-center justify-between bg-[#080C10]">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+            <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-border-primary flex items-center justify-center text-text-muted">
               <Terminal className="w-4 h-4" />
             </div>
             <div>
@@ -180,7 +180,7 @@ export const ConsensusCodeModal: React.FC<ConsensusCodeModalProps> = ({
             onClick={() => setActiveTab('byzantine')}
             className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer ${
               activeTab === 'byzantine'
-                ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
+                ? 'bg-white/[0.08] text-text-primary border border-border-primary'
                 : 'text-slate-400 hover:text-white'
             }`}
           >
@@ -191,7 +191,7 @@ export const ConsensusCodeModal: React.FC<ConsensusCodeModalProps> = ({
             onClick={() => setActiveTab('pow')}
             className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer ${
               activeTab === 'pow'
-                ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
+                ? 'bg-white/[0.08] text-text-primary border border-border-primary'
                 : 'text-slate-400 hover:text-white'
             }`}
           >
@@ -202,7 +202,7 @@ export const ConsensusCodeModal: React.FC<ConsensusCodeModalProps> = ({
             onClick={() => setActiveTab('pos')}
             className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer ${
               activeTab === 'pos'
-                ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
+                ? 'bg-white/[0.08] text-text-primary border border-border-primary'
                 : 'text-slate-400 hover:text-white'
             }`}
           >

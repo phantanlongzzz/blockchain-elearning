@@ -59,7 +59,7 @@ function AppContent() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#0A0D0F] text-[#F2F4F7] selection:bg-[#00C98D]/30 selection:text-[#00C98D] relative overflow-x-hidden font-sans flex flex-col justify-between">
+    <div className="min-h-screen bg-[#0A0D0F] text-[#F2F4F7] selection:bg-teach-1/30 selection:text-teach-1 relative overflow-x-hidden font-sans flex flex-col justify-between">
       {/* Fixed Application Shell: Top Nav & Module Progress Rail */}
       <div className="relative z-30">
         <Navbar

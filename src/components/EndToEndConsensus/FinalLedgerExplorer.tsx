@@ -45,7 +45,7 @@ export const FinalLedgerExplorer: React.FC<FinalLedgerExplorerProps> = ({
                 {language === 'vi' ? 'Phát hiện giả mạo dữ liệu' : 'Tamper detected'}
               </span>
             ) : (
-              <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-emerald-950/40 text-emerald-300 border border-emerald-500/30 flex items-center gap-1">
+              <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-success/10 text-success border border-success/30 flex items-center gap-1">
                 <Lock className="w-3 h-3 text-emerald-400" />
                 {language === 'vi' ? 'Bất biến 100%' : '100% Immutable'}
               </span>
@@ -58,7 +58,7 @@ export const FinalLedgerExplorer: React.FC<FinalLedgerExplorerProps> = ({
           </p>
         </div>
 
-        <span className="text-xs font-mono text-emerald-400 font-medium bg-emerald-950/30 px-3 py-1 rounded-lg border border-emerald-500/20 self-start sm:self-auto">
+        <span className="text-xs font-mono text-text-secondary font-medium bg-white/[0.04] px-3 py-1 rounded-lg border border-border-primary self-start sm:self-auto">
           {blocks.length} {language === 'vi' ? 'khối trong chuỗi chính' : 'canonical blocks'}
         </span>
       </div>
@@ -95,7 +95,7 @@ export const FinalLedgerExplorer: React.FC<FinalLedgerExplorerProps> = ({
                     isTampered
                       ? 'bg-rose-950/20 border-rose-500/60 shadow-lg ring-1 ring-rose-500/40 text-rose-100'
                       : isSelected
-                      ? 'bg-[#080c16] border-emerald-400 shadow-md ring-1 ring-emerald-500/40'
+                      ? 'bg-[#080c16] border-success/50 shadow-md ring-1 ring-success/20'
                       : 'bg-[#080c16] border-zinc-800 hover:border-zinc-700'
                   }`}
                 >
@@ -202,7 +202,7 @@ export const FinalLedgerExplorer: React.FC<FinalLedgerExplorerProps> = ({
                     title="Sao chép"
                   >
                     {copiedHash === selectedBlock.previousHash ? (
-                      <Check className="w-3.5 h-3.5 text-emerald-400" />
+                      <Check className="w-3.5 h-3.5 text-success" />
                     ) : (
                       <Copy className="w-3.5 h-3.5" />
                     )}
@@ -227,7 +227,7 @@ export const FinalLedgerExplorer: React.FC<FinalLedgerExplorerProps> = ({
                     title="Sao chép"
                   >
                     {copiedHash === selectedBlock.hash ? (
-                      <Check className="w-3.5 h-3.5 text-emerald-400" />
+                      <Check className="w-3.5 h-3.5 text-success" />
                     ) : (
                       <Copy className="w-3.5 h-3.5" />
                     )}

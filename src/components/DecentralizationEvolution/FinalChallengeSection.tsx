@@ -109,10 +109,10 @@ export const FinalChallengeSection: React.FC<FinalChallengeSectionProps> = ({
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="p-6 rounded-2xl bg-gradient-to-b from-[#131d16] to-[#080c16] border border-emerald-500/20 shadow-2xl">
+      <div className="p-6 rounded-2xl bg-gradient-to-b from-[#131d16] to-[#080c16] border border-border-primary shadow-2xl">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-1.5">
-            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold uppercase">
+            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-white/[0.04] border border-border-primary text-text-primary text-xs font-mono font-bold uppercase">
               <Award className="w-3.5 h-3.5" />
               <span>{language === 'vi' ? 'PHẦN 07 · THỬ THÁCH TỔNG KẾT' : 'PART 07 · FINAL CHALLENGE'}</span>
             </div>
@@ -172,9 +172,9 @@ export const FinalChallengeSection: React.FC<FinalChallengeSectionProps> = ({
                     className={`px-3 py-2 rounded-lg font-mono text-xs font-bold border transition-all cursor-pointer flex items-center gap-1.5 ${
                       isSubmitted
                         ? item.order === idx + 1
-                          ? 'bg-emerald-500/20 border-emerald-500 text-emerald-300'
+                          ? 'bg-success/15 border-success/50 text-success'
                           : 'bg-rose-500/20 border-rose-500 text-rose-300'
-                        : 'bg-emerald-950/40 border-emerald-500/60 text-emerald-300 hover:bg-rose-950/40 hover:border-rose-500'
+                        : 'bg-white/[0.04] border-border-primary text-text-primary hover:bg-white/[0.08]'
                     }`}
                   >
                     <span>#{idx + 1}</span>
@@ -197,7 +197,7 @@ export const FinalChallengeSection: React.FC<FinalChallengeSectionProps> = ({
                   key={item.id}
                   type="button"
                   onClick={() => handleSelectItem(item)}
-                  className="p-3 rounded-xl bg-[#05070c] border border-slate-800 hover:border-emerald-500/60 hover:bg-emerald-950/20 text-xs font-mono font-bold text-slate-200 transition-all cursor-pointer text-center"
+                  className="p-3 rounded-xl bg-[#05070c] border border-slate-800 hover:border-border-primary hover:bg-white/[0.04] text-xs font-mono font-bold text-slate-200 transition-all cursor-pointer text-center"
                 >
                   {item.name[language].replace(/^\d+\.\s*/, '')}
                 </button>
@@ -227,7 +227,7 @@ export const FinalChallengeSection: React.FC<FinalChallengeSectionProps> = ({
               type="button"
               disabled={userSequence.length < 8 || isSubmitted}
               onClick={handleCheckAnswer}
-              className="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-mono text-xs font-bold disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer shadow-lg transition-all"
+ className="px-5 py-2.5 rounded-xl bg-info hover:bg-info/90 text-white font-semibold font-mono text-xs font-bold disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer shadow-lg transition-all"
             >
               {language === 'vi' ? 'KIỂM TRA KẾT QUẢ' : 'VERIFY SEQUENCE'}
             </button>
@@ -277,7 +277,7 @@ export const FinalChallengeSection: React.FC<FinalChallengeSectionProps> = ({
                 onCompleteLesson?.();
                 onInteracted?.();
               }}
-              className="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-mono text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all ml-auto shadow-md"
+ className="px-4 py-2 rounded-xl bg-success hover:bg-success/90 text-white font-semibold font-mono text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all ml-auto shadow-md"
             >
               <span>{language === 'vi' ? '✓ HOÀN THÀNH BUỔI 3' : '✓ COMPLETE LESSON 3'}</span>
               <CheckCircle2 className="w-4 h-4" />

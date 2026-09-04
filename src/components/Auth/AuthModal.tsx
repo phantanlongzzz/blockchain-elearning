@@ -65,7 +65,7 @@ export const AuthModal: React.FC = () => {
 
         {/* Modal Header */}
         <div className="text-center mb-6">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-[#00C98D]/10 border border-[#00C98D]/30 text-[#00C98D] mb-3 shadow-inner">
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-teach-1/10 border border-teach-1/30 text-teach-1 mb-3 shadow-inner">
             <ShieldCheck className="w-6 h-6" />
           </div>
           <h3 className="text-xl font-bold text-[#F2F4F7] tracking-tight">
@@ -120,20 +120,20 @@ export const AuthModal: React.FC = () => {
               <div
                 id="demo-account-card"
                 onClick={handleQuickDemoLogin}
-                className="group cursor-pointer p-3.5 bg-[#11161E] hover:bg-[#151C26] border border-[#1C2430] hover:border-[#00C98D]/40 rounded-xl transition-all flex items-center justify-between"
+                className="group cursor-pointer p-3.5 bg-[#11161E] hover:bg-[#151C26] border border-[#1C2430] hover:border-teach-1/40 rounded-xl transition-all flex items-center justify-between"
               >
                 <div className="flex items-center gap-3">
                   <img
                     src={DEMO_USER_PROFILE.avatar}
                     alt={DEMO_USER_PROFILE.name}
-                    className="w-10 h-10 rounded-full border border-[#1C2430] group-hover:border-[#00C98D]/40 object-cover"
+                    className="w-10 h-10 rounded-full border border-[#1C2430] group-hover:border-teach-1/40 object-cover"
                   />
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-semibold text-[#F2F4F7] group-hover:text-[#00C98D] transition-colors">
+                      <span className="text-sm font-semibold text-[#F2F4F7] group-hover:text-teach-1 transition-colors">
                         {DEMO_USER_PROFILE.name}
                       </span>
-                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#080C10] text-[#00C98D] font-medium border border-[#1C2430]">
+                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#080C10] text-teach-1 font-medium border border-[#1C2430]">
                         {DEMO_USER_PROFILE.class}
                       </span>
                     </div>
@@ -142,7 +142,7 @@ export const AuthModal: React.FC = () => {
                     </p>
                   </div>
                 </div>
-                <ArrowRight className="w-4 h-4 text-[#717B8C] group-hover:text-[#00C98D] group-hover:translate-x-1 transition-all" />
+                <ArrowRight className="w-4 h-4 text-[#717B8C] group-hover:text-teach-1 group-hover:translate-x-1 transition-all" />
               </div>
             </div>
 
@@ -152,7 +152,7 @@ export const AuthModal: React.FC = () => {
                 id="btn-switch-custom-auth"
                 type="button"
                 onClick={() => setShowCustomForm(true)}
-                className="text-xs text-[#717B8C] hover:text-[#00C98D] transition-colors underline underline-offset-4 cursor-pointer"
+                className="text-xs text-[#717B8C] hover:text-teach-1 transition-colors underline underline-offset-4 cursor-pointer"
               >
                 {language === 'vi'
                   ? 'Đăng nhập với email / tài khoản khác'
@@ -164,7 +164,7 @@ export const AuthModal: React.FC = () => {
           <form onSubmit={handleCustomGoogleLogin} className="space-y-4">
             <div>
               <label className="block text-xs font-semibold uppercase tracking-wider text-[#A5AFBF] mb-1.5">
-                {strings.profile.fullName} <span className="text-[#00C98D]">*</span>
+                {strings.profile.fullName} <span className="text-teach-1">*</span>
               </label>
               <input
                 type="text"
@@ -172,13 +172,13 @@ export const AuthModal: React.FC = () => {
                 value={customName}
                 onChange={(e) => setCustomName(e.target.value)}
                 placeholder="Nguyen Van A"
-                className="w-full px-3.5 py-2.5 bg-[#080C10] border border-[#1C2430] rounded-xl text-[#F2F4F7] text-sm focus:outline-none focus:border-[#00C98D] transition-colors"
+                className="w-full px-3.5 py-2.5 bg-[#080C10] border border-[#1C2430] rounded-xl text-[#F2F4F7] text-sm focus:outline-none focus:border-teach-1 transition-colors"
               />
             </div>
 
             <div>
               <label className="block text-xs font-semibold uppercase tracking-wider text-[#A5AFBF] mb-1.5">
-                {strings.profile.email} <span className="text-[#00C98D]">*</span>
+                {strings.profile.email} <span className="text-teach-1">*</span>
               </label>
               <input
                 type="email"
@@ -186,7 +186,7 @@ export const AuthModal: React.FC = () => {
                 value={customEmail}
                 onChange={(e) => setCustomEmail(e.target.value)}
                 placeholder="student@dlu.edu.vn"
-                className="w-full px-3.5 py-2.5 bg-[#080C10] border border-[#1C2430] rounded-xl text-[#F2F4F7] text-sm focus:outline-none focus:border-[#00C98D] transition-colors"
+                className="w-full px-3.5 py-2.5 bg-[#080C10] border border-[#1C2430] rounded-xl text-[#F2F4F7] text-sm focus:outline-none focus:border-teach-1 transition-colors"
               />
             </div>
 
@@ -200,7 +200,7 @@ export const AuthModal: React.FC = () => {
                   value={customStudentId}
                   onChange={(e) => setCustomStudentId(e.target.value)}
                   placeholder="2312xxx"
-                  className="w-full px-3.5 py-2.5 bg-[#080C10] border border-[#1C2430] rounded-xl text-[#F2F4F7] text-sm focus:outline-none focus:border-[#00C98D] transition-colors"
+                  className="w-full px-3.5 py-2.5 bg-[#080C10] border border-[#1C2430] rounded-xl text-[#F2F4F7] text-sm focus:outline-none focus:border-teach-1 transition-colors"
                 />
               </div>
               <div>
@@ -212,7 +212,7 @@ export const AuthModal: React.FC = () => {
                   value={customClass}
                   onChange={(e) => setCustomClass(e.target.value)}
                   placeholder="CTK47B"
-                  className="w-full px-3.5 py-2.5 bg-[#080C10] border border-[#1C2430] rounded-xl text-[#F2F4F7] text-sm focus:outline-none focus:border-[#00C98D] transition-colors"
+                  className="w-full px-3.5 py-2.5 bg-[#080C10] border border-[#1C2430] rounded-xl text-[#F2F4F7] text-sm focus:outline-none focus:border-teach-1 transition-colors"
                 />
               </div>
             </div>
@@ -228,7 +228,7 @@ export const AuthModal: React.FC = () => {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="flex-1 px-4 py-2.5 bg-[#00C98D] hover:bg-[#00B982] text-[#090A0F] font-semibold rounded-xl text-sm transition-all shadow-md disabled:opacity-50 cursor-pointer"
+ className="flex-1 px-4 py-2.5 bg-info hover:bg-info/90 text-white font-semibold font-semibold rounded-xl text-sm transition-all shadow-md disabled:opacity-50 cursor-pointer"
               >
                 {strings.auth.signIn}
               </button>
@@ -239,7 +239,7 @@ export const AuthModal: React.FC = () => {
         {/* Security & Google Identity Notice */}
         <div className="mt-6 pt-4 border-t border-[#1C2430] text-center">
           <p className="text-[11px] text-[#717B8C] flex items-center justify-center gap-1.5">
-            <ShieldCheck className="w-3.5 h-3.5 text-[#00C98D]" />
+            <ShieldCheck className="w-3.5 h-3.5 text-teach-1" />
             <span>{strings.auth.googleAccountNotice}</span>
           </p>
         </div>

@@ -303,7 +303,7 @@ export const ExperimentLab: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-10">
-          <div className="inline-flex items-center px-3.5 py-1 rounded-full bg-[#0E1210] border border-[#1C2430] text-[#00C98D] text-xs font-mono tracking-widest uppercase mb-3">
+          <div className="inline-flex items-center px-3.5 py-1 rounded-full bg-bg-elevated border border-border-primary text-text-primary text-xs font-mono tracking-widest uppercase mb-3">
             <span>{strings.experiments.badge}</span>
           </div>
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#F2F4F7] tracking-tight font-sans mb-3">
@@ -322,8 +322,8 @@ export const ExperimentLab: React.FC = () => {
               onClick={() => setActiveTab(tab.id)}
               className={`px-4 py-2.5 rounded-xl font-sans text-xs sm:text-sm transition-colors border cursor-pointer ${
                 activeTab === tab.id
-                  ? 'bg-[#121713] text-[#00C98D] border-[#00C98D]/50 shadow-sm font-semibold'
-                  : 'bg-[#0E1210] text-[#A5AFBF] hover:text-[#F2F4F7] border-[#1C2430] hover:border-[#24313D] font-medium'
+                  ? 'bg-bg-elevated text-text-primary border-teach-1 shadow-sm font-semibold'
+                  : 'bg-bg-secondary text-text-muted hover:text-text-primary border-border-primary hover:border-border-primary/80 font-medium'
               }`}
             >
               <span>{tab.label}</span>
@@ -340,7 +340,7 @@ export const ExperimentLab: React.FC = () => {
             <div className="space-y-6">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#1C2430] pb-4">
                 <div>
-                  <h3 className="font-sans text-base font-bold text-[#00C98D]">
+                  <h3 className="font-sans text-base font-bold text-text-primary">
                     {strings.experiments.exp1Title}
                   </h3>
                   <p className="text-xs text-[#A5AFBF] mt-0.5 font-sans">
@@ -356,7 +356,7 @@ export const ExperimentLab: React.FC = () => {
                     type="text"
                     value={repInput}
                     onChange={(e) => setRepInput(e.target.value)}
-                    className="bg-[#080C10] border border-[#1C2430] rounded-xl px-3 py-1.5 text-[#F2F4F7] focus:outline-none focus:border-[#00C98D] w-48 sm:w-64 font-mono text-xs"
+                    className="bg-[#080C10] border border-[#1C2430] rounded-xl px-3 py-1.5 text-[#F2F4F7] focus:outline-none focus:border-teach-1 w-48 sm:w-64 font-mono text-xs"
                   />
                 </div>
               </div>
@@ -366,7 +366,7 @@ export const ExperimentLab: React.FC = () => {
                 {/* Hexadecimal */}
                 <div className="p-4 rounded-xl bg-[#080C10] border border-[#1C2430] space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-[#00C98D] font-bold font-sans">
+                    <span className="text-text-primary font-bold font-sans">
                       {strings.experiments.exp1Hex}
                     </span>
                     <button
@@ -374,7 +374,7 @@ export const ExperimentLab: React.FC = () => {
                       className="text-[#A5AFBF] hover:text-[#F2F4F7] flex items-center gap-1 font-sans text-xs cursor-pointer"
                     >
                       {copiedFormat === 'hex' ? (
-                        <Check className="w-3 h-3 text-[#00C98D]" />
+                        <Check className="w-3 h-3 text-success" />
                       ) : (
                         <Copy className="w-3 h-3" />
                       )}
@@ -393,7 +393,7 @@ export const ExperimentLab: React.FC = () => {
                 {/* Base64 */}
                 <div className="p-4 rounded-xl bg-[#080C10] border border-[#1C2430] space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-[#00C98D] font-bold font-sans">
+                    <span className="text-text-primary font-bold font-sans">
                       {strings.experiments.exp1Base64}
                     </span>
                     <button
@@ -401,7 +401,7 @@ export const ExperimentLab: React.FC = () => {
                       className="text-[#A5AFBF] hover:text-[#F2F4F7] flex items-center gap-1 font-sans text-xs cursor-pointer"
                     >
                       {copiedFormat === 'base64' ? (
-                        <Check className="w-3 h-3 text-[#00C98D]" />
+                        <Check className="w-3 h-3 text-success" />
                       ) : (
                         <Copy className="w-3 h-3" />
                       )}
@@ -420,14 +420,14 @@ export const ExperimentLab: React.FC = () => {
                 {/* 32 Decimal Bytes */}
                 <div className="p-4 rounded-xl bg-[#080C10] border border-[#1C2430] space-y-2 md:col-span-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-[#00C98D] font-bold font-sans">
+                    <span className="text-text-primary font-bold font-sans">
                       {strings.experiments.exp1Bytes}
                     </span>
                     <span className="text-[#717B8C] text-[11px] font-sans">
                       32 uint8 elements (0..255)
                     </span>
                   </div>
-                  <div className="p-2.5 rounded-lg bg-[#0E1210] text-[#00C98D] font-mono text-[11px] break-all select-all leading-relaxed border border-[#1C2430]">
+                  <div className="p-2.5 rounded-lg bg-[#0E1210] text-teach-1 font-mono text-[11px] break-all select-all leading-relaxed border border-[#1C2430]">
                     [{formatHexBytes(repHash).map((h) => parseInt(h, 16)).join(', ')}]
                   </div>
                 </div>
@@ -435,7 +435,7 @@ export const ExperimentLab: React.FC = () => {
                 {/* Full 256-bit Binary String */}
                 <div className="p-4 rounded-xl bg-[#080C10] border border-[#1C2430] space-y-2 md:col-span-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-[#00C98D] font-bold font-sans">
+                    <span className="text-text-primary font-bold font-sans">
                       {strings.experiments.exp1Binary}
                     </span>
                     <button
@@ -443,7 +443,7 @@ export const ExperimentLab: React.FC = () => {
                       className="text-[#A5AFBF] hover:text-[#F2F4F7] flex items-center gap-1 font-sans text-xs cursor-pointer"
                     >
                       {copiedFormat === 'binary' ? (
-                        <Check className="w-3 h-3 text-[#00C98D]" />
+                        <Check className="w-3 h-3 text-success" />
                       ) : (
                         <Copy className="w-3 h-3" />
                       )}
@@ -468,7 +468,7 @@ export const ExperimentLab: React.FC = () => {
           {activeTab === 'dispersion' && (
             <div className="space-y-6 font-sans">
               <div className="border-b border-[#1C2430] pb-4">
-                <h3 className="font-sans text-base font-bold text-[#00C98D]">
+                <h3 className="font-sans text-base font-bold text-text-primary">
                   {strings.experiments.exp2Title}
                 </h3>
                 <p className="text-xs text-[#A5AFBF] mt-0.5 font-sans">
@@ -486,7 +486,7 @@ export const ExperimentLab: React.FC = () => {
                       type="text"
                       value={saltKey}
                       onChange={(e) => setSaltKey(e.target.value)}
-                      className="w-full bg-[#080C10] border border-[#1C2430] rounded-xl px-4 py-2.5 text-[#F2F4F7] focus:outline-none focus:border-[#00C98D] font-mono text-xs"
+                      className="w-full bg-[#080C10] border border-[#1C2430] rounded-xl px-4 py-2.5 text-[#F2F4F7] focus:outline-none focus:border-teach-1 font-mono text-xs"
                     />
                   </div>
 
@@ -498,7 +498,7 @@ export const ExperimentLab: React.FC = () => {
                       type="text"
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
-                      className="w-full bg-[#080C10] border border-[#1C2430] rounded-xl px-4 py-2.5 text-[#F2F4F7] focus:outline-none focus:border-[#00C98D] font-mono text-xs"
+                      className="w-full bg-[#080C10] border border-[#1C2430] rounded-xl px-4 py-2.5 text-[#F2F4F7] focus:outline-none focus:border-teach-1 font-mono text-xs"
                     />
                   </div>
 
@@ -506,7 +506,7 @@ export const ExperimentLab: React.FC = () => {
                     <span className="text-[#717B8C] text-[11px] block font-sans font-semibold">
                       {strings.experiments.exp2Combined}
                     </span>
-                    <div className="p-3 rounded-lg bg-[#0E1210] border border-[#1C2430] text-[#00C98D] font-bold break-all select-all text-xs font-mono">
+                    <div className="p-3 rounded-lg bg-[#0E1210] border border-[#1C2430] text-teach-1 font-bold break-all select-all text-xs font-mono">
                       {saltedHash}
                     </div>
                   </div>
@@ -519,7 +519,7 @@ export const ExperimentLab: React.FC = () => {
                       <span className="text-[#A5AFBF] font-semibold text-xs font-sans">
                         {isVi ? 'Phân Bố Tỷ Lệ Bit (Bit Dispersion Ratio):' : 'Bit Dispersion Ratio (256 Bits):'}
                       </span>
-                      <span className="text-[#00C98D] font-mono text-xs font-bold">
+                      <span className="text-teach-3 font-mono text-xs font-bold">
                         {isVi ? 'Tiệm cận 50% ngẫu nhiên' : '~50% Ideal Entropy'}
                       </span>
                     </div>
@@ -528,7 +528,7 @@ export const ExperimentLab: React.FC = () => {
                     <div className="h-3 w-full rounded-full bg-[#1C2430] overflow-hidden flex mb-3">
                       <div
                         style={{ width: `${onesPercentage}%` }}
-                        className="bg-[#00C98D] h-full transition-all duration-300"
+                        className="bg-teach-1 h-full transition-all duration-300"
                         title={`Bit 1: ${onesCount} (${onesPercentage}%)`}
                       />
                       <div
@@ -543,7 +543,7 @@ export const ExperimentLab: React.FC = () => {
                         <span className="text-[#717B8C] text-[10px] block font-sans">
                           {isVi ? 'Số lượng Bit 1' : 'Bit 1 Count'}
                         </span>
-                        <span className="text-[#00C98D] font-bold text-sm">
+                        <span className="text-teach-1 font-bold text-sm">
                           {onesCount} <span className="text-xs text-[#A5AFBF]">({onesPercentage}%)</span>
                         </span>
                       </div>
@@ -575,7 +575,7 @@ export const ExperimentLab: React.FC = () => {
             <div className="space-y-6 font-sans">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#1C2430] pb-4">
                 <div>
-                  <h3 className="font-sans text-base font-bold text-[#00C98D]">
+                  <h3 className="font-sans text-base font-bold text-text-primary">
                     {strings.experiments.exp3Title}
                   </h3>
                   <p className="text-xs text-[#A5AFBF] mt-0.5 font-sans">
@@ -587,7 +587,7 @@ export const ExperimentLab: React.FC = () => {
                   type="button"
                   onClick={runBenchmark}
                   disabled={isBenchmarking}
-                  className="px-4 py-2 rounded-xl bg-[#00C98D] hover:bg-[#00C98D]/90 disabled:opacity-50 text-slate-950 font-semibold text-xs transition-colors cursor-pointer self-start sm:self-auto"
+ className="px-4 py-2 rounded-xl bg-text-primary hover:bg-white/90 disabled:opacity-50 text-bg-primary font-semibold font-semibold text-xs transition-colors cursor-pointer self-start sm:self-auto"
                 >
                   {isBenchmarking
                     ? strings.experiments.exp3Benchmarking
@@ -597,12 +597,12 @@ export const ExperimentLab: React.FC = () => {
 
               {/* Benchmark Result Box */}
               {benchmarkResult && (
-                <div className="p-4 rounded-xl bg-[#080C10] border border-[#00C98D]/30 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono">
+                <div className="p-4 rounded-xl bg-[#080C10] border border-border-primary grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono">
                   <div className="p-3 rounded-lg bg-[#0E1210] border border-[#1C2430]">
                     <span className="text-[#717B8C] text-[10px] block font-sans">
                       {isVi ? 'Tốc độ thực tế' : 'Throughput'}
                     </span>
-                    <span className="text-[#00C98D] font-bold text-sm">
+                    <span className="text-teach-1 font-bold text-sm">
                       {benchmarkResult.hashesPerSec.toLocaleString()} H/s
                     </span>
                   </div>
@@ -638,7 +638,7 @@ export const ExperimentLab: React.FC = () => {
                 <div>
                   <div className="flex justify-between text-[#A5AFBF] mb-2">
                     <span>{strings.experiments.exp3Multiplier}</span>
-                    <span className="text-[#00C98D] font-bold font-mono">
+                    <span className="text-teach-1 font-bold font-mono">
                       {repeatCount} {isVi ? 'lần lặp' : 'repeats'} ({repeatCount * 10} {isVi ? 'ký tự' : 'characters'})
                     </span>
                   </div>
@@ -648,7 +648,7 @@ export const ExperimentLab: React.FC = () => {
                     max={500}
                     value={repeatCount}
                     onChange={(e) => setRepeatCount(Number(e.target.value))}
-                    className="w-full accent-[#00C98D] bg-[#1C2430] h-2 rounded-lg cursor-pointer"
+                    className="w-full accent-teach-1 bg-[#1C2430] h-2 rounded-lg cursor-pointer"
                   />
                 </div>
 
@@ -665,7 +665,7 @@ export const ExperimentLab: React.FC = () => {
                     <span className="text-[#717B8C] block mb-1 font-sans">
                       {strings.experiments.exp3BlocksReq}
                     </span>
-                    <span className="text-[#00C98D] font-bold text-sm font-mono">
+                    <span className="text-teach-2 font-bold text-sm font-mono">
                       {Math.ceil((repeatCount * 10 + 9) / 64)} blocks (512-bit)
                     </span>
                   </div>
@@ -673,7 +673,7 @@ export const ExperimentLab: React.FC = () => {
                     <span className="text-[#717B8C] block mb-1 font-sans">
                       {strings.experiments.exp3DigestSize}
                     </span>
-                    <span className="text-[#00C98D] font-bold text-sm font-mono">
+                    <span className="text-teach-3 font-bold text-sm font-mono">
                       {strings.experiments.exp3Fixed256}
                     </span>
                   </div>
@@ -683,7 +683,7 @@ export const ExperimentLab: React.FC = () => {
                   <span className="text-[#717B8C] text-[11px] block uppercase font-semibold font-sans">
                     {strings.experiments.exp3ComputedDigest}
                   </span>
-                  <div className="p-3 rounded-lg bg-[#0E1210] font-bold text-[#00C98D] break-all select-all font-mono text-xs border border-[#1C2430]">
+                  <div className="p-3 rounded-lg bg-[#0E1210] font-bold text-teach-1 break-all select-all font-mono text-xs border border-[#1C2430]">
                     {lengthSampleHash}
                   </div>
                 </div>
@@ -697,7 +697,7 @@ export const ExperimentLab: React.FC = () => {
           {activeTab === 'compare' && (
             <div className="space-y-6 font-sans">
               <div className="border-b border-[#1C2430] pb-4">
-                <h3 className="font-sans text-base font-bold text-[#00C98D]">
+                <h3 className="font-sans text-base font-bold text-text-primary">
                   {strings.experiments.exp4Title}
                 </h3>
                 <p className="text-xs text-[#A5AFBF] mt-0.5 font-sans">
@@ -720,7 +720,7 @@ export const ExperimentLab: React.FC = () => {
                     }}
                     className={`px-3 py-1.5 rounded-lg text-xs font-sans transition-colors cursor-pointer border ${
                       compareInputA === preset.a && compareInputB === preset.b
-                        ? 'bg-[#121713] text-[#00C98D] border-[#00C98D]/40'
+                        ? 'bg-bg-elevated text-text-primary border-teach-1'
                         : 'bg-[#080C10] text-[#A5AFBF] border-[#1C2430] hover:text-[#F2F4F7]'
                     }`}
                   >
@@ -739,7 +739,7 @@ export const ExperimentLab: React.FC = () => {
                     type="text"
                     value={compareInputA}
                     onChange={(e) => setCompareInputA(e.target.value)}
-                    className="w-full bg-[#080C10] border border-[#1C2430] rounded-xl px-4 py-2.5 text-[#F2F4F7] focus:outline-none focus:border-[#00C98D] font-mono text-xs"
+                    className="w-full bg-[#080C10] border border-[#1C2430] rounded-xl px-4 py-2.5 text-[#F2F4F7] focus:outline-none focus:border-teach-1 font-mono text-xs"
                   />
                 </div>
 
@@ -751,7 +751,7 @@ export const ExperimentLab: React.FC = () => {
                     type="text"
                     value={compareInputB}
                     onChange={(e) => setCompareInputB(e.target.value)}
-                    className="w-full bg-[#080C10] border border-[#1C2430] rounded-xl px-4 py-2.5 text-[#F2F4F7] focus:outline-none focus:border-[#00C98D] font-mono text-xs"
+                    className="w-full bg-[#080C10] border border-[#1C2430] rounded-xl px-4 py-2.5 text-[#F2F4F7] focus:outline-none focus:border-teach-1 font-mono text-xs"
                   />
                 </div>
               </div>
@@ -768,7 +768,7 @@ export const ExperimentLab: React.FC = () => {
                       len: {compareInputA.length} chars
                     </span>
                   </div>
-                  <div className="p-3 rounded-lg bg-[#0E1210] border border-[#1C2430] text-[#00C98D] font-mono text-xs sm:text-sm font-semibold break-all select-all">
+                  <div className="p-3 rounded-lg bg-[#0E1210] border border-[#1C2430] text-teach-1 font-mono text-xs sm:text-sm font-semibold break-all select-all">
                     {compareHashA}
                   </div>
                 </div>
@@ -804,7 +804,7 @@ export const ExperimentLab: React.FC = () => {
                       <span className="text-[#717B8C] text-[10px] block font-sans">
                         {strings.experiments.exp4DiffRatio}
                       </span>
-                      <span className="text-[#00C98D] font-bold text-sm font-mono">
+                      <span className="text-teach-2 font-bold text-sm font-mono">
                         {diffStats.percentage.toFixed(2)}%
                       </span>
                     </div>
@@ -836,7 +836,7 @@ export const ExperimentLab: React.FC = () => {
                             title={`Pos ${idx}: '${charA}' vs '${charB}'`}
                             className={`px-1 py-0.5 rounded ${
                               isMatch
-                                ? 'bg-[#00C98D]/10 text-[#00C98D] border border-[#00C98D]/30 font-bold'
+                                ? 'bg-teach-1/10 text-teach-1 border border-teach-1/30 font-bold'
                                 : 'bg-[#1C2430]/60 text-[#A5AFBF]'
                             }`}
                           >
@@ -847,7 +847,7 @@ export const ExperimentLab: React.FC = () => {
                     </div>
                     <div className="flex items-center gap-4 mt-2 text-[11px] text-[#717B8C]">
                       <div className="flex items-center gap-1.5">
-                        <span className="w-2.5 h-2.5 rounded bg-[#00C98D]/20 border border-[#00C98D]/50" />
+                        <span className="w-2.5 h-2.5 rounded bg-teach-1/20 border border-teach-1/50" />
                         <span>{isVi ? 'Ký tự trùng khớp' : 'Matching character'}</span>
                       </div>
                       <div className="flex items-center gap-1.5">
@@ -868,7 +868,7 @@ export const ExperimentLab: React.FC = () => {
             <div className="space-y-6 font-sans">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#1C2430] pb-4">
                 <div>
-                  <h3 className="font-sans text-base font-bold text-[#00C98D]">
+                  <h3 className="font-sans text-base font-bold text-text-primary">
                     {strings.experiments.exp5Title}
                   </h3>
                   <p className="text-xs text-[#A5AFBF] mt-0.5 font-sans">
@@ -885,7 +885,7 @@ export const ExperimentLab: React.FC = () => {
                     }}
                     disabled={isSearchingCollision}
                     aria-label={strings.experiments.exp5Space}
-                    className="bg-[#080C10] border border-[#1C2430] text-[#F2F4F7] text-xs font-mono rounded-xl px-3 py-2 focus:outline-none focus:border-[#00C98D] font-sans"
+                    className="bg-[#080C10] border border-[#1C2430] text-[#F2F4F7] text-xs font-mono rounded-xl px-3 py-2 focus:outline-none focus:border-teach-1 font-sans"
                   >
                     {bitOptions.map((opt) => (
                       <option key={opt.bits} value={opt.bits}>
@@ -898,7 +898,7 @@ export const ExperimentLab: React.FC = () => {
                     <button
                       type="button"
                       onClick={runCollisionSearch}
-                      className="px-4 py-2 rounded-xl bg-[#00C98D] hover:bg-[#00C98D]/90 text-slate-950 font-semibold text-xs transition-colors cursor-pointer"
+ className="px-4 py-2 rounded-xl bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-semibold text-xs transition-colors cursor-pointer"
                     >
                       {strings.experiments.exp5Find}
                     </button>
@@ -925,13 +925,13 @@ export const ExperimentLab: React.FC = () => {
 
               {/* Collision Result Display */}
               {collisionResult ? (
-                <div className="rounded-xl bg-[#080C10] border border-[#00C98D]/40 p-5 font-sans text-xs space-y-4">
+                <div className="rounded-xl bg-[#080C10] border border-teach-3/40 p-5 font-sans text-xs space-y-4">
                   <div className="flex items-center justify-between border-b border-[#1C2430] pb-3">
-                    <div className="text-[#00C98D] font-bold text-sm">
+                    <div className="text-teach-3 font-bold text-sm">
                       {strings.experiments.exp5CollisionFound} ({collisionResult.attempts.toLocaleString()}{' '}
                       {isVi ? 'lần thử trong' : 'attempts in'} {collisionResult.timeMs} ms)
                     </div>
-                    <span className="px-2.5 py-0.5 rounded-md bg-[#0E1210] text-[#00C98D] border border-[#1C2430] text-[11px] font-mono">
+                    <span className="px-2.5 py-0.5 rounded-md bg-[#0E1210] text-teach-3 border border-[#1C2430] text-[11px] font-mono">
                       {reducedBits} Bits Prefix Match
                     </span>
                   </div>
@@ -968,12 +968,12 @@ export const ExperimentLab: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="p-3.5 bg-[#0E1210] rounded-xl border border-[#00C98D]/30 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div className="p-3.5 bg-[#0E1210] rounded-xl border border-border-primary flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <div>
                       <span className="text-[#A5AFBF] font-sans">
                         {strings.experiments.exp5MatchingBits}{' '}
                       </span>
-                      <strong className="text-[#00C98D] text-sm tracking-widest font-mono">
+                      <strong className="text-teach-3 text-sm tracking-widest font-mono">
                         {collisionResult.truncatedHash}
                       </strong>
                     </div>
@@ -1005,7 +1005,7 @@ export const ExperimentLab: React.FC = () => {
                   <span className="text-[#717B8C] block mb-1 font-sans font-semibold">
                     {strings.experiments.exp5Formula}
                   </span>
-                  <div className="text-[#00C98D] font-bold text-sm font-mono">
+                  <div className="text-teach-1 font-bold text-sm font-mono">
                     ≈ 1.17 × √(2ⁿ)
                   </div>
                   <p className="text-[11px] text-[#717B8C] mt-1 font-sans">
@@ -1019,7 +1019,7 @@ export const ExperimentLab: React.FC = () => {
                   <span className="text-[#717B8C] block mb-1 font-sans font-semibold">
                     {strings.experiments.exp5FullWork}
                   </span>
-                  <div className="text-[#00C98D] font-bold text-sm font-mono">
+                  <div className="text-teach-1 font-bold text-sm font-mono">
                     2¹²⁸ ≈ 3.4 × 10³⁸
                   </div>
                   <p className="text-[11px] text-[#717B8C] mt-1 font-sans">
@@ -1031,7 +1031,7 @@ export const ExperimentLab: React.FC = () => {
                   <span className="text-[#717B8C] block mb-1 font-sans font-semibold">
                     {strings.experiments.exp5Conclusion}
                   </span>
-                  <span className="text-[#00C98D] font-bold text-sm font-sans">
+                  <span className="text-teach-2 font-bold text-sm font-sans">
                     {isVi ? 'Bất khả thi về tính toán' : 'Computationally Infeasible'}
                   </span>
                   <p className="text-[11px] text-[#717B8C] mt-1 font-sans">

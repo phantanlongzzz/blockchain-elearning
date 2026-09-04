@@ -360,7 +360,7 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
                         <div
                           className={`w-36 rounded-lg border transition-colors ${
                             isFoundNode
-                              ? 'bg-zinc-900 border-emerald-500 ring-1 ring-emerald-500/30'
+                              ? 'bg-zinc-900 border-border-primary ring-1 ring-white/20'
                               : isCurrentInSearch
                               ? 'bg-zinc-900 border-amber-500 ring-1 ring-amber-500/30'
                               : 'bg-zinc-900/90 border-zinc-800 hover:border-zinc-700'

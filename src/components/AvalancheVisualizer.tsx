@@ -125,7 +125,7 @@ export const AvalancheVisualizer: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-6">
-          <div className="inline-flex items-center gap-2 text-[#00C98D] text-xs font-mono font-semibold tracking-wider uppercase mb-3">
+          <div className="inline-flex items-center gap-2 text-text-muted text-xs font-mono font-semibold tracking-wider uppercase mb-3">
             <span>{strings.avalanche.badge}</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-bold text-[#F2F4F7] tracking-tight font-sans mb-2">
@@ -169,7 +169,7 @@ export const AvalancheVisualizer: React.FC = () => {
               }}
               className={`text-xs font-sans px-3 py-1.5 rounded-lg border transition-all cursor-pointer ${
                 inputA === preset.a && inputB === preset.b
-                  ? 'bg-[#00C98D]/15 text-[#00C98D] border-[#00C98D]/40 shadow-sm font-medium'
+                  ? 'bg-teach-1/15 text-teach-1 border-teach-1/40 shadow-sm font-medium'
                   : 'bg-[#0C0F14] text-[#A5AFBF] hover:text-[#F2F4F7] border-[#1C2430] hover:border-[#2A3649]'
               }`}
             >
@@ -184,8 +184,8 @@ export const AvalancheVisualizer: React.FC = () => {
           <div className="rounded-xl bg-[#0C0F14] border border-[#1C2430] p-5 sm:p-6 shadow-lg relative overflow-hidden">
             <div className="flex items-center justify-between border-b border-[#1C2430] pb-3 mb-4">
               <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#00C98D]" />
-                <span className="text-xs font-sans font-bold text-[#00C98D] uppercase tracking-wider">
+                <span className="w-2.5 h-2.5 rounded-full bg-teach-1" />
+                <span className="text-xs font-sans font-bold text-teach-1 uppercase tracking-wider">
                   {strings.avalanche.inputA}
                 </span>
               </div>
@@ -199,7 +199,7 @@ export const AvalancheVisualizer: React.FC = () => {
               type="text"
               value={inputA}
               onChange={(e) => setInputA(e.target.value)}
-              className="w-full bg-[#0B0F15] border border-[#1C2430] rounded-lg px-4 py-2.5 text-sm sm:text-base font-mono text-[#F2F4F7] placeholder-[#717B8C] focus:outline-none focus:border-[#00C98D] mb-4"
+              className="w-full bg-[#0B0F15] border border-[#1C2430] rounded-lg px-4 py-2.5 text-sm sm:text-base font-mono text-[#F2F4F7] placeholder-[#717B8C] focus:outline-none focus:border-teach-1 mb-4"
               placeholder="Enter original input text..."
             />
 
@@ -207,7 +207,7 @@ export const AvalancheVisualizer: React.FC = () => {
               <span className="text-[11px] font-sans text-[#A5AFBF] block mb-1 uppercase font-semibold">
                 {strings.avalanche.digestA}:
               </span>
-              <div className="p-3 rounded-lg bg-[#090A0F] border border-[#1C2430] font-mono text-xs sm:text-sm text-[#00C98D] break-all select-all font-semibold leading-relaxed">
+              <div className="p-3 rounded-lg bg-[#090A0F] border border-[#1C2430] font-mono text-xs sm:text-sm text-teach-1 break-all select-all font-semibold leading-relaxed">
                 {diffResult?.hexA}
               </div>
             </div>
@@ -284,8 +284,8 @@ export const AvalancheVisualizer: React.FC = () => {
                   {strings.avalanche.statusTitle}
                 </span>
                 <div className="flex items-center justify-center md:justify-start gap-2">
-                  <CheckCircle className="w-5 h-5 text-[#00C98D] flex-shrink-0" />
-                  <span className="text-base sm:text-lg font-bold font-sans text-[#00C98D]">
+                  <CheckCircle className="w-5 h-5 text-success flex-shrink-0" />
+                  <span className="text-base sm:text-lg font-bold font-sans text-success">
                     {strings.avalanche.statusConfirmed}
                   </span>
                 </div>
@@ -321,7 +321,7 @@ export const AvalancheVisualizer: React.FC = () => {
           <div className="rounded-xl bg-[#0C0F14] border border-[#1C2430] p-5 sm:p-7 shadow-lg font-sans">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#1C2430] pb-4 mb-5">
               <div>
-                <span className="text-xs font-sans font-bold text-[#00C98D] uppercase tracking-wider">
+                <span className="text-xs font-sans font-bold text-text-primary uppercase tracking-wider">
                   {strings.avalanche.matrixTitle}
                 </span>
                 <p className="text-xs text-[#A5AFBF] mt-0.5 font-sans">
@@ -379,7 +379,7 @@ export const AvalancheVisualizer: React.FC = () => {
                     Inspecting <span className="text-[#F2F4F7] font-bold font-mono">Bit #{hoveredBitIndex}</span> (Byte {Math.floor(hoveredBitIndex / 8)}, Word H{Math.floor(hoveredBitIndex / 32)})
                   </div>
                   <div className="flex items-center gap-4 font-mono">
-                    <span>Digest A: <strong className="text-[#00C98D]">{diffResult.bitsA[hoveredBitIndex]}</strong></span>
+                    <span>Digest A: <strong className="text-teach-1">{diffResult.bitsA[hoveredBitIndex]}</strong></span>
                     <span>Digest B: <strong className="text-[#F59E0B]">{diffResult.bitsB[hoveredBitIndex]}</strong></span>
                     <span className={diffResult.diffIndices.includes(hoveredBitIndex) ? 'text-[#EAB308] font-bold' : 'text-[#A5AFBF]'}>
                       {diffResult.diffIndices.includes(hoveredBitIndex) ? 'STATUS: FLIPPED' : 'STATUS: UNCHANGED'}

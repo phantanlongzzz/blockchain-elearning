@@ -407,7 +407,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
       >
         {/* Search Input Bar & Close Button */}
         <div className="flex items-center px-4 py-3.5 border-b border-[#1C2430] bg-[#090A0F] gap-3 shrink-0">
-          <Search className="w-4 h-4 text-[#00C98D] shrink-0" />
+          <Search className="w-4 h-4 text-teach-1 shrink-0" />
           <input
             ref={inputRef}
             type="text"
@@ -482,7 +482,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
                     <div
                       className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
                         isSelected
-                          ? 'bg-[#00C98D]/20 text-[#00C98D] border border-[#00C98D]/30'
+                          ? 'bg-teach-1/20 text-teach-1 border border-teach-1/30'
                           : 'bg-[#0F131A] text-[#717B8C] border border-[#1C2430]'
                       }`}
                     >
@@ -506,7 +506,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
                   <ArrowRight
                     className={`w-4 h-4 shrink-0 transition-transform ${
                       isSelected
-                        ? 'text-[#00C98D] translate-x-0.5 opacity-100'
+                        ? 'text-teach-1 translate-x-0.5 opacity-100'
                         : 'text-[#717B8C] opacity-0 group-hover:opacity-100'
                     }`}
                   />

@@ -411,7 +411,7 @@ export const NetworkTopologyExplorer: React.FC<NetworkTopologyExplorerProps> = (
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-1">
             <div className="inline-flex items-center gap-1.5 text-xs text-zinc-400 font-mono">
-              <Globe className="w-3.5 h-3.5 text-emerald-400" />
+              <Globe className="w-3.5 h-3.5 text-text-muted" />
               <span>{language === 'vi' ? 'Kiến trúc mạng' : 'Network architecture'}</span>
             </div>
             <h3 className="text-xl font-bold text-zinc-100 tracking-tight">
@@ -441,7 +441,7 @@ export const NetworkTopologyExplorer: React.FC<NetworkTopologyExplorerProps> = (
                   onClick={() => handleSelectTopology(t.id)}
                   className={`px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all duration-150 cursor-pointer ${
                     isSelected
-                      ? 'bg-zinc-800 text-emerald-400 font-semibold shadow-sm border border-zinc-700/60'
+                      ? 'bg-zinc-800 text-teach-1 font-semibold shadow-sm border border-zinc-700/60'
                       : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 border border-transparent'
                   }`}
                 >
@@ -464,13 +464,13 @@ export const NetworkTopologyExplorer: React.FC<NetworkTopologyExplorerProps> = (
                 className={`w-2 h-2 rounded-full ${
                   topology === 'centralized'
                     ? isCentralServerOnline
-                      ? 'bg-emerald-400'
+                      ? 'bg-success'
                       : 'bg-rose-500'
                     : topology === 'distributed'
                     ? onlineWorkersCount > 0
-                      ? 'bg-emerald-400'
+                      ? 'bg-success'
                       : 'bg-rose-500'
-                    : 'bg-emerald-400'
+                    : 'bg-success'
                 }`}
               />
               <h4 className="text-xs sm:text-sm font-semibold text-zinc-200">
@@ -491,7 +491,7 @@ export const NetworkTopologyExplorer: React.FC<NetworkTopologyExplorerProps> = (
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors duration-150 cursor-pointer flex items-center gap-1.5 ${
                   isCentralServerOnline
                     ? 'bg-rose-500/10 border-rose-500/40 text-rose-300 hover:bg-rose-500/20'
-                    : 'bg-emerald-500/10 border-emerald-500/40 text-emerald-300 hover:bg-emerald-500/20'
+                    : 'bg-info/10 border-info/40 text-info hover:bg-info/20'
                 }`}
               >
                 {isCentralServerOnline ? (
@@ -501,7 +501,7 @@ export const NetworkTopologyExplorer: React.FC<NetworkTopologyExplorerProps> = (
                   </>
                 ) : (
                   <>
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                    <CheckCircle2 className="w-3.5 h-3.5 text-success" />
                     <span>{language === 'vi' ? 'Khôi phục máy chủ' : 'Restore server'}</span>
                   </>
                 )}
@@ -748,7 +748,7 @@ export const NetworkTopologyExplorer: React.FC<NetworkTopologyExplorerProps> = (
                   <div
                     className={`w-9 h-9 rounded-lg flex items-center justify-center transition-colors ${
                       isCentralServerOnline
-                        ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                        ? 'bg-success/20 text-success border border-success/30'
                         : 'bg-rose-500/20 text-rose-400 border border-rose-500/30'
                     }`}
                   >
@@ -761,12 +761,12 @@ export const NetworkTopologyExplorer: React.FC<NetworkTopologyExplorerProps> = (
                     <div className="flex items-center gap-1.5 mt-0.5">
                       <span
                         className={`w-2 h-2 rounded-full ${
-                          isCentralServerOnline ? 'bg-emerald-400' : 'bg-rose-500'
+                          isCentralServerOnline ? 'bg-success' : 'bg-rose-500'
                         }`}
                       />
                       <span
                         className={`text-[11px] font-mono ${
-                          isCentralServerOnline ? 'text-emerald-400' : 'text-rose-400'
+                          isCentralServerOnline ? 'text-success' : 'text-rose-400'
                         }`}
                       >
                         {isCentralServerOnline
@@ -809,7 +809,7 @@ export const NetworkTopologyExplorer: React.FC<NetworkTopologyExplorerProps> = (
                       <div className="flex items-center gap-1">
                         <span
                           className={`w-1.5 h-1.5 rounded-full ${
-                            isCentralServerOnline ? 'bg-emerald-400' : 'bg-rose-500'
+                            isCentralServerOnline ? 'bg-success' : 'bg-rose-500'
                           }`}
                         />
                         <span
@@ -852,7 +852,7 @@ export const NetworkTopologyExplorer: React.FC<NetworkTopologyExplorerProps> = (
                 {/* Coordinator header */}
                 <div className="p-3 rounded-lg bg-zinc-900/80 border border-zinc-800 flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Layers className="w-4 h-4 text-emerald-400" />
+                    <Layers className="w-4 h-4 text-teach-1" />
                     <div>
                       <div className="text-xs font-medium text-zinc-200">
                         {language === 'vi' ? 'Bộ điều phối' : 'Coordinator'}
@@ -864,7 +864,7 @@ export const NetworkTopologyExplorer: React.FC<NetworkTopologyExplorerProps> = (
                       </div>
                     </div>
                   </div>
-                  <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-emerald-400 border border-zinc-700/60 shrink-0 ml-2">
+                  <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-teach-1 border border-zinc-700/60 shrink-0 ml-2">
                     {onlineWorkersCount}/{workers.length} {language === 'vi' ? 'trực tuyến' : 'online'}
                   </span>
                 </div>
@@ -884,9 +884,9 @@ export const NetworkTopologyExplorer: React.FC<NetworkTopologyExplorerProps> = (
                       >
                         {/* Traffic Activity Pulse indicator for active worker */}
                         {worker.isOnline && (
-                          <div className="absolute top-0 right-0 left-0 h-[2px] bg-emerald-500/20 overflow-hidden">
+                          <div className="absolute top-0 right-0 left-0 h-[2px] bg-teach-1/20 overflow-hidden">
                             <div
-                              className="h-full bg-emerald-400 animate-pulse"
+                              className="h-full bg-teach-1 animate-pulse"
                               style={{ width: '100%', animationDuration: `${1.5 + idx * 0.3}s` }}
                             />
                           </div>
@@ -896,7 +896,7 @@ export const NetworkTopologyExplorer: React.FC<NetworkTopologyExplorerProps> = (
                           <div className="flex items-center gap-1.5">
                             <span
                               className={`w-2 h-2 rounded-full ${
-                                worker.isOnline ? 'bg-emerald-400' : 'bg-rose-500'
+                                worker.isOnline ? 'bg-success' : 'bg-rose-500'
                               }`}
                             />
                             <span className="text-xs font-medium text-zinc-200">
@@ -909,7 +909,7 @@ export const NetworkTopologyExplorer: React.FC<NetworkTopologyExplorerProps> = (
                             className={`text-[10px] px-1.5 py-0.5 rounded transition-colors cursor-pointer ${
                               worker.isOnline
                                 ? 'bg-zinc-800 text-zinc-400 hover:text-rose-400'
-                                : 'bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500/30'
+                                : 'bg-info/20 text-info hover:bg-info/30'
                             }`}
                           >
                             {worker.isOnline
@@ -937,7 +937,7 @@ export const NetworkTopologyExplorer: React.FC<NetworkTopologyExplorerProps> = (
                               <div className="w-full h-1 rounded-full bg-zinc-800 overflow-hidden">
                                 <div
                                   className={`h-full transition-all duration-300 ${
-                                    currentLoad > 75 ? 'bg-amber-400' : 'bg-emerald-400'
+                                    currentLoad > 75 ? 'bg-amber-400' : 'bg-teach-1'
                                   }`}
                                   style={{ width: `${currentLoad}%` }}
                                 />
@@ -958,7 +958,7 @@ export const NetworkTopologyExplorer: React.FC<NetworkTopologyExplorerProps> = (
 
                 {failoverMessage && (
                   <div className="p-2.5 rounded-lg bg-zinc-900 border border-zinc-800 text-xs text-zinc-300 flex items-center gap-2 animate-fadeIn">
-                    <RefreshCw className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                    <RefreshCw className="w-3.5 h-3.5 text-teach-1 shrink-0" />
                     <span>{failoverMessage}</span>
                   </div>
                 )}
@@ -1034,7 +1034,7 @@ export const NetworkTopologyExplorer: React.FC<NetworkTopologyExplorerProps> = (
                           <div className="flex items-center gap-1.5">
                             <span
                               className={`w-2 h-2 rounded-full ${
-                                peer.isOnline ? 'bg-emerald-400' : 'bg-rose-500'
+                                peer.isOnline ? 'bg-success' : 'bg-rose-500'
                               }`}
                             />
                             <span className="text-xs font-medium text-zinc-100">{peer.name}</span>
@@ -1045,7 +1045,7 @@ export const NetworkTopologyExplorer: React.FC<NetworkTopologyExplorerProps> = (
                             className={`text-[10px] px-1.5 py-0.5 rounded transition-colors cursor-pointer ${
                               peer.isOnline
                                 ? 'bg-zinc-800 text-zinc-400 hover:text-rose-400'
-                                : 'bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500/30'
+                                : 'bg-info/20 text-info hover:bg-info/30'
                             }`}
                           >
                             {peer.isOnline
@@ -1084,7 +1084,7 @@ export const NetworkTopologyExplorer: React.FC<NetworkTopologyExplorerProps> = (
 
           {/* Interactive Experiment Hint */}
           <div className="p-3.5 rounded-xl bg-zinc-900/70 border border-zinc-800/80 flex items-start gap-2.5 text-xs text-zinc-300 leading-relaxed">
-            <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+            <ShieldCheck className="w-4 h-4 text-teach-1 shrink-0 mt-0.5" />
             <div>
               <span className="font-medium text-zinc-200">
                 {language === 'vi' ? 'Thử nghiệm tương tác: ' : 'Interactive test: '}
@@ -1136,7 +1136,7 @@ export const NetworkTopologyExplorer: React.FC<NetworkTopologyExplorerProps> = (
 
                 <div className="space-y-2 pt-2 border-t border-zinc-800/80">
                   <div className="text-xs">
-                    <span className="font-semibold text-emerald-400">
+                    <span className="font-semibold text-success">
                       {language === 'vi' ? 'Ưu điểm: ' : 'Advantages: '}
                     </span>
                     <span className="text-zinc-300">
@@ -1187,7 +1187,7 @@ export const NetworkTopologyExplorer: React.FC<NetworkTopologyExplorerProps> = (
 
                 <div className="space-y-2 pt-2 border-t border-zinc-800/80">
                   <div className="text-xs">
-                    <span className="font-semibold text-emerald-400">
+                    <span className="font-semibold text-success">
                       {language === 'vi' ? 'Ưu điểm: ' : 'Advantages: '}
                     </span>
                     <span className="text-zinc-300">
@@ -1238,7 +1238,7 @@ export const NetworkTopologyExplorer: React.FC<NetworkTopologyExplorerProps> = (
 
                 <div className="space-y-2 pt-2 border-t border-zinc-800/80">
                   <div className="text-xs">
-                    <span className="font-semibold text-emerald-400">
+                    <span className="font-semibold text-success">
                       {language === 'vi' ? 'Ưu điểm: ' : 'Advantages: '}
                     </span>
                     <span className="text-zinc-300">
@@ -1287,7 +1287,7 @@ export const NetworkTopologyExplorer: React.FC<NetworkTopologyExplorerProps> = (
             {hasExploredAll && (
               <div className="p-4 rounded-xl bg-zinc-900/80 border border-zinc-800 space-y-2.5 transition-all duration-200">
                 <div className="flex items-center gap-1.5 text-xs font-semibold text-zinc-200">
-                  <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+                  <Sparkles className="w-3.5 h-3.5 text-teach-1" />
                   <span>{language === 'vi' ? 'Thử thách tư duy' : 'Critical thinking'}</span>
                 </div>
                 <p className="text-xs text-zinc-300 leading-snug font-medium">
@@ -1305,7 +1305,7 @@ export const NetworkTopologyExplorer: React.FC<NetworkTopologyExplorerProps> = (
                     }}
                     className={`py-1.5 px-3 rounded-md text-xs font-medium border transition-colors cursor-pointer text-center ${
                       quizAnswer === 'yes'
-                        ? 'bg-emerald-500/20 border-emerald-500/60 text-emerald-300 font-semibold'
+                        ? 'bg-success/20 border-success/60 text-success font-semibold'
                         : 'bg-zinc-800/80 border-zinc-700/60 text-zinc-300 hover:text-zinc-100'
                     }`}
                   >
@@ -1331,7 +1331,7 @@ export const NetworkTopologyExplorer: React.FC<NetworkTopologyExplorerProps> = (
                   <div
                     className={`p-2.5 rounded-lg text-xs leading-relaxed transition-all ${
                       quizAnswer === 'yes'
-                        ? 'bg-emerald-950/30 border border-emerald-500/30 text-emerald-200'
+                        ? 'bg-success/15 border border-success/30 text-success'
                         : 'bg-rose-950/30 border border-rose-500/30 text-rose-200'
                     }`}
                   >
@@ -1370,7 +1370,7 @@ export const NetworkTopologyExplorer: React.FC<NetworkTopologyExplorerProps> = (
               <button
                 type="button"
                 onClick={onNextStage}
-                className="px-3.5 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-zinc-950 text-xs font-semibold flex items-center gap-1.5 cursor-pointer transition-colors ml-auto"
+ className="px-3.5 py-1.5 rounded-lg bg-text-primary hover:bg-white/90 text-bg-primary font-semibold text-xs font-semibold flex items-center gap-1.5 cursor-pointer transition-colors ml-auto"
               >
                 <span>{language === 'vi' ? 'Tiếp tục: Bài toán tiêu đúp' : 'Next: Double spending'}</span>
                 <ArrowRight className="w-3.5 h-3.5" />

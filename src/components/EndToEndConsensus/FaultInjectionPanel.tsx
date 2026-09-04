@@ -235,7 +235,7 @@ export const FaultInjectionPanel: React.FC<FaultInjectionPanelProps> = ({
                   {isFaultTriggered ? (
                     <XCircle className="w-3.5 h-3.5 text-rose-400 shrink-0" />
                   ) : (
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500/50 shrink-0" />
+                    <CheckCircle2 className="w-3.5 h-3.5 text-success/50 shrink-0" />
                   )}
                 </div>
                 <p className="text-[11px] text-zinc-400 leading-snug">

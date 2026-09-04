@@ -28,7 +28,7 @@ export const INITIAL_POS_VALIDATORS: PoSValidator[] = [
   {
     id: 'alice',
     name: 'Alice',
-    avatarColor: 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/30',
+    avatarColor: 'bg-white/[0.04] text-text-primary border border-border-primary',
     stake: 100.0,
     isOnline: true,
     isActive: true,

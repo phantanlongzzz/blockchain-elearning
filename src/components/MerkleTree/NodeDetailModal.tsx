@@ -72,11 +72,11 @@ export const NodeDetailModal: React.FC<NodeDetailModalProps> = ({ node, onClose 
           </button>
           
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#0F131A] border border-[#1C2430] flex items-center justify-center text-[#00C98D] shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-[#0F131A] border border-[#1C2430] flex items-center justify-center text-teach-1 shrink-0">
               {isLeaf ? (
-                <FileText className="w-5 h-5 text-[#00C98D]" />
+                <FileText className="w-5 h-5 text-teach-1" />
               ) : (
-                <Layers className="w-5 h-5 text-[#F59E0B]" />
+                <Layers className="w-5 h-5 text-financial" />
               )}
             </div>
             <div className="flex flex-col">
@@ -93,7 +93,7 @@ export const NodeDetailModal: React.FC<NodeDetailModalProps> = ({ node, onClose 
         </div>
 
         <div className="flex items-center gap-4">
-          <div className="px-3 py-1.5 rounded-lg text-xs font-bold bg-[#0F131A] text-[#00C98D] border border-[#1C2430] hidden sm:flex items-center gap-2">
+          <div className="px-3 py-1.5 rounded-lg text-xs font-bold bg-[#0F131A] text-teach-1 border border-[#1C2430] hidden sm:flex items-center gap-2">
             <span>Tầng {node.level}</span>
             <span className="w-1 h-1 rounded-full bg-[#1C2430]"></span>
             <span>Vị trí {node.index}</span>
@@ -117,7 +117,7 @@ export const NodeDetailModal: React.FC<NodeDetailModalProps> = ({ node, onClose 
               <span className="text-[11px] text-[#717B8C] uppercase block mb-1">
                 Phân loại nút
               </span>
-              <span className="font-bold text-sm text-[#00C98D]">
+              <span className="font-bold text-sm text-teach-1">
                 {isLeaf ? 'Nút Lá (Giao dịch)' : 'Nút Cha (Ghép băm)'}
               </span>
             </div>
@@ -133,7 +133,7 @@ export const NodeDetailModal: React.FC<NodeDetailModalProps> = ({ node, onClose 
               <span className="text-[11px] text-[#717B8C] uppercase block mb-1">
                 Nhân đôi
               </span>
-              <span className={`font-bold text-sm ${node.isDuplicated ? 'text-[#F59E0B]' : 'text-[#717B8C]'}`}>
+              <span className={`font-bold text-sm ${node.isDuplicated ? 'text-financial' : 'text-[#717B8C]'}`}>
                 {node.isDuplicated ? 'Có (Số lẻ)' : 'Không'}
               </span>
             </div>
@@ -141,7 +141,7 @@ export const NodeDetailModal: React.FC<NodeDetailModalProps> = ({ node, onClose 
               <span className="text-[11px] text-[#717B8C] uppercase block mb-1">
                 Tính toàn vẹn
               </span>
-              <span className={`font-bold text-sm ${node.isTampered ? 'text-rose-400' : 'text-[#00C98D]'}`}>
+              <span className={`font-bold text-sm ${node.isTampered ? 'text-rose-400' : 'text-success'}`}>
                 {node.isTampered ? '✕ Bị sửa đổi' : '✓ Hợp lệ'}
               </span>
             </div>
@@ -151,18 +151,18 @@ export const NodeDetailModal: React.FC<NodeDetailModalProps> = ({ node, onClose 
           <div className="p-5 rounded-xl bg-[#0F131A] border border-[#1C2430] space-y-3">
             <div className="flex items-center justify-between text-xs">
               <span className="text-[#A5AFBF] font-bold uppercase tracking-wider flex items-center gap-2">
-                <Code className="w-4 h-4 text-[#00C98D]" />
+                <Code className="w-4 h-4 text-teach-1" />
                 <span>Chuỗi băm Hex 256-bit đầy đủ (64 ký tự hex):</span>
               </span>
               <button
                 onClick={handleCopy}
-                className="px-3 py-1.5 rounded-lg bg-[#11161E] hover:bg-[#1C2430] border border-[#1C2430] text-[#00C98D] flex items-center gap-1.5 text-[11px] cursor-pointer transition-colors"
+                className="px-3 py-1.5 rounded-lg bg-[#11161E] hover:bg-[#1C2430] border border-[#1C2430] text-teach-1 flex items-center gap-1.5 text-[11px] cursor-pointer transition-colors"
               >
-                {copied ? <Check className="w-3.5 h-3.5 text-[#00C98D]" /> : <Copy className="w-3.5 h-3.5" />}
+                {copied ? <Check className="w-3.5 h-3.5 text-success" /> : <Copy className="w-3.5 h-3.5" />}
                 <span>{copied ? 'Đã sao chép' : 'Sao chép Hex'}</span>
               </button>
             </div>
-            <div className="p-4 rounded-xl bg-[#090A0F] border border-[#1C2430] font-mono text-[#00C98D] break-all text-sm sm:text-base leading-relaxed">
+            <div className="p-4 rounded-xl bg-[#090A0F] border border-[#1C2430] font-mono text-teach-1 break-all text-sm sm:text-base leading-relaxed">
               {node.hash}
             </div>
           </div>
@@ -184,7 +184,7 @@ export const NodeDetailModal: React.FC<NodeDetailModalProps> = ({ node, onClose 
                 </div>
                 <div className="grid grid-cols-[100px_1fr] items-center">
                   <span className="text-[#717B8C]">Số tiền:</span>
-                  <span className="text-[#00C98D] font-bold">{node.transaction.amount.toFixed(4)} BTC</span>
+                  <span className="text-financial font-bold">{node.transaction.amount.toFixed(4)} BTC</span>
                 </div>
                 <div className="grid grid-cols-[100px_1fr] items-center">
                   <span className="text-[#717B8C]">Thời gian:</span>
@@ -198,7 +198,7 @@ export const NodeDetailModal: React.FC<NodeDetailModalProps> = ({ node, onClose 
                 Công thức nút cha & Các mã băm ghép đôi:
               </span>
               <div className="p-4 rounded-xl bg-[#090A0F] border border-[#1C2430] space-y-3">
-                <div className="text-xs sm:text-sm text-[#00C98D] font-mono">
+                <div className="text-xs sm:text-sm text-teach-2 font-mono">
                   Công thức: Mã_Băm_Cha = SHA-256( Mã_Băm_Con_Trái || Mã_Băm_Con_Phải )
                 </div>
                 {node.combinedInput && (
@@ -219,7 +219,7 @@ export const NodeDetailModal: React.FC<NodeDetailModalProps> = ({ node, onClose 
           <div className="p-5 rounded-xl bg-[#0F131A] border border-[#1C2430] space-y-3">
             <div className="flex items-center justify-between text-xs text-[#A5AFBF]">
               <span className="flex items-center gap-2 font-bold uppercase">
-                <Binary className="w-4 h-4 text-[#00C98D]" />
+                <Binary className="w-4 h-4 text-teach-1" />
                 <span>Luồng nhị phân (128 bit đầu / 256 bit):</span>
               </span>
               <span className="text-[#717B8C] font-bold">256 Bits Total</span>

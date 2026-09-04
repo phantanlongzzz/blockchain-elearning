@@ -110,7 +110,7 @@ export const ChatMessageItem: React.FC<ChatMessageItemProps> = ({
             ? 'bg-emerald-600 text-white'
             : message.isError
             ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30'
-            : 'bg-emerald-500/20 border border-emerald-500/30 text-emerald-400'
+            : 'bg-teach-1/15 border border-teach-1/30 text-teach-1'
         }`}
       >
         {isUser ? (
@@ -118,7 +118,7 @@ export const ChatMessageItem: React.FC<ChatMessageItemProps> = ({
         ) : message.isError ? (
           <AlertCircle className="w-4 h-4 text-rose-400" />
         ) : (
-          <Bot className="w-4 h-4 text-emerald-400" />
+          <Bot className="w-4 h-4 text-teach-1" />
         )}
       </div>
 
@@ -164,9 +164,9 @@ export const ChatMessageItem: React.FC<ChatMessageItemProps> = ({
                 type="button"
                 onClick={handleCopy}
                 title={language === 'vi' ? 'Sao chép câu trả lời' : 'Copy answer'}
-                className="opacity-0 group-hover:opacity-100 transition-opacity text-slate-400 hover:text-emerald-300 p-0.5 rounded cursor-pointer"
+                className="opacity-0 group-hover:opacity-100 transition-opacity text-slate-400 hover:text-text-primary p-0.5 rounded cursor-pointer"
               >
-                {copied ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                {copied ? <Check className="w-3 h-3 text-success" /> : <Copy className="w-3 h-3" />}
               </button>
             )}
           </div>

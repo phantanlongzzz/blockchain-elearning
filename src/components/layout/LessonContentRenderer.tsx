@@ -40,7 +40,7 @@ const AIAssistantPlaceholder = lazy(() => import('../AIAssistant/AIAssistantPlac
 const LessonLoadingFallback: React.FC = () => (
   <div className="w-full min-h-[400px] flex items-center justify-center py-16">
     <div className="flex flex-col items-center gap-3">
-      <div className="w-8 h-8 rounded-full border-2 border-emerald-500/20 border-t-emerald-500 animate-spin" />
+      <div className="w-8 h-8 rounded-full border-2 border-white/20 border-t-white animate-spin" />
       <span className="text-xs font-mono text-slate-500">Loading module...</span>
     </div>
   </div>

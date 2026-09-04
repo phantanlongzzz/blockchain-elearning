@@ -154,7 +154,7 @@ export const TransactionVerification: React.FC = () => {
     >
       {/* Section Header */}
       <div className="text-center max-w-3xl mx-auto mb-8 font-sans">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-500/30 text-emerald-400 text-xs font-medium mb-3">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.04] border border-border-primary text-text-primary text-xs font-medium mb-3">
           <ShieldCheck className="w-3.5 h-3.5" />
           <span>{strings.verification.badge}</span>
         </div>

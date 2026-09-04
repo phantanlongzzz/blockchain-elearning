@@ -173,7 +173,7 @@ export const P2PForkConsensusVisualizer: React.FC<P2PForkConsensusVisualizerProp
           </div>
           <div className="flex flex-wrap items-center gap-2.5">
             <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-800/50 border border-slate-700/50 mr-2">
-              <Network size={12} className="text-emerald-400" />
+              <Network size={12} className="text-text-muted" />
               <span className="text-xs font-mono text-slate-300">4 {isVi ? 'Nút' : 'Nodes'}</span>
             </div>
             <SimulationNavigation 
@@ -205,7 +205,7 @@ export const P2PForkConsensusVisualizer: React.FC<P2PForkConsensusVisualizerProp
                     {idx < trunk.length - 1 && (
                       <div className="absolute left-[100%] top-1/2 -translate-y-1/2 w-12 flex items-center z-0">
                         <div className="h-0.5 w-full bg-emerald-500/40 relative">
-                          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 border-t-2 border-r-2 border-emerald-500/40 rotate-45" />
+                          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 border-t-2 border-r-2 border-border-secondary rotate-45" />
                         </div>
                       </div>
                     )}
@@ -213,7 +213,7 @@ export const P2PForkConsensusVisualizer: React.FC<P2PForkConsensusVisualizerProp
                       onClick={() => setSelectedBlock(blk)}
                       className={`relative z-10 w-32 rounded-xl border p-3 cursor-pointer transition-all duration-300 bg-[#0A0D12] ${
                         blk.isLeading 
-                          ? 'border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.15)] ring-1 ring-emerald-500/20' 
+                          ? 'border-border-primary ring-1 ring-white/20' 
                           : 'border-slate-700 hover:border-slate-500'
                       }`}
                     >
@@ -230,7 +230,7 @@ export const P2PForkConsensusVisualizer: React.FC<P2PForkConsensusVisualizerProp
                             <span className="text-xl">🌱</span>
                           </div>
                         ) : (
-                          <div className="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20 text-emerald-400">
+                          <div className="w-10 h-10 rounded-lg bg-white/[0.04] flex items-center justify-center border border-border-primary text-text-muted">
                             <Box size={20} />
                           </div>
                         )}

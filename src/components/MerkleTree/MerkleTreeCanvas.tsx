@@ -531,7 +531,7 @@ export const MerkleTreeCanvas: React.FC<MerkleTreeCanvasProps> = ({
                 ? 'bg-amber-500/10 text-amber-300 border-amber-500/30'
                 : animStep.stage === 'idle'
                 ? 'bg-[#1C2430]/40 text-[#A5AFBF] border-[#1C2430]'
-                : 'bg-[rgba(0,201,141,0.1)] text-[#00C98D] border border-[rgba(0,201,141,0.35)]'
+                : 'bg-teach-1/10 text-teach-1 border border-teach-1/30'
             }`}
           >
             <span
@@ -542,7 +542,7 @@ export const MerkleTreeCanvas: React.FC<MerkleTreeCanvasProps> = ({
                   ? 'bg-amber-400 animate-pulse'
                   : animStep.stage === 'idle'
                   ? 'bg-[#717B8C]'
-                  : 'bg-[#00C98D]'
+                  : 'bg-teach-1'
               }`}
             />
             <span>{statusText}</span>
@@ -669,7 +669,7 @@ export const MerkleTreeCanvas: React.FC<MerkleTreeCanvasProps> = ({
 
                   // If it's flowing, we can subtly highlight the path itself if desired, or just rely on the circle
                   if (v.isFlowing && v.strokeState === 'valid') {
-                    stroke = 'rgba(0, 201, 141, 0.4)'; // subtle emerald trail while flowing
+                    stroke = 'rgba(56, 189, 248, 0.4)'; // subtle teach-1 sky blue trail while flowing
                   }
                   if (v.isFlowing && v.strokeState === 'tampered') {
                     stroke = 'rgba(244, 63, 94, 0.8)'; 
@@ -688,7 +688,7 @@ export const MerkleTreeCanvas: React.FC<MerkleTreeCanvasProps> = ({
                         className="transition-colors duration-300 ease-in-out"
                       />
                       {v.isFlowing && (
-                        <circle r="4" fill={v.strokeState === 'tampered' ? '#f43f5e' : '#00C98D'}>
+                        <circle r="4" fill={v.strokeState === 'tampered' ? '#f43f5e' : 'var(--teach-1)'}>
                           <animateMotion dur="0.3s" repeatCount="1" fill="freeze" keyTimes="0;1" calcMode="linear">
                             <mpath href={`#${conn.id}`} />
                           </animateMotion>
@@ -743,7 +743,7 @@ export const MerkleTreeCanvas: React.FC<MerkleTreeCanvasProps> = ({
           </span>
           <div className="flex flex-wrap items-center gap-3">
             <div className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-[#00C98D]" />
+              <span className="w-2 h-2 rounded-full bg-success" />
               <span className="text-[#F2F4F7]">Hợp lệ</span>
             </div>
             <div className="flex items-center gap-1.5">
@@ -751,11 +751,11 @@ export const MerkleTreeCanvas: React.FC<MerkleTreeCanvasProps> = ({
               <span className="text-[#F2F4F7]">Sửa đổi</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-[#00C98D]" />
+              <span className="w-2 h-2 rounded-full bg-teach-1" />
               <span className="text-[#F2F4F7]">Mục tiêu chứng minh</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-[#717B8C]" />
+              <span className="w-2 h-2 rounded-full bg-teach-2" />
               <span className="text-[#F2F4F7]">Nút anh em</span>
             </div>
             <div className="flex items-center gap-1.5">

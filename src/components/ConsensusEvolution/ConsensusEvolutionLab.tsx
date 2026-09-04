@@ -142,7 +142,7 @@ export const ConsensusEvolutionLab: React.FC = () => {
         <div className="relative z-10 space-y-6">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="space-y-2">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold uppercase tracking-wider">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-white/[0.04] border border-border-primary text-text-primary text-xs font-mono font-bold uppercase tracking-wider">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>{language === 'vi' ? 'BUỔI 4 · CHUYÊN ĐỀ ĐỒNG THUẬN' : 'LESSON 4 · CONSENSUS MODULE'}</span>
               </div>
@@ -210,7 +210,7 @@ export const ConsensusEvolutionLab: React.FC = () => {
                   {completedCount}/{STAGES_CONFIG.length} {language === 'vi' ? 'phần hoàn thành' : 'sections completed'}
                 </span>
               </span>
-              <span className="text-emerald-400 font-semibold">{progressPercent}%</span>
+              <span className="text-text-primary font-semibold">{progressPercent}%</span>
             </div>
             <div className="w-full h-1.5 rounded-full bg-slate-900 overflow-hidden border border-slate-800">
               <div
@@ -250,7 +250,7 @@ export const ConsensusEvolutionLab: React.FC = () => {
               }}
               className={`min-w-[145px] shrink-0 px-3 py-2.5 rounded-lg border text-left transition-colors cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-emerald-400 ${
                 isActive
-                  ? 'bg-emerald-950/30 border-emerald-500/50 text-slate-100'
+                  ? 'bg-white/[0.08] border-border-primary text-text-primary'
                   : stage.isSub
                   ? 'bg-[#080C10] border-slate-800/60 hover:border-slate-700 text-slate-400 hover:text-slate-200'
                   : 'bg-[#080C10] border-slate-800/80 hover:border-slate-700 text-slate-400 hover:text-slate-200'
@@ -260,7 +260,7 @@ export const ConsensusEvolutionLab: React.FC = () => {
                 <div className="flex items-center gap-1.5">
                   <span
                     className={`text-[11px] font-mono font-semibold ${
-                      isActive ? 'text-emerald-400' : 'text-slate-500'
+                      isActive ? 'text-text-primary' : 'text-text-muted'
                     }`}
                   >
                     {stage.num}
@@ -272,7 +272,7 @@ export const ConsensusEvolutionLab: React.FC = () => {
                   )}
                 </div>
                 {isDone && (
-                  <Check className="w-3 h-3 text-emerald-400/80 shrink-0" aria-label="Completed" />
+                  <Check className="w-3 h-3 text-success/80 shrink-0" aria-label="Completed" />
                 )}
               </div>
               <div

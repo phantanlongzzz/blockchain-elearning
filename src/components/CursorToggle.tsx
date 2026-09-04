@@ -34,9 +34,9 @@ export const CursorToggle: React.FC<CursorToggleProps> = ({
         aria-checked={customCursorEnabled}
         aria-label="Toggle Cursor"
         onClick={toggleCustomCursor}
-        className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full p-0.5 transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-1 focus-visible:ring-[#00C98D] ${
+        className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full p-0.5 transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-1 focus-visible:ring-teach-1 ${
           customCursorEnabled
-            ? 'bg-[#00C98D]'
+            ? 'bg-teach-1'
             : 'bg-[#1C2430] hover:bg-[#242E3D]'
         }`}
       >

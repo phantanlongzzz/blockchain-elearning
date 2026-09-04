@@ -232,7 +232,7 @@ export const MerkleTreeLab: React.FC = () => {
               <button
                 type="button"
                 onClick={handleBuildTree}
-                className="px-3.5 py-2 rounded-lg bg-[#00C98D]/10 hover:bg-[#00C98D]/20 text-[#00C98D] border border-[#00C98D]/30 text-[13px] transition-colors flex items-center gap-1.5 cursor-pointer font-medium h-[36px]"
+                className="px-3.5 py-2 rounded-lg bg-teach-1/10 hover:bg-teach-1/20 text-teach-1 border border-teach-1/30 text-[13px] transition-colors flex items-center gap-1.5 cursor-pointer font-medium h-[36px]"
               >
                 <Zap className="w-4 h-4" />
                 <span>Khởi tạo & Băm Cây Merkle</span>
@@ -257,7 +257,7 @@ export const MerkleTreeLab: React.FC = () => {
                     if (transactions.length > 0) setProofTargetTx(transactions[0]);
                   }}
                   disabled={animStep.stage !== 'ready' && animStep.stage !== 'tampered'}
-                  className="px-3.5 py-2 rounded-lg bg-[#00C98D]/10 hover:bg-[#00C98D]/20 text-[#00C98D] border border-[#00C98D]/30 text-[13px] transition-colors flex items-center gap-1.5 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed font-medium h-[36px]"
+                  className="px-3.5 py-2 rounded-lg bg-teach-1/10 hover:bg-teach-1/20 text-teach-1 border border-teach-1/30 text-[13px] transition-colors flex items-center gap-1.5 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed font-medium h-[36px]"
                 >
                   <Check className="w-4 h-4" />
                   <span>Kiểm tra</span>

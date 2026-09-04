@@ -26,7 +26,7 @@ export const PropertiesSection: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 font-sans">
-          <div className="inline-flex items-center gap-2 text-[#00C98D] text-xs font-mono font-semibold tracking-wider uppercase mb-3">
+          <div className="inline-flex items-center gap-2 text-teach-1 text-xs font-mono font-semibold tracking-wider uppercase mb-3">
             <ShieldCheck className="w-3.5 h-3.5" />
             <span>{strings.properties.badge}</span>
           </div>
@@ -41,13 +41,13 @@ export const PropertiesSection: React.FC = () => {
         {/* 4 Properties Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 font-sans">
           {/* Property 1: Fixed-Length Output */}
-          <div className="rounded-xl bg-[#0C0F14] border border-[#1C2430] p-6 sm:p-7 shadow-lg hover:border-[#00C98D]/40 transition-all flex flex-col justify-between">
+          <div className="rounded-xl bg-[#0C0F14] border border-[#1C2430] p-6 sm:p-7 shadow-lg hover:border-border-primary transition-all flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between mb-4">
-                <div className="p-2 rounded-lg bg-[#0F131A] border border-[#1C2430] text-[#00C98D]">
+                <div className="p-2 rounded-lg bg-bg-elevated border border-border-primary text-text-secondary">
                   <Minimize2 className="w-5 h-5" />
                 </div>
-                <span className="text-xs font-mono font-semibold text-[#00C98D]">
+                <span className="text-xs font-mono font-semibold text-teach-1">
                   Property #01
                 </span>
               </div>
@@ -55,7 +55,7 @@ export const PropertiesSection: React.FC = () => {
                 {strings.properties.prop1Title}
               </h3>
               <p className="text-sm text-[#A5AFBF] mb-6 leading-relaxed font-sans">
-                {strings.properties.prop1Desc} <InlineMath math="|H(m)| = 256 \text{ bits}" className="text-[#00C98D] ml-1" />.
+                {strings.properties.prop1Desc} <InlineMath math="|H(m)| = 256 \text{ bits}" className="text-teach-1 ml-1" />.
               </p>
             </div>
 
@@ -67,13 +67,13 @@ export const PropertiesSection: React.FC = () => {
               {fixedLengthExamples.map((ex, idx) => (
                 <div key={idx} className="p-2.5 rounded-lg bg-[#0F131A] border border-[#1C2430] flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                   <div className="flex items-center gap-2 font-sans">
-                    <span className="w-2 h-2 rounded-full bg-[#00C98D]" />
+                    <span className="w-2 h-2 rounded-full bg-teach-1" />
                     <span className="text-[#F2F4F7] font-semibold">{ex.label}</span>
                     <span className="text-[#717B8C] text-[10px] font-mono">({ex.bits.toLocaleString()} bits)</span>
                   </div>
-                  <div className="flex items-center gap-1.5 text-[#00C98D] font-sans">
+                  <div className="flex items-center gap-1.5 text-teach-1 font-sans">
                     <ArrowRight className="w-3.5 h-3.5 text-[#717B8C] hidden sm:inline" />
-                    <span className="px-2 py-0.5 rounded-md bg-[#090A0F] border border-[#1C2430] font-bold font-mono text-[#00C98D]">
+                    <span className="px-2 py-0.5 rounded-md bg-[#090A0F] border border-[#1C2430] font-bold font-mono text-teach-1">
                       256 Bits
                     </span>
                   </div>
@@ -83,13 +83,13 @@ export const PropertiesSection: React.FC = () => {
           </div>
 
           {/* Property 2: One-Way Function */}
-          <div className="rounded-xl bg-[#0C0F14] border border-[#1C2430] p-6 sm:p-7 shadow-lg hover:border-[#00C98D]/40 transition-all flex flex-col justify-between">
+          <div className="rounded-xl bg-[#0C0F14] border border-[#1C2430] p-6 sm:p-7 shadow-lg hover:border-border-primary transition-all flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between mb-4">
-                <div className="p-2 rounded-lg bg-[#0F131A] border border-[#1C2430] text-[#00C98D]">
+                <div className="p-2 rounded-lg bg-bg-elevated border border-border-primary text-text-secondary">
                   <Lock className="w-5 h-5" />
                 </div>
-                <span className="text-xs font-mono font-semibold text-[#00C98D]">
+                <span className="text-xs font-mono font-semibold text-teach-2">
                   Property #02
                 </span>
               </div>
@@ -103,7 +103,7 @@ export const PropertiesSection: React.FC = () => {
 
             {/* Visual Forward vs Reverse Block */}
             <div className="bg-[#090A0F] rounded-lg p-4 border border-[#1C2430] space-y-3 text-xs font-sans">
-              <div className="p-2.5 rounded-lg bg-[#00C98D]/10 border border-[#00C98D]/30 flex items-center justify-between text-[#00C98D]">
+              <div className="p-2.5 rounded-lg bg-bg-elevated border border-border-primary flex items-center justify-between text-text-secondary">
                 <span className="font-semibold font-sans">Forward: <InlineMath math="x \xrightarrow{\text{SHA-256}} H(x)" /></span>
                 <span className="flex items-center gap-1 font-bold text-[11px] font-sans">
                   <CheckCircle className="w-3.5 h-3.5" /> {strings.properties.prop2ForwardStatus}
@@ -146,7 +146,7 @@ export const PropertiesSection: React.FC = () => {
             <div className="bg-[#090A0F] rounded-lg p-4 border border-[#1C2430] space-y-2 font-sans text-xs">
               <div className="flex justify-between items-center text-[#F2F4F7]">
                 <span>{strings.properties.prop3InputLabel} <span className="font-mono text-white">"Hello World"</span></span>
-                <span className="text-[#00C98D] font-mono">77e35c71...</span>
+                <span className="text-teach-1 font-mono">77e35c71...</span>
               </div>
               <div className="flex justify-between items-center text-[#F2F4F7]">
                 <span>{strings.properties.prop3InputLabel} <span className="font-mono text-white">"Hello world"</span> <span className="text-[#F59E0B] font-medium">(1 char diff)</span></span>
@@ -160,13 +160,13 @@ export const PropertiesSection: React.FC = () => {
           </div>
 
           {/* Property 4: Collision Resistance */}
-          <div className="rounded-xl bg-[#0C0F14] border border-[#1C2430] p-6 sm:p-7 shadow-lg hover:border-[#00C98D]/40 transition-all flex flex-col justify-between">
+          <div className="rounded-xl bg-[#0C0F14] border border-[#1C2430] p-6 sm:p-7 shadow-lg hover:border-border-primary transition-all flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between mb-4">
-                <div className="p-2 rounded-lg bg-[#0F131A] border border-[#1C2430] text-[#00C98D]">
+                <div className="p-2 rounded-lg bg-bg-elevated border border-border-primary text-text-secondary">
                   <CopyX className="w-5 h-5" />
                 </div>
-                <span className="text-xs font-mono font-semibold text-[#00C98D]">
+                <span className="text-xs font-mono font-semibold text-teach-3">
                   Property #04
                 </span>
               </div>
@@ -182,11 +182,11 @@ export const PropertiesSection: React.FC = () => {
             <div className="bg-[#090A0F] rounded-lg p-4 border border-[#1C2430] space-y-2.5 text-xs font-sans">
               <div className="flex items-center justify-between text-[#F2F4F7]">
                 <span className="text-[#A5AFBF] font-sans">{strings.properties.prop4PreimageBound}</span>
-                <span className="text-[#00C98D] font-semibold font-mono"><InlineMath math="2^{256} \text{ operations}" /></span>
+                <span className="text-teach-1 font-semibold font-mono"><InlineMath math="2^{256} \text{ operations}" /></span>
               </div>
               <div className="flex items-center justify-between text-[#F2F4F7]">
                 <span className="text-[#A5AFBF] font-sans">{strings.properties.prop4BirthdayBound}</span>
-                <span className="text-[#00C98D] font-semibold font-mono"><InlineMath math="2^{128} \text{ operations}" /></span>
+                <span className="text-teach-2 font-semibold font-mono"><InlineMath math="2^{128} \text{ operations}" /></span>
               </div>
               <div className="text-[11px] text-[#A5AFBF] pt-1 leading-relaxed font-sans">
                 {strings.properties.prop4Note}

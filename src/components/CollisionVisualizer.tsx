@@ -123,10 +123,10 @@ export const CollisionVisualizer: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#1C2430] pb-5 mb-6">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-sans font-bold text-[#00C98D] uppercase tracking-wider">
+            <span className="text-xs font-sans font-bold text-text-primary uppercase tracking-wider">
               {isVi ? 'Phòng Thí Nghiệm Va Chạm & Nghịch Lý Sinh Nhật' : 'Interactive Collision Lab & Birthday Paradox'}
             </span>
-            <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-[#0F131A] border border-[#1C2430] text-[#00C98D]">
+            <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-[#0F131A] border border-[#1C2430] text-text-muted">
               {isVi ? 'Thực Nghiệm Lý Thuyết' : 'Theoretical Experiment'}
             </span>
           </div>
@@ -146,7 +146,7 @@ export const CollisionVisualizer: React.FC = () => {
               setCollisionResult(null);
             }}
             disabled={isSearching}
-            className="bg-[#0B0F15] border border-[#1C2430] text-[#F2F4F7] text-xs font-mono rounded-lg px-3 py-2 focus:outline-none focus:border-[#00C98D] font-sans"
+            className="bg-[#0B0F15] border border-[#1C2430] text-[#F2F4F7] text-xs font-mono rounded-lg px-3 py-2 focus:outline-none focus:border-teach-1 font-sans"
           >
             {bitOptions.map((opt) => (
               <option key={opt.bits} value={opt.bits}>
@@ -158,7 +158,7 @@ export const CollisionVisualizer: React.FC = () => {
           <button
             onClick={runReducedCollisionSearch}
             disabled={isSearching}
-            className="px-4 py-2 rounded-lg bg-[#00C98D] hover:bg-[#00C98D]/90 disabled:opacity-50 text-[#090A0F] font-sans font-semibold text-xs uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer shadow-sm"
+ className="px-4 py-2 rounded-lg bg-text-primary hover:bg-white/90 disabled:opacity-50 text-bg-primary font-semibold font-sans font-semibold text-xs uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer shadow-sm"
           >
             {isSearching ? (
               <>
@@ -177,10 +177,10 @@ export const CollisionVisualizer: React.FC = () => {
 
       {/* Collision Result Display */}
       {collisionResult ? (
-        <div className="rounded-lg bg-[#0F131A] border border-[#00C98D]/40 p-5 font-sans text-xs space-y-4">
+        <div className="rounded-lg bg-[#0F131A] border border-teach-1/40 p-5 font-sans text-xs space-y-4">
           <div className="flex items-center justify-between border-b border-[#1C2430] pb-3">
-            <div className="flex items-center gap-2 text-[#00C98D] font-bold font-sans text-sm">
-              <CheckCircle className="w-4 h-4 text-[#00C98D]" />
+            <div className="flex items-center gap-2 text-teach-1 font-bold font-sans text-sm">
+              <CheckCircle className="w-4 h-4 text-teach-1" />
               <span>
                 {isVi ? (
                   <>
@@ -193,7 +193,7 @@ export const CollisionVisualizer: React.FC = () => {
                 )}
               </span>
             </div>
-            <span className="px-2.5 py-0.5 rounded-md bg-[#090A0F] text-[#00C98D] border border-[#1C2430] text-[11px] font-mono">
+            <span className="px-2.5 py-0.5 rounded-md bg-[#090A0F] text-teach-1 border border-[#1C2430] text-[11px] font-mono">
               {isVi ? `Trùng Tiền Tố: ${reducedBits} Bits` : `Matching Prefix: ${reducedBits} Bits`}
             </span>
           </div>
@@ -222,12 +222,12 @@ export const CollisionVisualizer: React.FC = () => {
             </div>
           </div>
 
-          <div className="p-3.5 bg-[#090A0F] rounded-lg border border-[#00C98D]/30 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div className="p-3.5 bg-[#090A0F] rounded-lg border border-border-primary flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
               <span className="text-[#A5AFBF] font-sans">
                 {isVi ? `${reducedBits} Bit Đầu Tiên Trùng Nhau: ` : `First ${reducedBits} Bits Collided: `}
               </span>
-              <strong className="text-[#00C98D] text-sm tracking-widest font-mono">{collisionResult.truncatedHash}</strong>
+              <strong className="text-teach-1 text-sm tracking-widest font-mono">{collisionResult.truncatedHash}</strong>
             </div>
             <div className="text-[#717B8C] text-[11px] font-sans">
               {isVi
@@ -238,7 +238,7 @@ export const CollisionVisualizer: React.FC = () => {
         </div>
       ) : (
         <div className="p-8 rounded-lg bg-[#090A0F] border border-dashed border-[#1C2430] text-center font-sans text-xs text-[#A5AFBF]">
-          <CopyX className="w-8 h-8 text-[#00C98D]/60 mx-auto mb-2" />
+          <CopyX className="w-8 h-8 text-text-muted mx-auto mb-2" />
           <p className="font-semibold text-[#F2F4F7] mb-1 font-sans text-sm">
             {isVi ? 'Sẵn Sàng Thử Nghiệm Tấn Công Va Chạm Theo Nghịch Lý Sinh Nhật' : 'Ready to test Birthday Attack Collision Dynamics'}
           </p>
@@ -256,7 +256,7 @@ export const CollisionVisualizer: React.FC = () => {
           <span className="text-[#717B8C] block mb-1 font-sans font-semibold">
             {isVi ? 'Công Thức Giới Hạn Sinh Nhật:' : 'Birthday Bound Formula:'}
           </span>
-          <div className="text-[#00C98D] font-bold text-sm">
+          <div className="text-teach-1 font-bold text-sm">
             <InlineMath math="\approx 1.17 \times \sqrt{2^n}" />
           </div>
           <p className="text-[11px] text-[#717B8C] mt-1 font-sans">
@@ -267,7 +267,7 @@ export const CollisionVisualizer: React.FC = () => {
           <span className="text-[#717B8C] block mb-1 font-sans font-semibold">
             {isVi ? 'Khối Lượng Tính Toán SHA-256 Gốc:' : 'Full SHA-256 Collision Work:'}
           </span>
-          <div className="text-[#00C98D] font-bold text-sm">
+          <div className="text-teach-1 font-bold text-sm">
             <InlineMath math="2^{128} \text{ Operations}" />
           </div>
           <p className="text-[11px] text-[#717B8C] mt-1 font-sans">
@@ -278,7 +278,7 @@ export const CollisionVisualizer: React.FC = () => {
           <span className="text-[#717B8C] block mb-1 font-sans font-semibold">
             {isVi ? 'Kết Luận Khoa Học:' : 'Scientific Conclusion:'}
           </span>
-          <span className="text-[#00C98D] font-bold text-sm font-sans">
+          <span className="text-success font-bold text-sm font-sans">
             {isVi ? 'Bất Khả Thi Về Tính Toán' : 'Computationally Infeasible'}
           </span>
           <p className="text-[11px] text-[#717B8C] mt-1 font-sans">

@@ -210,7 +210,7 @@ export const BruteForceSimulator: React.FC = () => {
               <button
                 type="button"
                 onClick={startBruteForce}
-                className="px-4 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-medium text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
+ className="px-4 py-1.5 rounded-lg bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-medium text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
               >
                 <Play className="w-3.5 h-3.5 fill-current" />
                 <span>{isVi ? 'Bắt đầu tìm' : 'Start search'}</span>
@@ -253,7 +253,7 @@ export const BruteForceSimulator: React.FC = () => {
               }}
               className={`px-3 py-1 rounded-md text-xs font-mono transition-colors cursor-pointer ${
                 selectedPreset.targetInput === p.targetInput && customInput === p.targetInput
-                  ? 'bg-slate-800 text-emerald-400 border border-emerald-500/40'
+                  ? 'bg-slate-800 text-teach-1 border border-teach-1/40'
                   : 'bg-[#080c16] text-slate-400 border border-slate-800 hover:text-slate-200'
               }`}
             >
@@ -276,7 +276,7 @@ export const BruteForceSimulator: React.FC = () => {
               disabled={isRunning}
               value={customInput}
               onChange={(e) => setCustomInput(e.target.value.toLowerCase())}
-              className="w-full bg-[#080c16] border border-slate-800 rounded-md px-3 py-1.5 text-xs font-mono text-emerald-400 focus:outline-none focus:border-emerald-500"
+              className="w-full bg-[#080c16] border border-slate-800 rounded-md px-3 py-1.5 text-xs font-mono text-text-primary focus:outline-none focus:border-border-primary"
             />
           </div>
 
@@ -362,10 +362,10 @@ export const BruteForceSimulator: React.FC = () => {
 
         {/* Found Result Banner */}
         {foundResult && (
-          <div className="p-3.5 rounded-lg bg-[#080c16] border border-emerald-500/50 flex items-center justify-between gap-3 text-xs">
+          <div className="p-3.5 rounded-lg bg-[#080c16] border border-success/50 flex items-center justify-between gap-3 text-xs">
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0" />
-              <span className="font-semibold text-emerald-300">
+              <span className="w-2 h-2 rounded-full bg-success shrink-0" />
+              <span className="font-semibold text-success">
                 {isVi ? `Đã tìm thấy preimage: "${foundResult}"` : `Preimage found: "${foundResult}"`}
               </span>
               <span className="text-slate-400 text-xs hidden sm:inline">

@@ -87,7 +87,7 @@ export const ConsensusAttestationArena: React.FC<ConsensusAttestationArenaProps>
             onClick={() => onSelectScenario('honest')}
             className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer flex items-center justify-between gap-3 ${
               scenarioOutcome === 'honest'
-                ? 'bg-[#00C98D]/10 border-[#00C98D]/60 ring-1 ring-[#00C98D]/30'
+                ? 'bg-success/10 border-success/60 ring-1 ring-success/30'
                 : 'bg-white/[0.02] border-white/[0.06] hover:border-white/[0.12] text-[#9AA5B5]'
             }`}
           >
@@ -95,8 +95,8 @@ export const ConsensusAttestationArena: React.FC<ConsensusAttestationArenaProps>
               <div
                 className={`w-9 h-9 rounded-lg flex items-center justify-center font-bold text-sm shrink-0 border ${
                   scenarioOutcome === 'honest'
-                    ? 'bg-[#00C98D]/20 text-[#00C98D] border-[#00C98D]/40'
-                    : 'bg-white/[0.04] border-white/[0.06] text-[#00C98D]'
+                    ? 'bg-success/20 text-success border-success/40'
+                    : 'bg-white/[0.04] border-white/[0.06] text-text-muted'
                 }`}
               >
                 <FileCheck2 className="w-5 h-5" />
@@ -118,7 +118,7 @@ export const ConsensusAttestationArena: React.FC<ConsensusAttestationArenaProps>
                 </p>
               </div>
             </div>
-            {scenarioOutcome === 'honest' && <CheckCircle2 className="w-5 h-5 text-[#00C98D] shrink-0" />}
+            {scenarioOutcome === 'honest' && <CheckCircle2 className="w-5 h-5 text-success shrink-0" />}
           </button>
 
           {/* Fraud Scenario Button */}
@@ -175,7 +175,7 @@ export const ConsensusAttestationArena: React.FC<ConsensusAttestationArenaProps>
                   01. {isVi ? 'GHI KHỐI' : 'WRITE BLOCK'}
                 </span>
                 {scenarioOutcome === 'honest' ? (
-                  <CheckCircle2 className="w-3.5 h-3.5 text-[#00C98D]" />
+                  <CheckCircle2 className="w-3.5 h-3.5 text-success" />
                 ) : (
                   <AlertTriangle className="w-3.5 h-3.5 text-rose-400" />
                 )}
@@ -204,7 +204,7 @@ export const ConsensusAttestationArena: React.FC<ConsensusAttestationArenaProps>
                   return (
                     <div key={p.id} className="flex items-center justify-between text-slate-300">
                       <span className="truncate max-w-[90px] text-[#717B8C]">{p.name}:</span>
-                      <span className={scenarioOutcome === 'honest' ? 'text-[#00C98D] font-semibold' : 'text-rose-400 font-semibold'}>
+                      <span className={scenarioOutcome === 'honest' ? 'text-success font-semibold' : 'text-rose-400 font-semibold'}>
                         {scenarioOutcome === 'honest'
                           ? `✓ ${isVi ? 'Hợp lệ' : 'Valid'}`
                           : `✕ ${isVi ? 'Phát hiện sai!' : 'Fraud!'}`}
@@ -222,7 +222,7 @@ export const ConsensusAttestationArena: React.FC<ConsensusAttestationArenaProps>
                   03. {isVi ? 'SỔ CÁI' : 'LEDGER'}
                 </span>
                 {scenarioOutcome === 'honest' ? (
-                  <Boxes className="w-3.5 h-3.5 text-[#00C98D]" />
+                  <Boxes className="w-3.5 h-3.5 text-success" />
                 ) : (
                   <Boxes className="w-3.5 h-3.5 text-rose-400" />
                 )}
@@ -291,7 +291,7 @@ export const ConsensusAttestationArena: React.FC<ConsensusAttestationArenaProps>
           <div className="p-4 rounded-xl border border-white/[0.08] bg-[#0C0F14] flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
             <div className="flex items-center gap-3">
               {scenarioOutcome === 'honest' ? (
-                <div className="w-9 h-9 rounded-lg bg-[#00C98D]/10 border border-[#00C98D]/30 flex items-center justify-center text-[#00C98D] shrink-0">
+                <div className="w-9 h-9 rounded-lg bg-success/10 border border-success/30 flex items-center justify-center text-success shrink-0">
                   <CheckCircle2 className="w-5 h-5" />
                 </div>
               ) : (
@@ -304,7 +304,7 @@ export const ConsensusAttestationArena: React.FC<ConsensusAttestationArenaProps>
                   {scenarioOutcome === 'honest' ? (
                     isVi ? (
                       <>
-                        <span className="text-[#00C98D]">✓ Khối hợp lệ</span>
+                        <span className="text-success">✓ Khối hợp lệ</span>
                         <span className="text-[#717B8C]">·</span>
                         <span className="text-[#F2F4F7]">Được chấp nhận vào sổ cái</span>
                         <span className="text-[#717B8C]">·</span>
@@ -312,7 +312,7 @@ export const ConsensusAttestationArena: React.FC<ConsensusAttestationArenaProps>
                       </>
                     ) : (
                       <>
-                        <span className="text-[#00C98D]">✓ Valid Block</span>
+                        <span className="text-success">✓ Valid Block</span>
                         <span className="text-[#717B8C]">·</span>
                         <span className="text-[#F2F4F7]">Committed to Ledger</span>
                         <span className="text-[#717B8C]">·</span>
@@ -429,7 +429,7 @@ export const ConsensusAttestationArena: React.FC<ConsensusAttestationArenaProps>
             type="button"
             id="pos-reset-all-btn"
             onClick={onResetAll}
-            className="px-5 py-2.5 rounded-lg bg-[#00C98D] hover:bg-[#00B982] text-[#090A0F] font-bold text-xs sm:text-sm flex items-center gap-1.5 transition-colors cursor-pointer ml-auto shadow-sm"
+ className="px-5 py-2.5 rounded-lg bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-bold text-xs sm:text-sm flex items-center gap-1.5 transition-colors cursor-pointer ml-auto shadow-sm"
           >
             <RefreshCw className="w-3.5 h-3.5 text-[#090A0F]" />
             <span>{isVi ? 'Làm lại từ đầu' : 'Restart Simulation'}</span>

@@ -83,7 +83,7 @@ export const MerkleTreeVisualizer: React.FC<Props> = ({ transactions, onRootCalc
       
       {/* ROOT */}
       <div className={`transition-all duration-500 ${showRoot ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-        <div className={`px-4 py-2 rounded-lg border ${tamperedIndex !== null ? 'bg-rose-950/40 border-rose-500/50 text-rose-400 font-bold' : 'bg-emerald-950/20 border-emerald-500/30 text-emerald-400'}`}>
+        <div className={`px-4 py-2 rounded-lg border ${tamperedIndex !== null ? 'bg-rose-950/40 border-rose-500/50 text-rose-400 font-bold' : 'bg-success/10 border-success/40 text-success'}`}>
           <div className="text-center text-[10px] text-slate-500 mb-1">Merkle Root</div>
           {root.slice(0, 32)}...
         </div>

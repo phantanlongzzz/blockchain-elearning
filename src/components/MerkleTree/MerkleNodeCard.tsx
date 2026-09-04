@@ -60,30 +60,30 @@ export const MerkleNodeCard: React.FC<MerkleNodeCardProps> = ({
     statusDotColor = 'bg-rose-500';
   } else if (visualState === 'valid') {
     if (isProofTarget) {
-      borderClass = 'border-[#00C98D] ring-1 ring-[rgba(0,201,141,0.4)]';
+      borderClass = 'border-teach-1 ring-1 ring-teach-1/40';
       bgClass = 'bg-[#0F131A]';
-      statusDotColor = 'bg-[#00C98D]';
+      statusDotColor = 'bg-teach-1';
     } else if (isProofSibling) {
-      borderClass = 'border-[#717B8C] ring-1 ring-[#717B8C]/40';
+      borderClass = 'border-teach-2 ring-1 ring-teach-2/40';
       bgClass = 'bg-[#0F131A]';
-      statusDotColor = 'bg-[#717B8C]';
+      statusDotColor = 'bg-teach-2';
     } else if (isProofPath) {
-      borderClass = 'border-[#00C98D]/60 hover:border-[#00C98D]';
+      borderClass = 'border-teach-3/60 hover:border-teach-3';
       bgClass = 'bg-[#0F131A]';
-      statusDotColor = 'bg-[#00C98D]';
+      statusDotColor = 'bg-teach-3';
     } else if (isRoot) {
       borderClass = 'border-[#F59E0B]/40 hover:border-[#F59E0B]/80';
       bgClass = 'bg-[#0C0F14]';
       statusDotColor = 'bg-[#F59E0B]';
     } else {
-      borderClass = 'border-[#00C98D]/30 hover:border-[#00C98D]/60';
+      borderClass = 'border-success/30 hover:border-success/60';
       bgClass = 'bg-[#0F131A]';
-      statusDotColor = 'bg-[#00C98D]';
+      statusDotColor = 'bg-success';
     }
   } else if (visualState === 'processing') {
-    borderClass = 'border-[#00C98D]/60';
-    bgClass = 'bg-[#00C98D]/10';
-    statusDotColor = 'bg-[#00C98D]';
+    borderClass = 'border-teach-1/60';
+    bgClass = 'bg-teach-1/10';
+    statusDotColor = 'bg-teach-1';
   } else if (visualState === 'idle') {
     borderClass = 'border-[#1C2430] hover:border-[#1C2430]/80 opacity-60';
     bgClass = 'bg-[#090A0F]';
@@ -91,7 +91,7 @@ export const MerkleNodeCard: React.FC<MerkleNodeCardProps> = ({
   }
 
   if (isSelected) {
-    borderClass = 'border-[#00C98D] ring-1 ring-[rgba(0,201,141,0.6)]';
+    borderClass = 'border-teach-1 ring-1 ring-teach-1/60';
     bgClass = 'bg-[#0F131A]';
   }
 
@@ -187,10 +187,10 @@ export const MerkleNodeCard: React.FC<MerkleNodeCardProps> = ({
         <button
           type="button"
           onClick={handleCopy}
-          className="p-1 rounded text-[#717B8C] hover:text-[#00C98D] hover:bg-[#11161E] transition-colors shrink-0 cursor-pointer"
+          className="p-1 rounded text-[#717B8C] hover:text-teach-1 hover:bg-[#11161E] transition-colors shrink-0 cursor-pointer"
           title="Sao chép mã băm"
         >
-          {copied ? <Check className="w-3 h-3 text-[#00C98D]" /> : <Copy className="w-3 h-3" />}
+          {copied ? <Check className="w-3 h-3 text-success" /> : <Copy className="w-3 h-3" />}
         </button>
       </div>
     </div>

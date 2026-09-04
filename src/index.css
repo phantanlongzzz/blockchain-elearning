@@ -2,13 +2,56 @@
 @import "katex/dist/katex.min.css";
 
 :root {
-  --color-money: #F6C453;
-  --bg-primary: #0A0D0F;
-  --bg-secondary: #0E1210;
-  --bg-surface: #121713;
-  --bg-elevated: #151C17;
-  --bg-input: #0B0F0D;
+  /* ==========================================================================
+     BACKGROUND TOKENS
+     ========================================================================== */
+  --bg-primary: #09090B;
+  --bg-secondary: #0F1014;
+  --bg-elevated: #15161A;
+  --bg-hover: #1B1D22;
 
+  /* ==========================================================================
+     BORDER TOKENS
+     ========================================================================== */
+  --border-primary: rgba(255, 255, 255, 0.08);
+  --border-secondary: rgba(255, 255, 255, 0.05);
+
+  /* ==========================================================================
+     TEXT TOKENS
+     ========================================================================== */
+  --text-primary: #F4F4F5;
+  --text-secondary: #A1A1AA;
+  --text-muted: #71717A;
+  --text-disabled: #52525B;
+
+  /* ==========================================================================
+     SEMANTIC TOKENS (ý nghĩa cố định — không dùng cho mục đích khác)
+     ========================================================================== */
+  --color-success: #10B981;
+  --color-error: #EF4444;
+  --color-financial: #F6C453;
+  --color-info: #3B82F6;
+  --color-crypto-accent: #A855F7;
+
+  /* ==========================================================================
+     TEACHING PALETTE (categorical, phân biệt nhiều thành phần dữ liệu — 
+     KHÔNG mang nghĩa trạng thái, KHÔNG được dùng thay thế cho Semantic)
+     Dùng để phân loại nhiều thực thể/thành phần dữ liệu trong cùng 1 visualizer 
+     giáo dục (ví dụ: 4 miner đua tốc độ, 5 validator PoS, 8 trường Block Header). 
+     Không dùng để biểu thị success/error/financial — các trạng thái đó dùng 
+     nhóm Semantic ở trên.
+     ========================================================================== */
+  --teach-1: #38BDF8;
+  --teach-2: #A78BFA;
+  --teach-3: #2DD4BF;
+  --teach-4: #FB7185;
+  --teach-5: #CBD5E1;
+  --teach-6: #64748B;
+
+  /* Legacy & Compatibility Tokens */
+  --color-money: var(--color-financial);
+  --bg-surface: #121713;
+  --bg-input: #0B0F0D;
   --border-default: #1C2430;
   --border-subtle: #151C26;
   --border-active: #24313D;
@@ -21,15 +64,11 @@
   --accent-active: rgba(0, 201, 141, 0.12);
   --accent-border: rgba(0, 201, 141, 0.35);
 
-  --text-primary: #F2F4F7;
-  --text-secondary: #A5AFBF;
-  --text-muted: #717B8C;
-  --text-disabled: #4D5665;
   --text-code: #C8D0DB;
 
-  --success: #00C98D;
+  --success: var(--color-success);
   --warning: #F59E0B;
-  --danger: #EF4444;
+  --danger: var(--color-error);
   --track: #18202A;
   
   --radius-3xl: 24px;
@@ -40,15 +79,15 @@
   --radius-sm: 6px;
 
   /* Aliases & Compatibility tokens */
-  --bg-base: #0A0D0F;
-  --bg-canvas: #0A0D0F;
-  --bg-card: #0E1210;
+  --bg-base: #09090B;
+  --bg-canvas: #09090B;
+  --bg-card: #0F1014;
   --border: #1C2430;
   --border-strong: #24313D;
 
   --brand-primary: #00C98D;
   --brand-secondary: #00B982;
-  --state-success: #00C98D;
+  --state-success: #10B981;
   --state-warning: #F59E0B;
   --state-danger: #EF4444;
   --state-neutral: #717B8C;
@@ -60,15 +99,50 @@
 }
 
 @theme {
-  --color-bg-primary: #0A0D0F;
-  --color-bg-secondary: #0E1210;
-  --color-bg-surface: #121713;
-  --color-bg-elevated: #151C17;
-  --color-bg-input: #0B0F0D;
+  /* BACKGROUND */
+  --color-bg-primary: #09090B;
+  --color-bg-secondary: #0F1014;
+  --color-bg-elevated: #15161A;
+  --color-bg-hover: #1B1D22;
 
-  --color-bg-base: #0A0D0F;
-  --color-canvas: #0A0D0F;
-  --color-card: #0E1210;
+  /* BORDER */
+  --color-border-primary: rgba(255, 255, 255, 0.08);
+  --color-border-secondary: rgba(255, 255, 255, 0.05);
+
+  /* TEXT */
+  --color-text-primary: #F4F4F5;
+  --color-text-secondary: #A1A1AA;
+  --color-text-muted: #71717A;
+  --color-text-disabled: #52525B;
+
+  /* SEMANTIC (ý nghĩa cố định — không dùng cho mục đích khác) */
+  --color-success: #10B981;
+  --color-error: #EF4444;
+  --color-financial: #F6C453;
+  --color-info: #3B82F6;
+  --color-crypto-accent: #A855F7;
+
+  /* ==========================================================================
+     TEACHING PALETTE (categorical, phân biệt nhiều thành phần dữ liệu — 
+     KHÔNG mang nghĩa trạng thái, KHÔNG được dùng thay thế cho Semantic)
+     Dùng để phân loại nhiều thực thể/thành phần dữ liệu trong cùng 1 visualizer 
+     giáo dục (ví dụ: 4 miner đua tốc độ, 5 validator PoS, 8 trường Block Header). 
+     Không dùng để biểu thị success/error/financial — các trạng thái đó dùng 
+     nhóm Semantic ở trên.
+     ========================================================================== */
+  --color-teach-1: #38BDF8;
+  --color-teach-2: #A78BFA;
+  --color-teach-3: #2DD4BF;
+  --color-teach-4: #FB7185;
+  --color-teach-5: #CBD5E1;
+  --color-teach-6: #64748B;
+
+  /* Legacy & Compatibility Mappings */
+  --color-bg-surface: #121713;
+  --color-bg-input: #0B0F0D;
+  --color-bg-base: #09090B;
+  --color-canvas: #09090B;
+  --color-card: #0F1014;
   --color-surface: #121713;
 
   --color-border-default: #1C2430;
@@ -83,15 +157,11 @@
   --color-accent-muted: #087F63;
   --color-brand-primary: #00C98D;
   --color-brand-secondary: #00B982;
-  --color-state-success: #00C98D;
+  --color-state-success: #10B981;
   --color-state-warning: #F59E0B;
   --color-state-danger: #EF4444;
   --color-state-neutral: #717B8C;
 
-  --color-text-primary: #F2F4F7;
-  --color-text-secondary: #A5AFBF;
-  --color-text-muted: #717B8C;
-  --color-text-disabled: #4D5665;
   --color-text-code: #C8D0DB;
 
   --color-lab-emerald: #00C98D;

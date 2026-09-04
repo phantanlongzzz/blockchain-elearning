@@ -303,7 +303,7 @@ export const ByzantineGeneralsLab: React.FC<ByzantineGeneralsLabProps> = ({
               type="button"
               onClick={handleStartSimulation}
               disabled={isPlaying}
-              className="px-4 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-medium text-xs flex items-center gap-2 transition-colors cursor-pointer disabled:opacity-50"
+ className="px-4 py-1.5 rounded-lg bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-medium text-xs flex items-center gap-2 transition-colors cursor-pointer disabled:opacity-50"
             >
               <Play className="w-3 h-3 fill-current" />
               <span>
@@ -329,7 +329,7 @@ export const ByzantineGeneralsLab: React.FC<ByzantineGeneralsLabProps> = ({
             <select
               value={scenario}
               onChange={(e) => setScenario(e.target.value as any)}
-              className="w-full bg-[#080C10] border border-slate-800 text-xs text-slate-200 rounded-md px-2 py-1 focus:outline-none focus:border-emerald-500"
+              className="w-full bg-[#080C10] border border-slate-800 text-xs text-slate-200 rounded-md px-2 py-1 focus:outline-none focus:border-border-primary focus:ring-1 focus:ring-white/20"
             >
               <option value="traitor-lieutenant">
                 {isVi ? '1 Tướng phản bội (Charlie)' : '1 Traitor Lieutenant (Charlie)'}
@@ -365,7 +365,7 @@ export const ByzantineGeneralsLab: React.FC<ByzantineGeneralsLabProps> = ({
                 onClick={() => setCommanderOrder('RETREAT')}
                 className={`py-1 px-2 rounded text-[11px] font-medium transition-colors cursor-pointer ${
                   commanderOrder === 'RETREAT'
-                    ? 'bg-emerald-950/70 border border-emerald-500/40 text-emerald-300'
+                    ? 'bg-success/15 border border-success/40 text-success'
                     : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
@@ -383,7 +383,7 @@ export const ByzantineGeneralsLab: React.FC<ByzantineGeneralsLabProps> = ({
               value={traitorId}
               disabled={scenario !== 'traitor-lieutenant'}
               onChange={(e) => setTraitorId(e.target.value)}
-              className="w-full bg-[#080C10] border border-slate-800 text-xs text-slate-200 rounded-md px-2 py-1 focus:outline-none focus:border-emerald-500 disabled:opacity-40"
+              className="w-full bg-[#080C10] border border-slate-800 text-xs text-slate-200 rounded-md px-2 py-1 focus:outline-none focus:border-border-primary focus:ring-1 focus:ring-white/20 disabled:opacity-40"
             >
               <option value="charlie">Charlie</option>
               <option value="bob">Bob</option>
@@ -467,7 +467,7 @@ export const ByzantineGeneralsLab: React.FC<ByzantineGeneralsLabProps> = ({
                     node.isTraitor
                       ? 'bg-rose-950/40 border-rose-500/50 text-rose-200'
                       : isCmd
-                      ? 'bg-emerald-950/40 border-emerald-500/50 text-emerald-200'
+                      ? 'bg-teach-1/15 border-teach-1/50 text-teach-1'
                       : 'bg-[#0B0E12] border-slate-800 text-slate-200'
                   }`}
                 >
@@ -481,7 +481,7 @@ export const ByzantineGeneralsLab: React.FC<ByzantineGeneralsLabProps> = ({
                     </span>
                     <span
                       className={`w-1.5 h-1.5 rounded-full ${
-                        node.isTraitor ? 'bg-rose-400' : 'bg-emerald-400'
+                        node.isTraitor ? 'bg-rose-400' : isCmd ? 'bg-teach-1' : 'bg-success'
                       }`}
                     />
                   </div>
@@ -493,7 +493,7 @@ export const ByzantineGeneralsLab: React.FC<ByzantineGeneralsLabProps> = ({
                       <span className="text-slate-500">{isVi ? 'Bầu:' : 'Vote:'}</span>
                       <span
                         className={`font-semibold ${
-                          node.decision === 'ATTACK' ? 'text-rose-400' : 'text-emerald-400'
+                          node.decision === 'ATTACK' ? 'text-rose-400' : 'text-teach-1'
                         }`}
                       >
                         {node.decision === 'ATTACK'
@@ -522,7 +522,7 @@ export const ByzantineGeneralsLab: React.FC<ByzantineGeneralsLabProps> = ({
               <div className="flex items-center gap-2">
                 <span
                   className={`w-2 h-2 rounded-full ${
-                    allHonestAgreed ? 'bg-emerald-400' : 'bg-rose-400'
+                    allHonestAgreed ? 'bg-success' : 'bg-rose-400'
                   }`}
                 />
                 <span className="font-semibold text-slate-100">
@@ -567,7 +567,7 @@ export const ByzantineGeneralsLab: React.FC<ByzantineGeneralsLabProps> = ({
 
             {/* Formula Block */}
             <div className="p-3 rounded-lg bg-[#080C10] border border-slate-800/80 text-center space-y-1">
-              <div className="text-lg font-mono font-bold text-emerald-400">
+              <div className="text-lg font-mono font-bold text-teach-1">
                 N ≥ 3f + 1
               </div>
               <div className="text-[11px] text-slate-500">
@@ -589,7 +589,7 @@ export const ByzantineGeneralsLab: React.FC<ByzantineGeneralsLabProps> = ({
                   >
                     -
                   </button>
-                  <span className="w-5 text-center font-mono font-semibold text-emerald-400 text-xs">
+                  <span className="w-5 text-center font-mono font-semibold text-teach-1 text-xs">
                     {toleratedTraitors}
                   </span>
                   <button
@@ -604,7 +604,7 @@ export const ByzantineGeneralsLab: React.FC<ByzantineGeneralsLabProps> = ({
 
               <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-xs font-mono">
                 <span className="text-slate-400">{isVi ? 'Số nút tối thiểu:' : 'Min nodes required:'}</span>
-                <span className="text-emerald-400 font-semibold">
+                <span className="text-teach-1 font-semibold">
                   {minNodesRequired} {isVi ? 'nút' : 'nodes'}
                 </span>
               </div>
@@ -657,7 +657,7 @@ export const ByzantineGeneralsLab: React.FC<ByzantineGeneralsLabProps> = ({
           <button
             type="button"
             onClick={onNextStage}
-            className="px-5 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-medium text-xs flex items-center gap-2 transition-colors cursor-pointer"
+ className="px-5 py-2 rounded-lg bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-medium text-xs flex items-center gap-2 transition-colors cursor-pointer"
           >
             <span>{isVi ? 'Tiếp tục: Thông điệp truyền miệng' : 'Next: Oral Messages'}</span>
             <ArrowRight className="w-3.5 h-3.5" />

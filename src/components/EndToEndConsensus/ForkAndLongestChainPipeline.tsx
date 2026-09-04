@@ -119,8 +119,8 @@ export const ForkAndLongestChainPipeline: React.FC<ForkAndLongestChainPipelinePr
                   {language === 'vi' ? 'Đang phân nhánh' : 'Fork active'}
                 </span>
               ) : (
-                <span className="px-2 py-0.5 rounded text-[11px] font-sans bg-emerald-950/40 text-emerald-300 border border-emerald-500/30 flex items-center gap-1">
-                  <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+                <span className="px-2 py-0.5 rounded text-[11px] font-sans bg-success/10 text-success border border-success/30 flex items-center gap-1">
+                  <CheckCircle2 className="w-3 h-3 text-success" />
                   {language === 'vi'
                     ? `Đã phân định: ${activeMainBranch === 'branchA' ? 'Nhánh A (Alice)' : 'Nhánh B (Bob)'}`
                     : `Resolved: ${activeMainBranch === 'branchA' ? 'Branch A (Alice)' : 'Branch B (Bob)'}`}
@@ -165,7 +165,7 @@ export const ForkAndLongestChainPipeline: React.FC<ForkAndLongestChainPipelinePr
             type="button"
             onClick={onAutoResolveFork}
             disabled={isMining}
-            className="px-3.5 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-medium text-xs transition-colors disabled:opacity-50 cursor-pointer flex items-center gap-1.5"
+ className="px-3.5 py-1.5 rounded-lg bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-medium text-xs transition-colors disabled:opacity-50 cursor-pointer flex items-center gap-1.5"
           >
             <Zap className="w-3.5 h-3.5" />
             <span>{language === 'vi' ? 'Tự động phân định' : 'Auto-resolve'}</span>
@@ -214,7 +214,7 @@ export const ForkAndLongestChainPipeline: React.FC<ForkAndLongestChainPipelinePr
           <div
             className={`p-4 rounded-xl border transition-colors ${
               activeMainBranch === 'branchA'
-                ? 'bg-[#080c16] border-emerald-500/50 shadow-sm'
+                ? 'bg-[#080c16] border-border-primary shadow-sm'
                 : 'bg-[#080c16] border-zinc-800'
             }`}
           >
@@ -226,7 +226,7 @@ export const ForkAndLongestChainPipeline: React.FC<ForkAndLongestChainPipelinePr
                 </span>
               </div>
               {activeMainBranch === 'branchA' && (
-                <span className="px-2 py-0.5 rounded text-[10px] bg-emerald-950/60 text-emerald-300 border border-emerald-500/30 font-medium">
+                <span className="px-2 py-0.5 rounded text-[10px] bg-white/[0.06] text-text-secondary border border-border-primary font-medium">
                   {language === 'vi' ? 'Chuỗi chính (Canonical)' : 'Canonical Chain'}
                 </span>
               )}

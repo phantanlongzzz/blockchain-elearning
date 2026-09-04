@@ -45,7 +45,7 @@ export const ConsensusEventLog: React.FC<ConsensusEventLogProps> = ({
         return 'text-purple-400 bg-purple-950/40 border-purple-500/30';
       case 'consensus':
       case 'reward':
-        return 'text-emerald-400 bg-emerald-950/40 border-emerald-500/30';
+        return 'text-success bg-success/10 border-success/30';
       case 'fork':
       case 'orphan':
         return 'text-rose-400 bg-rose-950/40 border-rose-500/30';
@@ -104,7 +104,7 @@ export const ConsensusEventLog: React.FC<ConsensusEventLogProps> = ({
               className="px-2.5 py-1 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 hover:text-zinc-100 text-xs font-mono flex items-center gap-1.5 transition-colors cursor-pointer"
               title="Sao chép toàn bộ nhật ký"
             >
-              {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+              {copied ? <Check className="w-3.5 h-3.5 text-success" /> : <Copy className="w-3.5 h-3.5" />}
               <span>{copied ? (language === 'vi' ? 'Đã sao chép' : 'Copied') : (language === 'vi' ? 'Sao chép' : 'Copy')}</span>
             </button>
 

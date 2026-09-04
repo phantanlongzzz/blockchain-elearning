@@ -203,7 +203,7 @@ export const DecentralizationEvolutionLab: React.FC = () => {
 
                   {/* Completion indicator */}
                   {isDone && (
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 ml-0.5" />
+                    <CheckCircle2 className="w-3.5 h-3.5 text-success shrink-0 ml-0.5" />
                   )}
 
                   {/* Bottom Active Indicator Bar */}

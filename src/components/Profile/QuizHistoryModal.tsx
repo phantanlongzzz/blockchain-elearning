@@ -55,7 +55,7 @@ export const QuizHistoryModal: React.FC = () => {
 
         {/* Modal Header */}
         <div className="pb-4 border-b border-[#1C2430] flex items-center gap-3">
-          <div className="p-2.5 rounded-xl bg-[#00C98D]/10 border border-[#00C98D]/30 text-[#00C98D]">
+          <div className="p-2.5 rounded-xl bg-teach-1/10 border border-teach-1/30 text-teach-1">
             <History className="w-5 h-5" />
           </div>
           <div>
@@ -82,7 +82,7 @@ export const QuizHistoryModal: React.FC = () => {
                   const el = document.getElementById('quiz-section');
                   if (el) el.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="mt-4 px-4 py-2 bg-[#00C98D] hover:bg-[#00B982] text-[#090A0F] font-bold text-xs rounded-xl shadow-sm transition-colors cursor-pointer"
+ className="mt-4 px-4 py-2 bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-bold text-xs rounded-xl shadow-sm transition-colors cursor-pointer"
               >
                 {strings.quizHistory.emptyAction}
               </button>
@@ -141,14 +141,14 @@ export const QuizHistoryModal: React.FC = () => {
                     <div className="text-right">
                       <span
                         className={`text-lg font-bold font-mono ${
-                          isPassed ? 'text-[#00C98D]' : 'text-rose-400'
+                          isPassed ? 'text-success' : 'text-rose-400'
                         }`}
                       >
                         {att.score}%
                       </span>
                       <span
                         className={`block text-[10px] uppercase font-bold tracking-wider ${
-                          isPassed ? 'text-[#00C98D]' : 'text-rose-400'
+                          isPassed ? 'text-success' : 'text-rose-400'
                         }`}
                       >
                         {isPassed
@@ -159,10 +159,10 @@ export const QuizHistoryModal: React.FC = () => {
 
                     <button
                       onClick={() => handleReview(att)}
-                      className="flex items-center gap-1 px-3 py-2 bg-[#151C26] hover:bg-[#1C2430] text-[#F2F4F7] border border-[#1C2430] hover:border-[#00C98D]/30 rounded-lg text-xs font-semibold transition-colors cursor-pointer"
+                      className="flex items-center gap-1 px-3 py-2 bg-[#151C26] hover:bg-[#1C2430] text-[#F2F4F7] border border-[#1C2430] hover:border-teach-1/30 rounded-lg text-xs font-semibold transition-colors cursor-pointer"
                     >
                       <span>{strings.quizHistory.reviewAttempt}</span>
-                      <ChevronRight className="w-3.5 h-3.5 text-[#00C98D]" />
+                      <ChevronRight className="w-3.5 h-3.5 text-teach-1" />
                     </button>
                   </div>
                 </div>

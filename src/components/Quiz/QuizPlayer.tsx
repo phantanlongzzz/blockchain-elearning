@@ -255,7 +255,7 @@ export const QuizPlayer: React.FC<QuizPlayerProps> = ({
             <span
               className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider font-mono ${
                 currentQuestion.difficulty === 'easy'
-                  ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'
+                  ? 'bg-success/15 text-success border border-success/30'
                   : currentQuestion.difficulty === 'medium'
                   ? 'bg-amber-500/10 text-amber-400 border border-amber-500/30'
                   : 'bg-rose-500/10 text-rose-400 border border-rose-500/30'
@@ -302,7 +302,7 @@ export const QuizPlayer: React.FC<QuizPlayerProps> = ({
                   <span className="leading-snug">{optText}</span>
                 </div>
                 {isSelected ? (
-                  <CheckCircle2 className="w-5 h-5 text-[#00C98D] flex-shrink-0" />
+                  <CheckCircle2 className="w-5 h-5 text-success flex-shrink-0" />
                 ) : (
                   <div className="w-4 h-4 rounded-full border border-[#1C2430] flex-shrink-0"></div>
                 )}
@@ -335,7 +335,7 @@ export const QuizPlayer: React.FC<QuizPlayerProps> = ({
           ) : (
             <button
               onClick={() => setShowConfirmModal(true)}
-              className="flex items-center gap-2 px-5 py-2.5 bg-[#00C98D] hover:bg-[#00C98D]/90 text-slate-950 text-xs font-bold rounded-xl shadow-md transition-all cursor-pointer"
+ className="flex items-center gap-2 px-5 py-2.5 bg-info hover:bg-info/90 text-white font-semibold text-xs font-bold rounded-xl shadow-md transition-all cursor-pointer"
             >
               <Sparkles className="w-4 h-4" />
               <span>{strings.quiz.finishQuiz}</span>
@@ -385,7 +385,7 @@ export const QuizPlayer: React.FC<QuizPlayerProps> = ({
                   setShowConfirmModal(false);
                   handleSubmitQuiz();
                 }}
-                className="flex-1 px-4 py-2 bg-[#00C98D] hover:bg-[#00C98D]/90 text-slate-950 text-xs font-bold rounded-xl transition-all shadow-md cursor-pointer"
+ className="flex-1 px-4 py-2 bg-info hover:bg-info/90 text-white font-semibold text-xs font-bold rounded-xl transition-all shadow-md cursor-pointer"
               >
                 {strings.quiz.submitNow}
               </button>

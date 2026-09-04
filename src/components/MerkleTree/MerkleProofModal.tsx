@@ -53,7 +53,7 @@ export const MerkleProofModal: React.FC<MerkleProofModalProps> = ({
         {/* Header */}
         <div className="flex items-center justify-between border-b border-[#1C2430] pb-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#0F131A] border border-[#1C2430] flex items-center justify-center text-[#00C98D]">
+            <div className="w-10 h-10 rounded-xl bg-[#0F131A] border border-[#1C2430] flex items-center justify-center text-teach-1">
               <Zap className="w-5 h-5" />
             </div>
             <div>
@@ -61,7 +61,7 @@ export const MerkleProofModal: React.FC<MerkleProofModalProps> = ({
                 <h3 className="text-base sm:text-lg font-bold text-[#F2F4F7] tracking-wider font-mono">
                   XÁC MINH BẰNG CHỨNG MERKLE
                 </h3>
-                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[rgba(0,201,141,0.1)] text-[#00C98D] border border-[rgba(0,201,141,0.35)]">
+                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-teach-1/10 text-teach-1 border border-teach-1/30">
                   Xác thực O(log n)
                 </span>
               </div>
@@ -81,7 +81,7 @@ export const MerkleProofModal: React.FC<MerkleProofModalProps> = ({
         {/* Target Transaction Card */}
         <div className="p-4 rounded-xl bg-[#090A0F] border border-[#1C2430] space-y-3">
           <div className="flex items-center justify-between text-[11px]">
-            <span className="text-[#00C98D] font-bold uppercase tracking-wider flex items-center gap-1.5">
+            <span className="text-teach-1 font-bold uppercase tracking-wider flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5" />
               <span>Giao dịch mục tiêu cần xác minh:</span>
             </span>
@@ -105,7 +105,7 @@ export const MerkleProofModal: React.FC<MerkleProofModalProps> = ({
               <span className="text-[10px] text-[#717B8C] block uppercase">
                 Số tiền
               </span>
-              <span className="text-[#00C98D] font-bold">{transaction.amount.toFixed(4)} BTC</span>
+              <span className="text-financial font-bold">{transaction.amount.toFixed(4)} BTC</span>
             </div>
           </div>
 
@@ -113,7 +113,7 @@ export const MerkleProofModal: React.FC<MerkleProofModalProps> = ({
             <span className="text-[#717B8C] uppercase text-[10px] font-bold">
               Mã băm lá mục tiêu:
             </span>
-            <span className="text-[#00C98D] font-mono text-[11px] truncate flex-1">{transaction.hash}</span>
+            <span className="text-teach-1 font-mono text-[11px] truncate flex-1">{transaction.hash}</span>
           </div>
         </div>
 
@@ -121,7 +121,7 @@ export const MerkleProofModal: React.FC<MerkleProofModalProps> = ({
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-[#F2F4F7] uppercase tracking-wider flex items-center gap-2">
-              <Layers className="w-4 h-4 text-[#00C98D]" />
+              <Layers className="w-4 h-4 text-teach-1" />
               <span>
                 Đường dẫn mật mã ({proofStepsCount} bước băm anh em)
               </span>
@@ -145,7 +145,7 @@ export const MerkleProofModal: React.FC<MerkleProofModalProps> = ({
                     className="p-3.5 rounded-xl bg-[#090A0F] border border-[#1C2430] font-mono text-xs space-y-2.5"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="text-[#00C98D] font-bold text-[11px]">
+                      <span className="text-teach-1 font-bold text-[11px]">
                         BƯỚC #{idx + 1} · TẦNG {step.level} → {step.level + 1}
                       </span>
                       <span className="text-[10px] px-2 py-0.5 rounded bg-[#0F131A] border border-[#1C2430] text-[#A5AFBF]">
@@ -155,7 +155,7 @@ export const MerkleProofModal: React.FC<MerkleProofModalProps> = ({
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
                       {/* Left Item */}
-                      <div className={`p-2 rounded-xl border ${isLeft ? 'bg-[#0F131A] border-[#1C2430] text-[#A5AFBF]' : 'bg-[#0F131A] border-[rgba(0,201,141,0.35)] text-[#00C98D]'}`}>
+                      <div className={`p-2 rounded-xl border ${isLeft ? 'bg-[#0F131A] border-[#1C2430] text-[#A5AFBF]' : 'bg-[#0F131A] border-teach-1/30 text-teach-1'}`}>
                         <div className="text-[9px] uppercase font-bold opacity-75 mb-0.5">
                           {isLeft ? 'Mã băm anh em (Trái):' : 'Mã băm hiện tại (Trái):'}
                         </div>
@@ -165,7 +165,7 @@ export const MerkleProofModal: React.FC<MerkleProofModalProps> = ({
                       </div>
 
                       {/* Right Item */}
-                      <div className={`p-2 rounded-xl border ${!isLeft ? 'bg-[#0F131A] border-[#1C2430] text-[#A5AFBF]' : 'bg-[#0F131A] border-[rgba(0,201,141,0.35)] text-[#00C98D]'}`}>
+                      <div className={`p-2 rounded-xl border ${!isLeft ? 'bg-[#0F131A] border-[#1C2430] text-[#A5AFBF]' : 'bg-[#0F131A] border-teach-1/30 text-teach-1'}`}>
                         <div className="text-[9px] uppercase font-bold opacity-75 mb-0.5">
                           {!isLeft ? 'Mã băm anh em (Phải):' : 'Mã băm hiện tại (Phải):'}
                         </div>
@@ -179,7 +179,7 @@ export const MerkleProofModal: React.FC<MerkleProofModalProps> = ({
                       <span className="text-[#717B8C] uppercase font-bold">
                         Kết quả SHA-256:
                       </span>
-                      <span className="text-[#00C98D] truncate flex-1">{step.parentHash}</span>
+                      <span className="text-teach-1 truncate flex-1">{step.parentHash}</span>
                     </div>
                   </div>
                 );
@@ -192,13 +192,13 @@ export const MerkleProofModal: React.FC<MerkleProofModalProps> = ({
         <div
           className={`p-4 rounded-xl border flex items-center justify-between gap-4 ${
             verification.isValid
-              ? 'bg-[rgba(0,201,141,0.1)] border-[rgba(0,201,141,0.35)] text-[#F2F4F7]'
+              ? 'bg-teach-1/10 border-teach-1/30 text-[#F2F4F7]'
               : 'bg-rose-950/30 border-rose-500/40 text-rose-200'
           }`}
         >
           <div className="flex items-center gap-3">
             {verification.isValid ? (
-              <CheckCircle2 className="w-6 h-6 text-[#00C98D] shrink-0" />
+              <CheckCircle2 className="w-6 h-6 text-success shrink-0" />
             ) : (
               <XCircle className="w-6 h-6 text-rose-400 shrink-0" />
             )}

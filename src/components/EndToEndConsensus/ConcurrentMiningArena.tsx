@@ -82,7 +82,7 @@ export const ConcurrentMiningArena: React.FC<ConcurrentMiningArenaProps> = ({
                 type="button"
                 id="btn-start-mining-e2e"
                 onClick={onStartMining}
-                className="px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-medium text-xs flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer shadow-sm"
+ className="px-4 py-2 rounded-lg bg-financial hover:bg-financial/90 text-black font-semibold font-medium text-xs flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer shadow-sm"
               >
                 <Play className="w-3.5 h-3.5 fill-current" />
                 <span>{language === 'vi' ? 'Bắt đầu đào' : 'Start Mining Race'}</span>
@@ -129,7 +129,7 @@ export const ConcurrentMiningArena: React.FC<ConcurrentMiningArenaProps> = ({
 
         {/* Winner Banner if Winner exists */}
         {winnerBlock && (
-          <div className="p-3.5 bg-emerald-950/20 border-b border-emerald-500/20 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+          <div className="p-3.5 bg-white/[0.02] border-b border-border-secondary flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
             <div className="flex items-center gap-2">
               <Trophy className="w-4 h-4 text-amber-400 shrink-0" />
               <span className="text-zinc-200 font-medium">
@@ -236,7 +236,7 @@ export const ConcurrentMiningArena: React.FC<ConcurrentMiningArenaProps> = ({
                           <span className="text-emerald-400 truncate max-w-xs font-mono text-[11px]">
                             {miner.currentHash?.substring(0, 18) || '...'}
                           </span>
-                          <span className="text-emerald-400 font-sans text-[11px]">✓ Hợp lệ</span>
+                          <span className="text-success font-sans text-[11px]">✓ Hợp lệ</span>
                         </div>
                       ) : (
                         <div className="flex items-center gap-2">

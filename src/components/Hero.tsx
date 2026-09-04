@@ -191,7 +191,7 @@ export const Hero: React.FC = () => {
                 id="btn-resume-learning"
                 onClick={() => navigateTo(resumeInfo.moduleId as ModuleId, resumeInfo.lessonId as LessonId)}
                 aria-label={isVi ? 'Tiếp tục học bài học gần nhất' : 'Resume recent lesson'}
-                className="w-full sm:w-auto px-5 py-2.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-[#0a0a0a] font-bold text-xs sm:text-sm uppercase tracking-wider transition-all duration-200 shadow-sm flex items-center justify-center gap-2 cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:outline-none active:scale-95"
+ className="w-full sm:w-auto px-5 py-2.5 rounded-lg bg-text-primary hover:bg-white/90 text-[#0a0a0a] font-bold text-xs sm:text-sm uppercase tracking-wider transition-all duration-200 shadow-sm flex items-center justify-center gap-2 cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:outline-none active:scale-95"
               >
                 <PlayCircle className="w-4 h-4" />
                 <span>{isVi ? 'Tiếp tục học' : 'Resume Learning'}</span>
@@ -207,19 +207,19 @@ export const Hero: React.FC = () => {
             onClick={() => navigateTo('hash', 'generator')}
             id="hero-primary-cta"
             aria-label={strings.hero.trySha256}
-            className="px-5 py-2.5 rounded-lg bg-[#111111] hover:bg-[#181818] text-[#f5f5f5] font-semibold text-xs sm:text-sm uppercase tracking-wider transition-all duration-200 border border-[#292929] hover:border-emerald-500/40 flex items-center gap-2 cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:outline-none"
+            className="group px-5 py-2.5 rounded-lg bg-[#111111] hover:bg-[#181818] text-[#f5f5f5] font-semibold text-xs sm:text-sm uppercase tracking-wider transition-all duration-200 border border-[#292929] hover:border-border-secondary flex items-center gap-2 cursor-pointer focus-visible:ring-1 focus-visible:ring-teach-1 focus-visible:outline-none"
           >
-            <Cpu className="w-4 h-4 text-emerald-400" />
+            <Cpu className="w-4 h-4 text-text-muted group-hover:text-text-primary transition-colors" />
             <span>{strings.hero.trySha256}</span>
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-4 h-4 text-text-muted group-hover:text-text-primary transition-colors" />
           </button>
           <button
             onClick={() => navigateTo('simulation', 'proof-of-work')}
             id="hero-secondary-cta"
             aria-label={isVi ? 'Vào phòng thực nghiệm PoW' : 'Enter PoW simulation lab'}
-            className="px-5 py-2.5 rounded-lg bg-[#111111] hover:bg-[#181818] text-[#f5f5f5] font-semibold text-xs sm:text-sm uppercase tracking-wider transition-all duration-200 border border-[#292929] hover:border-emerald-500/40 flex items-center gap-2 cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:outline-none"
+            className="group px-5 py-2.5 rounded-lg bg-[#111111] hover:bg-[#181818] text-[#f5f5f5] font-semibold text-xs sm:text-sm uppercase tracking-wider transition-all duration-200 border border-[#292929] hover:border-border-secondary flex items-center gap-2 cursor-pointer focus-visible:ring-1 focus-visible:ring-teach-1 focus-visible:outline-none"
           >
-            <FlaskConical className="w-4 h-4 text-emerald-400" />
+            <FlaskConical className="w-4 h-4 text-text-muted group-hover:text-text-primary transition-colors" />
             <span>{isVi ? 'Phòng Thực Nghiệm PoW' : 'PoW Simulation Lab'}</span>
           </button>
         </div>
@@ -227,17 +227,17 @@ export const Hero: React.FC = () => {
         {/* Hero Live Animated Hash Simulation Card */}
         <div
           id="hero-hash-preview-card"
-          className="relative max-w-3xl mx-auto rounded-xl bg-[#111111] border border-[#292929] p-5 sm:p-6 shadow-xl text-left backdrop-blur-xl transition-all hover:border-emerald-500/40 mb-14"
+          className="relative max-w-3xl mx-auto rounded-xl bg-[#111111] border border-[#292929] p-5 sm:p-6 shadow-xl text-left backdrop-blur-xl transition-all hover:border-border-secondary mb-14"
         >
           {/* Card Header Bar with Live Indicator */}
           <div className="flex items-center justify-between border-b border-[#292929] pb-3 mb-4 font-sans">
             <div className="flex items-center gap-2">
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teach-1 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-teach-1" />
               </span>
 
-              <span className="text-[10px] font-mono uppercase tracking-widest text-emerald-400/90">
+              <span className="text-[10px] font-mono uppercase tracking-widest text-teach-1/90">
                 {isVi ? 'Trực tiếp' : 'Live'}
               </span>
 
@@ -263,7 +263,7 @@ export const Hero: React.FC = () => {
                 value={heroInput}
                 onChange={(e) => setHeroInput(e.target.value)}
                 placeholder={strings.hero.inputPlaceholder}
-                className="w-full bg-[#0a0a0a] border border-[#292929] rounded-lg px-4 py-2.5 text-sm sm:text-base font-sans text-[#f5f5f5] placeholder-[#71717a] focus:outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400/40 transition-colors shadow-inner"
+                className="w-full bg-[#0a0a0a] border border-[#292929] rounded-lg px-4 py-2.5 text-sm sm:text-base font-sans text-[#f5f5f5] placeholder-[#71717a] focus:outline-none focus:border-teach-1 focus:ring-1 focus:ring-teach-1/30 transition-colors shadow-inner"
               />
             </div>
 
@@ -276,7 +276,7 @@ export const Hero: React.FC = () => {
                   onClick={() => setHeroInput(preset.value)}
                   className={`text-xs font-sans px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
                     heroInput === preset.value
-                      ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-medium'
+                      ? 'bg-teach-1/15 text-teach-1 border border-teach-1/30 font-medium'
                       : 'bg-[#0a0a0a] text-[#a1a1aa] hover:text-[#f5f5f5] border border-[#292929]'
                   }`}
                 >
@@ -296,10 +296,10 @@ export const Hero: React.FC = () => {
               <button
                 id="hero-copy-hash-btn"
                 onClick={copyHash}
-                className="text-xs font-mono text-[#a1a1aa] hover:text-[#f5f5f5] flex items-center gap-1 transition-colors px-2.5 py-1 rounded-lg bg-[#0a0a0a] border border-[#292929] hover:border-emerald-500/40 cursor-pointer"
+                className="text-xs font-mono text-[#a1a1aa] hover:text-[#f5f5f5] flex items-center gap-1 transition-colors px-2.5 py-1 rounded-lg bg-[#0a0a0a] border border-[#292929] hover:border-border-secondary cursor-pointer"
               >
-                {copied ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
-                <span className={copied ? 'text-emerald-400' : ''}>{copied ? strings.hero.copied : strings.hero.copyHash}</span>
+                {copied ? <Check className="w-3 h-3 text-success" /> : <Copy className="w-3 h-3" />}
+                <span className={copied ? 'text-success' : ''}>{copied ? strings.hero.copied : strings.hero.copyHash}</span>
               </button>
             </div>
 
@@ -313,7 +313,7 @@ export const Hero: React.FC = () => {
                     onMouseLeave={() => setHoveredWordIndex(null)}
                     className={`p-2.5 rounded-lg transition-all text-center ${
                       hoveredWordIndex === idx
-                        ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-400'
+                        ? 'bg-teach-1/15 text-teach-1 border border-teach-1/40'
                         : 'bg-[#111111] text-[#f5f5f5] border border-[#292929] hover:border-[#383838]'
                     }`}
                   >
@@ -342,7 +342,7 @@ export const Hero: React.FC = () => {
         <div className="max-w-5xl mx-auto text-left">
           <div className="border-b border-[#292929] pb-3 mb-6 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-400" />
+              <span className="w-2 h-2 rounded-full bg-teach-1" />
               <h2 className="text-xs font-mono font-medium tracking-wide text-[#a1a1aa]">
                 {strings.nav.projectTitle} · Các phân hệ học tập
               </h2>
@@ -361,21 +361,21 @@ export const Hero: React.FC = () => {
                   key={area.id}
                   id={`hero-card-module-${area.id}`}
                   onClick={() => navigateTo(area.id as ModuleId)}
-                  className="group rounded-xl bg-[#111111] border border-[#292929] hover:border-emerald-500/40 p-5 transition-all duration-200 flex flex-col justify-between hover:bg-[#181818] relative text-left w-full cursor-pointer"
+                  className="group rounded-xl bg-[#111111] border border-[#292929] hover:border-border-secondary p-5 transition-all duration-200 flex flex-col justify-between hover:bg-[#181818] relative text-left w-full cursor-pointer"
                 >
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <div className="w-8 h-8 rounded-lg bg-[#181818] border border-[#292929] group-hover:border-emerald-400/40 group-hover:bg-emerald-500/10 flex items-center justify-center text-emerald-400 transition-colors">
+                      <div className="w-8 h-8 rounded-lg bg-[#181818] border border-[#292929] group-hover:border-border-primary group-hover:bg-[#1f1f1f] flex items-center justify-center text-text-muted group-hover:text-text-primary transition-colors">
                         <Icon className="w-4 h-4" />
                       </div>
-                      <span className="text-[11px] font-mono text-[#71717a] group-hover:text-emerald-400 transition-colors">
+                      <span className="text-[11px] font-mono text-[#71717a] group-hover:text-text-secondary transition-colors">
                         0{index + 1}
                       </span>
                     </div>
 
                     <div>
                       <div className="flex items-center justify-between">
-                        <h3 className="text-sm font-semibold font-sans text-[#f5f5f5] group-hover:text-emerald-300 transition-colors tracking-normal">
+                        <h3 className="text-sm font-semibold font-sans text-[#f5f5f5] group-hover:text-white transition-colors tracking-normal">
                           {area.title}
                         </h3>
                       </div>
@@ -392,7 +392,7 @@ export const Hero: React.FC = () => {
                   <div className="pt-3 mt-4 border-t border-[#292929] flex items-center justify-between text-[11px] font-sans">
                     <div className="flex items-center gap-1 text-[10px]">
                       {isModuleDone ? (
-                        <span className="text-emerald-400 font-medium flex items-center gap-1">
+                        <span className="text-success font-medium flex items-center gap-1">
                           <CheckCircle2 className="w-3 h-3" />
                           {isVi ? 'Đã hoàn thành' : 'Completed'}
                         </span>
@@ -402,7 +402,7 @@ export const Hero: React.FC = () => {
                         </span>
                       )}
                     </div>
-                    <div className="flex items-center gap-1 text-slate-400 group-hover:text-emerald-300 text-xs">
+                    <div className="flex items-center gap-1 text-text-muted group-hover:text-text-primary text-xs transition-colors">
                       <span>{isVi ? 'Khám phá' : 'Explore'}</span>
                       <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
                     </div>

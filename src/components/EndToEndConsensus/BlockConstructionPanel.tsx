@@ -160,7 +160,7 @@ export const BlockConstructionPanel: React.FC<BlockConstructionPanelProps> = ({
                 className="px-2 py-1 rounded bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 hover:text-zinc-100 text-xs font-mono flex items-center gap-1 shrink-0 cursor-pointer"
                 title="Sao chép mã băm của khối trước"
               >
-                {copiedField === 'prevHash' ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                {copiedField === 'prevHash' ? <Check className="w-3 h-3 text-success" /> : <Copy className="w-3 h-3" />}
                 <span>{copiedField === 'prevHash' ? (language === 'vi' ? 'Đã chép' : 'Copied') : (language === 'vi' ? 'Sao chép' : 'Copy')}</span>
               </button>
             </div>
@@ -181,7 +181,7 @@ export const BlockConstructionPanel: React.FC<BlockConstructionPanelProps> = ({
                 className="px-2 py-1 rounded bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 hover:text-zinc-100 text-xs font-mono flex items-center gap-1 shrink-0 cursor-pointer"
                 title="Sao chép Merkle Root"
               >
-                {copiedField === 'merkleRoot' ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                {copiedField === 'merkleRoot' ? <Check className="w-3 h-3 text-success" /> : <Copy className="w-3 h-3" />}
                 <span>{copiedField === 'merkleRoot' ? (language === 'vi' ? 'Đã chép' : 'Copied') : (language === 'vi' ? 'Sao chép' : 'Copy')}</span>
               </button>
             </div>

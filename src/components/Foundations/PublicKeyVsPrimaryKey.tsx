@@ -22,7 +22,7 @@ export const PublicKeyVsPrimaryKey: React.FC = () => {
       {/* 2-Column Comparison Layout (Desktop: 2 cols, Mobile: stacked) */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
         {/* LEFT — Public Key */}
-        <div className="p-4 sm:p-5 rounded-lg bg-[#0B0E12] border border-emerald-500/30 flex flex-col justify-between space-y-3">
+        <div className="p-4 sm:p-5 rounded-lg bg-[#0B0E12] border border-border-primary flex flex-col justify-between space-y-3">
           <div className="space-y-2">
             <div className="flex items-center justify-between gap-2">
               <div>
@@ -33,7 +33,7 @@ export const PublicKeyVsPrimaryKey: React.FC = () => {
                   {isVi ? 'Khóa công khai' : 'Public Key'}
                 </span>
               </div>
-              <span className="px-2 py-0.5 rounded text-[11px] font-mono font-medium text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 whitespace-nowrap">
+              <span className="px-2 py-0.5 rounded text-[11px] font-mono font-medium text-text-primary bg-white/[0.04] border border-border-primary whitespace-nowrap">
                 {isVi ? 'Mật mã học · Blockchain' : 'Cryptography · Blockchain'}
               </span>
             </div>

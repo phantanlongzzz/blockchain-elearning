@@ -272,7 +272,7 @@ export const ConsensusFinalChallenge: React.FC<ConsensusFinalChallengeProps> = (
 
                     <div className="flex items-center gap-4">
                       <span className="font-mono text-slate-300 font-medium">
-                        {tx.amount} BTC
+                        <span className="text-financial font-mono font-semibold"><span className="text-financial font-mono font-semibold">{tx.amount} BTC</span></span>
                       </span>
                       <span className="text-slate-500 hover:text-slate-300 text-[11px]">
                         {isInspected
@@ -296,7 +296,7 @@ export const ConsensusFinalChallenge: React.FC<ConsensusFinalChallengeProps> = (
                             {isVi ? 'Người gửi & Số dư hiện tại:' : 'Sender & Current Balance:'}
                           </span>
                           <span className="text-slate-300">
-                            {tx.from} ({tx.fromBalance} BTC)
+                            {tx.from} (<span className="text-financial font-mono font-semibold">{tx.fromBalance} BTC</span>)
                           </span>
                         </div>
 
@@ -305,7 +305,7 @@ export const ConsensusFinalChallenge: React.FC<ConsensusFinalChallengeProps> = (
                             {isVi ? 'Người nhận & Số tiền chuyển:' : 'Receiver & Transfer Amount:'}
                           </span>
                           <span className="text-slate-300">
-                            {tx.to} ({tx.amount} BTC)
+                            {tx.to} (<span className="text-financial font-mono font-semibold"><span className="text-financial font-mono font-semibold">{tx.amount} BTC</span></span>)
                           </span>
                         </div>
 
@@ -370,7 +370,7 @@ export const ConsensusFinalChallenge: React.FC<ConsensusFinalChallengeProps> = (
                           }}
                           className={`px-3 py-1.5 rounded text-xs font-medium font-sans transition-colors cursor-pointer ${
                             isSelected
-                              ? 'bg-emerald-950/70 border border-emerald-500/60 text-emerald-300'
+                              ? 'bg-success/15 border border-success/40 text-success'
                               : 'bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200'
                           }`}
                         >
@@ -413,7 +413,7 @@ export const ConsensusFinalChallenge: React.FC<ConsensusFinalChallengeProps> = (
               type="button"
               disabled={!selectedTxId}
               onClick={handleProceedToConsensus}
-              className="px-5 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 disabled:opacity-40 disabled:hover:bg-emerald-500 text-slate-950 font-medium text-xs flex items-center gap-2 transition-all cursor-pointer disabled:cursor-not-allowed"
+ className="px-5 py-2 rounded-lg bg-info hover:bg-info/90 text-white font-semibold disabled:opacity-40 disabled: font-medium text-xs flex items-center gap-2 transition-all cursor-pointer disabled:cursor-not-allowed"
             >
               <span>{isVi ? 'Xác nhận lựa chọn' : 'Confirm selection'}</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -465,12 +465,12 @@ export const ConsensusFinalChallenge: React.FC<ConsensusFinalChallengeProps> = (
                   onClick={() => setSelectedProtocol(proto.id as any)}
                   className={`p-4 rounded-lg border text-left transition-colors cursor-pointer ${
                     isSelected
-                      ? 'bg-[#080C10] border-emerald-500/50 text-slate-100'
+                      ? 'bg-[#080C10] border-border-primary ring-1 ring-white/10 text-text-primary'
                       : 'bg-[#080C10] border-slate-800/80 hover:border-slate-700 text-slate-300'
                   }`}
                 >
                   <div className="flex items-center justify-between text-xs font-medium">
-                    <span className={isSelected ? 'text-emerald-400' : 'text-slate-200'}>
+                    <span className={isSelected ? 'text-text-primary font-semibold' : 'text-slate-200'}>
                       {proto.name}
                     </span>
                     <span
@@ -501,7 +501,7 @@ export const ConsensusFinalChallenge: React.FC<ConsensusFinalChallengeProps> = (
               type="button"
               disabled={isEvaluating}
               onClick={handleExecuteConsensus}
-              className="px-5 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 disabled:opacity-50 text-slate-950 font-medium text-xs flex items-center gap-2 transition-all cursor-pointer"
+ className="px-5 py-2 rounded-lg bg-success hover:bg-success/90 text-white font-semibold disabled:opacity-50 font-medium text-xs flex items-center gap-2 transition-all cursor-pointer"
             >
               <span>
                 {isEvaluating
@@ -568,7 +568,7 @@ export const ConsensusFinalChallenge: React.FC<ConsensusFinalChallengeProps> = (
                     <div className="flex items-center gap-3">
                       <span className="font-mono text-slate-300 font-medium">{tx.txCode}</span>
                       <span className="text-slate-200">
-                        {tx.from} → {tx.to} ({tx.amount} BTC)
+                        {tx.from} → {tx.to} (<span className="text-financial font-mono font-semibold"><span className="text-financial font-mono font-semibold">{tx.amount} BTC</span></span>)
                       </span>
                       {isSelectedByLearner && (
                         <span className="text-[11px] text-slate-500 font-mono">

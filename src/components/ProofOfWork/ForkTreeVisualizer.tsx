@@ -32,7 +32,7 @@ export const ForkTreeVisualizer: React.FC<ForkTreeVisualizerProps> = ({
       {/* Header with Title & 1-sentence Subtitle */}
       <div className="flex flex-wrap items-center justify-between border-b border-[#1C2430] pb-4 mb-5 gap-3">
         <div className="flex items-center gap-2.5">
-          <div className="p-2 bg-[#0F131A] border border-[#1C2430] rounded-lg text-[#00C98D]">
+          <div className="p-2 bg-[#0F131A] border border-[#1C2430] rounded-lg text-teach-1">
             <GitFork className="w-4 h-4" />
           </div>
           <div>
@@ -44,7 +44,7 @@ export const ForkTreeVisualizer: React.FC<ForkTreeVisualizerProps> = ({
                 </span>
               )}
               {isSingleWinner && (
-                <span className="px-2 py-0.5 rounded-md text-[10px] font-mono font-medium bg-[rgba(0,201,141,0.1)] text-[#00C98D] border border-[rgba(0,201,141,0.35)]">
+                <span className="px-2 py-0.5 rounded-md text-[10px] font-mono font-medium bg-success/10 text-success border border-success/35">
                   {isVi ? '✓ Chuỗi chính' : '✓ Canonical Chain'}
                 </span>
               )}
@@ -65,8 +65,8 @@ export const ForkTreeVisualizer: React.FC<ForkTreeVisualizerProps> = ({
               <span>{isVi ? 'Phân nhánh hòa' : 'Competing branches'}</span>
             </div>
           ) : isSingleWinner ? (
-            <div className="flex items-center gap-1.5 px-3 py-1 bg-[rgba(0,201,141,0.1)] border border-[rgba(0,201,141,0.35)] rounded-md text-[#00C98D] text-xs font-mono">
-              <ShieldCheck className="w-3.5 h-3.5 text-[#00C98D]" />
+            <div className="flex items-center gap-1.5 px-3 py-1 bg-success/10 border border-success/35 rounded-md text-success text-xs font-mono">
+              <ShieldCheck className="w-3.5 h-3.5 text-success" />
               <span>
                 {longestMiners[0].name} {isVi ? 'dẫn đầu' : 'leads'} ({maxBlocks} {isVi ? 'khối' : 'blocks'})
               </span>
@@ -94,7 +94,7 @@ export const ForkTreeVisualizer: React.FC<ForkTreeVisualizerProps> = ({
 
       {/* Technical reference note on Previous Hash */}
       <div className="mb-4 px-3 py-1.5 bg-[#090A0F] border border-[#1C2430] rounded-md text-[11px] font-mono text-[#A5AFBF] flex items-center gap-2">
-        <span className="text-[#00C98D] font-bold">ℹ</span>
+        <span className="text-teach-1 font-bold">ℹ</span>
         <span>
           {isVi
             ? 'Mỗi khối mới tham chiếu khối liền trước bằng Previous Hash để đảm bảo tính liên kết bất biến.'
@@ -117,7 +117,7 @@ export const ForkTreeVisualizer: React.FC<ForkTreeVisualizerProps> = ({
               key={m.id}
               className={`p-4 rounded-lg border transition-all ${
                 isCanonical
-                  ? 'bg-[rgba(0,201,141,0.06)] border-[#00C98D] shadow-sm'
+                  ? 'bg-success/10 border-success shadow-sm'
                   : isCompeting
                   ? 'bg-[rgba(245,158,11,0.06)] border-[#F59E0B] shadow-sm'
                   : 'bg-[#0F131A] border-[#1C2430] opacity-60'
@@ -158,7 +158,7 @@ export const ForkTreeVisualizer: React.FC<ForkTreeVisualizerProps> = ({
                       <div
                         className={`px-3 py-1.5 rounded-md border text-xs font-mono transition-all flex items-center gap-2 shrink-0 ${
                           isCanonical
-                            ? 'bg-[rgba(0,201,141,0.12)] border-[#00C98D] text-[#00C98D] font-semibold'
+                            ? 'bg-success/15 border-success text-success font-semibold'
                             : isCompeting
                             ? 'bg-[rgba(245,158,11,0.12)] border-[#F59E0B] text-[#F59E0B] font-semibold'
                             : 'bg-[#090A0F] border-[#1C2430] text-[#A5AFBF]'
@@ -177,8 +177,8 @@ export const ForkTreeVisualizer: React.FC<ForkTreeVisualizerProps> = ({
 
                   {/* Active mining pulse indicator on active branches */}
                   {isRacing && (
-                    <div className="flex items-center gap-1 text-[10px] font-mono text-[#00C98D] px-2 py-0.5 bg-[rgba(0,201,141,0.1)] rounded border border-[rgba(0,201,141,0.3)] shrink-0">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#00C98D] animate-pulse" />
+                    <div className="flex items-center gap-1 text-[10px] font-mono text-teach-1 px-2 py-0.5 bg-teach-1/10 rounded border border-teach-1/30 shrink-0">
+                      <span className="w-1.5 h-1.5 rounded-full bg-teach-1 animate-pulse" />
                       <span>{isVi ? 'Đang mở rộng' : 'Mining next...'}</span>
                     </div>
                   )}
@@ -187,8 +187,8 @@ export const ForkTreeVisualizer: React.FC<ForkTreeVisualizerProps> = ({
                 {/* Branch Status Outcome Tag */}
                 <div className="min-w-[170px] flex justify-start lg:justify-end">
                   {isCanonical ? (
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[rgba(0,201,141,0.1)] border border-[#00C98D] text-[#00C98D] rounded-md text-xs font-mono font-semibold">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-[#00C98D]" />
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-success/10 border border-success text-success rounded-md text-xs font-mono font-semibold">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-success" />
                       <span>{isVi ? 'Chuỗi chính' : 'Canonical chain'}</span>
                     </span>
                   ) : isCompeting ? (

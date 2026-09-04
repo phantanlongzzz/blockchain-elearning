@@ -364,7 +364,7 @@ export const StakeDistributionBar: React.FC<StakeDistributionBarProps> = ({
             type="button"
             id="pos-proceed-to-step3-btn"
             onClick={onProceedToStep3}
-            className="px-5 py-2.5 rounded-lg bg-[#00C98D] hover:bg-[#00B982] text-[#090A0F] font-bold text-xs sm:text-sm shadow-sm flex items-center gap-2 transition-colors cursor-pointer ml-auto"
+ className="px-5 py-2.5 rounded-lg bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-bold text-xs sm:text-sm shadow-sm flex items-center gap-2 transition-colors cursor-pointer ml-auto"
           >
             <span>{isVi ? 'Tiếp tục: Ghi & Kiểm tra khối' : 'Continue: Verify Block'}</span>
             <ArrowRight className="w-4 h-4 text-[#090A0F]" />

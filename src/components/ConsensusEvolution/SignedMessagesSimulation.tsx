@@ -146,7 +146,7 @@ export const SignedMessagesSimulation: React.FC<SignedMessagesSimulationProps> =
                   </span>
                   <span
                     className={`text-[11px] font-medium ${
-                      verificationStatus === 'valid' ? 'text-emerald-400' : 'text-rose-400'
+                      verificationStatus === 'valid' ? 'text-success' : 'text-rose-400'
                     }`}
                   >
                     {verificationStatus === 'valid'
@@ -165,7 +165,7 @@ export const SignedMessagesSimulation: React.FC<SignedMessagesSimulationProps> =
           <div className="p-3.5 rounded-lg bg-[#080C10] border border-slate-800 flex items-center gap-3 text-xs">
             <span
               className={`w-2 h-2 rounded-full shrink-0 ${
-                verificationStatus === 'valid' ? 'bg-emerald-400' : 'bg-rose-400'
+                verificationStatus === 'valid' ? 'bg-success' : 'bg-rose-400'
               }`}
             />
             <div>
@@ -226,7 +226,7 @@ export const SignedMessagesSimulation: React.FC<SignedMessagesSimulationProps> =
               </div>
             </div>
 
-            <div className="p-3 rounded-lg bg-[#080C10] border border-emerald-500/20 text-slate-400 text-xs leading-relaxed">
+            <div className="p-3 rounded-lg bg-[#080C10] border border-border-secondary text-slate-400 text-xs leading-relaxed">
               <span className="font-medium text-emerald-400">
                 {isVi ? 'Đột phá của Nakamoto: ' : 'Nakamoto’s breakthrough: '}
               </span>
@@ -256,7 +256,7 @@ export const SignedMessagesSimulation: React.FC<SignedMessagesSimulationProps> =
           <button
             type="button"
             onClick={onNextStage}
-            className="px-5 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-medium text-xs flex items-center gap-2 transition-colors cursor-pointer"
+ className="px-5 py-2 rounded-lg bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-medium text-xs flex items-center gap-2 transition-colors cursor-pointer"
           >
             <span>{isVi ? 'Tiếp tục: Bằng chứng công việc' : 'Next: Proof of Work'}</span>
             <ArrowRight className="w-3.5 h-3.5" />

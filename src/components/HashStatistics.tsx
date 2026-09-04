@@ -21,9 +21,9 @@ export const HashStatistics: React.FC<HashStatisticsProps> = () => {
         ? 'Dù đầu vào là 1 ký tự hay 1 GB, đầu ra luôn đúng 256 bit (32 bytes · 64 hex).'
         : 'Uniform 256-bit output (32 bytes · 64 hex characters) regardless of input size.',
       icon: Binary,
-      color: 'text-emerald-400',
-      borderColor: 'border-emerald-500/30',
-      bgGlow: 'hover:border-emerald-400 hover:shadow-[0_0_20px_rgba(16,185,129,0.2)]',
+      color: 'text-text-secondary',
+      borderColor: 'border-border-primary',
+      bgGlow: 'hover:border-border-secondary',
     },
     {
       title: '2²⁵⁶',
@@ -34,9 +34,9 @@ export const HashStatistics: React.FC<HashStatisticsProps> = () => {
         ? 'Không gian mẫu khổng lồ vượt qua tổng số nguyên tử trong vũ trụ quan sát được.'
         : 'Colossal state space exceeding the total atoms in the observable universe.',
       icon: Database,
-      color: 'text-emerald-400',
-      borderColor: 'border-emerald-500/30',
-      bgGlow: 'hover:border-emerald-500/40',
+      color: 'text-text-secondary',
+      borderColor: 'border-border-primary',
+      bgGlow: 'hover:border-border-secondary',
     },
     {
       title: isVi ? 'MỘT CHIỀU' : 'ONE-WAY',
@@ -45,9 +45,9 @@ export const HashStatistics: React.FC<HashStatisticsProps> = () => {
         ? 'Dễ dàng tính mã băm từ dữ liệu, nhưng bất khả thi về mặt toán học để giải ngược lại.'
         : 'Computationally trivial to hash forward; practically impossible to reverse.',
       icon: Lock,
-      color: 'text-emerald-400',
-      borderColor: 'border-emerald-500/30',
-      bgGlow: 'hover:border-emerald-500/40',
+      color: 'text-text-secondary',
+      borderColor: 'border-border-primary',
+      bgGlow: 'hover:border-border-secondary',
     },
     {
       title: isVi ? 'KHÁNG VA CHẠM' : 'COLLISION-FREE',
@@ -56,9 +56,9 @@ export const HashStatistics: React.FC<HashStatisticsProps> = () => {
         ? 'Không thể tìm thấy hai thông điệp khác biệt có cùng một mã băm SHA-256 đầu ra.'
         : 'Infeasible to find two distinct inputs producing the identical SHA-256 digest.',
       icon: ShieldCheck,
-      color: 'text-emerald-400',
-      borderColor: 'border-emerald-500/30',
-      bgGlow: 'hover:border-emerald-500/40',
+      color: 'text-text-secondary',
+      borderColor: 'border-border-primary',
+      bgGlow: 'hover:border-border-secondary',
     },
   ];
 
@@ -83,7 +83,7 @@ export const HashStatistics: React.FC<HashStatisticsProps> = () => {
                 )}
               </span>
               <div className="p-2 rounded-lg bg-[#151B24] border border-[#1E2936]">
-                <Icon className="w-4 h-4 text-[#2DD4BF]" />
+                <Icon className={`w-4 h-4 ${stat.color}`} />
               </div>
             </div>
             <p className="text-xs font-semibold text-[#E6EAF0] font-sans mb-1">

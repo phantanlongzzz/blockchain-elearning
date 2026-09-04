@@ -627,7 +627,7 @@ export const InteractiveBlockHandsOnLab: React.FC<{
       <div className="p-5 sm:p-6 rounded-xl bg-[#0B0E12] border border-[#1C2430] space-y-4">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-1">
-            <div className="inline-flex items-center gap-2 text-xs font-semibold text-emerald-400">
+            <div className="inline-flex items-center gap-2 text-xs font-semibold text-teach-1">
               <FlaskConical className="w-4 h-4" />
               <span>
                 {isVi
@@ -656,7 +656,7 @@ export const InteractiveBlockHandsOnLab: React.FC<{
                 onClick={onSwitchToGuided}
                 className="px-3 py-1.5 rounded-md bg-[#10151D] hover:bg-[#161D27] border border-[#1C2430] text-[#A5AFBF] text-xs font-sans flex items-center gap-1.5 transition-colors cursor-pointer"
               >
-                <Boxes className="w-3.5 h-3.5 text-emerald-400" />
+                <Boxes className="w-3.5 h-3.5 text-teach-1" />
                 <span>{isVi ? 'Bài học lý thuyết' : 'Guided Lessons'}</span>
               </button>
             )}
@@ -685,7 +685,7 @@ export const InteractiveBlockHandsOnLab: React.FC<{
         <div
           className={`p-3.5 rounded-lg border flex items-start gap-3 transition-colors ${
             feedback.type === 'success'
-              ? 'bg-[#10151D] border-emerald-500/40 text-emerald-300'
+              ? 'bg-[#10151D] border-success/40 text-success'
               : feedback.type === 'error'
               ? 'bg-[#10151D] border-rose-500/40 text-rose-300'
               : feedback.type === 'warning'
@@ -694,13 +694,13 @@ export const InteractiveBlockHandsOnLab: React.FC<{
           }`}
         >
           {feedback.type === 'success' ? (
-            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+            <CheckCircle2 className="w-4 h-4 text-success shrink-0 mt-0.5" />
           ) : feedback.type === 'error' ? (
             <ShieldAlert className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
           ) : feedback.type === 'warning' ? (
             <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
           ) : (
-            <Info className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+            <Info className="w-4 h-4 text-info shrink-0 mt-0.5" />
           )}
           <div className="text-xs space-y-0.5 font-sans">
             <div className="font-semibold">{feedback.title}</div>
@@ -716,11 +716,11 @@ export const InteractiveBlockHandsOnLab: React.FC<{
           {/* CREATE TRANSACTION WORKBENCH */}
           <div className="p-5 rounded-xl bg-[#0B0E12] border border-[#1C2430] space-y-4">
             <div className="flex items-center justify-between pb-2.5 border-b border-[#1C2430]">
-              <div className="flex items-center gap-2 text-emerald-400 text-xs font-semibold uppercase font-sans">
+              <div className="flex items-center gap-2 text-teach-1 text-xs font-semibold uppercase font-sans">
                 <FileCode className="w-4 h-4" />
                 <span>{isVi ? 'Tạo Giao Dịch Mới' : 'Create Transaction'}</span>
               </div>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-teach-1/10 text-teach-1 border border-teach-1/30">
                 TX CREATOR
               </span>
             </div>
@@ -737,7 +737,7 @@ export const InteractiveBlockHandsOnLab: React.FC<{
                     id="input-tx-sender"
                     value={sender}
                     onChange={(e) => setSender(e.target.value)}
-                    className="w-full px-3 py-1.5 rounded-md bg-[#10151D] border border-[#1C2430] text-white font-mono text-xs focus:border-emerald-500 focus:outline-none"
+                    className="w-full px-3 py-1.5 rounded-md bg-[#10151D] border border-[#1C2430] text-white font-mono text-xs focus:border-teach-1 focus:outline-none"
                     placeholder="Alice"
                   />
                   <div className="flex gap-1 pt-1">
@@ -763,7 +763,7 @@ export const InteractiveBlockHandsOnLab: React.FC<{
                     id="input-tx-recipient"
                     value={recipient}
                     onChange={(e) => setRecipient(e.target.value)}
-                    className="w-full px-3 py-1.5 rounded-md bg-[#10151D] border border-[#1C2430] text-white font-mono text-xs focus:border-emerald-500 focus:outline-none"
+                    className="w-full px-3 py-1.5 rounded-md bg-[#10151D] border border-[#1C2430] text-white font-mono text-xs focus:border-teach-1 focus:outline-none"
                     placeholder="Bob"
                   />
                   <div className="flex gap-1 pt-1">
@@ -793,7 +793,7 @@ export const InteractiveBlockHandsOnLab: React.FC<{
                     min={0.001}
                     step={0.5}
                     onChange={(e) => setAmount(Number(e.target.value))}
-                    className="w-full px-3 py-1.5 rounded-md bg-[#10151D] border border-[#1C2430] text-white font-mono text-xs focus:border-emerald-500 focus:outline-none"
+                    className="w-full px-3 py-1.5 rounded-md bg-[#10151D] border border-[#1C2430] text-white font-mono text-xs focus:border-teach-1 focus:outline-none"
                   />
                 </div>
 
@@ -806,7 +806,7 @@ export const InteractiveBlockHandsOnLab: React.FC<{
                     id="input-tx-message"
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    className="w-full px-3 py-1.5 rounded-md bg-[#10151D] border border-[#1C2430] text-white font-sans text-xs focus:border-emerald-500 focus:outline-none"
+                    className="w-full px-3 py-1.5 rounded-md bg-[#10151D] border border-[#1C2430] text-white font-sans text-xs focus:border-teach-1 focus:outline-none"
                     placeholder="Payment for research"
                   />
                 </div>
@@ -817,7 +817,7 @@ export const InteractiveBlockHandsOnLab: React.FC<{
                   type="button"
                   id="btn-create-tx-action"
                   onClick={handleCreateTransaction}
-                  className="w-full py-2 rounded-md bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-sans text-xs font-semibold transition-colors cursor-pointer flex items-center justify-center gap-2 shadow-sm"
+ className="w-full py-2 rounded-md bg-financial hover:bg-financial/90 text-black font-semibold font-sans text-xs font-semibold transition-colors cursor-pointer flex items-center justify-center gap-2 shadow-sm"
                 >
                   <span>{isVi ? '+ Tạo Giao Dịch' : '+ Create Transaction'}</span>
                 </button>
@@ -827,7 +827,7 @@ export const InteractiveBlockHandsOnLab: React.FC<{
               <div className="p-3 rounded-lg bg-[#10151D] border border-[#1C2430] space-y-2">
                 <div className="text-[10px] font-sans uppercase text-[#A5AFBF] flex items-center justify-between">
                   <span>{isVi ? 'Quy trình tạo:' : 'Pipeline:'}</span>
-                  <span className="text-emerald-400 font-semibold">
+                  <span className="text-teach-1 font-semibold">
                     {pipelineStep === 'idle'
                       ? (isVi ? 'SẴN SÀNG' : 'IDLE')
                       : pipelineStep === 'validating'
@@ -844,7 +844,7 @@ export const InteractiveBlockHandsOnLab: React.FC<{
                   <div
                     className={`p-1.5 rounded border transition-colors ${
                       pipelineStep !== 'idle'
-                        ? 'bg-emerald-500/10 border-emerald-500/40 text-emerald-300'
+                        ? 'bg-teach-1/10 border-teach-1/40 text-teach-1'
                         : 'bg-[#10151D] border-[#1C2430] text-[#717B8C]'
                     }`}
                   >
@@ -857,7 +857,7 @@ export const InteractiveBlockHandsOnLab: React.FC<{
                       pipelineStep === 'ready-to-sign' ||
                       pipelineStep === 'signing' ||
                       pipelineStep === 'signed'
-                        ? 'bg-emerald-500/10 border-emerald-500/40 text-emerald-300'
+                        ? 'bg-teach-1/10 border-teach-1/40 text-teach-1'
                         : 'bg-[#10151D] border-[#1C2430] text-[#717B8C]'
                     }`}
                   >
@@ -869,7 +869,7 @@ export const InteractiveBlockHandsOnLab: React.FC<{
                       pipelineStep === 'ready-to-sign' ||
                       pipelineStep === 'signing' ||
                       pipelineStep === 'signed'
-                        ? 'bg-emerald-500/10 border-emerald-500/40 text-emerald-300'
+                        ? 'bg-teach-1/10 border-teach-1/40 text-teach-1'
                         : 'bg-[#10151D] border-[#1C2430] text-[#717B8C]'
                     }`}
                   >
@@ -878,7 +878,7 @@ export const InteractiveBlockHandsOnLab: React.FC<{
                   <div
                     className={`p-1.5 rounded border transition-colors ${
                       pipelineStep === 'signed'
-                        ? 'bg-emerald-500 text-slate-950 font-semibold'
+                        ? 'bg-success text-slate-950 font-semibold'
                         : 'bg-[#10151D] border-[#1C2430] text-[#717B8C]'
                     }`}
                   >
@@ -892,11 +892,11 @@ export const InteractiveBlockHandsOnLab: React.FC<{
           {/* DIGITAL SIGNATURE WORKBENCH */}
           <div className="p-5 rounded-xl bg-[#0B0E12] border border-[#1C2430] space-y-4">
             <div className="flex items-center justify-between pb-2.5 border-b border-[#1C2430]">
-              <div className="flex items-center gap-2 text-emerald-400 text-xs font-semibold uppercase font-sans">
+              <div className="flex items-center gap-2 text-teach-2 text-xs font-semibold uppercase font-sans">
                 <KeyRound className="w-4 h-4" />
                 <span>{isVi ? 'Chữ Ký Điện Tử' : 'Digital Signature'}</span>
               </div>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/30">
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-teach-2/10 text-teach-2 border border-teach-2/30">
                 ECDSA / SECP256K1
               </span>
             </div>
@@ -907,7 +907,7 @@ export const InteractiveBlockHandsOnLab: React.FC<{
                 <span className="font-semibold text-white">
                   {currentSelectedTx.sender} → {currentSelectedTx.recipient}
                 </span>
-                <span className="font-semibold text-emerald-400">
+                <span className="font-semibold text-financial">
                   {currentSelectedTx.amount} BTC
                 </span>
               </div>
@@ -921,7 +921,7 @@ export const InteractiveBlockHandsOnLab: React.FC<{
               <div className="space-y-1.5 pt-1 text-[11px] font-mono">
                 <div className="flex items-center justify-between">
                   <span className="text-[#717B8C] font-sans">TX Hash:</span>
-                  <span className="text-emerald-400 font-medium">
+                  <span className="text-teach-1 font-medium">
                     {currentSelectedTx.txHash
                       ? `${currentSelectedTx.txHash.slice(0, 8)}...${currentSelectedTx.txHash.slice(-6)}`
                       : 'Computing...'}
@@ -942,7 +942,7 @@ export const InteractiveBlockHandsOnLab: React.FC<{
                       currentSelectedTx.isSigned
                         ? currentSelectedTx.isTampered
                           ? 'text-rose-400'
-                          : 'text-emerald-400'
+                          : 'text-success'
                         : 'text-[#717B8C] font-sans'
                     }`}
                   >
@@ -967,8 +967,8 @@ export const InteractiveBlockHandsOnLab: React.FC<{
                     </span>
                   </div>
                 ) : currentSelectedTx.isSigned ? (
-                  <div className="p-2 rounded-md bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-[11px] font-sans flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <div className="p-2 rounded-md bg-success/10 border border-success/30 text-success text-[11px] font-sans flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-success shrink-0" />
                     <span>
                       {isVi
                         ? 'Chữ ký hợp lệ: Xác thực chính chủ 100%'
@@ -994,7 +994,7 @@ export const InteractiveBlockHandsOnLab: React.FC<{
                 type="button"
                 id="btn-sign-tx-action"
                 onClick={handleSignTransaction}
-                className="py-2 px-3 rounded-md bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-sans text-xs font-semibold transition-colors cursor-pointer flex items-center justify-center gap-1.5 shadow-sm"
+ className="py-2 px-3 rounded-md bg-financial hover:bg-financial/90 text-black font-semibold font-sans text-xs font-semibold transition-colors cursor-pointer flex items-center justify-center gap-1.5 shadow-sm"
               >
                 <Lock className="w-3.5 h-3.5" />
                 <span>{isVi ? 'Ký Giao Dịch' : 'Sign TX'}</span>
@@ -1006,7 +1006,7 @@ export const InteractiveBlockHandsOnLab: React.FC<{
                 onClick={handleVerifySignature}
                 className="py-2 px-3 rounded-md bg-[#10151D] hover:bg-[#161D27] text-slate-200 font-sans text-xs font-semibold transition-colors cursor-pointer flex items-center justify-center gap-1.5 border border-[#1C2430]"
               >
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                <ShieldCheck className="w-3.5 h-3.5 text-success" />
                 <span>{isVi ? 'Xác Minh' : 'Verify'}</span>
               </button>
             </div>
@@ -1060,7 +1060,7 @@ export const InteractiveBlockHandsOnLab: React.FC<{
                     <div className="text-[11px] truncate mt-1 text-slate-300">
                       {tx.sender} → {tx.recipient}
                     </div>
-                    <div className="text-[10px] font-semibold text-emerald-400 font-mono">
+                    <div className="text-[10px] font-semibold text-financial font-mono">
                       {tx.amount} BTC
                     </div>
                   </button>
@@ -1078,7 +1078,7 @@ export const InteractiveBlockHandsOnLab: React.FC<{
 
                 <div className="grid grid-cols-2 gap-2 text-[10px] pt-1">
                   <div className="p-2 rounded bg-[#0B0E12] border border-[#1C2430] space-y-1">
-                    <div className="text-emerald-400 font-semibold font-sans">TRƯỚC (BEFORE)</div>
+                    <div className="text-teach-1 font-semibold font-sans">TRƯỚC (BEFORE)</div>
                     <div className="text-[#A5AFBF]">TX: {beforeAfterDiff.originalTxHash.slice(0, 6)}...</div>
                     <div className="text-[#A5AFBF]">Root: {beforeAfterDiff.originalMerkleRoot.slice(0, 6)}...</div>
                     <div className="text-[#A5AFBF]">Block: {beforeAfterDiff.originalBlockHash.slice(0, 6)}...</div>
@@ -1099,10 +1099,10 @@ export const InteractiveBlockHandsOnLab: React.FC<{
           <div className="p-5 rounded-xl bg-[#0B0E12] border border-[#1C2430] space-y-4">
             <div className="flex items-center justify-between pb-2.5 border-b border-[#1C2430]">
               <div className="flex items-center gap-2 text-slate-200 text-xs font-semibold uppercase font-sans">
-                <Clock className="w-4 h-4 text-emerald-400" />
+                <Clock className="w-4 h-4 text-teach-1" />
                 <span>{isVi ? 'Siêu Dữ Liệu Header' : 'Header Metadata'}</span>
               </div>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-teach-1/10 text-teach-1 border border-teach-1/30">
                 HEADER TUNING
               </span>
             </div>
@@ -1131,7 +1131,7 @@ export const InteractiveBlockHandsOnLab: React.FC<{
             <div className="space-y-1.5 pt-1">
               <label className="text-[11px] font-sans text-[#A5AFBF] flex items-center justify-between">
                 <span>{isVi ? 'Previous Hash (Mắt xích khối trước):' : 'Previous Hash:'}</span>
-                <span className={isChainLinkValid ? 'text-emerald-400 font-mono text-xs font-semibold' : 'text-rose-400 font-mono text-xs font-semibold'}>
+                <span className={isChainLinkValid ? 'text-success font-mono text-xs font-semibold' : 'text-rose-400 font-mono text-xs font-semibold'}>
                   {isChainLinkValid ? '✓ LINKED' : '❌ BROKEN'}
                 </span>
               </label>
@@ -1141,7 +1141,7 @@ export const InteractiveBlockHandsOnLab: React.FC<{
                   onClick={() => handleTogglePrevHash(false)}
                   className={`flex-1 py-1.5 px-2 rounded-md font-sans text-xs transition-colors cursor-pointer ${
                     isChainLinkValid
-                      ? 'bg-emerald-500/10 border border-emerald-500/40 text-emerald-300 font-medium'
+                      ? 'bg-success/10 border border-success/40 text-success font-medium'
                       : 'bg-[#10151D] border border-[#1C2430] text-[#A5AFBF]'
                   }`}
                 >
@@ -1165,20 +1165,20 @@ export const InteractiveBlockHandsOnLab: React.FC<{
             <div className="space-y-1.5 pt-1">
               <label className="text-[11px] font-sans text-[#A5AFBF] flex items-center justify-between">
                 <span>{isVi ? 'Nonce:' : 'Nonce:'}</span>
-                <span className="text-emerald-400 font-mono font-semibold">{nonce}</span>
+                <span className="text-teach-1 font-mono font-semibold">{nonce}</span>
               </label>
               <div className="flex gap-2">
                 <input
                   type="number"
                   value={nonce}
                   onChange={(e) => setNonce(Number(e.target.value))}
-                  className="w-28 px-3 py-1.5 rounded-md bg-[#10151D] border border-[#1C2430] text-white font-mono text-xs focus:border-emerald-500 focus:outline-none"
+                  className="w-28 px-3 py-1.5 rounded-md bg-[#10151D] border border-[#1C2430] text-white font-mono text-xs focus:border-teach-1 focus:outline-none"
                 />
                 <button
                   type="button"
                   onClick={handleFindValidNonce}
                   disabled={isMining}
-                  className="flex-1 py-1.5 px-3 rounded-md bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-sans text-xs font-semibold flex items-center justify-center gap-1.5 shadow-sm cursor-pointer disabled:opacity-50 transition-colors"
+ className="flex-1 py-1.5 px-3 rounded-md bg-financial hover:bg-financial/90 text-black font-semibold font-sans text-xs font-semibold flex items-center justify-center gap-1.5 shadow-sm cursor-pointer disabled:opacity-50 transition-colors"
                 >
                   <Cpu className={`w-3.5 h-3.5 ${isMining ? 'animate-spin' : ''}`} />
                   <span>
@@ -1202,8 +1202,8 @@ export const InteractiveBlockHandsOnLab: React.FC<{
         <div className="lg:col-span-7 space-y-5">
           {/* CRYPTOGRAPHIC DATA STREAM BAR */}
           <div className="p-3.5 rounded-xl bg-[#0B0E12] border border-[#1C2430] flex items-center justify-between gap-3 font-mono text-xs">
-            <div className="flex items-center gap-2 text-emerald-400">
-              <Terminal className="w-4 h-4 text-emerald-400" />
+            <div className="flex items-center gap-2 text-teach-1">
+              <Terminal className="w-4 h-4 text-teach-1" />
               <span className="text-[11px] font-semibold uppercase font-sans">
                 {isComputingHash
                   ? (isVi ? 'Đang tính bản băm (Hashing)...' : 'Hash Computing...')
@@ -1226,13 +1226,13 @@ export const InteractiveBlockHandsOnLab: React.FC<{
             {/* Block Header Title Bar */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-[#1C2430]">
               <div className="flex items-center gap-2.5">
-                <Boxes className="w-5 h-5 text-emerald-400" />
+                <Boxes className="w-5 h-5 text-teach-1" />
                 <h4 className="text-base font-semibold text-white font-sans flex items-center gap-2">
                   <span>BLOCK #{blockNumber}</span>
                   <span
                     className={`text-[10px] px-2 py-0.5 rounded font-semibold uppercase ${
                       isBlockValid
-                        ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'
+                        ? 'bg-success/10 text-success border border-success/30'
                         : 'bg-rose-500/10 text-rose-300 border border-rose-500/30'
                     }`}
                   >
@@ -1254,13 +1254,13 @@ export const InteractiveBlockHandsOnLab: React.FC<{
                 highlightedComponent === 'header' ||
                 highlightedComponent === 'merkleRoot' ||
                 highlightedComponent === 'prevHash'
-                  ? 'border-emerald-500/60'
+                  ? 'border-teach-1/60'
                   : 'border-[#1C2430]'
               }`}
             >
               <div className="flex items-center justify-between pb-2 mb-3 border-b border-[#1C2430]">
                 <span className="text-[11px] font-semibold text-slate-200 uppercase flex items-center gap-1.5 font-sans">
-                  <Layers className="w-3.5 h-3.5 text-emerald-400" />
+                  <Layers className="w-3.5 h-3.5 text-teach-1" />
                   <span>BLOCK HEADER (~80 Bytes)</span>
                 </span>
                 <span className="text-[10px] font-mono text-[#717B8C]">Metadata Layer</span>
@@ -1273,7 +1273,7 @@ export const InteractiveBlockHandsOnLab: React.FC<{
                   onMouseLeave={() => setHighlightedComponent(null)}
                   className={`p-2.5 rounded-lg bg-[#0B0E12] border transition-colors cursor-pointer ${
                     highlightedComponent === 'prevHash'
-                      ? 'border-emerald-500 text-emerald-300'
+                      ? 'border-teach-1 text-teach-1'
                       : isChainLinkValid
                       ? 'border-[#1C2430] text-slate-300'
                       : 'border-rose-500/40 text-rose-300'
@@ -1282,7 +1282,7 @@ export const InteractiveBlockHandsOnLab: React.FC<{
                   <div className="text-[10px] text-[#717B8C] uppercase flex items-center justify-between font-sans">
                     <span>Previous Hash</span>
                     {isChainLinkValid ? (
-                      <Check className="w-3 h-3 text-emerald-400" />
+                      <Check className="w-3 h-3 text-success" />
                     ) : (
                       <XCircle className="w-3 h-3 text-rose-400" />
                     )}
@@ -1298,7 +1298,7 @@ export const InteractiveBlockHandsOnLab: React.FC<{
                   onMouseLeave={() => setHighlightedComponent(null)}
                   className={`p-2.5 rounded-lg bg-[#0B0E12] border transition-colors cursor-pointer ${
                     highlightedComponent === 'merkleRoot'
-                      ? 'border-emerald-500 text-emerald-300'
+                      ? 'border-teach-3 text-teach-3'
                       : hasTamperedTx
                       ? 'border-rose-500/40 text-rose-300'
                       : 'border-[#1C2430] text-slate-300'
@@ -1306,9 +1306,9 @@ export const InteractiveBlockHandsOnLab: React.FC<{
                 >
                   <div className="text-[10px] text-[#717B8C] uppercase flex items-center justify-between font-sans">
                     <span>Merkle Root</span>
-                    <GitFork className="w-3 h-3 text-emerald-400" />
+                    <GitFork className="w-3 h-3 text-teach-3" />
                   </div>
-                  <div className="truncate font-medium mt-0.5 text-emerald-300">
+                  <div className="truncate font-medium mt-0.5 text-teach-3">
                     {merkleTree.root.slice(0, 14)}...{merkleTree.root.slice(-10)}
                   </div>
                 </div>
@@ -1334,7 +1334,7 @@ export const InteractiveBlockHandsOnLab: React.FC<{
                 <div
                   className={`px-3 py-1.5 rounded-md font-mono text-xs font-semibold truncate max-w-full sm:max-w-md ${
                     isBlockValid
-                      ? 'bg-emerald-500/10 border border-emerald-500/30 text-emerald-300'
+                      ? 'bg-success/10 border border-success/30 text-success'
                       : 'bg-rose-500/10 border border-rose-500/30 text-rose-300'
                   }`}
                 >
@@ -1347,7 +1347,7 @@ export const InteractiveBlockHandsOnLab: React.FC<{
             <div className="p-4 rounded-lg bg-[#10151D] border border-[#1C2430] space-y-4">
               <div className="flex items-center justify-between pb-2 border-b border-[#1C2430]">
                 <span className="text-[11px] font-semibold text-slate-200 uppercase flex items-center gap-1.5 font-sans">
-                  <GitFork className="w-3.5 h-3.5 text-emerald-400" />
+                  <GitFork className="w-3.5 h-3.5 text-teach-3" />
                   <span>Cây Merkle Tự Động (Merkle Tree)</span>
                 </span>
                 <span className="text-[10px] font-mono text-[#717B8C]">
@@ -1365,13 +1365,13 @@ export const InteractiveBlockHandsOnLab: React.FC<{
                     className={`p-3 rounded-lg border text-center transition-colors max-w-md w-full cursor-pointer ${
                       hasTamperedTx
                         ? 'bg-rose-500/10 border-rose-500/40 text-rose-200'
-                        : 'bg-[#0B0E12] border-emerald-500/40 text-emerald-300'
+                        : 'bg-[#0B0E12] border-teach-3/40 text-teach-3'
                     }`}
                   >
                     <div className="text-[10px] uppercase font-semibold text-[#A5AFBF] font-sans">
                       MERKLE ROOT (Level 2)
                     </div>
-                    <div className="font-semibold text-xs truncate mt-0.5 text-emerald-300">
+                    <div className="font-semibold text-xs truncate mt-0.5 text-teach-3">
                       {merkleTree.root}
                     </div>
                   </div>
@@ -1425,7 +1425,7 @@ export const InteractiveBlockHandsOnLab: React.FC<{
                       onClick={() => setSelectedTxId(tx.id)}
                       className={`p-2 rounded-lg border font-mono text-[11px] cursor-pointer transition-colors ${
                         selectedTxId === tx.id
-                          ? 'border-emerald-500 bg-emerald-500/10 text-emerald-200'
+                          ? 'border-teach-1 bg-teach-1/10 text-teach-1'
                           : tx.isTampered
                           ? 'bg-rose-500/10 border-rose-500/40 text-rose-300'
                           : 'bg-[#0B0E12] border-[#1C2430] text-[#717B8C] hover:border-[#2D3748]'
@@ -1436,7 +1436,7 @@ export const InteractiveBlockHandsOnLab: React.FC<{
                         {tx.isTampered ? (
                           <span className="text-rose-400">TAMPER</span>
                         ) : tx.isSigned ? (
-                          <span className="text-emerald-400">SIGNED</span>
+                          <span className="text-success">SIGNED</span>
                         ) : (
                           <span className="text-[#717B8C]">RAW</span>
                         )}
@@ -1444,7 +1444,7 @@ export const InteractiveBlockHandsOnLab: React.FC<{
                       <div className="truncate text-white font-medium mt-1 font-sans">
                         {tx.sender} → {tx.recipient}
                       </div>
-                      <div className="text-[10px] text-white font-mono font-semibold">
+                      <div className="text-[10px] text-financial font-mono font-semibold">
                         {tx.amount} BTC
                       </div>
                       <div className="text-[9px] text-[#717B8C] truncate mt-1">
@@ -1476,7 +1476,7 @@ export const InteractiveBlockHandsOnLab: React.FC<{
                     onClick={() => setSelectedTxId(tx.id)}
                     className={`p-3 rounded-lg border transition-colors cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                       selectedTxId === tx.id
-                        ? 'border-emerald-500 bg-emerald-500/10'
+                        ? 'border-teach-1 bg-teach-1/10'
                         : tx.isTampered
                         ? 'border-rose-500/40 bg-rose-500/10'
                         : 'border-[#1C2430] bg-[#0B0E12] hover:border-[#2D3748]'
@@ -1491,7 +1491,7 @@ export const InteractiveBlockHandsOnLab: React.FC<{
                           <span>
                             {tx.sender} → {tx.recipient}
                           </span>
-                          <span className="text-white font-mono font-semibold">{tx.amount} BTC</span>
+                          <span className="text-financial font-mono font-semibold">{tx.amount} BTC</span>
                         </div>
                         <div className="text-[11px] text-[#A5AFBF] truncate max-w-xs font-sans">
                           "{tx.message}"
@@ -1505,7 +1505,7 @@ export const InteractiveBlockHandsOnLab: React.FC<{
                           TAMPERED
                         </span>
                       ) : tx.isSigned ? (
-                        <span className="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/30">
+                        <span className="px-2 py-0.5 rounded bg-success/10 text-success border border-success/30">
                           SIGNED
                         </span>
                       ) : (

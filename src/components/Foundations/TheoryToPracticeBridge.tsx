@@ -24,9 +24,9 @@ export const TheoryToPracticeBridge: React.FC = () => {
       href: '#hash-generator',
       title: strings.foundations.theoryToPractice.labSha256Title,
       description: strings.foundations.theoryToPractice.labSha256Desc,
-      icon: <Binary className="w-5 h-5 text-emerald-400" />,
+      icon: <Binary className="w-5 h-5 text-text-muted" />,
       badge: 'NIST FIPS 180-4',
-      badgeColor: 'bg-emerald-500/10 text-emerald-300 border-emerald-500/30',
+      badgeColor: 'bg-white/[0.04] text-text-primary border-border-primary',
       difficulty: language === 'vi' ? 'Cơ bản · 64 vòng lặp' : 'Foundational · 64 Rounds',
     },
     {
@@ -34,9 +34,9 @@ export const TheoryToPracticeBridge: React.FC = () => {
       href: '#transactions',
       title: strings.foundations.theoryToPractice.labTxTitle,
       description: strings.foundations.theoryToPractice.labTxDesc,
-      icon: <KeyRound className="w-5 h-5 text-emerald-400" />,
+      icon: <KeyRound className="w-5 h-5 text-text-muted" />,
       badge: 'SECP256k1 ECDSA',
-      badgeColor: 'bg-emerald-500/10 text-emerald-300 border-emerald-500/30',
+      badgeColor: 'bg-white/[0.04] text-text-primary border-border-primary',
       difficulty: language === 'vi' ? 'Nâng cao · Ký số số hóa' : 'Advanced · Digital Signatures',
     },
     {
@@ -54,9 +54,9 @@ export const TheoryToPracticeBridge: React.FC = () => {
       href: '#blockchain',
       title: strings.foundations.theoryToPractice.labBlockchainTitle,
       description: strings.foundations.theoryToPractice.labBlockchainDesc,
-      icon: <Boxes className="w-5 h-5 text-emerald-400" />,
+      icon: <Boxes className="w-5 h-5 text-text-muted" />,
       badge: 'Immutable Ledger',
-      badgeColor: 'bg-emerald-500/10 text-emerald-300 border-emerald-500/30',
+      badgeColor: 'bg-white/[0.04] text-text-primary border-border-primary',
       difficulty: language === 'vi' ? 'Toàn cảnh · Chuỗi khối' : 'Comprehensive · Distributed Ledger',
     },
     {
@@ -74,9 +74,9 @@ export const TheoryToPracticeBridge: React.FC = () => {
       href: '#proof-of-stake',
       title: strings.foundations.theoryToPractice.labPosTitle,
       description: strings.foundations.theoryToPractice.labPosDesc,
-      icon: <Coins className="w-5 h-5 text-emerald-400" />,
+      icon: <Coins className="w-5 h-5 text-text-muted" />,
       badge: 'Casper & Slashing',
-      badgeColor: 'bg-emerald-500/10 text-emerald-300 border-emerald-500/30',
+      badgeColor: 'bg-white/[0.04] text-text-primary border-border-primary',
       difficulty: language === 'vi' ? 'Hiện đại · Đặt cọc xác thực' : 'Modern · Validator Staking',
     },
   ];
@@ -84,7 +84,7 @@ export const TheoryToPracticeBridge: React.FC = () => {
   return (
     <div className="space-y-8 animate-in fade-in duration-300">
       {/* Header */}
-      <div className="p-5 rounded-2xl bg-[#0B0E12] border border-emerald-500/30 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="p-5 rounded-2xl bg-[#0B0E12] border border-border-primary flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 text-emerald-400 text-xs font-mono font-bold uppercase tracking-wider mb-1">
             <GraduationCap className="w-4 h-4" />
@@ -100,7 +100,7 @@ export const TheoryToPracticeBridge: React.FC = () => {
 
         <a
           href="#quiz-section"
-          className="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold font-mono text-xs flex items-center gap-2 transition-all shrink-0 cursor-pointer shadow-lg shadow-emerald-950/30 self-start md:self-auto"
+ className="px-4 py-2 rounded-xl bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-bold font-mono text-xs flex items-center gap-2 transition-all shrink-0 cursor-pointer shadow-lg self-start md:self-auto"
         >
           <FileCheck2 className="w-4 h-4" />
           <span>{language === 'vi' ? 'Làm Bài Đánh Giá Buổi 1' : 'Take Lesson 1 Quiz'}</span>
@@ -111,7 +111,7 @@ export const TheoryToPracticeBridge: React.FC = () => {
       <div className="p-6 rounded-2xl bg-[#090d16] border border-slate-800 space-y-6">
         <div>
           <h4 className="text-sm font-bold text-white font-mono flex items-center gap-2">
-            <Layers className="w-4 h-4 text-emerald-400" />
+            <Layers className="w-4 h-4 text-text-muted" />
             <span>{strings.foundations.theoryToPractice.roadmapTitle}</span>
           </h4>
           <p className="text-xs text-slate-400 mt-1">
@@ -142,7 +142,7 @@ export const TheoryToPracticeBridge: React.FC = () => {
 
               <div className="pt-3 mt-3 border-t border-slate-800/80 text-[11px] font-mono text-slate-500 flex items-center justify-between">
                 <span>Phase 0{step.step}</span>
-                <ArrowRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-emerald-400 group-hover:translate-x-0.5 transition-all" />
+                <ArrowRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-text-primary group-hover:translate-x-0.5 transition-all" />
               </div>
             </div>
           ))}
@@ -153,7 +153,7 @@ export const TheoryToPracticeBridge: React.FC = () => {
       <div className="space-y-4">
         <div>
           <h4 className="text-sm font-bold text-white font-mono flex items-center gap-2">
-            <Cpu className="w-4 h-4 text-emerald-400" />
+            <Cpu className="w-4 h-4 text-text-muted" />
             <span>{strings.foundations.theoryToPractice.labsTitle}</span>
           </h4>
           <p className="text-xs text-slate-400 mt-1">
@@ -166,11 +166,11 @@ export const TheoryToPracticeBridge: React.FC = () => {
             <a
               key={lab.id}
               href={lab.href}
-              className="p-5 rounded-2xl bg-[#090d16] border border-slate-800 hover:border-emerald-500/50 hover:bg-slate-900/60 transition-all flex flex-col justify-between group shadow-lg cursor-pointer"
+              className="p-5 rounded-2xl bg-[#090d16] border border-slate-800 hover:border-border-primary hover:bg-white/[0.02] transition-all flex flex-col justify-between group shadow-lg cursor-pointer"
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <div className="p-2.5 rounded-xl bg-black/40 border border-slate-800 group-hover:border-emerald-500/40 transition-colors">
+                  <div className="p-2.5 rounded-xl bg-black/40 border border-slate-800 group-hover:border-border-primary transition-colors">
                     {lab.icon}
                   </div>
                   <span

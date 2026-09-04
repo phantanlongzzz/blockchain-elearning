@@ -47,7 +47,7 @@ export const ExperimentParametersModal: React.FC<ExperimentParametersModalProps>
         {/* Header */}
         <div className="flex items-center justify-between pb-3 border-b border-[#1E293B]">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+            <div className="w-8 h-8 rounded-lg bg-bg-elevated border border-border-primary flex items-center justify-center text-text-secondary">
               <FlaskConical className="w-4 h-4" />
             </div>
             <div>
@@ -122,7 +122,7 @@ export const ExperimentParametersModal: React.FC<ExperimentParametersModalProps>
 
         {/* Last Experiment Summary if any */}
         {lastExperimentSummary && (
-          <div className="p-3.5 rounded-xl bg-[#111827] border border-emerald-500/30 text-xs font-mono space-y-1.5">
+          <div className="p-3.5 rounded-xl bg-[#111827] border border-border-primary text-xs font-mono space-y-1.5">
             <span className="text-[10px] uppercase text-emerald-400 font-bold block">
               {language === 'vi' ? 'KẾT QUẢ THÍ NGHIỆM GẦN NHẤT:' : 'LATEST EXPERIMENT RESULT:'}
             </span>

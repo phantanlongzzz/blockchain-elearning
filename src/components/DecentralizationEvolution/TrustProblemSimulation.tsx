@@ -96,10 +96,10 @@ export const TrustProblemSimulation: React.FC<TrustProblemSimulationProps> = ({
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="p-6 rounded-2xl bg-[#0B0E12] border border-emerald-500/20 shadow-2xl">
+      <div className="p-6 rounded-2xl bg-[#0B0E12] border border-border-primary shadow-2xl">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-1.5">
-            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold uppercase">
+            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-white/[0.04] border border-border-primary text-text-primary text-xs font-mono font-bold uppercase">
               <ShieldAlert className="w-3.5 h-3.5" />
               <span>{language === 'vi' ? 'PHẦN 02 · NGHỊCH LÝ NIỀM TIN' : 'PART 02 · THE TRUST PARADOX'}</span>
             </div>
@@ -141,7 +141,7 @@ export const TrustProblemSimulation: React.FC<TrustProblemSimulationProps> = ({
               onClick={s.action}
               className={`p-3 rounded-xl border text-left transition-all duration-200 cursor-pointer flex flex-col justify-between ${
                 step === s.num
-                  ? 'bg-emerald-950/40 border-emerald-500 text-emerald-300 ring-2 ring-emerald-500/20'
+                  ? 'bg-white/[0.06] border-border-primary text-text-primary ring-1 ring-white/10'
                   : step > s.num
                   ? 'bg-slate-950/60 border-slate-800 text-slate-400'
                   : 'bg-[#05070c] border-slate-900 text-slate-600'
@@ -151,7 +151,7 @@ export const TrustProblemSimulation: React.FC<TrustProblemSimulationProps> = ({
                 <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-slate-900">
                   BƯỚC 0{s.num}
                 </span>
-                {step > s.num && <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />}
+                {step > s.num && <CheckCircle2 className="w-3.5 h-3.5 text-success" />}
               </div>
               <span className="text-xs font-mono font-bold mt-2">{s.title[language]}</span>
             </button>
@@ -192,7 +192,7 @@ export const TrustProblemSimulation: React.FC<TrustProblemSimulationProps> = ({
                     <span>{language === 'vi' ? 'ĐÃ PHÁT HÀNH KHỐNG' : 'OVER-ISSUED'}</span>
                   </span>
                 ) : (
-                  <span className="px-2 py-1 rounded bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-xs font-bold flex items-center gap-1">
+                  <span className="px-2 py-1 rounded bg-white/[0.04] border border-border-primary text-text-primary text-xs font-bold flex items-center gap-1">
                     <CheckCircle2 className="w-3.5 h-3.5" />
                     <span>{language === 'vi' ? 'DỰ TRỮ 100%' : '100% BACKED'}</span>
                   </span>
@@ -212,7 +212,7 @@ export const TrustProblemSimulation: React.FC<TrustProblemSimulationProps> = ({
 
               <div className="p-3 rounded-lg bg-[#070b14] border border-slate-800">
                 <div className="text-[10px] font-mono text-slate-500 flex items-center gap-1">
-                  <FileText className="w-3 h-3 text-emerald-400" />
+                  <FileText className="w-3 h-3 text-text-muted" />
                   <span>{language === 'vi' ? 'TỔNG CHỨNG CHỈ ĐÃ IN' : 'TOTAL CERTIFICATES'}</span>
                 </div>
                 <div className={`text-lg font-bold font-mono mt-1 ${
@@ -309,7 +309,7 @@ export const TrustProblemSimulation: React.FC<TrustProblemSimulationProps> = ({
                     else if (step === 2) handleStep3();
                     else if (step === 3) handleStep4();
                   }}
-                  className="px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black font-mono text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-md transition-all"
+ className="px-4 py-2 rounded-lg bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-mono text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-md transition-all"
                 >
                   <span>{language === 'vi' ? 'Tiếp tục diễn biến →' : 'Next Step →'}</span>
                 </button>
@@ -398,7 +398,7 @@ export const TrustProblemSimulation: React.FC<TrustProblemSimulationProps> = ({
               <button
                 type="button"
                 onClick={onNextStage}
-                className="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-mono text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all ml-auto shadow-md"
+ className="px-4 py-2 rounded-xl bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-mono text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all ml-auto shadow-md"
               >
                 <span>{language === 'vi' ? 'Tiếp: Phần 03 · Mô Hình Mạng' : 'Next: Part 03 · Network Topologies'}</span>
                 <ArrowRight className="w-3.5 h-3.5" />

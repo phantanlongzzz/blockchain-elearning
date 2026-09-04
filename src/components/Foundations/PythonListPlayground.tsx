@@ -257,7 +257,7 @@ export const PythonListPlayground: React.FC<PythonListPlaygroundProps> = ({
                       <div
                         className={`w-28 p-2.5 rounded-lg border transition-colors ${
                           isEditing
-                            ? 'bg-zinc-900 border-emerald-500 ring-1 ring-emerald-500/30'
+                            ? 'bg-zinc-900 border-border-primary ring-1 ring-white/20'
                             : 'bg-zinc-900/90 border-zinc-800 hover:border-zinc-700'
                         }`}
                       >
@@ -274,7 +274,7 @@ export const PythonListPlayground: React.FC<PythonListPlaygroundProps> = ({
                               type="text"
                               value={editValue}
                               onChange={(e) => setEditValue(e.target.value)}
-                              className="w-full px-2 py-1 rounded bg-black border border-emerald-500 text-zinc-100 font-mono text-xs font-medium focus:outline-none"
+                              className="w-full px-2 py-1 rounded bg-black border border-border-primary text-zinc-100 font-mono text-xs font-medium focus:outline-none focus:ring-1 focus:ring-white/20"
                               autoFocus
                             />
                             <div className="flex items-center gap-1">

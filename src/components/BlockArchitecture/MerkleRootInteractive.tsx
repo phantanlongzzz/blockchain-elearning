@@ -106,7 +106,7 @@ export const MerkleRootInteractive: React.FC<MerkleRootInteractiveProps> = ({
       <div className="p-5 sm:p-6 rounded-xl bg-[#0B0E12] border border-[#1C2430] space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#1C2430]">
           <div className="flex items-center gap-2">
-            <GitFork className="w-4 h-4 text-emerald-400" />
+            <GitFork className="w-4 h-4 text-text-muted" />
             <h4 className="text-sm font-semibold text-white font-sans">
               {isVi
                 ? 'Mô phỏng Cây Merkle (4 Giao dịch)'
@@ -135,7 +135,7 @@ export const MerkleRootInteractive: React.FC<MerkleRootInteractiveProps> = ({
                 type="button"
                 id="btn-restore-merkle-tx"
                 onClick={handleRestoreTxs}
-                className="px-3 py-1.5 rounded-md bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-sans font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
+                className="px-3 py-1.5 rounded-md bg-white/[0.06] hover:bg-white/[0.1] text-text-primary border border-border-primary text-xs font-sans font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 <span>{isVi ? 'Khôi phục ban đầu' : 'Restore original'}</span>
@@ -155,12 +155,12 @@ export const MerkleRootInteractive: React.FC<MerkleRootInteractiveProps> = ({
               className={`p-4 rounded-lg border max-w-md w-full text-center transition-all ${
                 isTampered
                   ? 'bg-[#10151D] border-rose-500/60'
-                  : 'bg-[#10151D] border-emerald-500/50'
+                  : 'bg-[#10151D] border-border-primary'
               }`}
             >
               <div className="flex items-center justify-between text-xs font-mono mb-1.5">
                 <span className="font-semibold text-slate-200 flex items-center gap-1">
-                  <GitFork className="w-3.5 h-3.5 text-emerald-400" />
+                  <GitFork className="w-3.5 h-3.5 text-text-muted" />
                   MERKLE ROOT
                 </span>
                 {isTampered ? (
@@ -168,14 +168,14 @@ export const MerkleRootInteractive: React.FC<MerkleRootInteractiveProps> = ({
                     {isVi ? 'ĐÃ ĐỔI ✗' : 'MUTATED ✗'}
                   </span>
                 ) : (
-                  <span className="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] font-semibold font-sans">
+                  <span className="px-2 py-0.5 rounded bg-success/10 text-success border border-success/30 text-[10px] font-semibold font-sans">
                     {isVi ? 'HỢP LỆ ✓' : 'VALID ✓'}
                   </span>
                 )}
               </div>
               <div
                 className={`font-mono text-xs font-medium break-all p-2 rounded bg-[#0B0E12] border ${
-                  isTampered ? 'text-rose-300 border-rose-500/40' : 'text-emerald-300 border-emerald-500/30'
+                  isTampered ? 'text-rose-300 border-rose-500/40' : 'text-text-primary border-border-secondary'
                 }`}
               >
                 {merkleRoot}
@@ -311,7 +311,7 @@ export const MerkleRootInteractive: React.FC<MerkleRootInteractiveProps> = ({
                         isThisTampered ? 'text-rose-400' : 'text-slate-200'
                       }`}
                     >
-                      {tx.amount} {tx.unit}
+                      <span className="text-financial font-mono font-semibold"><span className="text-financial font-mono font-semibold">{tx.amount} {tx.unit}</span></span>
                     </div>
                   </div>
                 );
@@ -368,7 +368,7 @@ export const MerkleRootInteractive: React.FC<MerkleRootInteractiveProps> = ({
             type="button"
             id="btn-next-stage-from-merkle"
             onClick={onNextStage}
-            className="px-4 py-2 rounded-md bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold text-xs flex items-center gap-1.5 cursor-pointer shadow-sm font-sans"
+ className="px-4 py-2 rounded-md bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-semibold text-xs flex items-center gap-1.5 cursor-pointer shadow-sm font-sans"
           >
             <span>{isVi ? 'Tiếp: Vòng Đời Khối' : 'Next: Block Lifecycle'}</span>
             <ArrowRight className="w-3.5 h-3.5" />

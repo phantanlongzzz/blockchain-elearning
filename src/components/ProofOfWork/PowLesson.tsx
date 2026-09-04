@@ -751,7 +751,7 @@ export const PowLesson: React.FC = () => {
   const totalBlocksMined = blockchain.length - 1;
 
   return (
-    <div className="min-h-screen bg-[#090A0F] text-slate-200 font-sans selection:bg-emerald-500/30 selection:text-emerald-200 pb-20">
+    <div className="min-h-screen bg-[#090A0F] text-slate-200 font-sans selection:bg-white/20 selection:text-white pb-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-6 space-y-5">
         
         {/* LAYER 1: MINING CONTROL */}
@@ -771,7 +771,7 @@ export const PowLesson: React.FC = () => {
                   disabled={appState !== 'idle' && appState !== 'completed'}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-display transition-all whitespace-nowrap ${
                     scenario === s 
-                      ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 shadow-sm' 
+                      ? 'bg-white/[0.08] text-text-primary border border-border-primary shadow-sm' 
                       : 'text-slate-400 hover:text-slate-200 border border-transparent'
                   } disabled:opacity-50 cursor-pointer`}
                 >
@@ -814,7 +814,7 @@ export const PowLesson: React.FC = () => {
                     }
                   }}
                   disabled={appState !== 'idle' && appState !== 'completed'}
-                  className="h-10 px-3 py-2 bg-[#11161D] border border-slate-700/60 rounded-lg text-sm font-medium text-slate-200 outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30 transition-all cursor-pointer appearance-none pr-8 relative disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="h-10 px-3 py-2 bg-[#11161D] border border-slate-700/60 rounded-lg text-sm font-medium text-slate-200 outline-none focus:border-border-primary focus:ring-1 focus:ring-white/20 transition-all cursor-pointer appearance-none pr-8 relative disabled:opacity-50 disabled:cursor-not-allowed"
                   style={{ backgroundImage: `url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2364748b%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.75rem top 50%', backgroundSize: '0.65rem auto' }}
                 >
                   <option value={30}>30 {isVi ? 'giây' : 'sec'}</option>
@@ -851,7 +851,7 @@ export const PowLesson: React.FC = () => {
                   value={difficulty} 
                   onChange={(e) => setDifficulty(Number(e.target.value))}
                   disabled={appState !== 'idle' && appState !== 'completed'}
-                  className="h-10 px-3 py-2 bg-[#11161D] border border-slate-700/60 rounded-lg text-sm font-medium text-slate-200 outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30 transition-all cursor-pointer appearance-none pr-8 relative disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="h-10 px-3 py-2 bg-[#11161D] border border-slate-700/60 rounded-lg text-sm font-medium text-slate-200 outline-none focus:border-border-primary focus:ring-1 focus:ring-white/20 transition-all cursor-pointer appearance-none pr-8 relative disabled:opacity-50 disabled:cursor-not-allowed"
                   style={{ backgroundImage: `url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2364748b%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.75rem top 50%', backgroundSize: '0.65rem auto' }}
                 >
                   <option value={1}>1 — {isVi ? 'Dễ' : 'Easy'}</option>
@@ -911,7 +911,7 @@ export const PowLesson: React.FC = () => {
 
                 {/* Timer */}
                 <div className="flex items-center gap-2 select-none" title={isVi ? 'Thời gian còn lại' : 'Remaining time'}>
-                  <Clock size={16} className={appState === 'mining' ? 'text-emerald-500/80' : 'text-slate-500'} />
+                  <Clock size={16} className={appState === 'mining' ? 'text-text-primary' : 'text-text-muted'} />
                   <span className={`font-mono font-semibold text-base tracking-wider ${appState === 'mining' ? 'text-white' : 'text-slate-300'}`}>
                     {formatTime(remainingTime)}
                   </span>
@@ -924,14 +924,14 @@ export const PowLesson: React.FC = () => {
                   <button 
                     onClick={handleStart} 
                     disabled={miners.length === 0} 
-                    className="flex-1 sm:flex-none h-10 px-6 bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-sm rounded-lg flex items-center justify-center gap-2 transition-colors disabled:opacity-50 cursor-pointer shadow-sm"
+ className="flex-1 sm:flex-none h-10 px-6 bg-financial hover:bg-financial/90 text-black font-semibold text-white font-medium text-sm rounded-lg flex items-center justify-center gap-2 transition-colors disabled:opacity-50 cursor-pointer shadow-sm"
                   >
                     <Play size={14} className="fill-current" /> {isVi ? 'Bắt Đầu' : 'Start'}
                   </button>
                 ) : appState === 'completed' || appState === 'animating_win' ? (
                   <button 
                     onClick={handleReset} 
-                    className="flex-1 sm:flex-none h-10 px-6 bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-sm rounded-lg flex items-center justify-center gap-2 transition-colors cursor-pointer shadow-sm"
+ className="flex-1 sm:flex-none h-10 px-6 bg-text-primary hover:bg-white/90 text-white font-medium text-sm rounded-lg flex items-center justify-center gap-2 transition-colors cursor-pointer shadow-sm"
                   >
                     <RotateCcw size={14} /> {isVi ? 'Chạy Lại' : 'Run Again'}
                   </button>
@@ -946,7 +946,7 @@ export const PowLesson: React.FC = () => {
                   <button 
                     onClick={handleStart} 
                     disabled={appState === 'animating_win'} 
-                    className="flex-1 sm:flex-none h-10 px-6 bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-sm rounded-lg flex items-center justify-center gap-2 transition-colors disabled:opacity-50 cursor-pointer shadow-sm"
+ className="flex-1 sm:flex-none h-10 px-6 bg-financial hover:bg-financial/90 text-black font-semibold text-white font-medium text-sm rounded-lg flex items-center justify-center gap-2 transition-colors disabled:opacity-50 cursor-pointer shadow-sm"
                   >
                     <Play size={14} className="fill-current" /> {isVi ? 'Tiếp Tục' : 'Resume'}
                   </button>
@@ -980,7 +980,7 @@ export const PowLesson: React.FC = () => {
               className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-all select-none ${
                 miners.length >= 8
                   ? 'bg-slate-900/60 text-slate-600 border-slate-800 cursor-not-allowed'
-                  : 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20 hover:text-emerald-300 active:scale-[0.98] cursor-pointer'
+                  : 'bg-white/[0.04] border-border-primary text-text-primary hover:bg-white/[0.08] active:scale-[0.98] cursor-pointer'
               }`}
             >
               {miners.length >= 8 
@@ -994,7 +994,7 @@ export const PowLesson: React.FC = () => {
               <p className="mb-3 text-sm">{isVi ? 'Không có thợ đào nào.' : 'No miners available.'}</p>
               <button 
                 onClick={handleQuickAddMiner} 
-                className="px-4 py-2 bg-emerald-500 text-black font-bold text-xs rounded-lg flex items-center gap-2 hover:bg-emerald-400 cursor-pointer"
+ className="px-4 py-2 bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-bold text-xs rounded-lg flex items-center gap-2 cursor-pointer"
               >
                 {isVi ? 'Thêm Thợ Đào' : 'Add Miner'}
               </button>
@@ -1119,10 +1119,10 @@ export const PowLesson: React.FC = () => {
 
         {/* COMPLETION SUMMARY CARD */}
         {appState === 'completed' && (
-          <div className="p-5 rounded-2xl bg-[#0C0F14] border border-emerald-500/30 shadow-lg space-y-4 animate-in fade-in duration-300">
+          <div className="p-5 rounded-2xl bg-[#0C0F14] border border-border-primary shadow-lg space-y-4 animate-in fade-in duration-300">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800/80 pb-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0">
+                <div className="w-10 h-10 rounded-xl bg-white/[0.04] border border-border-primary flex items-center justify-center text-text-muted shrink-0">
                   <Trophy size={20} />
                 </div>
                 <div>
@@ -1137,7 +1137,7 @@ export const PowLesson: React.FC = () => {
 
               <button 
                 onClick={handleReset} 
-                className="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-black font-display font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer shrink-0 shadow-sm"
+ className="px-4 py-2 bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-display font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer shrink-0 shadow-sm"
               >
                 <RotateCcw size={14} /> {isVi ? 'Chạy Lại' : 'Run Again'}
               </button>
@@ -1210,7 +1210,7 @@ export const PowLesson: React.FC = () => {
                 onClick={() => setActiveVisualizerView('p2p_network')}
                 className={`px-3 py-1.5 rounded-md font-display font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
                   activeVisualizerView === 'p2p_network'
-                    ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm'
+                    ? 'bg-white/[0.08] text-text-primary border border-border-primary shadow-sm'
                     : 'text-slate-400 hover:text-white border border-transparent'
                 }`}
               >
@@ -1222,7 +1222,7 @@ export const PowLesson: React.FC = () => {
                 onClick={() => setActiveVisualizerView('timeline')}
                 className={`px-3 py-1.5 rounded-md font-display font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
                   activeVisualizerView === 'timeline'
-                    ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm'
+                    ? 'bg-white/[0.08] text-text-primary border border-border-primary shadow-sm'
                     : 'text-slate-400 hover:text-white border border-transparent'
                 }`}
               >
@@ -1321,7 +1321,7 @@ export const PowLesson: React.FC = () => {
             className="w-full py-2 px-3 bg-[#0C0F14] hover:bg-[#11161D] rounded-xl border border-slate-800/80 flex items-center justify-between text-xs text-slate-400 hover:text-slate-200 transition-all cursor-pointer"
           >
             <div className="flex items-center gap-2 font-display font-semibold">
-              <Activity size={14} className={showTelemetryDetails ? 'text-emerald-400' : 'text-slate-500'} />
+              <Activity size={14} className={showTelemetryDetails ? 'text-text-primary' : 'text-text-muted'} />
               <span>{isVi ? 'Nhật Ký Sự Kiện & Chi Tiết Nút Thợ Đào' : 'Event Log & Node Telemetry'}</span>
               <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-slate-800 text-slate-400">
                 {logs.length} {isVi ? 'sự kiện' : 'events'}

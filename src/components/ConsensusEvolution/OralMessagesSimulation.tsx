@@ -72,7 +72,7 @@ export const OralMessagesSimulation: React.FC<OralMessagesSimulationProps> = ({
               type="button"
               onClick={handleStartAttack}
               disabled={simState !== 'idle'}
-              className="px-4 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-medium text-xs flex items-center gap-2 transition-colors cursor-pointer disabled:opacity-50"
+ className="px-4 py-1.5 rounded-lg bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-medium text-xs flex items-center gap-2 transition-colors cursor-pointer disabled:opacity-50"
             >
               <Play className="w-3 h-3 fill-current" />
               <span>
@@ -106,7 +106,7 @@ export const OralMessagesSimulation: React.FC<OralMessagesSimulationProps> = ({
           <div className="space-y-6 my-auto py-2">
             {/* Commander */}
             <div className="flex justify-center">
-              <div className="p-3 rounded-lg bg-[#080C10] border border-emerald-500/40 text-center min-w-[180px]">
+              <div className="p-3 rounded-lg bg-[#080C10] border border-border-secondary text-center min-w-[180px]">
                 <div className="text-[10px] text-emerald-400 font-medium">
                   {isVi ? 'Chỉ huy' : 'Commander'}
                 </div>
@@ -222,7 +222,7 @@ export const OralMessagesSimulation: React.FC<OralMessagesSimulationProps> = ({
               </div>
             </div>
 
-            <div className="p-3 rounded-lg bg-[#080C10] border border-emerald-500/20 text-slate-400 text-xs leading-relaxed">
+            <div className="p-3 rounded-lg bg-[#080C10] border border-border-secondary text-slate-400 text-xs leading-relaxed">
               <span className="font-medium text-emerald-400">
                 {isVi ? 'Giải pháp: ' : 'Solution: '}
               </span>
@@ -252,7 +252,7 @@ export const OralMessagesSimulation: React.FC<OralMessagesSimulationProps> = ({
           <button
             type="button"
             onClick={onNextStage}
-            className="px-5 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-medium text-xs flex items-center gap-2 transition-colors cursor-pointer"
+ className="px-5 py-2 rounded-lg bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-medium text-xs flex items-center gap-2 transition-colors cursor-pointer"
           >
             <span>{isVi ? 'Tiếp tục: Thông điệp ký số' : 'Next: Signed Messages'}</span>
             <ArrowRight className="w-3.5 h-3.5" />

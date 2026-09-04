@@ -44,7 +44,7 @@ export const AcademicQuestions: React.FC = () => {
     <section id="academic-qa" className="py-20 relative px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto font-sans">
       {/* Section Header */}
       <div className="text-center max-w-3xl mx-auto mb-12 space-y-3 font-sans">
-        <div className="inline-flex items-center gap-2 text-emerald-400 text-xs font-mono font-semibold tracking-wider uppercase">
+        <div className="inline-flex items-center gap-2 text-text-muted text-xs font-mono font-semibold tracking-wider uppercase">
           <BookOpen className="w-3.5 h-3.5" />
           <span>{strings.academicQA.badge}</span>
         </div>
@@ -57,7 +57,7 @@ export const AcademicQuestions: React.FC = () => {
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="p-4 rounded-xl bg-[#0c1017] border border-emerald-500/30 shadow-lg mb-8 space-y-4 font-sans text-xs">
+      <div className="p-4 rounded-xl bg-[#0c1017] border border-border-primary shadow-lg mb-8 space-y-4 font-sans text-xs">
         <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800 font-sans">
           <div className="flex flex-wrap items-center gap-1.5 font-sans">
             {categories.map((cat) => (
@@ -66,7 +66,7 @@ export const AcademicQuestions: React.FC = () => {
                 onClick={() => setActiveCategory(cat.id)}
                 className={`px-3 py-1.5 rounded-lg font-bold transition-all cursor-pointer font-sans ${
                   activeCategory === cat.id
-                    ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-400'
+                    ? 'bg-teach-1/15 text-teach-1 border border-teach-1/40'
                     : 'bg-slate-950 text-slate-400 hover:text-white border border-slate-800'
                 }`}
               >
@@ -82,7 +82,7 @@ export const AcademicQuestions: React.FC = () => {
               placeholder={strings.academicQA.searchPlaceholder}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-800 focus:border-emerald-500/60 rounded-lg pl-9 pr-3 py-1.5 text-xs text-white focus:outline-none font-sans"
+              className="w-full bg-slate-950 border border-slate-800 focus:border-border-primary rounded-lg pl-9 pr-3 py-1.5 text-xs text-white focus:outline-none font-sans"
             />
           </div>
         </div>
@@ -97,7 +97,7 @@ export const AcademicQuestions: React.FC = () => {
               key={item.id}
               className={`rounded-xl border transition-all duration-200 overflow-hidden shadow-sm ${
                 isExpanded
-                  ? 'bg-[#0c1017] border-emerald-500/40'
+                  ? 'bg-[#0c1017] border-border-primary'
                   : 'bg-slate-950/80 border-slate-800/90 hover:border-slate-700'
               }`}
             >
@@ -106,7 +106,7 @@ export const AcademicQuestions: React.FC = () => {
                 className="w-full p-4 sm:p-5 flex items-center justify-between gap-4 text-left focus:outline-none cursor-pointer font-sans"
               >
                 <div className="flex items-center gap-3 font-sans">
-                  <span className="px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-[10px] text-emerald-400 font-bold uppercase shrink-0 font-mono">
+                  <span className="px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-[10px] text-teach-1 font-bold uppercase shrink-0 font-mono">
                     {item.category.split(':')[0]}
                   </span>
                   <h3 className="font-bold text-white text-xs sm:text-sm font-sans tracking-wide">
@@ -122,8 +122,8 @@ export const AcademicQuestions: React.FC = () => {
               {isExpanded && (
                 <div className="px-5 pb-5 pt-1 border-t border-slate-800/80 space-y-3 font-sans text-xs sm:text-sm animate-in fade-in duration-200">
                   <p className="text-slate-300 leading-relaxed font-sans">{item.answer}</p>
-                  <div className="p-3 rounded-lg bg-emerald-950/30 border border-emerald-500/30 text-emerald-200 font-mono text-xs flex items-center gap-2">
-                    <strong className="text-emerald-400 uppercase tracking-wider text-[10px] shrink-0 font-display">
+                  <div className="p-3 rounded-lg bg-surface-secondary border border-border-secondary text-text-primary font-mono text-xs flex items-center gap-2">
+                    <strong className="text-text-secondary uppercase tracking-wider text-[10px] shrink-0 font-display">
                       {strings.academicQA.keyTakeaway}:
                     </strong>
                     <span className="font-sans">{item.keyTakeaway}</span>

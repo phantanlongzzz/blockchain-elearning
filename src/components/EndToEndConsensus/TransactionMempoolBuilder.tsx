@@ -105,7 +105,7 @@ export const TransactionMempoolBuilder: React.FC<TransactionMempoolBuilderProps>
         <div className="lg:col-span-7 bg-[#0c101c] border border-slate-800 rounded-xl p-4 sm:p-5 shadow-sm relative overflow-hidden">
           <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-800">
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+              <div className="w-7 h-7 rounded-lg bg-white/[0.04] border border-border-primary flex items-center justify-center text-text-muted">
                 <Send className="w-3.5 h-3.5" />
               </div>
               <div>
@@ -134,7 +134,7 @@ export const TransactionMempoolBuilder: React.FC<TransactionMempoolBuilderProps>
                   onChange={(e) => setSender(e.target.value)}
                   placeholder="Alice"
                   disabled={isMining}
-                  className="w-full bg-[#080c16] border border-slate-800 rounded-lg px-3 py-2 text-xs font-mono text-slate-200 focus:outline-none focus:border-emerald-500/60 transition-colors disabled:opacity-50"
+                  className="w-full bg-[#080c16] border border-slate-800 rounded-lg px-3 py-2 text-xs font-mono text-slate-200 focus:outline-none focus:border-border-primary focus:ring-1 focus:ring-white/20 transition-colors disabled:opacity-50"
                   required
                 />
               </div>
@@ -150,7 +150,7 @@ export const TransactionMempoolBuilder: React.FC<TransactionMempoolBuilderProps>
                   onChange={(e) => setRecipient(e.target.value)}
                   placeholder="Bob"
                   disabled={isMining}
-                  className="w-full bg-[#080c16] border border-slate-800 rounded-lg px-3 py-2 text-xs font-mono text-slate-200 focus:outline-none focus:border-emerald-500/60 transition-colors disabled:opacity-50"
+                  className="w-full bg-[#080c16] border border-slate-800 rounded-lg px-3 py-2 text-xs font-mono text-slate-200 focus:outline-none focus:border-border-primary focus:ring-1 focus:ring-white/20 transition-colors disabled:opacity-50"
                   required
                 />
               </div>
@@ -167,7 +167,7 @@ export const TransactionMempoolBuilder: React.FC<TransactionMempoolBuilderProps>
                   value={amount}
                   onChange={(e) => setAmount(parseFloat(e.target.value) || 0)}
                   disabled={isMining}
-                  className="w-full bg-[#080c16] border border-slate-800 rounded-lg px-3 py-2 text-xs font-mono text-slate-200 focus:outline-none focus:border-emerald-500/60 transition-colors disabled:opacity-50"
+                  className="w-full bg-[#080c16] border border-slate-800 rounded-lg px-3 py-2 text-xs font-mono text-slate-200 focus:outline-none focus:border-border-primary focus:ring-1 focus:ring-white/20 transition-colors disabled:opacity-50"
                   required
                 />
               </div>
@@ -184,7 +184,7 @@ export const TransactionMempoolBuilder: React.FC<TransactionMempoolBuilderProps>
                   value={fee}
                   onChange={(e) => setFee(parseFloat(e.target.value) || 0)}
                   disabled={isMining}
-                  className="w-full bg-[#080c16] border border-slate-800 rounded-lg px-3 py-2 text-xs font-mono text-slate-200 focus:outline-none focus:border-emerald-500/60 transition-colors disabled:opacity-50"
+                  className="w-full bg-[#080c16] border border-slate-800 rounded-lg px-3 py-2 text-xs font-mono text-slate-200 focus:outline-none focus:border-border-primary focus:ring-1 focus:ring-white/20 transition-colors disabled:opacity-50"
                 />
               </div>
             </div>
@@ -212,7 +212,7 @@ export const TransactionMempoolBuilder: React.FC<TransactionMempoolBuilderProps>
                 type="submit"
                 id="btn-create-e2e-tx"
                 disabled={isMining}
-                className="px-3.5 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold text-xs flex items-center gap-1.5 transition-all active:scale-95 disabled:opacity-50 cursor-pointer font-sans"
+ className="px-3.5 py-1.5 rounded-lg bg-financial hover:bg-financial/90 text-black font-semibold font-semibold text-xs flex items-center gap-1.5 transition-all active:scale-95 disabled:opacity-50 cursor-pointer font-sans"
               >
                 <Plus className="w-3.5 h-3.5" />
                 <span>{language === 'vi' ? 'Tạo giao dịch' : 'Create transaction'}</span>
@@ -323,9 +323,9 @@ export const TransactionMempoolBuilder: React.FC<TransactionMempoolBuilderProps>
                   onClick={() => !isMining && onToggleSelectTx(tx.id)}
                   className={`p-3 rounded-lg border transition-all cursor-pointer relative ${
                     isNewlyAdded
-                      ? 'bg-emerald-950/30 border-emerald-500/60'
+                      ? 'bg-white/[0.06] border-border-primary'
                       : isSelected
-                      ? 'bg-[#080c16] border-emerald-500/50'
+                      ? 'bg-[#080c16] border-border-secondary'
                       : 'bg-[#080c16]/60 border-slate-800 hover:border-slate-700'
                   }`}
                 >

@@ -11,25 +11,25 @@ export const AboutResearch: React.FC = () => {
       title: strings.aboutResearch.topics.primitivesTitle,
       desc: strings.aboutResearch.topics.primitivesDesc,
       icon: ShieldCheck,
-      color: 'text-emerald-400',
+      color: 'text-text-secondary',
     },
     {
       title: strings.aboutResearch.topics.avalancheTitle,
       desc: strings.aboutResearch.topics.avalancheDesc,
       icon: Cpu,
-      color: 'text-emerald-400',
+      color: 'text-text-secondary',
     },
     {
       title: strings.aboutResearch.topics.collisionTitle,
       desc: strings.aboutResearch.topics.collisionDesc,
       icon: Award,
-      color: 'text-amber-400',
+      color: 'text-text-secondary',
     },
     {
       title: strings.aboutResearch.topics.consensusTitle,
       desc: strings.aboutResearch.topics.consensusDesc,
       icon: Code2,
-      color: 'text-emerald-400',
+      color: 'text-text-secondary',
     },
   ];
 
@@ -38,8 +38,8 @@ export const AboutResearch: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 font-sans">
-          <div className="inline-flex items-center gap-2 text-emerald-400 text-xs font-mono font-semibold tracking-wider uppercase mb-3">
-            <BookOpen className="w-3.5 h-3.5" />
+          <div className="inline-flex items-center gap-2 text-teach-1 text-xs font-mono font-semibold tracking-wider uppercase mb-3">
+            <BookOpen className="w-3.5 h-3.5 text-text-muted" />
             <span>{strings.aboutResearch.badge}</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-[#f5f5f5] tracking-tight font-sans uppercase mb-3">
@@ -52,8 +52,8 @@ export const AboutResearch: React.FC = () => {
 
         {/* Abstract and Methodology Card */}
         <div className="rounded-xl bg-[#111111] border border-[#292929] p-6 sm:p-8 shadow-lg mb-12 font-sans">
-          <div className="flex items-center gap-2 text-emerald-400 font-sans text-xs font-bold uppercase tracking-wider mb-3">
-            <FileText className="w-4 h-4" />
+          <div className="flex items-center gap-2 text-text-secondary font-sans text-xs font-bold uppercase tracking-wider mb-3">
+            <FileText className="w-4 h-4 text-text-muted" />
             <span>{strings.aboutResearch.abstractTitle}</span>
           </div>
           <p className="text-sm sm:text-base text-[#f5f5f5] leading-relaxed mb-6 font-sans font-normal">
@@ -67,7 +67,7 @@ export const AboutResearch: React.FC = () => {
             </div>
             <div>
               <span className="text-[#71717a] block mb-0.5">{strings.aboutResearch.programName}:</span>
-              <strong className="text-emerald-400 font-sans">{RESEARCH_METADATA.program}</strong>
+              <strong className="text-text-primary font-sans">{RESEARCH_METADATA.program}</strong>
             </div>
             <div>
               <span className="text-[#71717a] block mb-0.5">{strings.aboutResearch.academicYear}:</span>
@@ -83,7 +83,7 @@ export const AboutResearch: React.FC = () => {
             return (
               <div
                 key={idx}
-                className="rounded-xl bg-[#111111] border border-[#292929] p-5 hover:border-emerald-500/40 transition-all shadow-lg flex flex-col justify-between"
+                className="rounded-xl bg-[#111111] border border-[#292929] p-5 hover:border-border-secondary transition-all shadow-lg flex flex-col justify-between"
               >
                 <div>
                   <div className="p-2.5 rounded-lg bg-[#0a0a0a] border border-[#292929] w-fit mb-4">

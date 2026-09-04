@@ -221,7 +221,7 @@ export const PoWVsPoSInteractive: React.FC<PoWVsPoSInteractiveProps> = ({
             type="button"
             id="btn-pow-pos-next"
             onClick={onNextStage}
-            className="px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-semibold text-xs flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer shadow-sm"
+ className="px-4 py-2 rounded-lg bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-semibold text-xs flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer shadow-sm"
           >
             <span>{isVi ? 'Tiếp: Thử thách tổng kết' : 'Next: Final Challenge'}</span>
             <ArrowRight className="w-3.5 h-3.5" />

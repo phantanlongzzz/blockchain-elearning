@@ -358,11 +358,11 @@ export const AuditSelfTestModal: React.FC<AuditSelfTestModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-150 font-sans">
-      <div className="bg-[#0D1322] border-2 border-emerald-500/50 rounded-2xl w-full max-w-2xl max-h-[90vh] shadow-2xl p-5 sm:p-6 flex flex-col space-y-4">
+      <div className="bg-[#0D1322] border border-border-primary rounded-2xl w-full max-w-2xl max-h-[90vh] shadow-2xl p-5 sm:p-6 flex flex-col space-y-4">
         {/* Header */}
         <div className="flex items-center justify-between pb-3 border-b border-[#1E293B]">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+            <div className="w-9 h-9 rounded-xl bg-bg-elevated border border-border-primary flex items-center justify-center text-text-secondary">
               <ShieldCheck className="w-5 h-5" />
             </div>
             <div>
@@ -404,7 +404,7 @@ export const AuditSelfTestModal: React.FC<AuditSelfTestModalProps> = ({
                 type="button"
                 onClick={runDeterministicAudit}
                 disabled={isRunning}
-                className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold text-xs flex items-center gap-2 mx-auto cursor-pointer shadow-lg shadow-emerald-500/20"
+ className="px-5 py-2.5 rounded-xl bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-bold text-xs flex items-center gap-2 mx-auto cursor-pointer shadow-lg "
               >
                 <Play className="w-4 h-4" />
                 <span>{language === 'vi' ? 'Khởi Chạy Kiểm Toán Ngay' : 'Run Consensus Audit'}</span>
@@ -416,13 +416,13 @@ export const AuditSelfTestModal: React.FC<AuditSelfTestModalProps> = ({
               <div
                 className={`p-3 rounded-xl border flex items-center justify-between ${
                   allPassed
-                    ? 'bg-emerald-950/60 border-emerald-500/50 text-emerald-300'
+                    ? 'bg-white/[0.08] border-border-primary text-text-primary'
                     : 'bg-rose-950/60 border-rose-500/50 text-rose-300'
                 }`}
               >
                 <div className="flex items-center gap-2">
                   {allPassed ? (
-                    <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                    <CheckCircle2 className="w-5 h-5 text-success" />
                   ) : (
                     <XCircle className="w-5 h-5 text-rose-400" />
                   )}
@@ -453,7 +453,7 @@ export const AuditSelfTestModal: React.FC<AuditSelfTestModalProps> = ({
                       <span
                         className={`px-2 py-0.5 rounded text-[10px] font-bold ${
                           item.status === 'PASS'
-                            ? 'bg-emerald-950 text-emerald-300 border border-emerald-500/40'
+                            ? 'bg-white/[0.08] text-text-primary border border-border-primary'
                             : 'bg-rose-950 text-rose-300 border border-rose-500/40'
                         }`}
                       >

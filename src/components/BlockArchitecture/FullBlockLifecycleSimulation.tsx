@@ -216,7 +216,7 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
                   currentStep === s.step
                     ? 'bg-emerald-500 text-slate-950 font-semibold'
                     : currentStep > s.step
-                    ? 'bg-emerald-500/10 text-emerald-300 border border-emerald-500/30'
+                    ? 'bg-white/[0.06] text-text-primary border border-border-primary'
                     : 'bg-[#10151D] text-[#A5AFBF] border border-[#1C2430] hover:text-slate-200'
                 }`}
               >
@@ -245,7 +245,7 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
               className={`px-3 py-1.5 rounded-md text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer font-sans ${
                 isAutoRunning
                   ? 'bg-emerald-500 text-slate-950'
-                  : 'bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                  : 'bg-white/[0.04] hover:bg-white/[0.08] text-text-primary border border-border-primary'
               }`}
             >
               {isAutoRunning ? (
@@ -266,7 +266,7 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
               id="btn-lifecycle-next"
               disabled={currentStep >= 6}
               onClick={handleNextStep}
-              className="px-3.5 py-1.5 rounded-md bg-emerald-500 hover:bg-emerald-400 disabled:opacity-40 text-slate-950 font-semibold text-xs flex items-center gap-1 transition-colors cursor-pointer font-sans shadow-sm"
+ className="px-3.5 py-1.5 rounded-md bg-text-primary hover:bg-white/90 disabled:opacity-40 text-bg-primary font-semibold font-semibold text-xs flex items-center gap-1 transition-colors cursor-pointer font-sans shadow-sm"
             >
               <span>{isVi ? 'Tiếp' : 'Next'}</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -286,7 +286,7 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
 
         {/* Current Step Description Card */}
         <div className="p-4 rounded-lg bg-[#10151D] border border-[#1C2430] flex items-start gap-3">
-          <div className="w-7 h-7 rounded-md bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-semibold font-mono shrink-0 text-xs">
+          <div className="w-7 h-7 rounded-md bg-white/[0.06] border border-border-primary flex items-center justify-center text-text-primary font-semibold font-mono shrink-0 text-xs">
             {currentStep}
           </div>
           <div className="space-y-0.5">
@@ -304,9 +304,9 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
           {/* STEP 1: CREATE TRANSACTION */}
           {currentStep === 1 && (
             <div className="max-w-md mx-auto w-full space-y-4 text-center">
-              <div className="p-5 rounded-xl bg-[#0B0E12] border border-emerald-500/40 space-y-3">
+              <div className="p-5 rounded-xl bg-[#0B0E12] border border-border-primary space-y-3">
                 <div className="flex items-center justify-between text-xs font-mono border-b border-[#1C2430] pb-2">
-                  <span className="text-emerald-400 font-semibold">GIAO DỊCH MỚI ({txAlice.id})</span>
+                  <span className="text-text-primary font-semibold">GIAO DỊCH MỚI ({txAlice.id})</span>
                   <span className="text-[#717B8C] font-sans text-[11px]">Chưa ký</span>
                 </div>
                 <div className="space-y-1.5 text-left font-mono text-xs">
@@ -316,7 +316,7 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
                   <div className="text-slate-300">
                     <span className="text-[#717B8C] font-sans">Người nhận (To):</span> {txAlice.receiver} (Bob)
                   </div>
-                  <div className="text-emerald-400 font-semibold text-sm">
+                  <div className="text-financial font-semibold text-sm font-mono">
                     <span className="text-[#717B8C] font-sans font-normal text-xs">Số tiền:</span> {txAlice.amount} {txAlice.unit}
                   </div>
                   <div className="text-[#717B8C] text-[11px] font-sans">
@@ -338,21 +338,21 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono text-xs text-center">
                 <div className="p-3.5 rounded-lg bg-[#0B0E12] border border-[#1C2430] space-y-1">
                   <div className="text-[#A5AFBF] text-[10px] font-sans">1. Dữ liệu TX</div>
-                  <div className="font-semibold text-white">Alice → Bob: 10 BTC</div>
+                  <div className="font-semibold text-white">Alice → Bob: <span className="text-financial font-mono">10 BTC</span></div>
                 </div>
                 <div className="p-3.5 rounded-lg bg-[#0B0E12] border border-[#1C2430] space-y-1">
                   <div className="text-[#A5AFBF] text-[10px] flex items-center justify-center gap-1 font-sans">
-                    <Lock className="w-3 h-3 text-emerald-400" />
+                    <Lock className="w-3 h-3 text-text-muted" />
                     2. Alice Private Key
                   </div>
                   <div className="font-semibold text-slate-200">0x8f12...49a1</div>
                 </div>
-                <div className="p-3.5 rounded-lg bg-[#0B0E12] border border-emerald-500/50 space-y-1">
-                  <div className="text-emerald-400 text-[10px] flex items-center justify-center gap-1 font-sans">
+                <div className="p-3.5 rounded-lg bg-[#0B0E12] border border-success/40 space-y-1">
+                  <div className="text-success text-[10px] flex items-center justify-center gap-1 font-sans">
                     <KeyRound className="w-3 h-3" />
                     3. Chữ Ký (r, s)
                   </div>
-                  <div className="font-semibold text-emerald-300">✓ ĐÃ KÝ SỐ</div>
+                  <div className="font-semibold text-success">✓ ĐÃ KÝ SỐ</div>
                 </div>
               </div>
               <div className="p-3 rounded-md bg-[#0B0E12] border border-[#1C2430] text-center font-mono text-xs text-emerald-400 truncate">
@@ -364,9 +364,9 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
           {/* STEP 3: VERIFY SIGNATURE */}
           {currentStep === 3 && (
             <div className="max-w-lg mx-auto w-full space-y-4 text-center">
-              <div className="p-5 rounded-xl bg-[#0B0E12] border border-emerald-500/50 space-y-3">
-                <div className="flex items-center justify-center gap-2 text-emerald-400 font-semibold font-sans text-sm">
-                  <ShieldCheck className="w-5 h-5" />
+              <div className="p-5 rounded-xl bg-[#0B0E12] border border-success/40 space-y-3">
+                <div className="flex items-center justify-center gap-2 text-success font-semibold font-sans text-sm">
+                  <ShieldCheck className="w-5 h-5 text-success" />
                   <span>XÁC THỰC CHỮ KÝ THÀNH CÔNG</span>
                 </div>
                 <div className="p-3 rounded-lg bg-[#10151D] border border-[#1C2430] font-mono text-xs text-slate-300 space-y-1.5 text-left">
@@ -376,7 +376,7 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
                   <div>
                     <span className="text-[#717B8C] font-sans">Thuật toán:</span> ECDSA · SECP256K1
                   </div>
-                  <div className="text-emerald-300 font-semibold font-sans">
+                  <div className="text-success font-semibold font-sans">
                     Trạng thái: HỢP LỆ — Sẵn sàng đưa vào Mempool & Block Body
                   </div>
                 </div>
@@ -400,15 +400,15 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
                     key={tx.id}
                     className={`p-3 rounded-lg border space-y-1 transition-all ${
                       tx.isNew
-                        ? 'bg-[#0B0E12] border-emerald-500/60'
+                        ? 'bg-[#0B0E12] border-border-primary ring-1 ring-white/10'
                         : 'bg-[#0B0E12] border-[#1C2430] text-slate-300'
                     }`}
                   >
                     <div className="flex items-center justify-between text-[11px]">
-                      <span className={tx.isNew ? 'text-emerald-300 font-semibold' : 'text-[#8B949E]'}>
+                      <span className={tx.isNew ? 'text-text-primary font-semibold' : 'text-[#8B949E]'}>
                         {tx.id} {tx.isNew && '← VỪA THÊM'}
                       </span>
-                      <span className="text-[#F1F5F9] font-semibold font-mono">
+                      <span className="text-financial font-semibold font-mono">
                         {tx.amount} {tx.unit}
                       </span>
                     </div>
@@ -424,15 +424,15 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
           {/* STEP 5: BUILD MERKLE ROOT */}
           {currentStep === 5 && (
             <div className="max-w-xl mx-auto w-full space-y-3 font-mono text-xs text-center">
-              <div className="text-emerald-400 font-semibold flex items-center justify-center gap-1.5 font-sans">
-                <GitFork className="w-4 h-4" />
+              <div className="text-text-primary font-semibold flex items-center justify-center gap-1.5 font-sans">
+                <GitFork className="w-4 h-4 text-text-muted" />
                 <span>CÂY MERKLE TỔNG HỢP VÀO BLOCK HEADER</span>
               </div>
-              <div className="p-4 rounded-xl bg-[#0B0E12] border border-emerald-500/40 space-y-2">
+              <div className="p-4 rounded-xl bg-[#0B0E12] border border-border-primary space-y-2">
                 <div className="text-slate-300 text-[11px] font-semibold font-sans">
                   BẢN BĂM MERKLE ROOT (32 BYTES)
                 </div>
-                <div className="p-2.5 rounded bg-[#10151D] text-emerald-300 font-mono font-medium break-all text-xs border border-emerald-500/20">
+                <div className="p-2.5 rounded bg-[#10151D] text-text-primary font-mono font-medium break-all text-xs border border-border-secondary">
                   {liveMerkleRoot}
                 </div>
                 <div className="text-[10px] text-[#A5AFBF] font-sans">
@@ -445,12 +445,12 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
           {/* STEP 6: FINALIZE BLOCK HEADER */}
           {currentStep === 6 && (
             <div className="max-w-2xl mx-auto w-full space-y-4 font-mono text-xs">
-              <div className="p-5 rounded-xl bg-[#0B0E12] border border-emerald-500/50 space-y-4">
+              <div className="p-5 rounded-xl bg-[#0B0E12] border border-success/40 space-y-4">
                 <div className="flex items-center justify-between border-b border-[#1C2430] pb-2">
-                  <span className="text-emerald-400 font-semibold text-sm font-sans">
+                  <span className="text-success font-semibold text-sm font-sans">
                     BLOCK #42 HOÀN TẤT CẤU TRÚC
                   </span>
-                  <span className="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[11px] font-semibold font-sans">
+                  <span className="px-2 py-0.5 rounded bg-success/10 text-success border border-success/30 text-[11px] font-semibold font-sans">
                     VALID BLOCK ✓
                   </span>
                 </div>
@@ -476,11 +476,11 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
                 </div>
 
                 {/* Final Block SHA-256 Hash */}
-                <div className="p-3 rounded-lg bg-[#10151D] border border-emerald-500/30 text-center space-y-1">
+                <div className="p-3 rounded-lg bg-[#10151D] border border-success/30 text-center space-y-1">
                   <div className="text-[10px] text-[#A5AFBF] uppercase font-semibold font-sans">
                     BLOCK HASH = SHA-256(BLOCK HEADER)
                   </div>
-                  <div className="text-xs font-semibold text-emerald-300 break-all">{liveBlockHash}</div>
+                  <div className="text-xs font-semibold text-success break-all">{liveBlockHash}</div>
                 </div>
               </div>
             </div>
@@ -491,7 +491,7 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
         {currentStep === 6 && (
           <div className="p-5 rounded-xl bg-[#10151D] border border-[#1C2430] space-y-4">
             <div className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-emerald-400" />
+              <Sparkles className="w-4 h-4 text-text-muted" />
               <h5 className="text-xs sm:text-sm font-semibold text-white font-sans">
                 {isVi
                   ? 'Phòng thí nghiệm tương tác dữ liệu khối'
@@ -538,7 +538,7 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
                   <button
                     type="button"
                     onClick={() => setPlayTimestamp((prev) => prev + 600)}
-                    className="px-2 py-1 rounded bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-sans font-medium cursor-pointer"
+                    className="px-2 py-1 rounded bg-white/[0.04] hover:bg-white/[0.08] text-text-primary border border-border-primary text-[10px] font-sans font-medium cursor-pointer"
                   >
                     +10 Phút
                   </button>
@@ -586,7 +586,7 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
                   <button
                     type="button"
                     onClick={() => setPlayNonce((prev) => prev + 1)}
-                    className="px-2 py-1 rounded bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-sans font-medium cursor-pointer"
+                    className="px-2 py-1 rounded bg-white/[0.04] hover:bg-white/[0.08] text-text-primary border border-border-primary text-[10px] font-sans font-medium cursor-pointer"
                   >
                     +1 Nonce
                   </button>
@@ -629,7 +629,7 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
                 type="button"
                 id="btn-start-block-experiment"
                 onClick={onOpenHandsOnLab}
-                className="px-5 py-2.5 rounded-md bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer shrink-0 font-sans shadow-sm"
+ className="px-5 py-2.5 rounded-md bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-semibold text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer shrink-0 font-sans shadow-sm"
               >
                 <FlaskConical className="w-4 h-4" />
                 <span>{isVi ? 'Mở Chế Độ Thực Hành' : 'Open Hands-On Lab'}</span>

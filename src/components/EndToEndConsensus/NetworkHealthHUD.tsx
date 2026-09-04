@@ -57,8 +57,8 @@ export const NetworkHealthHUD: React.FC<NetworkHealthHUDProps> = ({
                 : `Compromised (Block #${tamperedBlockHeight})`}
             </span>
           ) : (
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] bg-emerald-950/40 text-emerald-300 border border-emerald-500/30 font-medium">
-              <ShieldCheck className="w-3 h-3 text-emerald-400" />
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] bg-success/10 text-success border border-success/30 font-medium">
+              <ShieldCheck className="w-3 h-3 text-success" />
               {language === 'vi' ? 'Khỏe mạnh' : 'Healthy'}
             </span>
           )}
@@ -72,8 +72,8 @@ export const NetworkHealthHUD: React.FC<NetworkHealthHUDProps> = ({
         )}
 
         {isMining && (
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] bg-emerald-950/40 text-emerald-300 border border-emerald-500/30">
-            <Activity className="w-3 h-3 text-emerald-400 animate-spin" />
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] bg-success/10 text-success border border-success/30">
+            <Activity className="w-3 h-3 text-success animate-spin" />
             {language === 'vi' ? 'Đang đua đào PoW' : 'Mining in progress'}
           </span>
         )}
@@ -83,7 +83,7 @@ export const NetworkHealthHUD: React.FC<NetworkHealthHUDProps> = ({
       <div className="flex items-center gap-4 flex-wrap text-zinc-400 text-[11px]">
         {/* Nodes */}
         <div className="flex items-center gap-1.5" title={language === 'vi' ? 'Số nút trực tuyến' : 'Online nodes'}>
-          <Radio className="w-3.5 h-3.5 text-emerald-400" />
+          <Radio className="w-3.5 h-3.5 text-text-muted" />
           <span className="text-zinc-500">{language === 'vi' ? 'Nút:' : 'Nodes:'}</span>
           <strong className="text-zinc-200">{onlineCount}/{totalNodes}</strong>
         </div>
@@ -97,7 +97,7 @@ export const NetworkHealthHUD: React.FC<NetworkHealthHUDProps> = ({
         {/* Synced Nodes */}
         <div className="flex items-center gap-1.5" title={language === 'vi' ? 'Nút đã đồng bộ' : 'Synchronized nodes'}>
           <span className="text-zinc-500">{language === 'vi' ? 'Đồng bộ:' : 'Synced:'}</span>
-          <strong className="text-emerald-400">{syncedCount}/{totalNodes}</strong>
+          <strong className="text-text-primary font-mono">{syncedCount}/{totalNodes}</strong>
         </div>
 
         {/* Blockchain Height */}

@@ -215,7 +215,7 @@ export const DoubleSpendingLab: React.FC<DoubleSpendingLabProps> = ({
 
             <div className="text-right font-mono">
               <div className="text-[10px] text-slate-500">{language === 'vi' ? 'SỐ DƯ KHẢ DỤNG' : 'BALANCE'}</div>
-              <div className="text-lg font-bold text-amber-400">{aliceBalance} COIN</div>
+              <div className="text-lg font-bold text-financial font-mono">{aliceBalance} COIN</div>
             </div>
           </div>
 
@@ -228,7 +228,7 @@ export const DoubleSpendingLab: React.FC<DoubleSpendingLabProps> = ({
             {/* Transaction A */}
             <div className={`p-4 rounded-xl border transition-all ${
               txAStatus === 'accepted'
-                ? 'bg-emerald-950/20 border-emerald-500/40'
+                ? 'bg-white/[0.04] border-border-primary'
                 : txAStatus === 'rejected'
                 ? 'bg-rose-950/20 border-rose-500/40 opacity-60'
                 : 'bg-[#05070c] border-slate-800'
@@ -249,7 +249,7 @@ export const DoubleSpendingLab: React.FC<DoubleSpendingLabProps> = ({
                     <button
                       type="button"
                       onClick={handleSubmitTxA}
-                      className="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-mono text-xs font-bold cursor-pointer flex items-center gap-1 shadow-md"
+ className="px-3.5 py-1.5 rounded-lg bg-financial hover:bg-financial/90 text-black font-semibold text-white font-mono text-xs font-bold cursor-pointer flex items-center gap-1 shadow-md"
                     >
                       <Send className="w-3 h-3" />
                       <span>{language === 'vi' ? 'GỬI TX A' : 'SUBMIT A'}</span>
@@ -272,7 +272,7 @@ export const DoubleSpendingLab: React.FC<DoubleSpendingLabProps> = ({
             {/* Transaction B */}
             <div className={`p-4 rounded-xl border transition-all ${
               txBStatus === 'accepted'
-                ? 'bg-emerald-950/20 border-emerald-500/40'
+                ? 'bg-white/[0.04] border-border-primary'
                 : txBStatus === 'rejected'
                 ? 'bg-rose-950/20 border-rose-500/40 opacity-60'
                 : 'bg-[#05070c] border-slate-800'
@@ -319,13 +319,13 @@ export const DoubleSpendingLab: React.FC<DoubleSpendingLabProps> = ({
             <div className="p-3 rounded-xl bg-[#05070c] border border-slate-800">
               <div className="text-xs font-mono font-bold text-emerald-400">Bob (Merchant A)</div>
               <div className="text-sm font-bold font-mono text-white mt-1">
-                {bobBalance} COIN {bobBalance > 0 && '(Giao hàng ✓)'}
+                <span className="text-financial font-mono"><span className="text-financial font-mono">{bobBalance} COIN</span></span> {bobBalance > 0 && '(Giao hàng ✓)'}
               </div>
             </div>
             <div className="p-3 rounded-xl bg-[#05070c] border border-slate-800">
               <div className="text-xs font-mono font-bold text-amber-400">Charlie (Merchant B)</div>
               <div className="text-sm font-bold font-mono text-white mt-1">
-                {charlieBalance} COIN {charlieBalance > 0 && '(Giao hàng ✓)'}
+                <span className="text-financial font-mono"><span className="text-financial font-mono">{charlieBalance} COIN</span></span> {charlieBalance > 0 && '(Giao hàng ✓)'}
               </div>
             </div>
           </div>
@@ -363,7 +363,7 @@ export const DoubleSpendingLab: React.FC<DoubleSpendingLabProps> = ({
                     ? 'Ngân hàng đóng vai trò Trọng tài Duy nhất. Khi Alice gửi TX A, ngân hàng trừ ngay 10 coin trong database. Khi Alice gửi tiếp TX B, ngân hàng thấy số dư = 0 và LẬP TỨC TỪ CHỐI.'
                     : 'The bank acts as the sole referee. When TX A arrives, it decrements Alice balance to 0. When TX B arrives, it sees 0 balance and instantly rejects it.'}
                 </p>
-                <div className="p-3 rounded-lg bg-emerald-950/20 border border-emerald-500/30 text-xs text-emerald-300">
+                <div className="p-3 rounded-lg bg-[#0e1422] border border-border-primary text-xs text-text-secondary">
                   {language === 'vi'
                     ? '✓ Tiêu đúp được giải quyết dễ dàng nhờ 1 máy chủ độc quyền nắm quyền sinh sát.'
                     : '✓ Double spending is trivial to prevent when 1 central boss controls the database.'}
@@ -389,12 +389,12 @@ export const DoubleSpendingLab: React.FC<DoubleSpendingLabProps> = ({
                       setSolutionRevealed(true);
                       onInteracted?.();
                     }}
-                    className="w-full py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-mono text-xs font-bold uppercase tracking-wider shadow-lg cursor-pointer transition-all hover:scale-[1.02]"
+ className="w-full py-2.5 rounded-xl bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-mono text-xs font-bold uppercase tracking-wider shadow-lg cursor-pointer transition-all hover:scale-[1.02]"
                   >
                     {language === 'vi' ? '💡 TÌM CÁCH GIẢI BÀI TOÁN NÀY' : '💡 DISCOVER THE SOLUTION'}
                   </button>
                 ) : (
-                  <div className="p-4 rounded-xl bg-emerald-950/30 border border-emerald-500/40 space-y-2 animate-fadeIn">
+                  <div className="p-4 rounded-xl bg-[#10151D] border border-border-primary space-y-2 animate-fadeIn">
                     <div className="text-xs font-mono font-bold text-emerald-400 flex items-center gap-1.5">
                       <ShieldCheck className="w-4 h-4" />
                       <span>{language === 'vi' ? 'LỜI GIẢI: PHÁT MINH BLOCKCHAIN' : 'THE BLOCKCHAIN BREAKTHROUGH'}</span>
@@ -424,7 +424,7 @@ export const DoubleSpendingLab: React.FC<DoubleSpendingLabProps> = ({
               <button
                 type="button"
                 onClick={onNextStage}
-                className="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-mono text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all ml-auto shadow-md"
+ className="px-4 py-2 rounded-xl bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-mono text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all ml-auto shadow-md"
               >
                 <span>{language === 'vi' ? 'Tiếp: Phần 05 · Tự Xây Dựng Blockchain' : 'Next: Part 05 · Build a Blockchain'}</span>
                 <ArrowRight className="w-3.5 h-3.5" />

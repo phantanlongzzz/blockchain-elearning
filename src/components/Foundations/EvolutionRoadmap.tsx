@@ -22,7 +22,7 @@ export const EvolutionRoadmap: React.FC = () => {
       title: strings.foundations.evolution.step1Title,
       desc: strings.foundations.evolution.step1Desc,
       icon: ListTree,
-      color: 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400',
+      color: 'bg-white/[0.04] border-border-primary text-text-primary',
       badge: 'RAM Array',
       code: 'my_list = [10, "Alice", True]',
     },
@@ -31,7 +31,7 @@ export const EvolutionRoadmap: React.FC = () => {
       title: strings.foundations.evolution.step2Title,
       desc: strings.foundations.evolution.step2Desc,
       icon: Layers,
-      color: 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400',
+      color: 'bg-white/[0.04] border-border-primary text-text-primary',
       badge: 'Pointer Chain',
       code: 'head -> Node_A -> Node_B -> None',
     },
@@ -40,7 +40,7 @@ export const EvolutionRoadmap: React.FC = () => {
       title: strings.foundations.evolution.step3Title,
       desc: strings.foundations.evolution.step3Desc,
       icon: GitCommit,
-      color: 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400',
+      color: 'bg-white/[0.04] border-border-primary text-text-primary',
       badge: 'Node Class',
       code: 'class Node: data, next',
     },
@@ -58,7 +58,7 @@ export const EvolutionRoadmap: React.FC = () => {
       title: strings.foundations.evolution.step5Title,
       desc: strings.foundations.evolution.step5Desc,
       icon: Boxes,
-      color: 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400',
+      color: 'bg-white/[0.04] border-border-primary text-text-primary',
       badge: 'Block Header',
       code: 'Block: { index, prev_hash, data, hash }',
     },
@@ -67,7 +67,7 @@ export const EvolutionRoadmap: React.FC = () => {
       title: strings.foundations.evolution.step6Title,
       desc: strings.foundations.evolution.step6Desc,
       icon: Lock,
-      color: 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400',
+      color: 'bg-white/[0.04] border-border-primary text-text-primary',
       badge: 'Consensus & Ledger',
       code: 'Blockchain = Hash Pointers + PoW/PoS + Merkle',
     },
@@ -76,8 +76,8 @@ export const EvolutionRoadmap: React.FC = () => {
   return (
     <div className="space-y-6 animate-in fade-in duration-300">
       {/* Header */}
-      <div className="p-5 rounded-2xl bg-[#0B0E12] border border-emerald-500/30">
-        <div className="flex items-center gap-2 text-emerald-400 text-xs font-mono font-bold uppercase tracking-wider mb-1">
+      <div className="p-5 rounded-2xl bg-[#0B0E12] border border-border-primary">
+        <div className="flex items-center gap-2 text-text-secondary text-xs font-mono font-bold uppercase tracking-wider mb-1">
           <Sparkles className="w-4 h-4" />
           <span>{strings.foundations.tabs.evolution}</span>
         </div>
@@ -107,7 +107,7 @@ export const EvolutionRoadmap: React.FC = () => {
             >
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <div className="w-9 h-9 rounded-xl bg-slate-900 border border-slate-700 flex items-center justify-center text-emerald-400">
+                  <div className="w-9 h-9 rounded-xl bg-slate-900 border border-border-primary flex items-center justify-center text-text-muted">
                     <Icon className="w-5 h-5" />
                   </div>
                   <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-900 border border-slate-700 text-slate-300">
@@ -134,7 +134,7 @@ export const EvolutionRoadmap: React.FC = () => {
 
       {/* Detailed Inspection of Selected Step */}
       <div className="p-6 rounded-2xl bg-[#090d16] border border-slate-800 space-y-3">
-        <div className="flex items-center gap-2 text-xs font-mono text-emerald-400 font-bold uppercase tracking-wider">
+        <div className="flex items-center gap-2 text-xs font-mono text-text-secondary font-bold uppercase tracking-wider">
           <Sparkles className="w-4 h-4" />
           <span>
             {language === 'vi'

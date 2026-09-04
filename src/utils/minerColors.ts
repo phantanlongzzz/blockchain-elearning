@@ -24,12 +24,12 @@ export const MINER_COLORS: Record<string, MinerColorToken> = {
   Alice: {
     name: 'Alice',
     primary: '#22c55e',
-    border: 'border-emerald-500/50',
+    border: 'border-border-primary',
     text: 'text-emerald-400',
     bg: 'bg-emerald-500/10',
-    badge: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30',
+    badge: 'bg-white/[0.04] text-text-primary border-border-primary',
     progressBar: 'bg-emerald-500',
-    avatarBg: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+    avatarBg: 'bg-white/[0.06] text-text-primary border-border-secondary',
     dotColor: '#22c55e',
   },
   Bob: {

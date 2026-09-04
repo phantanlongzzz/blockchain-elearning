@@ -13,7 +13,7 @@ export const ResearcherProfile: React.FC = () => {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-12 font-sans">
-          <div className="flex items-center justify-center gap-2 text-emerald-400 text-xs font-mono tracking-wider uppercase mb-3 font-semibold">
+          <div className="flex items-center justify-center gap-2 text-text-muted text-xs font-mono tracking-wider uppercase mb-3 font-semibold">
             <UserCheck className="w-3.5 h-3.5" />
             <span>{strings.researcherProfile.badge}</span>
           </div>
@@ -26,7 +26,7 @@ export const ResearcherProfile: React.FC = () => {
         </div>
 
         {/* Dedicated Researcher Profile Card */}
-        <div className="rounded-3xl bg-[#0c1017] border border-emerald-500/30 p-6 sm:p-10 shadow-[0_0_50px_rgba(0,0,0,0.8)] relative overflow-hidden font-sans">
+        <div className="rounded-3xl bg-[#0c1017] border border-border-primary p-6 sm:p-10 shadow-[0_0_50px_rgba(0,0,0,0.8)] relative overflow-hidden font-sans">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
             {/* University / Faculty Logo Container (Left Column) */}
             <div className="md:col-span-4 flex flex-col items-center justify-center p-6 rounded-2xl bg-slate-950/90 border border-slate-800 text-center font-sans">
@@ -35,7 +35,7 @@ export const ResearcherProfile: React.FC = () => {
                 <span className="text-[11px] font-sans text-slate-500 block uppercase">
                   {strings.researcherProfile.academicFramework}
                 </span>
-                <span className="text-xs font-sans text-emerald-300 font-semibold">
+                <span className="text-xs font-sans text-text-secondary font-semibold">
                   {program}
                 </span>
               </div>
@@ -44,7 +44,7 @@ export const ResearcherProfile: React.FC = () => {
             {/* Researcher Info (Right Column) */}
             <div className="md:col-span-8 space-y-6 font-sans">
               <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs font-mono text-emerald-400 uppercase tracking-widest mb-2 font-semibold">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs font-mono text-text-secondary uppercase tracking-widest mb-2 font-semibold">
                   <Sparkles className="w-3 h-3" />
                   <span>{strings.researcherProfile.studentBadge}</span>
                 </div>
@@ -61,10 +61,10 @@ export const ResearcherProfile: React.FC = () => {
                 {/* Class */}
                 <div className="p-4 rounded-xl bg-slate-950 border border-slate-800">
                   <div className="flex items-center gap-2 text-slate-500 text-xs uppercase font-semibold mb-1 font-display">
-                    <GraduationCap className="w-4 h-4 text-emerald-400" />
+                    <GraduationCap className="w-4 h-4 text-text-secondary" />
                     <span>{strings.researcherProfile.classLabel}</span>
                   </div>
-                  <div className="text-xl font-bold text-emerald-300 tracking-wider font-mono">
+                  <div className="text-xl font-bold text-text-primary tracking-wider font-mono">
                     {researcher.class}
                   </div>
                   <span className="text-[10px] text-slate-500 block mt-1 font-sans">
@@ -75,10 +75,10 @@ export const ResearcherProfile: React.FC = () => {
                 {/* Student ID */}
                 <div className="p-4 rounded-xl bg-slate-950 border border-slate-800">
                   <div className="flex items-center gap-2 text-slate-500 text-xs uppercase font-semibold mb-1 font-display">
-                    <IdCard className="w-4 h-4 text-emerald-400" />
+                    <IdCard className="w-4 h-4 text-text-secondary" />
                     <span>{strings.researcherProfile.studentIdLabel}</span>
                   </div>
-                  <div className="text-xl font-bold text-emerald-300 tracking-wider font-mono">
+                  <div className="text-xl font-bold text-text-primary tracking-wider font-mono">
                     {researcher.studentId}
                   </div>
                   <span className="text-[10px] text-slate-500 block mt-1 font-sans">

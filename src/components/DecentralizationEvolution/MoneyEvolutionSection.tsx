@@ -467,7 +467,7 @@ export const MoneyEvolutionSection: React.FC<MoneyEvolutionSectionProps> = ({
               </div>
 
               {/* 2. Improvement */}
-              <div className="p-3.5 rounded-lg bg-zinc-900/60 border-l-2 border-emerald-500/70 space-y-1">
+              <div className="p-3.5 rounded-lg bg-zinc-900/60 border border-border-primary space-y-1">
                 <div className="flex items-center gap-1.5 text-emerald-400 text-xs font-medium">
                   <Sparkles className="w-3.5 h-3.5" />
                   <span>{language === 'vi' ? 'Cải tiến đạt được' : 'What Improved'}</span>
@@ -507,7 +507,7 @@ export const MoneyEvolutionSection: React.FC<MoneyEvolutionSectionProps> = ({
                 type="button"
                 disabled={selectedEraIndex === MONEY_ERAS.length - 1}
                 onClick={() => handleSelectEra(selectedEraIndex + 1)}
-                className="px-3 py-1.5 rounded-md bg-emerald-500 hover:bg-emerald-400 text-black font-semibold text-xs disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-colors"
+ className="px-3 py-1.5 rounded-md bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-semibold text-xs disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-colors"
               >
                 {language === 'vi' ? 'Mốc tiếp theo →' : 'Next Era →'}
               </button>
@@ -519,7 +519,7 @@ export const MoneyEvolutionSection: React.FC<MoneyEvolutionSectionProps> = ({
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-200">
-                  <Scale className="w-3.5 h-3.5 text-emerald-400" />
+                  <Scale className="w-3.5 h-3.5 text-text-muted" />
                   <span>{language === 'vi' ? 'Thí nghiệm đánh giá tiền tệ' : 'Money Quality Test'}</span>
                 </div>
                 <span className="text-xs text-zinc-400 font-mono">
@@ -574,7 +574,7 @@ export const MoneyEvolutionSection: React.FC<MoneyEvolutionSectionProps> = ({
                 </div>
                 <div className="shrink-0 pt-0.5">
                   {activeTest.portable.pass ? (
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                    <CheckCircle2 className="w-4 h-4 text-success" />
                   ) : (
                     <XCircle className="w-4 h-4 text-rose-400" />
                   )}
@@ -591,7 +591,7 @@ export const MoneyEvolutionSection: React.FC<MoneyEvolutionSectionProps> = ({
                 </div>
                 <div className="shrink-0 pt-0.5">
                   {activeTest.durable.pass ? (
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                    <CheckCircle2 className="w-4 h-4 text-success" />
                   ) : (
                     <XCircle className="w-4 h-4 text-rose-400" />
                   )}
@@ -608,7 +608,7 @@ export const MoneyEvolutionSection: React.FC<MoneyEvolutionSectionProps> = ({
                 </div>
                 <div className="shrink-0 pt-0.5">
                   {activeTest.divisible.pass ? (
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                    <CheckCircle2 className="w-4 h-4 text-success" />
                   ) : (
                     <XCircle className="w-4 h-4 text-rose-400" />
                   )}
@@ -625,7 +625,7 @@ export const MoneyEvolutionSection: React.FC<MoneyEvolutionSectionProps> = ({
                 </div>
                 <div className="shrink-0 pt-0.5">
                   {activeTest.limitedSupply.pass ? (
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                    <CheckCircle2 className="w-4 h-4 text-success" />
                   ) : (
                     <XCircle className="w-4 h-4 text-rose-400" />
                   )}
@@ -642,7 +642,7 @@ export const MoneyEvolutionSection: React.FC<MoneyEvolutionSectionProps> = ({
           <button
             type="button"
             onClick={onNextStage}
-            className="px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black font-semibold text-xs flex items-center gap-2 transition-colors cursor-pointer shadow-sm"
+ className="px-4 py-2 rounded-lg bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-semibold text-xs flex items-center gap-2 transition-colors cursor-pointer shadow-sm"
           >
             <span>{language === 'vi' ? 'Khám phá Phần 02: Nghịch Lý Niềm Tin →' : 'Next: Part 02 - The Trust Paradox →'}</span>
             <ArrowRight className="w-3.5 h-3.5" />

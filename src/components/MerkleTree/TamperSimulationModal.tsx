@@ -173,7 +173,7 @@ export const TamperSimulationModal: React.FC<TamperSimulationModalProps> = ({
               <div className="p-2.5 rounded-lg bg-[#0F131A] border border-[#1C2430]">
                 <div className="flex items-center justify-between text-[10px] text-[#717B8C] mb-0.5 font-mono">
                   <span>MÃ BĂM LÁ BAN ĐẦU:</span>
-                  <span className="text-[#00C98D] font-bold">Đã chốt</span>
+                  <span className="text-success font-bold">Đã chốt</span>
                 </div>
                 <div className="text-[10px] font-mono text-[#A5AFBF] break-all">{transaction.hash}</div>
               </div>

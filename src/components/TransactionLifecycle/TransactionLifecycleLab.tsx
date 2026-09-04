@@ -90,13 +90,13 @@ export const TransactionLifecycleLab: React.FC = () => {
               }}
               className={`flex-1 min-w-[120px] px-3 py-2.5 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 transition-all ${
                 isActive
-                  ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30'
+                  ? 'bg-teach-1/15 text-teach-1 border border-teach-1/30'
                   : isPast
-                  ? 'bg-[#10151D] text-emerald-500/70 border border-emerald-500/10 hover:text-emerald-400 cursor-pointer'
+                  ? 'bg-[#10151D] text-success/80 border border-success/20 hover:text-success cursor-pointer'
                   : 'bg-transparent text-slate-500 border border-transparent cursor-not-allowed opacity-50'
               }`}
             >
-              {isPast ? <CheckCircle2 className="w-4 h-4" /> : <Icon className="w-4 h-4" />}
+              {isPast ? <CheckCircle2 className="w-4 h-4 text-success" /> : <Icon className="w-4 h-4 text-text-muted" />}
               <span>{stage.title}</span>
             </button>
           );

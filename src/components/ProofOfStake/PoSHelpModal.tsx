@@ -133,7 +133,7 @@ export const PoSHelpModal: React.FC<PoSHelpModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 rounded-xl bg-[#00C98D] hover:bg-[#00B982] text-[#090A0F] font-bold text-xs font-sans transition-all cursor-pointer shadow-sm"
+ className="px-4 py-2 rounded-xl bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-bold text-xs font-sans transition-all cursor-pointer shadow-sm"
           >
             {isVi ? 'Đã hiểu & Tiếp tục' : 'Got it & Continue'}
           </button>

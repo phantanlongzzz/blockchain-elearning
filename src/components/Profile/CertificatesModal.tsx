@@ -66,12 +66,12 @@ export const CertificatesModal: React.FC = () => {
         {/* Future-Ready Certificate Status & Placeholder */}
         <div className="my-6 space-y-4">
           <div className="p-6 bg-[#090A0F] border border-[#1C2430] rounded-2xl text-center space-y-4">
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-[#00C98D]/10 border border-[#00C98D]/30 text-[#00C98D] shadow-inner">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-teach-1/10 border border-teach-1/30 text-teach-1 shadow-inner">
               <Award className="w-6 h-6" />
             </div>
 
             <div>
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#00C98D]/10 border border-[#00C98D]/20 text-[11px] font-semibold text-[#00C98D] mb-2">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-teach-1/10 border border-teach-1/20 text-[11px] font-semibold text-teach-1 mb-2">
                 <Sparkles className="w-3.5 h-3.5" />
                 {strings.certificates.previewBadge}
               </span>
@@ -89,8 +89,8 @@ export const CertificatesModal: React.FC = () => {
 
             {/* Eligibility Status Check */}
             {activeCert ? (
-              <div className="p-4 bg-[#00C98D]/5 border border-[#00C98D]/30 rounded-xl text-left text-xs space-y-2">
-                <div className="flex items-center justify-between text-[#00C98D] font-semibold">
+              <div className="p-4 bg-teach-1/5 border border-teach-1/30 rounded-xl text-left text-xs space-y-2">
+                <div className="flex items-center justify-between text-teach-1 font-semibold">
                   <div className="flex items-center gap-1.5">
                     <CheckCircle2 className="w-4 h-4" />
                     <span>
@@ -99,7 +99,7 @@ export const CertificatesModal: React.FC = () => {
                         : 'Assessment Requirement Met'}
                     </span>
                   </div>
-                  <span className="font-mono text-[#00C98D] font-bold">
+                  <span className="font-mono text-teach-1 font-bold">
                     {activeCert.score}%
                   </span>
                 </div>
@@ -112,7 +112,7 @@ export const CertificatesModal: React.FC = () => {
             ) : (
               <div className="p-3.5 bg-[#0C0F14] border border-[#1C2430] rounded-xl text-left text-xs space-y-2">
                 <div className="flex items-center gap-2 text-[#F2F4F7] font-medium">
-                  <Info className="w-4 h-4 text-[#00C98D] shrink-0" />
+                  <Info className="w-4 h-4 text-teach-1 shrink-0" />
                   <span>{strings.certificates.passRequirement}</span>
                 </div>
                 <p className="text-[#717B8C] text-[11px] leading-relaxed">
@@ -126,14 +126,14 @@ export const CertificatesModal: React.FC = () => {
             {/* Architecture Schema Preview */}
             <div className="p-4 bg-[#0B0F15] border border-[#1C2430] rounded-xl text-left text-xs font-mono space-y-1.5">
               <div className="flex items-center gap-2 text-[#717B8C] text-[10px] uppercase tracking-wider font-bold mb-2">
-                <Database className="w-3.5 h-3.5 text-[#00C98D]" />
+                <Database className="w-3.5 h-3.5 text-teach-1" />
                 <span>Certificate Data Architecture Model</span>
               </div>
               <div className="text-[11px] text-[#A5AFBF] space-y-1">
-                <div><span className="text-[#00C98D]">userId:</span> "{user.userId}"</div>
-                <div><span className="text-[#00C98D]">quizVersion:</span> "1.0"</div>
-                <div><span className="text-[#00C98D]">certificateId:</span> "{activeCert ? activeCert.certificateId : 'BC-CERT-XXXXXX'}"</div>
-                <div><span className="text-[#00C98D]">status:</span> "{activeCert ? 'eligible' : 'pending'}"</div>
+                <div><span className="text-teach-1">userId:</span> "{user.userId}"</div>
+                <div><span className="text-teach-1">quizVersion:</span> "1.0"</div>
+                <div><span className="text-teach-1">certificateId:</span> "{activeCert ? activeCert.certificateId : 'BC-CERT-XXXXXX'}"</div>
+                <div><span className="text-teach-1">status:</span> "{activeCert ? 'eligible' : 'pending'}"</div>
               </div>
             </div>
 
@@ -144,7 +144,7 @@ export const CertificatesModal: React.FC = () => {
                 const el = document.getElementById('quiz-section');
                 if (el) el.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="px-5 py-2.5 bg-[#00C98D] hover:bg-[#00B982] text-[#090A0F] font-bold text-xs rounded-xl shadow-sm transition-all inline-flex items-center gap-2 cursor-pointer"
+ className="px-5 py-2.5 bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-bold text-xs rounded-xl shadow-sm transition-all inline-flex items-center gap-2 cursor-pointer"
             >
               <span>{strings.quiz.startQuiz}</span>
             </button>

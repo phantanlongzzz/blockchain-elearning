@@ -59,10 +59,10 @@ export const LabRecorderTimeline: React.FC<LabRecorderTimelineProps> = ({
       case 'broadcast':
         return { label: 'P2P', class: 'text-purple-400 bg-purple-950/40 border-purple-500/30' };
       case 'validation':
-        return { label: 'VERIFY', class: 'text-emerald-400 bg-emerald-950/40 border-emerald-500/30' };
+        return { label: 'VERIFY', class: 'text-success bg-success/10 border-success/30' };
       case 'consensus':
       case 'reward':
-        return { label: language === 'vi' ? 'ĐỒNG THUẬN' : 'CONSENSUS', class: 'text-emerald-300 bg-emerald-950/50 border-emerald-400/40' };
+        return { label: language === 'vi' ? 'ĐỒNG THUẬN' : 'CONSENSUS', class: 'text-success bg-success/10 border-success/30' };
       case 'fork':
       case 'orphan':
         return { label: 'FORK', class: 'text-amber-300 bg-amber-950/50 border-amber-500/40' };
@@ -116,7 +116,7 @@ export const LabRecorderTimeline: React.FC<LabRecorderTimelineProps> = ({
             className="p-1.5 rounded bg-[#060911] hover:bg-zinc-800 border border-zinc-800 text-zinc-400 hover:text-zinc-200 transition-colors cursor-pointer"
             title={language === 'vi' ? 'Sao chép nhật ký' : 'Copy logs'}
           >
-            {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+            {copied ? <Check className="w-3.5 h-3.5 text-success" /> : <Copy className="w-3.5 h-3.5" />}
           </button>
 
           {/* Clear Logs */}

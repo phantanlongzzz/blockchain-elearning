@@ -47,10 +47,10 @@ export const CopyableHash: React.FC<CopyableHashProps> = ({
 
   const statusBorderClass =
     isValid === true
-      ? 'border-emerald-500/40 bg-emerald-950/20 text-emerald-300'
+      ? 'border-success/40 bg-success/10 text-success'
       : isValid === false
       ? 'border-rose-500/40 bg-rose-950/20 text-rose-300'
-      : 'border-slate-800 bg-slate-900/80 text-slate-300';
+      : 'border-border-primary bg-slate-900/80 text-slate-300';
 
   return (
     <div
@@ -93,7 +93,7 @@ export const CopyableHash: React.FC<CopyableHashProps> = ({
         <span
           className={`text-[10px] px-1.5 py-0.5 rounded-[var(--radius-xs)] font-sans font-bold flex items-center gap-0.5 select-none ${
             isValid === true
-              ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+              ? 'bg-success/20 text-success border border-success/30'
               : isValid === false
               ? 'bg-rose-500/20 text-rose-300 border border-rose-500/30'
               : 'bg-slate-800 text-slate-400'
@@ -115,7 +115,7 @@ export const CopyableHash: React.FC<CopyableHashProps> = ({
           title="Sao chép mã băm (Copy hash)"
         >
           {copied ? (
-            <Check className="w-3.5 h-3.5 text-emerald-400 animate-in zoom-in-50" />
+            <Check className="w-3.5 h-3.5 text-success animate-in zoom-in-50" />
           ) : (
             <Copy className="w-3.5 h-3.5 opacity-70 group-hover:opacity-100" />
           )}

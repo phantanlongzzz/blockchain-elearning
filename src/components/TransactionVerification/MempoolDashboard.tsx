@@ -100,7 +100,7 @@ interface TraceStep {
 export const MempoolDashboard: React.FC = () => {
   const { strings, language } = useLanguage();
   const isVi = language === 'vi';
-  const vStr = strings.verification;
+  const vStr = strings.verification as any;
 
   // Selected Scenario
   const [selectedScenario, setSelectedScenario] = useState<'VALID' | 'TAMPERED' | 'INSUFFICIENT' | 'REPLAY' | null>(null);

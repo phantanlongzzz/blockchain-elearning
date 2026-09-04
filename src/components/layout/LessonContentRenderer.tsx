@@ -35,6 +35,8 @@ const MerkleTreeLab = lazy(() => import('../MerkleTree/MerkleTreeLab').then(m =>
 const QuizSection = lazy(() => import('../Quiz/QuizSection').then(m => ({ default: m.QuizSection })));
 const AcademicAndResearchSection = lazy(() => import('../AcademicAndResearchSection').then(m => ({ default: m.AcademicAndResearchSection })));
 
+const AIAssistantPlaceholder = lazy(() => import('../AIAssistant/AIAssistantPlaceholder').then(m => ({ default: m.AIAssistantPlaceholder })));
+
 const LessonLoadingFallback: React.FC = () => (
   <div className="w-full min-h-[400px] flex items-center justify-center py-16">
     <div className="flex flex-col items-center gap-3">
@@ -96,6 +98,8 @@ export const LessonContentRenderer: React.FC = () => {
         return <QuizSection key="bc-quiz" />;
       case 'academic':
         return <AcademicAndResearchSection key="bc-academic" />;
+
+      // 5. AI ASSISTANT
 
       default:
         return <Hero key="fallback-hero" />;

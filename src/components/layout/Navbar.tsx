@@ -261,6 +261,25 @@ export const Navbar: React.FC<NavbarProps> = ({
                   </div>
                 );
               })}
+
+              {/* GitHub Repository Icon */}
+              <div className="relative ml-2 group/nav-gh flex items-center justify-center">
+                <a
+                  href="https://github.com/phantanlongzzz/blockchain-elearning"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="relative w-[38px] h-[38px] rounded-[10px] bg-[#0A0A0C] border border-[#2DD4BF]/30 flex items-center justify-center transition-all duration-[220ms] hover:-translate-y-[2px] hover:scale-[1.06] hover:border-[#2DD4BF]/70 cursor-pointer z-10 [box-shadow:0_0_8px_rgba(45,212,191,0.18),inset_0_0_6px_rgba(45,212,191,0.05)] hover:[box-shadow:0_0_10px_rgba(45,212,191,0.5),0_0_24px_rgba(45,212,191,0.25),0_0_45px_rgba(45,212,191,0.12)]"
+                >
+                  <img
+                    src="/github.webp"
+                    alt="GitHub"
+                    className="w-[18px] h-[18px] object-contain brightness-0 invert opacity-85 group-hover/nav-gh:opacity-100 transition-opacity duration-[220ms]"
+                  />
+                  <div className="absolute top-[46px] left-1/2 -translate-x-1/2 opacity-0 group-hover/nav-gh:opacity-100 group-hover/nav-gh:translate-y-1 transition-all duration-[220ms] pointer-events-none px-2.5 py-1 bg-[#09090b] border border-[#2DD4BF]/40 rounded-md flex items-center justify-center whitespace-nowrap z-50 shadow-lg">
+                    <span className="text-[11px] font-sans text-[#f5f5f5] font-medium tracking-wide">GitHub Repository</span>
+                  </div>
+                </a>
+              </div>
             </nav>
           </div>
 
@@ -467,6 +486,25 @@ export const Navbar: React.FC<NavbarProps> = ({
               </div>
             );
           })}
+
+          {/* Mobile GitHub Repository Link */}
+          <div className="rounded-lg border border-[#1C2430] bg-[#0C0F14] overflow-hidden mt-2">
+            <a
+              href="https://github.com/phantanlongzzz/blockchain-elearning"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full flex items-center justify-between px-3.5 py-2.5 text-left font-medium text-xs transition-colors text-[#A5AFBF] hover:text-[#2DD4BF] hover:bg-[#11161E] cursor-pointer"
+            >
+              <div className="flex items-center gap-2">
+                <img
+                  src="/github.webp"
+                  alt="GitHub"
+                  className="w-4 h-4 object-contain brightness-0 invert opacity-70"
+                />
+                <span>GitHub Repository</span>
+              </div>
+            </a>
+          </div>
         </div>
       )}
     </header>

@@ -7,6 +7,7 @@ import React, { createContext, useContext, useState, useEffect, useMemo, useCall
 import { useProgressStore } from '../stores/progressStore';
 import { useSimulationStore } from '../stores/simulationStore';
 
+
 export type ModuleId = 'home' | 'hash' | 'theory' | 'simulation' | 'blockchain';
 
 export type LessonId =

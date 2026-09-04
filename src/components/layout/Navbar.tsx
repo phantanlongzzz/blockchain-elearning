@@ -30,13 +30,12 @@ import {
   BookOpen,
   HelpCircle,
   Search,
-  Sliders,
+  ExternalLink,
 } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { useAuth } from '../../context/AuthContext';
-import { useNavigation, MODULES_REGISTRY, ModuleId, LessonId } from '../../context/NavigationContext';
+import { useNavigation, MODULES_REGISTRY, ModuleId } from '../../context/NavigationContext';
 import { useProgressStore } from '../../stores/progressStore';
-import { LanguageToggle } from '../LanguageToggle';
 import { CursorToggle } from '../CursorToggle';
 
 const ICON_MAP: Record<string, React.ElementType> = {
@@ -70,7 +69,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onToggleSearch,
   searchTriggerRef,
 }) => {
-  const { language, strings } = useLanguage();
+  const { language, setLanguage, strings } = useLanguage();
   const progressMap = useProgressStore((s) => s.progressMap);
   const {
     user,
@@ -86,13 +85,11 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const [openDropdown, setOpenDropdown] = useState<ModuleId | null>(null);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
-  const [settingsOpen, setSettingsOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileExpandedGroup, setMobileExpandedGroup] = useState<ModuleId | null>(null);
 
   const navRef = useRef<HTMLDivElement>(null);
   const userMenuRef = useRef<HTMLDivElement>(null);
-  const settingsMenuRef = useRef<HTMLDivElement>(null);
   const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Click outside to close dropdowns
@@ -103,9 +100,6 @@ export const Navbar: React.FC<NavbarProps> = ({
       }
       if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
         setUserDropdownOpen(false);
-      }
-      if (settingsMenuRef.current && !settingsMenuRef.current.contains(event.target as Node)) {
-        setSettingsOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -118,7 +112,6 @@ export const Navbar: React.FC<NavbarProps> = ({
       if (event.key === 'Escape') {
         setOpenDropdown(null);
         setUserDropdownOpen(false);
-        setSettingsOpen(false);
         setMobileMenuOpen(false);
       }
     };
@@ -139,161 +132,149 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const isVi = language === 'vi';
   const brandName = strings?.nav?.brandName || 'Blockchain Lab';
-  const brandSubtitle = strings?.nav?.brandSubtitle || (isVi ? 'Trường Đại học Đà Lạt · Khoa CNTT' : 'Dalat University · Faculty of Information Technology');
+
+  // User initial avatar letter
+  const userInitial = user?.name ? user.name.trim().charAt(0).toUpperCase() : 'P';
+  const displayName = user?.name || (isVi ? 'Phan Tấn Long' : 'Phan Tan Long');
 
   return (
-    <header className="sticky top-0 z-50 bg-[#090A0F]/95 backdrop-blur-md border-b border-[#1C2430] font-sans">
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 sm:h-18" ref={navRef}>
-          {/* Brand Logo & University Identity */}
-          <div className="flex items-center">
+    <header className="sticky top-0 z-50 bg-[#090D12]/95 backdrop-blur-md border-b border-white/[0.08] font-sans">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-14 sm:h-16" ref={navRef}>
+          {/* Left: Brand Logo & Project Title */}
+          <div className="flex items-center shrink-0">
             <button
               onClick={() => navigateTo('home', 'overview')}
-              className="flex items-center gap-2.5 sm:gap-3 text-left focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#00C98D] rounded-lg group cursor-pointer shrink-0"
+              className="flex items-center gap-2.5 text-left rounded-lg group cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#00C98D]"
               id="nav-brand-button"
               aria-label={`${brandName} - ${isVi ? 'Trang chủ' : 'Home'}`}
             >
-              <div className="relative flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-[#0C0F14] border border-[#1C2430] group-hover:border-[#00C98D]/40 transition-colors p-1.5 shadow-sm shrink-0">
+              <div className="w-8 h-8 rounded-lg bg-[#0C0F14] border border-white/[0.08] group-hover:border-[#00C98D]/40 transition-colors p-1 shrink-0 flex items-center justify-center">
                 <img
                   src="/logo.png"
-                  alt="Trường Đại học Đà Lạt"
+                  alt="Blockchain Lab"
                   className="w-full h-full object-contain"
-                  style={{ filter: 'none', mixBlendMode: 'normal', opacity: 1 }}
                 />
               </div>
-              <div className="flex flex-col justify-center">
-                <span className="font-semibold text-[#F2F4F7] text-sm sm:text-base tracking-tight leading-tight">
-                  {brandName}
-                </span>
-                <span className="text-[11px] text-[#717B8C] font-normal tracking-tight hidden md:block mt-0.5 leading-none">
-                  {brandSubtitle}
-                </span>
-              </div>
+              <span className="font-semibold text-[#F2F4F7] text-sm sm:text-[15px] tracking-tight whitespace-nowrap group-hover:text-white transition-colors">
+                {brandName}
+              </span>
             </button>
-
-            {/* Subtle Divider */}
-            <div className="hidden lg:block h-4 w-px bg-[#1C2430] mx-2 xl:mx-3 shrink-0" aria-hidden="true" />
-
-            {/* Desktop Navigation Menu */}
-            <nav className="hidden lg:flex items-center space-x-1 xl:space-x-1.5 font-sans text-xs" aria-label="Primary navigation">
-              {MODULES_REGISTRY.map((module) => {
-                const isActiveModule = currentModuleId === module.id;
-                const hasMultipleLessons = module.lessons.length > 1;
-                const isDropdownOpen = openDropdown === module.id;
-                const ModIcon = ICON_MAP[module.iconName] || Home;
-
-                if (!hasMultipleLessons) {
-                  // Single lesson (Home)
-                  return (
-                    <button
-                      key={module.id}
-                      id={`nav-tab-${module.id}`}
-                      onClick={() => navigateTo(module.id, module.lessons[0].id)}
-                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition-colors font-medium whitespace-nowrap cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#00C98D] ${
-                        isActiveModule
-                          ? 'bg-[#11161E] text-[#00C98D] border border-[#1C2430] font-semibold'
-                          : 'text-[#A5AFBF] hover:text-[#F2F4F7] hover:bg-[#0C0F14]'
-                      }`}
-                    >
-                      <ModIcon className="w-3.5 h-3.5" />
-                      <span>{isVi ? module.titleVi : module.titleEn}</span>
-                    </button>
-                  );
-                }
-
-                return (
-                  <div
-                    key={module.id}
-                    className="relative"
-                    onMouseEnter={() => handleMouseEnter(module.id)}
-                    onMouseLeave={handleMouseLeave}
-                  >
-                    <button
-                      id={`nav-tab-${module.id}`}
-                      onClick={() => navigateTo(module.id, module.lessons[0].id)}
-                      aria-expanded={isDropdownOpen}
-                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition-colors font-medium whitespace-nowrap cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#00C98D] ${
-                        isActiveModule
-                          ? 'bg-[#11161E] text-[#00C98D] border border-[#1C2430] font-semibold'
-                          : 'text-[#A5AFBF] hover:text-[#F2F4F7] hover:bg-[#0C0F14]'
-                      }`}
-                    >
-                      <ModIcon className="w-3.5 h-3.5" />
-                      <span>{isVi ? module.titleVi : module.titleEn}</span>
-                      <ChevronDown
-                        className={`w-3 h-3 transition-transform duration-150 ${
-                          isDropdownOpen ? 'rotate-180 text-[#00C98D]' : 'text-[#717B8C]'
-                        }`}
-                      />
-                    </button>
-
-                    {/* Dropdown Menu */}
-                    {isDropdownOpen && (
-                      <div
-                        className="absolute top-full left-0 mt-1.5 w-60 sm:w-64 bg-[#0C0F14] backdrop-blur-md border border-[#1C2430] rounded-lg shadow-2xl p-1 z-50 animate-in fade-in slide-in-from-top-1 duration-150 font-sans"
-                        role="menu"
-                        aria-label={isVi ? module.titleVi : module.titleEn}
-                      >
-                        <div className="flex flex-col space-y-0.5" role="none">
-                          {module.lessons.map((lesson) => {
-                            const isCurrentLesson = currentLessonId === lesson.id;
-                            const isDone = progressMap[lesson.id]?.status === 'completed';
-                            const label = isVi ? lesson.shortTitleVi : lesson.shortTitleEn;
-
-                            return (
-                              <button
-                                key={lesson.id}
-                                role="menuitem"
-                                onClick={() => {
-                                  navigateTo(module.id, lesson.id);
-                                  setOpenDropdown(null);
-                                }}
-                                className={`w-full flex items-center justify-between px-3 py-2 rounded-md text-xs sm:text-sm font-medium text-left transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#00C98D] ${
-                                  isCurrentLesson
-                                    ? 'bg-[#11161E] text-[#00C98D] font-semibold'
-                                    : 'text-[#A5AFBF] hover:text-[#F2F4F7] hover:bg-[#0F131A]'
-                                }`}
-                              >
-                                <span className="truncate">{label}</span>
-                                {isDone ? (
-                                  <CheckCircle2 className="w-3.5 h-3.5 text-[#00C98D] shrink-0 ml-2" />
-                                ) : isCurrentLesson ? (
-                                  <span className="w-1.5 h-1.5 rounded-full bg-[#00C98D] shrink-0 ml-2" />
-                                ) : null}
-                              </button>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-
-              {/* GitHub Repository Icon */}
-              <div className="relative ml-2 group/nav-gh flex items-center justify-center">
-                <a
-                  href="https://github.com/phantanlongzzz/blockchain-elearning"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="relative w-[38px] h-[38px] rounded-[10px] bg-[#0A0A0C] border border-[#2DD4BF]/30 flex items-center justify-center transition-all duration-[220ms] hover:-translate-y-[2px] hover:scale-[1.06] hover:border-[#2DD4BF]/70 cursor-pointer z-10 [box-shadow:0_0_8px_rgba(45,212,191,0.18),inset_0_0_6px_rgba(45,212,191,0.05)] hover:[box-shadow:0_0_10px_rgba(45,212,191,0.5),0_0_24px_rgba(45,212,191,0.25),0_0_45px_rgba(45,212,191,0.12)]"
-                >
-                  <img
-                    src="/github.webp"
-                    alt="GitHub"
-                    className="w-[18px] h-[18px] object-contain brightness-0 invert opacity-85 group-hover/nav-gh:opacity-100 transition-opacity duration-[220ms]"
-                  />
-                  <div className="absolute top-[46px] left-1/2 -translate-x-1/2 opacity-0 group-hover/nav-gh:opacity-100 group-hover/nav-gh:translate-y-1 transition-all duration-[220ms] pointer-events-none px-2.5 py-1 bg-[#09090b] border border-[#2DD4BF]/40 rounded-md flex items-center justify-center whitespace-nowrap z-50 shadow-lg">
-                    <span className="text-[11px] font-sans text-[#f5f5f5] font-medium tracking-wide">GitHub Repository</span>
-                  </div>
-                </a>
-              </div>
-            </nav>
           </div>
 
-          {/* Right Action Tools: Search, Language & Auth */}
-          <div className="flex items-center gap-2 sm:gap-2.5">
-            {/* Minimal Icon-Only Search Trigger (Linear / Raycast Style) */}
+          {/* Center: Main Navigation Menu (Clean, Minimal, Text + Subtle Chevron) */}
+          <nav className="hidden lg:flex items-center gap-1 xl:gap-2 text-xs font-medium" aria-label="Primary navigation">
+            {MODULES_REGISTRY.map((module) => {
+              const isActiveModule = currentModuleId === module.id;
+              const hasMultipleLessons = module.lessons.length > 1;
+              const isDropdownOpen = openDropdown === module.id;
+
+              if (!hasMultipleLessons) {
+                // Trang chủ (Single lesson)
+                return (
+                  <button
+                    key={module.id}
+                    id={`nav-tab-${module.id}`}
+                    onClick={() => navigateTo(module.id, module.lessons[0].id)}
+                    className={`px-3 py-1.5 rounded-md transition-colors whitespace-nowrap cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#00C98D] ${
+                      isActiveModule
+                        ? 'text-[#00C98D] bg-[#00C98D]/10 font-semibold'
+                        : 'text-[#9AA5B5] hover:text-[#F2F4F7] hover:bg-white/[0.04]'
+                    }`}
+                  >
+                    <span>{isVi ? module.titleVi : module.titleEn}</span>
+                  </button>
+                );
+              }
+
+              return (
+                <div
+                  key={module.id}
+                  className="relative"
+                  onMouseEnter={() => handleMouseEnter(module.id)}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <button
+                    id={`nav-tab-${module.id}`}
+                    onClick={() => navigateTo(module.id, module.lessons[0].id)}
+                    aria-expanded={isDropdownOpen}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition-colors whitespace-nowrap cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#00C98D] ${
+                      isActiveModule
+                        ? 'text-[#00C98D] bg-[#00C98D]/10 font-semibold'
+                        : 'text-[#9AA5B5] hover:text-[#F2F4F7] hover:bg-white/[0.04]'
+                    }`}
+                  >
+                    <span>{isVi ? module.titleVi : module.titleEn}</span>
+                    <ChevronDown
+                      className={`w-3 h-3 transition-transform duration-150 ${
+                        isDropdownOpen ? 'rotate-180 text-[#00C98D]' : 'text-[#717B8C]'
+                      }`}
+                    />
+                  </button>
+
+                  {/* Dropdown Menu */}
+                  {isDropdownOpen && (
+                    <div
+                      className="absolute top-full left-0 mt-1 w-56 sm:w-60 bg-[#0C0F14] backdrop-blur-md border border-white/[0.08] rounded-xl shadow-2xl p-1 z-50 animate-in fade-in slide-in-from-top-1 duration-150 font-sans"
+                      role="menu"
+                      aria-label={isVi ? module.titleVi : module.titleEn}
+                    >
+                      <div className="flex flex-col space-y-0.5" role="none">
+                        {module.lessons.map((lesson) => {
+                          const isCurrentLesson = currentLessonId === lesson.id;
+                          const isDone = progressMap[lesson.id]?.status === 'completed';
+                          const label = isVi ? lesson.shortTitleVi : lesson.shortTitleEn;
+
+                          return (
+                            <button
+                              key={lesson.id}
+                              role="menuitem"
+                              onClick={() => {
+                                navigateTo(module.id, lesson.id);
+                                setOpenDropdown(null);
+                              }}
+                              className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-left transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#00C98D] ${
+                                isCurrentLesson
+                                  ? 'bg-[#11161E] text-[#00C98D] font-semibold'
+                                  : 'text-[#A5AFBF] hover:text-[#F2F4F7] hover:bg-white/[0.04]'
+                              }`}
+                            >
+                              <span className="truncate">{label}</span>
+                              {isDone ? (
+                                <CheckCircle2 className="w-3.5 h-3.5 text-[#00C98D] shrink-0 ml-2" />
+                              ) : isCurrentLesson ? (
+                                <span className="w-1.5 h-1.5 rounded-full bg-[#00C98D] shrink-0 ml-2" />
+                              ) : null}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </nav>
+
+          {/* Right Action Tools: GitHub Icon, Search Icon, Profile Dropdown */}
+          <div className="flex items-center gap-2 sm:gap-3">
+            {/* Minimal GitHub Icon Button */}
+            <a
+              href="https://github.com/phantanlongzzz/blockchain-elearning"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-8 h-8 flex items-center justify-center rounded-lg text-[#9AA5B5] hover:text-[#00C98D] hover:bg-white/[0.04] transition-all cursor-pointer group/gh relative"
+              title="GitHub Repository"
+              aria-label="GitHub Repository"
+            >
+              <img
+                src="/github.webp"
+                alt="GitHub"
+                className="w-4 h-4 object-contain brightness-0 invert opacity-75 group-hover/gh:opacity-100 transition-opacity"
+              />
+            </a>
+
+            {/* Minimal Search Trigger */}
             <button
               ref={searchTriggerRef}
               type="button"
@@ -305,10 +286,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                   window.dispatchEvent(new CustomEvent('toggle-command-palette'));
                 }
               }}
-              className={`w-9 h-9 flex items-center justify-center rounded-lg border transition-all cursor-pointer shrink-0 active:scale-95 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#00C98D] ${
+              className={`w-8 h-8 flex items-center justify-center rounded-lg transition-colors cursor-pointer shrink-0 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#00C98D] ${
                 isSearchOpen
-                  ? 'bg-[#11161E] border-[#00C98D]/40 text-[#00C98D]'
-                  : 'bg-[#0C0F14] border-[#1C2430] hover:bg-[#11161E] hover:border-[#1C2430] text-[#A5AFBF] hover:text-[#F2F4F7]'
+                  ? 'text-[#00C98D] bg-white/[0.04]'
+                  : 'text-[#9AA5B5] hover:text-[#00C98D] hover:bg-white/[0.04]'
               }`}
               title={isVi ? 'Tìm kiếm (Ctrl + K)' : 'Search (Ctrl + K)'}
               aria-label={isVi ? 'Tìm kiếm (Ctrl + K)' : 'Search (Ctrl + K)'}
@@ -318,80 +299,59 @@ export const Navbar: React.FC<NavbarProps> = ({
               <Search className="w-4 h-4" />
             </button>
 
-            <LanguageToggle />
-
-            {/* Interface Settings Dropdown */}
-            <div className="relative" ref={settingsMenuRef}>
+            {/* Profile Menu (Encapsulates User, Language, Interface Cursor, GitHub) */}
+            <div className="relative" ref={userMenuRef}>
               <button
-                type="button"
-                id="interface-settings-button"
-                onClick={() => setSettingsOpen(!settingsOpen)}
-                className={`w-9 h-9 flex items-center justify-center rounded-lg border transition-all cursor-pointer shrink-0 active:scale-95 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#00C98D] ${
-                  settingsOpen
-                    ? 'bg-[#11161E] border-[#00C98D]/40 text-[#00C98D]'
-                    : 'bg-[#0C0F14] border-[#1C2430] hover:bg-[#11161E] hover:border-[#1C2430] text-[#A5AFBF] hover:text-[#F2F4F7]'
-                }`}
-                title={isVi ? 'Cài đặt giao diện' : 'Interface Settings'}
-                aria-label={isVi ? 'Cài đặt giao diện' : 'Interface Settings'}
-                aria-expanded={settingsOpen}
+                onClick={() => setUserDropdownOpen(!userDropdownOpen)}
+                className="flex items-center gap-2 pl-1.5 pr-2.5 py-1 rounded-lg hover:bg-white/[0.04] transition-colors text-xs font-sans cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#00C98D]"
+                id="user-profile-button"
+                aria-expanded={userDropdownOpen}
+                aria-label="Profile and settings menu"
               >
-                <Sliders className="w-4 h-4" />
+                <div className="w-6 h-6 rounded-full bg-[#00C98D] flex items-center justify-center text-[#090A0F] font-bold text-[11px] shrink-0 shadow-sm">
+                  {userInitial}
+                </div>
+                <span className="hidden sm:inline text-[#F2F4F7] max-w-[120px] truncate font-medium">
+                  {displayName}
+                </span>
+                <ChevronDown
+                  className={`w-3 h-3 text-[#717B8C] transition-transform duration-150 ${
+                    userDropdownOpen ? 'rotate-180 text-[#00C98D]' : ''
+                  }`}
+                />
               </button>
 
-              {settingsOpen && (
+              {/* Minimal Profile Dropdown */}
+              {userDropdownOpen && (
                 <div
-                  className="absolute right-0 top-full mt-1.5 w-52 bg-[#0C0F14] backdrop-blur-md border border-[#1C2430] rounded-xl shadow-2xl p-3 z-50 font-sans text-xs animate-in fade-in slide-in-from-top-1 duration-150"
-                  role="dialog"
-                  aria-label="Cài đặt giao diện"
+                  className="absolute right-0 top-full mt-1.5 w-60 bg-[#0C0F14] backdrop-blur-md border border-white/[0.08] rounded-xl shadow-2xl p-1.5 z-50 font-sans text-xs animate-in fade-in slide-in-from-top-1 duration-150"
+                  role="menu"
+                  aria-label="User menu"
                 >
-                  <div className="pb-2 mb-2.5 border-b border-[#1C2430]">
-                    <span className="font-semibold text-[#717B8C] uppercase tracking-wider text-[11px]">
-                      {isVi ? 'Cài đặt giao diện' : 'Interface'}
-                    </span>
-                  </div>
-                  <CursorToggle />
-                </div>
-              )}
-            </div>
-
-            {/* User Profile / Login */}
-            {isAuthenticated && user ? (
-              <div className="relative" ref={userMenuRef}>
-                <button
-                  onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                  className="flex items-center gap-2 p-1 sm:px-2.5 sm:py-1.5 rounded-lg bg-[#0C0F14] border border-[#1C2430] hover:border-[#00C98D]/40 transition-colors text-xs font-sans cursor-pointer"
-                  id="user-profile-button"
-                >
-                  <div className="w-6 h-6 rounded-md bg-[#00C98D] flex items-center justify-center text-[#090A0F] font-bold text-[11px] shrink-0">
-                    {user.name.charAt(0).toUpperCase()}
-                  </div>
-                  <span className="hidden sm:inline text-[#F2F4F7] max-w-[80px] md:max-w-[100px] truncate font-medium">
-                    {user.name}
-                  </span>
-                  <ChevronDown className="w-3 h-3 text-[#717B8C]" />
-                </button>
-
-                {userDropdownOpen && (
-                  <div
-                    className="absolute right-0 top-full mt-1.5 w-60 bg-[#0C0F14] backdrop-blur-md border border-[#1C2430] rounded-lg shadow-2xl p-1 z-50 font-sans text-xs animate-in fade-in slide-in-from-top-1 duration-150"
-                    role="menu"
-                    aria-label="User menu"
-                  >
-                    <div className="px-3 py-2 border-b border-[#1C2430] mb-1">
-                      <div className="text-[#F2F4F7] font-medium truncate">{user.name}</div>
-                      <div className="text-[11px] text-[#717B8C] truncate font-mono mt-0.5">{user.email}</div>
+                  {/* User Profile Info / Guest header */}
+                  <div className="px-3 py-2 border-b border-white/[0.08]">
+                    <div className="text-[#F2F4F7] font-semibold truncate text-[13px]">
+                      {displayName}
                     </div>
+                    {user?.email && (
+                      <div className="text-[11px] text-[#717B8C] truncate font-mono mt-0.5">
+                        {user.email}
+                      </div>
+                    )}
+                  </div>
 
-                    <div className="space-y-0.5" role="none">
+                  {/* User Modal Links (if authenticated) */}
+                  {isAuthenticated && user && (
+                    <div className="py-1 border-b border-white/[0.08] space-y-0.5" role="none">
                       <button
                         role="menuitem"
                         onClick={() => {
                           setProfileModalOpen(true);
                           setUserDropdownOpen(false);
                         }}
-                        className="w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-[#A5AFBF] hover:text-[#F2F4F7] hover:bg-[#11161E] text-left transition-colors cursor-pointer"
+                        className="w-full flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[#A5AFBF] hover:text-[#F2F4F7] hover:bg-white/[0.04] text-left transition-colors cursor-pointer"
                       >
-                        <User className="w-4 h-4 text-[#00C98D]" />
+                        <User className="w-3.5 h-3.5 text-[#00C98D]" />
                         <span>{isVi ? 'Hồ sơ cá nhân' : 'Profile'}</span>
                       </button>
 
@@ -401,9 +361,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                           setQuizHistoryModalOpen(true);
                           setUserDropdownOpen(false);
                         }}
-                        className="w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-[#A5AFBF] hover:text-[#F2F4F7] hover:bg-[#11161E] text-left transition-colors cursor-pointer"
+                        className="w-full flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[#A5AFBF] hover:text-[#F2F4F7] hover:bg-white/[0.04] text-left transition-colors cursor-pointer"
                       >
-                        <History className="w-4 h-4 text-[#00C98D]" />
+                        <History className="w-3.5 h-3.5 text-[#00C98D]" />
                         <span>{isVi ? 'Lịch sử làm bài' : 'Quiz History'}</span>
                       </button>
 
@@ -413,49 +373,113 @@ export const Navbar: React.FC<NavbarProps> = ({
                           setCertificatesModalOpen(true);
                           setUserDropdownOpen(false);
                         }}
-                        className="w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-[#A5AFBF] hover:text-[#F2F4F7] hover:bg-[#11161E] text-left transition-colors cursor-pointer"
+                        className="w-full flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[#A5AFBF] hover:text-[#F2F4F7] hover:bg-white/[0.04] text-left transition-colors cursor-pointer"
                       >
-                        <Award className="w-4 h-4 text-[#F59E0B]" />
+                        <Award className="w-3.5 h-3.5 text-[#F59E0B]" />
                         <span>{isVi ? 'Chứng chỉ' : 'Certificates'}</span>
                       </button>
+                    </div>
+                  )}
 
-                      {/* Cursor toggle in user menu */}
-                      <div className="border-t border-[#1C2430] my-1 pt-2 pb-1.5 px-3">
-                        <CursorToggle />
-                      </div>
+                  {/* Sign In CTA (if not authenticated) */}
+                  {!isAuthenticated && (
+                    <div className="p-1.5 border-b border-white/[0.08]">
+                      <button
+                        onClick={() => {
+                          setAuthModalOpen(true);
+                          setUserDropdownOpen(false);
+                        }}
+                        className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-[#00C98D] hover:bg-[#00B982] text-[#090A0F] font-bold text-xs transition-colors cursor-pointer shadow-sm"
+                      >
+                        <LogIn className="w-3.5 h-3.5" />
+                        <span>{isVi ? 'Đăng nhập lưu tiến độ' : 'Sign In'}</span>
+                      </button>
+                    </div>
+                  )}
 
-                      <div className="border-t border-[#1C2430] my-1" />
+                  {/* Language Section: EN / VI */}
+                  <div className="px-3 py-2.5 border-b border-white/[0.08]">
+                    <div className="text-[10px] uppercase font-semibold text-[#717B8C] tracking-wider mb-1.5">
+                      {isVi ? 'Ngôn ngữ' : 'Language'}
+                    </div>
+                    <div className="grid grid-cols-2 gap-1 bg-[#090D12] p-1 rounded-lg border border-white/[0.04]">
+                      <button
+                        type="button"
+                        onClick={() => setLanguage('en')}
+                        className={`py-1 rounded text-center text-xs font-mono font-medium transition-colors cursor-pointer ${
+                          language === 'en'
+                            ? 'bg-[#00C98D] text-[#090A0F] font-bold shadow-sm'
+                            : 'text-[#A5AFBF] hover:text-[#F2F4F7] hover:bg-white/[0.04]'
+                        }`}
+                      >
+                        EN
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setLanguage('vi')}
+                        className={`py-1 rounded text-center text-xs font-mono font-medium transition-colors cursor-pointer ${
+                          language === 'vi'
+                            ? 'bg-[#00C98D] text-[#090A0F] font-bold shadow-sm'
+                            : 'text-[#A5AFBF] hover:text-[#F2F4F7] hover:bg-white/[0.04]'
+                        }`}
+                      >
+                        VI
+                      </button>
+                    </div>
+                  </div>
 
+                  {/* Interface Settings: Cursor */}
+                  <div className="px-3 py-2.5 border-b border-white/[0.08]">
+                    <div className="text-[10px] uppercase font-semibold text-[#717B8C] tracking-wider mb-1.5">
+                      {isVi ? 'Cài đặt giao diện' : 'Interface'}
+                    </div>
+                    <CursorToggle />
+                  </div>
+
+                  {/* GitHub Repository Link */}
+                  <div className="py-1">
+                    <a
+                      href="https://github.com/phantanlongzzz/blockchain-elearning"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full flex items-center justify-between px-3 py-1.5 rounded-lg text-[#A5AFBF] hover:text-[#00C98D] hover:bg-white/[0.04] text-left transition-colors cursor-pointer"
+                    >
+                      <span className="flex items-center gap-2">
+                        <img
+                          src="/github.webp"
+                          alt="GitHub"
+                          className="w-3.5 h-3.5 object-contain brightness-0 invert opacity-75"
+                        />
+                        <span>GitHub Repository</span>
+                      </span>
+                      <ExternalLink className="w-3 h-3 text-[#717B8C]" />
+                    </a>
+                  </div>
+
+                  {/* Sign Out (if authenticated) */}
+                  {isAuthenticated && user && (
+                    <div className="pt-1 border-t border-white/[0.08]">
                       <button
                         role="menuitem"
                         onClick={() => {
                           logout();
                           setUserDropdownOpen(false);
                         }}
-                        className="w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-rose-400 hover:bg-rose-950/30 text-left transition-colors cursor-pointer"
+                        className="w-full flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-rose-400 hover:bg-rose-950/30 text-left transition-colors cursor-pointer"
                       >
-                        <LogOut className="w-4 h-4" />
+                        <LogOut className="w-3.5 h-3.5" />
                         <span>{isVi ? 'Đăng xuất' : 'Sign Out'}</span>
                       </button>
                     </div>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <button
-                onClick={() => setAuthModalOpen(true)}
-                className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#00C98D] hover:bg-[#00B982] text-[#090A0F] font-sans text-xs font-bold transition-all shadow-sm cursor-pointer shrink-0"
-                id="login-button"
-              >
-                <LogIn className="w-3.5 h-3.5" />
-                <span>{isVi ? 'Đăng nhập' : 'Get Certified'}</span>
-              </button>
-            )}
+                  )}
+                </div>
+              )}
+            </div>
 
             {/* Mobile Menu Trigger */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-1.5 sm:p-2 rounded-lg bg-[#0C0F14] border border-[#1C2430] text-[#A5AFBF] hover:text-[#F2F4F7] cursor-pointer shrink-0"
+              className="lg:hidden p-1.5 rounded-lg text-[#A5AFBF] hover:text-[#F2F4F7] hover:bg-white/[0.04] transition-colors cursor-pointer shrink-0"
               id="mobile-menu-toggle"
               aria-label="Toggle mobile menu"
             >
@@ -467,14 +491,14 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-[#1C2430] bg-[#090A0F] px-3 sm:px-4 py-3 space-y-1.5 max-h-[80vh] overflow-y-auto font-sans text-xs animate-in slide-in-from-top duration-150">
+        <div className="lg:hidden border-t border-white/[0.08] bg-[#090D12] px-4 py-3 space-y-1.5 max-h-[85vh] overflow-y-auto font-sans text-xs animate-in slide-in-from-top duration-150">
           {MODULES_REGISTRY.map((module) => {
             const isActiveModule = currentModuleId === module.id;
             const isExpanded = mobileExpandedGroup === module.id || isActiveModule;
             const ModIcon = ICON_MAP[module.iconName] || Home;
 
             return (
-              <div key={module.id} className="rounded-lg border border-[#1C2430] bg-[#0C0F14] overflow-hidden">
+              <div key={module.id} className="rounded-lg border border-white/[0.08] bg-[#0C0F14] overflow-hidden">
                 <button
                   onClick={() => {
                     if (module.lessons.length === 1) {
@@ -494,13 +518,15 @@ export const Navbar: React.FC<NavbarProps> = ({
                   </div>
                   {module.lessons.length > 1 && (
                     <ChevronDown
-                      className={`w-4 h-4 transition-transform duration-150 ${isExpanded ? 'rotate-180 text-[#00C98D]' : 'text-[#717B8C]'}`}
+                      className={`w-4 h-4 transition-transform duration-150 ${
+                        isExpanded ? 'rotate-180 text-[#00C98D]' : 'text-[#717B8C]'
+                      }`}
                     />
                   )}
                 </button>
 
                 {isExpanded && module.lessons.length > 1 && (
-                  <div className="px-1.5 pb-1.5 pt-0.5 space-y-0.5 border-t border-[#1C2430]">
+                  <div className="px-1.5 pb-1.5 pt-0.5 space-y-0.5 border-t border-white/[0.08]">
                     {module.lessons.map((lesson) => {
                       const isCurrentLesson = currentLessonId === lesson.id;
                       const isDone = progressMap[lesson.id]?.status === 'completed';
@@ -534,23 +560,52 @@ export const Navbar: React.FC<NavbarProps> = ({
             );
           })}
 
+          {/* Mobile Language Switcher */}
+          <div className="rounded-lg border border-white/[0.08] bg-[#0C0F14] p-3 mt-2">
+            <div className="text-[10px] uppercase font-semibold text-[#717B8C] tracking-wider mb-2">
+              {isVi ? 'Ngôn ngữ' : 'Language'}
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => setLanguage('en')}
+                className={`py-1.5 rounded text-center text-xs font-mono font-medium transition-colors ${
+                  language === 'en'
+                    ? 'bg-[#00C98D] text-[#090A0F] font-bold'
+                    : 'bg-[#090D12] text-[#A5AFBF] border border-white/[0.04]'
+                }`}
+              >
+                EN
+              </button>
+              <button
+                type="button"
+                onClick={() => setLanguage('vi')}
+                className={`py-1.5 rounded text-center text-xs font-mono font-medium transition-colors ${
+                  language === 'vi'
+                    ? 'bg-[#00C98D] text-[#090A0F] font-bold'
+                    : 'bg-[#090D12] text-[#A5AFBF] border border-white/[0.04]'
+                }`}
+              >
+                VI
+              </button>
+            </div>
+          </div>
+
           {/* Mobile Cursor Toggle */}
-          <div className="rounded-lg border border-[#1C2430] bg-[#0C0F14] p-3 mt-2">
-            <div className="pb-2 mb-2 border-b border-[#1C2430]">
-              <span className="font-semibold text-[#717B8C] uppercase tracking-wider text-[10px]">
-                {isVi ? 'Cài đặt giao diện' : 'Interface'}
-              </span>
+          <div className="rounded-lg border border-white/[0.08] bg-[#0C0F14] p-3">
+            <div className="text-[10px] uppercase font-semibold text-[#717B8C] tracking-wider mb-2">
+              {isVi ? 'Cài đặt giao diện' : 'Interface'}
             </div>
             <CursorToggle />
           </div>
 
-          {/* Mobile GitHub Repository Link */}
-          <div className="rounded-lg border border-[#1C2430] bg-[#0C0F14] overflow-hidden mt-2">
+          {/* Mobile GitHub Link */}
+          <div className="rounded-lg border border-white/[0.08] bg-[#0C0F14] overflow-hidden">
             <a
               href="https://github.com/phantanlongzzz/blockchain-elearning"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full flex items-center justify-between px-3.5 py-2.5 text-left font-medium text-xs transition-colors text-[#A5AFBF] hover:text-[#2DD4BF] hover:bg-[#11161E] cursor-pointer"
+              className="w-full flex items-center justify-between px-3.5 py-2.5 text-left font-medium text-xs transition-colors text-[#A5AFBF] hover:text-[#00C98D] hover:bg-[#11161E] cursor-pointer"
             >
               <div className="flex items-center gap-2">
                 <img
@@ -560,6 +615,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 />
                 <span>GitHub Repository</span>
               </div>
+              <ExternalLink className="w-3.5 h-3.5 text-[#717B8C]" />
             </a>
           </div>
         </div>

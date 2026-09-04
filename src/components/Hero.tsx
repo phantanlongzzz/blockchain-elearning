@@ -418,16 +418,27 @@ export const Hero: React.FC = () => {
             <span>CTK47B</span>
             <span className="text-[#3f3f46]">·</span>
             <span className="font-mono">ID: 2312679</span>
-            <span className="text-[#3f3f46]">·</span>
-            <a
-              href="https://github.com/phantanlongzzz/blockchain-elearning"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-[#00C98D] hover:text-[#00C98D] hover:brightness-110 border-b border-transparent hover:border-[#00C98D]/40 transition-all duration-200 cursor-pointer"
-            >
-              <Github className="w-3 h-3" />
-              <span>Source Code ↗</span>
-            </a>
+            <div className="relative ml-2.5 group/gh flex items-center justify-center">
+              {/* Energy Ring */}
+              <div className="absolute inset-0 bg-[#2DD4BF] rounded-xl blur-md opacity-0 group-hover/gh:opacity-[0.15] group-hover/gh:scale-125 transition-all duration-[220ms] pointer-events-none"></div>
+              
+              <a
+                href="https://github.com/phantanlongzzz/blockchain-elearning"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative w-[42px] h-[42px] rounded-[11px] bg-[#0A0A0C] border border-[#2DD4BF]/30 flex items-center justify-center transition-all duration-[220ms] hover:-translate-y-[2px] hover:scale-[1.08] hover:border-[#2DD4BF]/70 cursor-pointer z-10 [box-shadow:0_0_8px_rgba(45,212,191,0.15),inset_0_0_8px_rgba(45,212,191,0.05)] hover:[box-shadow:0_0_8px_rgba(45,212,191,0.45),0_0_20px_rgba(45,212,191,0.25),0_0_40px_rgba(45,212,191,0.12),inset_0_0_10px_rgba(45,212,191,0.08)]"
+              >
+                <img 
+                  src="/github.webp" 
+                  alt="GitHub" 
+                  className="w-[22px] h-[22px] object-contain brightness-0 invert opacity-80 group-hover/gh:opacity-100 transition-opacity duration-[220ms]" 
+                />
+                
+                <div className="absolute -top-[38px] left-1/2 -translate-x-1/2 opacity-0 group-hover/gh:opacity-100 group-hover/gh:-translate-y-1 transition-all duration-[220ms] pointer-events-none px-3 py-1.5 bg-[#09090b] border border-[#2DD4BF]/40 rounded-lg flex items-center justify-center whitespace-nowrap z-50 shadow-xl">
+                  <span className="text-[11px] font-sans text-[#f5f5f5] font-medium tracking-wide">Xem mã nguồn trên GitHub</span>
+                </div>
+              </a>
+            </div>
           </div>
         </div>
     </section>

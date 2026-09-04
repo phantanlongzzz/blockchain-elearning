@@ -161,7 +161,7 @@ export const Hero: React.FC = () => {
             <div className="space-y-2 flex-1 min-w-0">
               <div className="flex items-center gap-2 flex-wrap">
                 <span className="w-2 h-2 rounded-full bg-emerald-400" />
-                <span className="text-xs font-mono font-bold uppercase tracking-wider text-emerald-400">
+                <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#f5f5f5]">
                   {isVi ? 'TIẾN ĐỘ HỌC TẬP CỦA BẠN' : 'YOUR LEARNING PROGRESS'}
                 </span>
                 <span className="text-[11px] font-mono text-[#a1a1aa] ml-auto sm:ml-0 font-medium">
@@ -185,7 +185,7 @@ export const Hero: React.FC = () => {
               </div>
             </div>
 
-            {/* Direct Resume Button */}
+            {/* Direct Resume Button - Primary CTA */}
             <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto">
               <button
                 id="btn-resume-learning"
@@ -217,9 +217,9 @@ export const Hero: React.FC = () => {
             onClick={() => navigateTo('simulation', 'proof-of-work')}
             id="hero-secondary-cta"
             aria-label={isVi ? 'Vào phòng thực nghiệm PoW' : 'Enter PoW simulation lab'}
-            className="px-5 py-2.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-[#0a0a0a] font-bold text-xs sm:text-sm transition-all shadow-sm flex items-center gap-2 uppercase tracking-wider cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:outline-none active:scale-95"
+            className="px-5 py-2.5 rounded-lg bg-[#111111] hover:bg-[#181818] text-[#f5f5f5] font-semibold text-xs sm:text-sm uppercase tracking-wider transition-all duration-200 border border-[#292929] hover:border-emerald-500/40 flex items-center gap-2 cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:outline-none"
           >
-            <FlaskConical className="w-4 h-4 text-[#0a0a0a]" />
+            <FlaskConical className="w-4 h-4 text-emerald-400" />
             <span>{isVi ? 'Phòng Thực Nghiệm PoW' : 'PoW Simulation Lab'}</span>
           </button>
         </div>
@@ -229,25 +229,31 @@ export const Hero: React.FC = () => {
           id="hero-hash-preview-card"
           className="relative max-w-3xl mx-auto rounded-xl bg-[#111111] border border-[#292929] p-5 sm:p-6 shadow-xl text-left backdrop-blur-xl transition-all hover:border-emerald-500/40 mb-14"
         >
-          {/* Card Header Bar */}
+          {/* Card Header Bar with Live Indicator */}
           <div className="flex items-center justify-between border-b border-[#292929] pb-3 mb-4 font-sans">
             <div className="flex items-center gap-2">
-              <div className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
-              <div className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
-              <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
-              <span className="text-xs font-semibold text-[#f5f5f5] ml-2 tracking-wide font-display">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+              </span>
+
+              <span className="text-[10px] font-mono uppercase tracking-widest text-emerald-400/90">
+                {isVi ? 'Trực tiếp' : 'Live'}
+              </span>
+
+              <span className="text-xs font-semibold text-[#f5f5f5] ml-1.5 tracking-wide font-display">
                 {strings.hero.engineTitle}
               </span>
             </div>
-            <div className="flex items-center gap-2 text-xs font-mono text-emerald-400">
-              <span className="text-[11px] text-emerald-400 font-mono">NIST FIPS 180-4</span>
+            <div className="flex items-center gap-2 text-xs font-mono text-[#a1a1aa]">
+              <span className="text-[11px] text-[#a1a1aa] font-mono">NIST FIPS 180-4</span>
             </div>
           </div>
 
           {/* Quick interactive input inside hero */}
           <div className="mb-4 font-sans">
             <div className="flex items-center justify-between text-xs text-[#a1a1aa] mb-1.5">
-              <span className="uppercase tracking-wider font-semibold text-emerald-400">{strings.hero.liveInputLabel}</span>
+              <span className="uppercase tracking-wider font-semibold text-[#a1a1aa]">{strings.hero.liveInputLabel}</span>
               <span className="text-[#71717a] font-mono">{heroInput.length} {strings.hashGenerator.lengthChars} · {new TextEncoder().encode(heroInput).length} {strings.hashGenerator.lengthBytes}</span>
             </div>
             <div className="relative">
@@ -280,22 +286,20 @@ export const Hero: React.FC = () => {
             </div>
           </div>
 
-
-
           {/* 256-bit Hexadecimal Output Display */}
           <div className="space-y-3 font-sans">
             <div className="flex items-center justify-between text-xs text-[#a1a1aa]">
               <div className="flex items-center gap-2">
-                <span className="uppercase tracking-wider font-semibold text-emerald-400">{strings.hero.digestLabel}</span>
-                <span className="px-2 py-0.5 rounded bg-[#181818] border border-[#292929] text-[9px] font-mono uppercase tracking-widest text-emerald-400/80">SHA-256 (64 ROUNDS)</span>
+                <span className="uppercase tracking-wider font-semibold text-[#a1a1aa]">{strings.hero.digestLabel}</span>
+                <span className="px-2 py-0.5 rounded bg-[#181818] border border-[#292929] text-[9px] font-mono uppercase tracking-widest text-[#a1a1aa]">SHA-256 (64 ROUNDS)</span>
               </div>
               <button
                 id="hero-copy-hash-btn"
                 onClick={copyHash}
-                className="text-xs font-mono text-emerald-400 hover:text-emerald-300 flex items-center gap-1 transition-colors px-2.5 py-1 rounded-lg bg-[#0a0a0a] border border-[#292929] hover:border-emerald-500/40 cursor-pointer"
+                className="text-xs font-mono text-[#a1a1aa] hover:text-[#f5f5f5] flex items-center gap-1 transition-colors px-2.5 py-1 rounded-lg bg-[#0a0a0a] border border-[#292929] hover:border-emerald-500/40 cursor-pointer"
               >
                 {copied ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
-                <span>{copied ? strings.hero.copied : strings.hero.copyHash}</span>
+                <span className={copied ? 'text-emerald-400' : ''}>{copied ? strings.hero.copied : strings.hero.copyHash}</span>
               </button>
             </div>
 
@@ -323,10 +327,10 @@ export const Hero: React.FC = () => {
             {/* Binary Bitstream Preview */}
             <div className="flex items-center justify-between text-[11px] font-mono text-[#71717a] bg-[#0a0a0a] px-3.5 py-2 rounded-lg border border-[#292929]">
               <div className="flex items-center gap-2 truncate">
-                <span className="text-emerald-400 shrink-0 font-bold font-sans">{strings.hero.binaryPreview}</span>
-                <span className="text-emerald-400/80 break-all font-mono">{binaryPreview}...</span>
+                <span className="text-[#a1a1aa] shrink-0 font-semibold font-sans">{strings.hero.binaryPreview}</span>
+                <span className="text-zinc-400 break-all font-mono">{binaryPreview}...</span>
               </div>
-              <span className="text-emerald-400 font-semibold font-mono shrink-0 ml-2">{strings.hero.bitsBytes}</span>
+              <span className="text-[#71717a] font-mono shrink-0 ml-2">{strings.hero.bitsBytes}</span>
             </div>
           </div>
         </div>
@@ -343,7 +347,7 @@ export const Hero: React.FC = () => {
                 {strings.nav.projectTitle} · Các phân hệ học tập
               </h2>
             </div>
-            <span className="text-[11px] font-mono text-emerald-400">4 phân hệ chính</span>
+            <span className="text-[11px] font-mono text-[#a1a1aa]">4 phân hệ chính</span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -375,7 +379,7 @@ export const Hero: React.FC = () => {
                           {area.title}
                         </h3>
                       </div>
-                      <p className="text-xs text-emerald-400 font-medium mt-0.5">
+                      <p className="text-xs text-[#a1a1aa] font-medium mt-0.5">
                         {area.subtitle}
                       </p>
                     </div>

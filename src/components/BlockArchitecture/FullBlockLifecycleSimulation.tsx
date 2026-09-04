@@ -388,8 +388,8 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
           {currentStep === 4 && (
             <div className="max-w-2xl mx-auto w-full space-y-4">
               <div className="flex items-center justify-between font-mono text-xs text-[#A5AFBF] pb-1">
-                <span className="text-emerald-400 font-semibold flex items-center gap-1.5 font-sans">
-                  <Boxes className="w-4 h-4" />
+                <span className="text-[#F1F5F9] font-semibold flex items-center gap-1.5 font-sans">
+                  <Boxes className="w-4 h-4 text-slate-400" />
                   BLOCK BODY (4 Giao dịch được đóng gói)
                 </span>
                 <span className="font-sans">Kích thước: 1.02 MB</span>
@@ -405,10 +405,10 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
                     }`}
                   >
                     <div className="flex items-center justify-between text-[11px]">
-                      <span className={tx.isNew ? 'text-emerald-300 font-semibold' : 'text-[#A5AFBF]'}>
+                      <span className={tx.isNew ? 'text-emerald-300 font-semibold' : 'text-[#8B949E]'}>
                         {tx.id} {tx.isNew && '← VỪA THÊM'}
                       </span>
-                      <span className="text-emerald-400 font-semibold">
+                      <span className="text-[#F1F5F9] font-semibold font-mono">
                         {tx.amount} {tx.unit}
                       </span>
                     </div>

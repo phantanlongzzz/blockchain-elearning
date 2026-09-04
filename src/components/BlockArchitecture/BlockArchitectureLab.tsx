@@ -160,8 +160,8 @@ export const BlockArchitectureLab: React.FC = () => {
         <div className="space-y-6">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="space-y-2">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold uppercase tracking-wider">
-                <Sparkles className="w-3.5 h-3.5" />
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-white/[0.04] border border-white/[0.08] text-slate-300 text-xs font-mono font-medium uppercase tracking-wider">
+                <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
                 <span>{isVi ? 'BUỔI 2 · KIẾN TRÚC KHỐI & VÒNG ĐỜI KHỐI' : 'LESSON 2 · BLOCK ARCHITECTURE & LIFECYCLE'}</span>
               </div>
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white font-display tracking-tight">
@@ -217,7 +217,7 @@ export const BlockArchitectureLab: React.FC = () => {
             <div className="flex items-center justify-between text-xs font-mono">
               <span className="text-[#A5AFBF]">
                 {isVi ? 'Tiến độ chuyên đề:' : 'Module Progress:'}{' '}
-                <span className="text-emerald-400 font-semibold">
+                <span className="text-white font-medium">
                   {completedCount}/{STAGES.length} {isVi ? 'phần hoàn thành' : 'sections completed'}
                 </span>
               </span>
@@ -273,16 +273,16 @@ export const BlockArchitectureLab: React.FC = () => {
                       isActive
                         ? 'bg-emerald-500 text-slate-950'
                         : isDone
-                        ? 'bg-emerald-500/20 text-emerald-300'
+                        ? 'bg-[#1C2430] text-slate-300'
                         : 'bg-[#1C2430] text-[#717B8C]'
                     }`}
                   >
                     {stage.num}
                   </span>
-                  <Icon className="w-3.5 h-3.5 opacity-80" />
+                  <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-emerald-400' : 'text-slate-400'}`} />
                   <span className="font-sans whitespace-nowrap">{stage.shortTitle[language]}</span>
                   {isDone && !isActive && (
-                    <CheckCircle2 className="w-3 h-3 text-emerald-400 shrink-0 ml-0.5" />
+                    <CheckCircle2 className="w-3 h-3 text-slate-400 shrink-0 ml-0.5" />
                   )}
                 </button>
               );

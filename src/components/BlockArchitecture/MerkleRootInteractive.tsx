@@ -291,8 +291,8 @@ export const MerkleRootInteractive: React.FC<MerkleRootInteractiveProps> = ({
                   >
                     <div className="flex items-center justify-between text-xs">
                       <span
-                        className={`font-semibold ${
-                          isThisTampered ? 'text-rose-400' : 'text-emerald-400'
+                        className={`font-medium ${
+                          isThisTampered ? 'text-rose-400 font-semibold' : 'text-[#8B949E]'
                         }`}
                       >
                         {tx.id}
@@ -332,7 +332,7 @@ export const MerkleRootInteractive: React.FC<MerkleRootInteractiveProps> = ({
             {isTampered ? (
               <Flame className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
             ) : (
-              <HelpCircle className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
+              <HelpCircle className="w-5 h-5 text-slate-400 shrink-0 mt-0.5" />
             )}
             <div className="space-y-1 text-xs">
               <div className="font-semibold text-sm text-white">

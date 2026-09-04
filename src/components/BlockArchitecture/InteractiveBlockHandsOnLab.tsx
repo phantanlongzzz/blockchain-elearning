@@ -1444,7 +1444,7 @@ export const InteractiveBlockHandsOnLab: React.FC<{
                       <div className="truncate text-white font-medium mt-1 font-sans">
                         {tx.sender} → {tx.recipient}
                       </div>
-                      <div className="text-[10px] text-emerald-400 font-semibold">
+                      <div className="text-[10px] text-white font-mono font-semibold">
                         {tx.amount} BTC
                       </div>
                       <div className="text-[9px] text-[#717B8C] truncate mt-1">
@@ -1460,7 +1460,7 @@ export const InteractiveBlockHandsOnLab: React.FC<{
             <div className="p-4 rounded-lg bg-[#10151D] border border-[#1C2430] space-y-3">
               <div className="flex items-center justify-between pb-2 border-b border-[#1C2430]">
                 <span className="text-[11px] font-semibold text-slate-200 uppercase flex items-center gap-1.5 font-sans">
-                  <Boxes className="w-3.5 h-3.5 text-emerald-400" />
+                  <Boxes className="w-3.5 h-3.5 text-slate-400" />
                   <span>BLOCK BODY (~1 - 4 MB)</span>
                 </span>
                 <span className="text-[10px] font-mono text-[#717B8C]">
@@ -1491,7 +1491,7 @@ export const InteractiveBlockHandsOnLab: React.FC<{
                           <span>
                             {tx.sender} → {tx.recipient}
                           </span>
-                          <span className="text-emerald-400 font-mono">{tx.amount} BTC</span>
+                          <span className="text-white font-mono font-semibold">{tx.amount} BTC</span>
                         </div>
                         <div className="text-[11px] text-[#A5AFBF] truncate max-w-xs font-sans">
                           "{tx.message}"

@@ -172,15 +172,15 @@ export const viTranslations: TranslationSchema = {
     "stage1Length64": "Độ Dài 64 Bit Ban Đầu",
     "stage2Title": "Mở rộng thông điệp",
     "stage2Explanation": "Khối 512 bit được chia thành 16 từ 32 bit (W0..W15). 48 từ tiếp theo (W16..W63) được tính toán đệ quy bằng các phép xoay phải, dịch phải và phép cộng modulo 2^32.",
-    "stage3Title": "Vòng Lặp Nén 64 Bước",
-    "stage3RoundDesc": "Vòng Nén Hiện Tại",
+    "stage3Title": "Vòng nén",
+    "stage3RoundDesc": "Quan sát sự thay đổi của 8 biến làm việc qua từng vòng.",
     "autoPlay": "Tự Động Chạy",
     "pause": "Tạm Dừng",
-    "initialState": "Trạng thái ban đầu",
-    "finalRound": "Vòng cuối cùng",
+    "initialState": "Trạng thái ban đầu (Vòng 0)",
+    "finalRound": "Vòng cuối cùng (Vòng 63)",
     "stage4Title": "Mã Băm 256-Bit Hoàn Chỉnh",
     "stage4Explanation": "Sau khi hoàn thành 64 vòng nén, 8 biến làm việc được cộng theo modulo 2^32 với các giá trị băm trung gian H0..H7 để tạo thành mã băm 256-bit cuối cùng.",
-    "stage4Digest": "Mã băm đầu ra:"
+    "stage4Digest": "Mã băm tổng hợp 64 ký tự Hex:"
   },
   "experiments": {
     "badge": "Phòng Thí Nghiệm Kiểm Chứng",

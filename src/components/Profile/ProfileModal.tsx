@@ -6,11 +6,9 @@ import {
   AlertCircle,
   CheckCircle2,
   Save,
-  Sliders,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useLanguage } from '../../i18n/LanguageContext';
-import { CursorToggle } from '../CursorToggle';
 
 export const ProfileModal: React.FC = () => {
   const {
@@ -378,16 +376,6 @@ export const ProfileModal: React.FC = () => {
                 </span>
               </div>
             ))}
-          </div>
-        </div>
-
-        {/* Giao diện */}
-        <div className="py-5 border-b border-[#1C2430]">
-          <h4 className="text-xs uppercase tracking-wider font-semibold text-[#717B8C] mb-3 font-sans">
-            <span>{language === 'vi' ? 'Cài đặt giao diện' : 'Interface Settings'}</span>
-          </h4>
-          <div className="p-3 bg-[#090A0F] border border-[#1C2430] rounded-xl">
-            <CursorToggle />
           </div>
         </div>
 

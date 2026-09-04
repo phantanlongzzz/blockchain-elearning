@@ -86,7 +86,7 @@ export const MempoolStep: React.FC<MempoolStepProps> = ({
         {/* Flat Inline Telemetry */}
         <div className="flex items-center gap-4 text-xs font-mono">
           <div className="text-zinc-400">
-            <span className="font-semibold text-amber-400">{pendingCount}</span> {language === 'vi' ? 'chờ' : 'pending'}
+            <span className="font-semibold text-[#F6C453]">{pendingCount}</span> {language === 'vi' ? 'chờ' : 'pending'}
           </div>
           <div className="text-zinc-600">·</div>
           <div className="text-zinc-400">
@@ -94,7 +94,7 @@ export const MempoolStep: React.FC<MempoolStepProps> = ({
           </div>
           <div className="text-zinc-600">·</div>
           <div className="text-zinc-400">
-            <span className="font-semibold text-zinc-100">{totalSelectedBTC.toFixed(3)} BTC</span> {language === 'vi' ? 'khối lượng' : 'output'}
+            <span className="font-semibold text-[#F6C453]">{totalSelectedBTC.toFixed(3)} BTC</span> {language === 'vi' ? 'khối lượng' : 'output'}
           </div>
         </div>
       </div>
@@ -201,12 +201,12 @@ export const MempoolStep: React.FC<MempoolStepProps> = ({
                       </td>
 
                       {/* Amount */}
-                      <td className="py-3 px-3 text-right font-mono font-medium text-amber-400">
+                      <td className="py-3 px-3 text-right font-mono font-medium text-[#F6C453]">
                         {tx.amount.toFixed(3)} BTC
                       </td>
 
                       {/* Fee */}
-                      <td className="py-3 px-3 text-right font-mono text-zinc-300">
+                      <td className="py-3 px-3 text-right font-mono text-[#F6C453]">
                         +{tx.feeBTC} BTC
                       </td>
 

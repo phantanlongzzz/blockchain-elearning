@@ -138,7 +138,7 @@ export const PoWVsPoSInteractive: React.FC<PoWVsPoSInteractiveProps> = ({
               <span className="text-xs text-zinc-500 font-mono">Ethereum</span>
             </div>
             <div className="text-xs text-zinc-300 font-medium">
-              {isVi ? 'Vốn + Ký quỹ (Staking)' : 'Capital + Staking'}
+              {isVi ? 'Vốn và Ký quỹ' : 'Capital + Staking'}
             </div>
             <p className="text-xs text-zinc-400 leading-relaxed">
               {isVi

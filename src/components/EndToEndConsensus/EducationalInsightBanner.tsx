@@ -19,10 +19,10 @@ export const EducationalInsightBanner: React.FC<EducationalInsightBannerProps> =
     };
   } = {
     1: {
-      titleVi: 'Chữ ký số & Tính bất khả bác bỏ',
+      titleVi: 'Chữ ký số & Tính không thể chối bỏ',
       titleEn: 'Digital Signatures & Non-Repudiation',
       descVi:
-        'Chữ ký số ECDSA cho phép người gửi xác thực quyền sở hữu coin mà không cần tiết lộ Private Key. Bất kỳ sự sửa đổi nào dù chỉ 1 bit trên giao dịch cũng khiến chữ ký trở nên vô giá trị.',
+        'Chữ ký số ECDSA cho phép người gửi xác thực quyền sở hữu mà không cần tiết lộ khóa bí mật. Bất kỳ thay đổi nào, dù chỉ một bit trong giao dịch, đều khiến chữ ký trở nên không hợp lệ.',
       descEn:
         'ECDSA signatures allow transaction authentication without exposing private keys. Modifying even 1 bit invalidates the signature immediately.',
     },
@@ -54,7 +54,7 @@ export const EducationalInsightBanner: React.FC<EducationalInsightBannerProps> =
       titleVi: 'Giao thức lan truyền tin đồn (Gossip Protocol)',
       titleEn: 'P2P Gossip Relay & Independent Peer Validation',
       descVi:
-        'Mạng Blockchain không có máy chủ trung tâm. Mỗi node tự xác minh độc lập cả 4 tiêu chuẩn (Previous Hash, Merkle Root, Chữ ký số, PoW) trước khi chuyển tiếp cho các nút bạn bè lân cận.',
+        'Mạng Blockchain không có máy chủ trung tâm. Mỗi node tự xác minh độc lập cả 4 tiêu chuẩn (Mã băm khối trước, Cây Merkle, Chữ ký số, PoW) trước khi chuyển tiếp cho các nút bạn bè lân cận.',
       descEn:
         'Blockchain has no central server. Every peer independently validates previous hash, Merkle root, signatures, and PoW before gossiping to neighbor peers.',
     },
@@ -70,7 +70,7 @@ export const EducationalInsightBanner: React.FC<EducationalInsightBannerProps> =
       titleVi: 'Tính bất biến của sổ cái & Con trỏ băm (Hash Pointer)',
       titleEn: 'Ledger Immutability & Hash Pointer Chaining',
       descVi:
-        'Mỗi khối lưu trữ Previous Hash của khối trước. Muốn sửa đổi 1 giao dịch trong quá khứ, kẻ tấn công buộc phải đào lại toàn bộ các khối phía sau nhanh hơn cả 100% mạng lưới cộng lại.',
+        'Mỗi khối lưu trữ mã băm của khối trước đó. Muốn sửa đổi 1 giao dịch trong quá khứ, kẻ tấn công buộc phải đào lại toàn bộ các khối phía sau nhanh hơn cả 100% mạng lưới cộng lại.',
       descEn:
         'Each block cryptographically locks the previous hash. Tampering with past data breaks all subsequent pointers, requiring re-mining the entire chain.',
     },

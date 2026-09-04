@@ -364,7 +364,7 @@ export const TransactionMempoolBuilder: React.FC<TransactionMempoolBuilderProps>
                   </div>
 
                   <div className="flex items-center justify-between text-[11px] font-mono text-slate-400">
-                    <span>Fee: +{tx.feeBTC} BTC</span>
+                    <span className="text-[#F6C453]">Fee: +{tx.feeBTC} BTC</span>
                     <span>{tx.timestamp}</span>
                   </div>
 

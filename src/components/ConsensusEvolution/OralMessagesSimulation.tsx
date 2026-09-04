@@ -127,7 +127,7 @@ export const OralMessagesSimulation: React.FC<OralMessagesSimulationProps> = ({
                 }`}
               >
                 <div className="text-[10px] text-rose-400 font-medium">
-                  {isVi ? 'Charlie (Nút trung gian / Phản bội)' : 'Charlie (Intermediate / Traitor)'}
+                  {isVi ? 'Charlie (Trung gian / Phản bội)' : 'Charlie (Intermediate / Traitor)'}
                 </div>
                 <div className="text-xs text-slate-400 mt-0.5">
                   {simState === 'idle'
@@ -201,7 +201,7 @@ export const OralMessagesSimulation: React.FC<OralMessagesSimulationProps> = ({
             <div className="space-y-2.5">
               <div className="p-3 rounded-lg bg-[#080C10] border border-slate-800/80 space-y-1">
                 <div className="text-xs font-medium text-slate-200">
-                  {isVi ? '1. Tính kháng chối bỏ (Non-repudiation)' : '1. Non-repudiation'}
+                  {isVi ? '1. Tính kháng chối bỏ' : '1. Non-repudiation'}
                 </div>
                 <p className="text-[11px] text-slate-400 leading-relaxed">
                   {isVi
@@ -212,7 +212,7 @@ export const OralMessagesSimulation: React.FC<OralMessagesSimulationProps> = ({
 
               <div className="p-3 rounded-lg bg-[#080C10] border border-slate-800/80 space-y-1">
                 <div className="text-xs font-medium text-slate-200">
-                  {isVi ? '2. Tính toàn vẹn (Integrity)' : '2. Integrity'}
+                  {isVi ? '2. Tính toàn vẹn' : '2. Integrity'}
                 </div>
                 <p className="text-[11px] text-slate-400 leading-relaxed">
                   {isVi

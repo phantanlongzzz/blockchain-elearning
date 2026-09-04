@@ -43,7 +43,7 @@ export const NodeInspectorModal: React.FC<NodeInspectorModalProps> = ({
     }
     if (isAccepted === true) {
       return language === 'vi'
-        ? 'Nút đã kiểm tra độc lập 4 tiêu chí khắt khe: (1) Previous Hash trùng khớp với đỉnh chuỗi cục bộ; (2) Cây Merkle Root tính toán lại chính xác 100%; (3) Toàn bộ chữ ký số ECDSA của giao dịch hợp lệ; (4) Mã băm thỏa mãn độ khó PoW. Do đó, nút chấp nhận khối vào sổ cái cục bộ và lan truyền tiếp tới các peer lân cận.'
+        ? 'Nút đã kiểm tra độc lập 4 tiêu chí khắt khe: (1) Mã băm của khối trước trùng khớp với đỉnh chuỗi cục bộ; (2) Cây Merkle Root tính toán lại chính xác 100%; (3) Toàn bộ chữ ký số ECDSA của giao dịch hợp lệ; (4) Mã băm thỏa mãn độ khó PoW. Do đó, nút chấp nhận khối vào sổ cái cục bộ và lan truyền tiếp tới các peer lân cận.'
         : 'The node independently verified all 4 consensus rules: Previous Hash match, Merkle Root validity, transaction signatures integrity, and Proof-of-Work target difficulty. The block is accepted and relayed.';
     }
     if (isAccepted === false) {
@@ -99,12 +99,12 @@ export const NodeInspectorModal: React.FC<NodeInspectorModalProps> = ({
                 {isOffline ? (
                   <span className="text-rose-400 font-semibold flex items-center gap-1">
                     <span className="w-2 h-2 rounded-full bg-rose-500" />
-                    Offline (Đã ngắt kết nối)
+                    {language === 'vi' ? 'Ngoại tuyến' : 'Offline'}
                   </span>
                 ) : (
                   <span className="text-emerald-400 font-semibold flex items-center gap-1">
                     <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                    Online (Trực tuyến)
+                    {language === 'vi' ? 'Trực tuyến' : 'Online'}
                   </span>
                 )}
               </div>
@@ -134,7 +134,7 @@ export const NodeInspectorModal: React.FC<NodeInspectorModalProps> = ({
             <div className="grid grid-cols-1 gap-2 font-mono">
               {/* 1. Previous Hash */}
               <div className="p-2.5 rounded-lg bg-[#080c16] border border-zinc-800 flex items-center justify-between">
-                <span className="text-zinc-300">1. Previous Hash = Tip</span>
+                <span className="text-zinc-300">1. Mã băm khối trước = Đỉnh chuỗi</span>
                 {node.validationState.prevHash === true ? (
                   <span className="text-emerald-400 flex items-center gap-1 text-xs">
                     <CheckCircle2 className="w-3.5 h-3.5" /> Khớp (Matched)

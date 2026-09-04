@@ -109,7 +109,7 @@ export const PoSConsensusSection: React.FC<PoSConsensusSectionProps> = ({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h2 className="text-xl font-semibold text-slate-100 font-sans tracking-tight">
-              {isVi ? 'Bằng chứng cổ phần (Proof of Stake)' : 'Proof of stake consensus'}
+              {isVi ? 'Bằng chứng cổ phần' : 'Proof of stake consensus'}
             </h2>
             <p className="text-sm text-slate-400 mt-1">
               {isVi
@@ -167,7 +167,7 @@ export const PoSConsensusSection: React.FC<PoSConsensusSectionProps> = ({
               className="px-3 py-1.5 rounded-lg bg-rose-950/60 hover:bg-rose-900/80 text-rose-300 border border-rose-500/40 text-xs font-medium flex items-center gap-1 transition-colors cursor-pointer"
             >
               <ShieldAlert className="w-3 h-3" />
-              <span>{isVi ? 'Mô phỏng Slashing (Dave)' : 'Simulate Slashing'}</span>
+              <span>{isVi ? 'Mô phỏng trừng phạt (Dave)' : 'Simulate Slashing'}</span>
             </button>
             <button
               type="button"

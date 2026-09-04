@@ -614,7 +614,7 @@ export const PoWConsensusSection: React.FC<PoWConsensusSectionProps> = ({
               <span className="text-slate-500 text-xs font-mono">Stage 03 / 06</span>
             </div>
             <h2 className="text-xl font-semibold text-slate-100 font-sans tracking-tight mt-1">
-              {isVi ? 'Bằng chứng công việc (Proof of Work)' : 'Proof of Work Consensus'}
+              {isVi ? 'Bằng chứng công việc' : 'Proof of Work Consensus'}
             </h2>
             <p className="text-xs sm:text-sm text-slate-400 mt-0.5">
               {isVi
@@ -875,7 +875,7 @@ export const PoWConsensusSection: React.FC<PoWConsensusSectionProps> = ({
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-xs font-mono font-semibold uppercase tracking-wider text-slate-400">
-              {isVi ? 'Cuộc đua thợ đào song song (Live Miners Arena)' : 'Live Miners Race Arena'}
+              {isVi ? 'Cuộc đua thợ đào song song' : 'Live Miners Race Arena'}
             </span>
             <span className="text-xs font-mono text-slate-500">
               Khối #{targetBlockHeight} · {isVi ? 'Khối trước' : 'Prev Hash'}:{' '}
@@ -1064,7 +1064,7 @@ export const PoWConsensusSection: React.FC<PoWConsensusSectionProps> = ({
             <span className="text-xs font-mono font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
               <Layers className="w-3.5 h-3.5 text-emerald-400" />
               <span>
-                {isVi ? 'Chuỗi khối chính thức (Canonical Chain):' : 'Official Canonical Chain:'}
+                {isVi ? 'Chuỗi khối chính thức:' : 'Official Canonical Chain:'}
               </span>
             </span>
             <span className="text-[11px] font-mono text-slate-500">
@@ -1230,7 +1230,7 @@ export const PoWConsensusSection: React.FC<PoWConsensusSectionProps> = ({
             onClick={onNextStage}
             className="px-5 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-medium text-xs flex items-center gap-2 transition-all cursor-pointer shadow-sm active:scale-95"
           >
-            <span>{isVi ? 'Tiếp tục: Bằng chứng cổ phần (PoS)' : 'Next: Proof of Stake'}</span>
+            <span>{isVi ? 'Tiếp tục: Bằng chứng cổ phần' : 'Next: Proof of Stake'}</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         )}

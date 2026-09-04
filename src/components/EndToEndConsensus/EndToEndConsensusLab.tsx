@@ -263,10 +263,10 @@ const INITIAL_BLOCKS: E2EBlock[] = [
 
 const LAB_STEPS = [
   { step: 1, labelVi: '01 Giao dịch', labelEn: '01 Tx', nameVi: 'Tạo giao dịch', nameEn: 'Transaction' },
-  { step: 2, labelVi: '02 Mempool', labelEn: '02 Mempool', nameVi: 'Bể Mempool', nameEn: 'Mempool' },
+  { step: 2, labelVi: '02 Mempool', labelEn: '02 Mempool', nameVi: 'Bể giao dịch chờ', nameEn: 'Mempool' },
   { step: 3, labelVi: '03 Khối', labelEn: '03 Block', nameVi: 'Khối ứng viên', nameEn: 'Candidate Block' },
   { step: 4, labelVi: '04 Khai thác', labelEn: '04 Mining', nameVi: 'Đua khai thác', nameEn: 'Mining Race' },
-  { step: 5, labelVi: '05 Lan truyền', labelEn: '05 P2P', nameVi: 'Lan truyền P2P', nameEn: 'P2P Broadcast' },
+  { step: 5, labelVi: '05 Lan truyền', labelEn: '05 P2P', nameVi: 'Lan truyền trong mạng P2P', nameEn: 'P2P Broadcast' },
   { step: 6, labelVi: '06 Phân nhánh', labelEn: '06 Fork', nameVi: 'Phân nhánh chuỗi', nameEn: 'Fork Resolution' },
   { step: 7, labelVi: '07 Sổ cái', labelEn: '07 Ledger', nameVi: 'Sổ cái chính thức', nameEn: 'Canonical Ledger' },
   { step: 8, labelVi: '08 Nhật ký', labelEn: '08 Events', nameVi: 'Nhật ký sự kiện', nameEn: 'Event Log' },
@@ -1152,7 +1152,7 @@ export const EndToEndConsensusLab: React.FC = () => {
     addLog(
       'fault',
       `🚨 TIÊM LỖI: Dữ liệu Khối #${height} đã bị chỉnh sửa trái phép (10 BTC → 999 BTC)!`,
-      `Hash của Khối #${height} đã lệch hoàn toàn so với con trỏ Previous Hash của Khối #${height + 1}`
+      `Hash của Khối #${height} đã lệch hoàn toàn so với liên kết mã băm của khối trước tại Khối #${height + 1}`
     );
   };
 
@@ -1279,7 +1279,7 @@ export const EndToEndConsensusLab: React.FC = () => {
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-sm" />
               <h2 className="text-xl sm:text-2xl font-bold text-zinc-100 font-sans tracking-tight">
-                Blockchain Consensus
+                {language === 'vi' ? 'Đồng thuận Blockchain' : 'Blockchain Consensus'}
               </h2>
             </div>
           </div>
@@ -1293,7 +1293,7 @@ export const EndToEndConsensusLab: React.FC = () => {
               className="px-3 py-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 hover:text-zinc-100 text-xs font-medium transition-colors flex items-center gap-1.5 cursor-pointer"
             >
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-              <span>{language === 'vi' ? 'Kiểm tra (Audit)' : 'Consensus Audit'}</span>
+              <span>{language === 'vi' ? 'Kiểm tra hệ thống' : 'Consensus Audit'}</span>
             </button>
 
             <button

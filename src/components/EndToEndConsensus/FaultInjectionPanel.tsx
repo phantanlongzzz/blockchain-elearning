@@ -56,7 +56,7 @@ export const FaultInjectionPanel: React.FC<FaultInjectionPanelProps> = ({
       status: tamperedBlockHeight !== null ? 'trigger' : 'success',
     },
     {
-      titleVi: '2. Băm mật mã thay đổi (Avalanche Effect)',
+      titleVi: '2. Hiệu ứng thác lũ của mã băm',
       titleEn: '2. Cryptographic Hash Change',
       descVi: tamperedBlockHeight !== null
         ? `SHA-256(Block #${tamperedBlockHeight}) thay đổi hoàn toàn do hiệu ứng thác đổ.`
@@ -68,7 +68,7 @@ export const FaultInjectionPanel: React.FC<FaultInjectionPanelProps> = ({
       status: tamperedBlockHeight !== null ? 'warning' : 'success',
     },
     {
-      titleVi: '3. Sai khớp Previous Hash khối kế tiếp',
+      titleVi: '3. Sai khớp mã băm của khối trước',
       titleEn: '3. Next Block Previous Hash Mismatch',
       descVi: tamperedBlockHeight !== null
         ? `Khối #${tamperedBlockHeight + 1} vẫn trỏ tới mã băm cũ → Mối liên kết hash pointer bị đứt gãy!`
@@ -105,13 +105,13 @@ export const FaultInjectionPanel: React.FC<FaultInjectionPanelProps> = ({
             <Flame className="w-4 h-4 text-rose-400" />
             <h4 className="text-sm font-semibold text-zinc-100">
               {language === 'vi'
-                ? 'Hệ thống tiêm lỗi & Phân tích nguyên nhân (Failure Injection & Causality)'
+                ? 'Hệ thống tiêm lỗi và phân tích nguyên nhân'
                 : 'Failure Injection System & Causality Graph'}
             </h4>
           </div>
           <p className="text-zinc-400 text-xs mt-0.5">
             {language === 'vi'
-              ? 'Mô phỏng các cuộc tấn công và quan sát phản ứng dây chuyền bảo vệ của mạng phi tập trung.'
+              ? 'Mô phỏng các tình huống tấn công và quan sát phản ứng dây chuyền của cơ chế bảo vệ trong mạng phi tập trung.'
               : 'Inject adversarial anomalies to observe decentralization cascading defenses.'}
           </p>
         </div>
@@ -165,7 +165,7 @@ export const FaultInjectionPanel: React.FC<FaultInjectionPanelProps> = ({
           <div className="flex items-center justify-between">
             <span className="font-semibold text-zinc-100 flex items-center gap-1.5">
               <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />
-              {language === 'vi' ? 'Làm hỏng mã Hash' : 'Corrupt Block Hash'}
+              {language === 'vi' ? 'Làm hỏng mã băm' : 'Corrupt Block Hash'}
             </span>
             <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-zinc-400">
               Hash Mismatch
@@ -183,7 +183,7 @@ export const FaultInjectionPanel: React.FC<FaultInjectionPanelProps> = ({
           <div className="flex items-center justify-between">
             <span className="font-semibold text-zinc-100 flex items-center gap-1.5">
               <Radio className="w-3.5 h-3.5 text-blue-400" />
-              {language === 'vi' ? 'Ngắt kết nối nút (Kill Node)' : 'Disconnect Peer Node'}
+              {language === 'vi' ? 'Ngắt kết nối nút' : 'Disconnect Peer Node'}
             </span>
             <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-zinc-400">
               P2P Partition
@@ -201,7 +201,7 @@ export const FaultInjectionPanel: React.FC<FaultInjectionPanelProps> = ({
                     : 'bg-zinc-900 border-zinc-700 text-zinc-300 hover:border-zinc-500'
                 }`}
               >
-                {n.name.split(' ')[0]}: {n.isOffline ? 'Offline' : 'Online'}
+                {n.name.split(' ')[0]}: {n.isOffline ? (language === 'vi' ? 'Ngoại tuyến' : 'Offline') : (language === 'vi' ? 'Trực tuyến' : 'Online')}
               </button>
             ))}
           </div>

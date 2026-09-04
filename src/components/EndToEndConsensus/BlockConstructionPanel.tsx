@@ -148,7 +148,7 @@ export const BlockConstructionPanel: React.FC<BlockConstructionPanelProps> = ({
           {/* Previous Hash */}
           <div className="space-y-1.5">
             <label className="text-xs font-medium text-zinc-300 block">
-              {language === 'vi' ? 'Mã băm khối trước (Previous Hash)' : 'Previous Hash'}
+              {language === 'vi' ? 'Mã băm của khối trước' : 'Previous Hash'}
             </label>
             <div className="bg-[#080c16] border border-zinc-800 rounded-lg p-3 flex items-center justify-between gap-2">
               <span className="font-mono text-xs text-zinc-300 break-all">
@@ -158,7 +158,7 @@ export const BlockConstructionPanel: React.FC<BlockConstructionPanelProps> = ({
                 type="button"
                 onClick={() => handleCopy(previousHash, 'prevHash')}
                 className="px-2 py-1 rounded bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 hover:text-zinc-100 text-xs font-mono flex items-center gap-1 shrink-0 cursor-pointer"
-                title="Sao chép Previous Hash"
+                title="Sao chép mã băm của khối trước"
               >
                 {copiedField === 'prevHash' ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
                 <span>{copiedField === 'prevHash' ? (language === 'vi' ? 'Đã chép' : 'Copied') : (language === 'vi' ? 'Sao chép' : 'Copy')}</span>
@@ -195,10 +195,10 @@ export const BlockConstructionPanel: React.FC<BlockConstructionPanelProps> = ({
               {language === 'vi' ? 'Phần thưởng thợ đào (Coinbase):' : 'Miner reward (Coinbase):'}
             </span>
             <span className="font-mono font-semibold text-amber-400 text-sm">
-              +{totalCoinbase.toFixed(4)} BTC
+              <span className="text-[#F6C453]">+{totalCoinbase.toFixed(4)} BTC</span>
             </span>
             <span className="text-zinc-500 font-mono text-[11px]">
-              ({baseRewardBTC} BTC cơ bản + {totalFees.toFixed(4)} BTC phí)
+              (<span className="text-[#F6C453]">{baseRewardBTC} BTC</span> cơ bản + <span className="text-[#F6C453]">{totalFees.toFixed(4)} BTC</span> phí)
             </span>
           </div>
 

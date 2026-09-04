@@ -539,7 +539,7 @@ export const NetworkBroadcastGraph: React.FC<NetworkBroadcastGraphProps> = ({
 
           <p className="text-xs sm:text-sm text-zinc-400 mt-0.5">
             {language === 'vi'
-              ? 'Khối được phát tán qua mạng P2P Gossip. Mỗi nút nhận khối độc lập kiểm tra Previous Hash, Merkle Root và PoW.'
+              ? 'Khối được phát tán qua mạng P2P Gossip. Mỗi nút nhận khối độc lập kiểm tra mã băm của khối trước, Cây Merkle và PoW.'
               : 'Blocks propagate via P2P Gossip protocol. Each peer independently verifies Previous Hash, Merkle Root, and PoW.'}
           </p>
         </div>
@@ -963,7 +963,7 @@ export const NetworkBroadcastGraph: React.FC<NetworkBroadcastGraphProps> = ({
             {isOriginSelected ? (
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
                 <div className="p-3 rounded-lg bg-[#060911] border border-zinc-800/80 space-y-1.5">
-                  <span className="text-zinc-400 font-medium text-[11px]">Previous Hash</span>
+                  <span className="text-zinc-400 font-medium text-[11px]">{language === 'vi' ? 'Mã băm khối trước' : 'Previous Hash'}</span>
                   <div className="space-y-0.5">
                     <span className="text-emerald-400 font-medium block">
                       {language === 'vi' ? '✓ Khớp với đỉnh chuỗi hiện tại' : '✓ Matches Canonical Chain Tip'}
@@ -1008,7 +1008,7 @@ export const NetworkBroadcastGraph: React.FC<NetworkBroadcastGraphProps> = ({
                 {/* Previous Hash Check */}
                 <div className="p-3 rounded-lg bg-[#060911] border border-zinc-800/80 space-y-1.5">
                   <div className="flex items-center justify-between">
-                    <span className="text-zinc-400 font-medium text-[11px]">Previous Hash</span>
+                    <span className="text-zinc-400 font-medium text-[11px]">{language === 'vi' ? 'Mã băm khối trước' : 'Previous Hash'}</span>
                     {selectedRuntime.prevHash === true ? (
                       <span className="text-[10px] text-emerald-400 font-mono">OK</span>
                     ) : null}

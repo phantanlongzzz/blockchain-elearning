@@ -53,7 +53,7 @@ export const LabRecorderTimeline: React.FC<LabRecorderTimelineProps> = ({
   const getCategoryBadge = (category: E2EEventLog['category']) => {
     switch (category) {
       case 'tx':
-        return { label: 'TX', class: 'text-blue-400 bg-blue-950/40 border-blue-500/30' };
+        return { label: language === 'vi' ? 'GIAO DỊCH' : 'TX', class: 'text-blue-400 bg-blue-950/40 border-blue-500/30' };
       case 'mining':
         return { label: 'POW', class: 'text-amber-400 bg-amber-950/40 border-amber-500/30' };
       case 'broadcast':
@@ -62,12 +62,12 @@ export const LabRecorderTimeline: React.FC<LabRecorderTimelineProps> = ({
         return { label: 'VERIFY', class: 'text-emerald-400 bg-emerald-950/40 border-emerald-500/30' };
       case 'consensus':
       case 'reward':
-        return { label: 'CONSENSUS', class: 'text-emerald-300 bg-emerald-950/50 border-emerald-400/40' };
+        return { label: language === 'vi' ? 'ĐỒNG THUẬN' : 'CONSENSUS', class: 'text-emerald-300 bg-emerald-950/50 border-emerald-400/40' };
       case 'fork':
       case 'orphan':
         return { label: 'FORK', class: 'text-amber-300 bg-amber-950/50 border-amber-500/40' };
       case 'fault':
-        return { label: 'FAULT', class: 'text-rose-400 bg-rose-950/50 border-rose-500/40' };
+        return { label: language === 'vi' ? 'TIÊM LỖI' : 'FAULT', class: 'text-rose-400 bg-rose-950/50 border-rose-500/40' };
       default:
         return { label: 'EVENT', class: 'text-zinc-400 bg-zinc-900 border-zinc-800' };
     }

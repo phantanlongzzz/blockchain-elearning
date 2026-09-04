@@ -226,7 +226,7 @@ export const TransactionCreateStep: React.FC<TransactionCreateStepProps> = ({
             <div className="bg-[#080c16] border border-zinc-800 rounded-lg p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div className="space-y-0.5">
                 <div className="text-xs text-zinc-200 font-medium">
-                  {lastCreatedTx.sender} → {lastCreatedTx.recipient} · <span className="font-mono text-amber-400">{lastCreatedTx.amount} BTC</span> (Phí: +{lastCreatedTx.feeBTC} BTC)
+                  {lastCreatedTx.sender} → {lastCreatedTx.recipient} · <span className="font-mono text-[#F6C453]">{lastCreatedTx.amount} BTC</span> (Phí: <span className="text-[#F6C453]">+{lastCreatedTx.feeBTC} BTC</span>)
                 </div>
                 <div className="text-[11px] font-mono text-zinc-400 truncate max-w-lg">
                   TXID: {lastCreatedTx.hash}

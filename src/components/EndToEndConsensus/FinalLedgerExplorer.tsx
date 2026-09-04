@@ -128,7 +128,7 @@ export const FinalLedgerExplorer: React.FC<FinalLedgerExplorerProps> = ({
 
                       <div className="flex items-center justify-between text-zinc-400">
                         <span>{language === 'vi' ? 'Phần thưởng:' : 'Reward:'}</span>
-                        <span className="font-semibold font-mono text-amber-400">+{blk.rewardBTC} BTC</span>
+                        <span className="font-semibold font-mono text-[#F6C453]">+{blk.rewardBTC} BTC</span>
                       </div>
 
                       <div className="flex items-center justify-between text-zinc-400">
@@ -247,7 +247,7 @@ export const FinalLedgerExplorer: React.FC<FinalLedgerExplorerProps> = ({
                 <div className="bg-[#060911] p-2.5 rounded-lg border border-zinc-800 space-y-1 text-xs">
                   <div className="text-zinc-300">Thợ đào: <span className="text-zinc-100 font-medium">{selectedBlock.minerName}</span></div>
                   <div className="text-zinc-300">Nonce: <span className="text-zinc-100 font-mono">{selectedBlock.nonce.toLocaleString()}</span></div>
-                  <div className="text-zinc-300">Phần thưởng: <span className="text-amber-400 font-mono font-medium">+{selectedBlock.rewardBTC} BTC</span></div>
+                  <div className="text-zinc-300">Phần thưởng: <span className="text-[#F6C453] font-mono font-medium">+{selectedBlock.rewardBTC} BTC</span></div>
                 </div>
               </div>
             </div>
@@ -269,7 +269,7 @@ export const FinalLedgerExplorer: React.FC<FinalLedgerExplorerProps> = ({
                       className="p-2.5 rounded-lg bg-[#060911] border border-zinc-800 text-xs flex items-center justify-between"
                     >
                       <span className="text-zinc-200">{tx.sender} → {tx.recipient}</span>
-                      <span className="font-mono font-semibold text-amber-400">{tx.amount} BTC</span>
+                      <span className="font-mono font-semibold text-[#F6C453]">{tx.amount} BTC</span>
                     </div>
                   ))}
                 </div>

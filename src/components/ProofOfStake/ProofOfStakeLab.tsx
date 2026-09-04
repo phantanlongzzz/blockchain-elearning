@@ -20,11 +20,7 @@ import {
   Maximize2,
   X,
   HelpCircle,
-  Compass,
-  Sliders,
-  ArrowRight,
-  ArrowLeft,
-  CheckCircle2,
+  MoreHorizontal,
 } from 'lucide-react';
 import {
   INITIAL_POS_VALIDATORS,
@@ -48,13 +44,26 @@ export const ProofOfStakeLab: React.FC = () => {
   // Guided vs Free Mode
   const [guideMode, setGuideMode] = useState<'guided' | 'free'>('guided');
 
-  // Modals
+  // Modals & Overflow Menu
   const [isHelpModalOpen, setIsHelpModalOpen] = useState<boolean>(false);
   const [isCodeModalOpen, setIsCodeModalOpen] = useState<boolean>(false);
   const [isSimulationMode, setIsSimulationMode] = useState<boolean>(false);
+  const [isMoreMenuOpen, setIsMoreMenuOpen] = useState<boolean>(false);
 
+  const moreMenuRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<number[]>([]);
   const tickerIntervalRef = useRef<number | null>(null);
+
+  // Click outside to close overflow menu
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (moreMenuRef.current && !moreMenuRef.current.contains(event.target as Node)) {
+        setIsMoreMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   // Cleanup timeouts on unmount
   useEffect(() => {
@@ -308,104 +317,137 @@ export const ProofOfStakeLab: React.FC = () => {
   return (
     <section
       id="proof-of-stake"
-      className="space-y-5 pt-3 text-slate-100 max-w-7xl mx-auto scroll-mt-24 font-sans"
+      className="space-y-6 pt-3 text-slate-100 max-w-7xl mx-auto scroll-mt-24 font-sans"
     >
-      {/* 1. Header Bar with Mode Toggles and Quick Actions */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-3 border-b border-[#1C2430]">
+      {/* 1. Header Bar: Clean Hierarchy (Level 1: Title, Level 2: Controls) */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-white/[0.08]">
         <div>
-          <h2 className="text-xl sm:text-2xl font-black font-display tracking-tight text-[#F2F4F7] flex items-center gap-2">
-            <Layers className="w-6 h-6 text-[#00C98D] shrink-0" />
+          <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#F2F4F7] flex items-center gap-2.5">
+            <Layers className="w-5 h-5 text-[#00C98D] shrink-0" />
             <span>Proof of Stake</span>
           </h2>
         </div>
 
-        {/* Mode Switcher & Global Toolbar Buttons */}
-        <div className="flex flex-wrap items-center gap-2 self-start lg:self-auto">
-          {/* Mode Switcher: Guided vs Free */}
-          <div className="flex items-center bg-[#0F131A] p-1 rounded-xl border border-[#1C2430]">
+        {/* Action Controls: Primary (Guided vs Free) & Secondary Overflow [ ⋯ ] */}
+        <div className="flex items-center gap-2 self-start sm:self-auto">
+          {/* Primary Controls: Mode Switcher */}
+          <div className="flex items-center bg-[#0C0F14] p-1 rounded-lg border border-white/[0.08]">
             <button
               type="button"
               id="pos-mode-guided-btn"
               onClick={() => setGuideMode('guided')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
+              className={`px-3 py-1.5 rounded-md text-xs font-mono font-medium transition-colors cursor-pointer ${
                 guideMode === 'guided'
-                  ? 'bg-[#00C98D] text-[#090A0F] shadow-sm'
-                  : 'text-[#A5AFBF] hover:text-[#F2F4F7]'
+                  ? 'bg-[#00C98D] text-[#090A0F] font-bold shadow-sm'
+                  : 'text-[#9AA5B5] hover:text-[#F2F4F7]'
               }`}
               title={isVi ? 'Chế độ có hướng dẫn từng bước' : 'Step-by-step guided mode'}
             >
-              <Compass className="w-3.5 h-3.5" />
-              <span>{isVi ? 'HƯỚNG DẪN' : 'GUIDED'}</span>
+              {isVi ? 'HƯỚNG DẪN' : 'GUIDED'}
             </button>
 
             <button
               type="button"
               id="pos-mode-free-btn"
               onClick={() => setGuideMode('free')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
+              className={`px-3 py-1.5 rounded-md text-xs font-mono font-medium transition-colors cursor-pointer ${
                 guideMode === 'free'
-                  ? 'bg-[#00C98D] text-[#090A0F] shadow-sm'
-                  : 'text-[#A5AFBF] hover:text-[#F2F4F7]'
+                  ? 'bg-[#00C98D] text-[#090A0F] font-bold shadow-sm'
+                  : 'text-[#9AA5B5] hover:text-[#F2F4F7]'
               }`}
               title={isVi ? 'Chế độ tự do khám phá' : 'Free exploration mode'}
             >
-              <Sliders className="w-3.5 h-3.5" />
-              <span>{isVi ? 'TỰ DO' : 'FREE'}</span>
+              {isVi ? 'TỰ DO' : 'FREE'}
             </button>
           </div>
 
-          {/* Quick Help Dialog Trigger (Replaces permanent 4-Question block) */}
-          <button
-            type="button"
-            id="pos-help-btn"
-            onClick={() => setIsHelpModalOpen(true)}
-            className="px-3 py-2 rounded-xl bg-[#0F131A] hover:bg-[#11161E] text-[#00C98D] hover:text-[#00B982] border border-[#1C2430] font-sans font-semibold text-xs flex items-center gap-1.5 transition-all cursor-pointer"
-            title={isVi ? 'Xem 4 câu hỏi định hướng tư duy' : 'View 4 core framework questions'}
-          >
-            <HelpCircle className="w-3.5 h-3.5 text-[#00C98D]" />
-            <span>{isVi ? 'ⓘ Trợ giúp' : 'ⓘ Help'}</span>
-          </button>
+          {/* Secondary / Utility Controls: Overflow Menu [ ⋯ ] */}
+          <div className="relative" ref={moreMenuRef}>
+            <button
+              type="button"
+              id="pos-more-options-btn"
+              onClick={() => setIsMoreMenuOpen(!isMoreMenuOpen)}
+              className="w-8 h-8 flex items-center justify-center rounded-lg bg-[#0C0F14] hover:bg-white/[0.04] text-[#9AA5B5] hover:text-[#F2F4F7] border border-white/[0.08] transition-colors cursor-pointer"
+              title={isVi ? 'Tùy chọn khác' : 'More options'}
+              aria-label={isVi ? 'Tùy chọn khác' : 'More options'}
+              aria-expanded={isMoreMenuOpen}
+            >
+              <MoreHorizontal className="w-4 h-4" />
+            </button>
 
-          {/* Fullscreen Button */}
-          <button
-            type="button"
-            id="pos-fullscreen-btn"
-            onClick={() => handleToggleSimulationMode(true)}
-            className="px-3 py-2 rounded-xl bg-[rgba(0,201,141,0.08)] hover:bg-[rgba(0,201,141,0.15)] text-[#00C98D] border border-[rgba(0,201,141,0.35)] font-sans font-semibold text-xs flex items-center gap-1.5 transition-all cursor-pointer"
-            title={isVi ? 'Mở chế độ mô phỏng toàn màn hình' : 'Open fullscreen simulation mode'}
-          >
-            <Maximize2 className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">
-              {isVi ? 'Toàn màn hình' : 'Fullscreen'}
-            </span>
-          </button>
+            {isMoreMenuOpen && (
+              <div
+                className="absolute right-0 top-full mt-1.5 w-48 bg-[#0C0F14] backdrop-blur-md border border-white/[0.08] rounded-xl shadow-2xl p-1.5 z-40 font-sans text-xs animate-in fade-in slide-in-from-top-1 duration-150"
+                role="menu"
+              >
+                {/* Help Modal */}
+                <button
+                  type="button"
+                  id="pos-help-btn"
+                  role="menuitem"
+                  onClick={() => {
+                    setIsHelpModalOpen(true);
+                    setIsMoreMenuOpen(false);
+                  }}
+                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-[#A5AFBF] hover:text-[#F2F4F7] hover:bg-white/[0.04] text-left transition-colors cursor-pointer"
+                >
+                  <HelpCircle className="w-3.5 h-3.5 text-[#00C98D]" />
+                  <span>{isVi ? 'Trợ giúp' : 'Help'}</span>
+                </button>
 
-          {/* Code Modal Button */}
-          <button
-            type="button"
-            id="pos-view-code-btn"
-            onClick={() => setIsCodeModalOpen(true)}
-            className="px-3 py-2 rounded-xl bg-[#0F131A] hover:bg-[#11161E] text-[#F2F4F7] border border-[#1C2430] font-sans font-semibold text-xs flex items-center gap-1.5 transition-all cursor-pointer"
-            title={isVi ? 'Xem mã nguồn Python mô phỏng Proof of Stake' : 'View Proof-of-Stake Python code'}
-          >
-            <Code className="w-3.5 h-3.5 text-[#00C98D]" />
-            <span className="hidden sm:inline">{strings.proofOfStake.viewCodeBtn}</span>
-          </button>
+                {/* Fullscreen Simulation */}
+                <button
+                  type="button"
+                  id="pos-fullscreen-btn"
+                  role="menuitem"
+                  onClick={() => {
+                    handleToggleSimulationMode(true);
+                    setIsMoreMenuOpen(false);
+                  }}
+                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-[#A5AFBF] hover:text-[#F2F4F7] hover:bg-white/[0.04] text-left transition-colors cursor-pointer"
+                >
+                  <Maximize2 className="w-3.5 h-3.5 text-[#00C98D]" />
+                  <span>{isVi ? 'Toàn màn hình' : 'Fullscreen'}</span>
+                </button>
 
-          {/* Reset State Button */}
-          <button
-            type="button"
-            id="pos-reset-btn"
-            onClick={handleResetState}
-            className="p-2 rounded-xl bg-[#0F131A] hover:bg-[#11161E] text-[#A5AFBF] hover:text-[#F2F4F7] border border-[#1C2430] transition-colors cursor-pointer"
-            title={strings.proofOfStake.resetStateBtn}
-          >
-            <RotateCcw className="w-4 h-4" />
-          </button>
+                {/* Code View */}
+                <button
+                  type="button"
+                  id="pos-view-code-btn"
+                  role="menuitem"
+                  onClick={() => {
+                    setIsCodeModalOpen(true);
+                    setIsMoreMenuOpen(false);
+                  }}
+                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-[#A5AFBF] hover:text-[#F2F4F7] hover:bg-white/[0.04] text-left transition-colors cursor-pointer"
+                >
+                  <Code className="w-3.5 h-3.5 text-[#00C98D]" />
+                  <span>{strings.proofOfStake.viewCodeBtn}</span>
+                </button>
+
+                <div className="my-1 border-t border-white/[0.08]" />
+
+                {/* Reset State */}
+                <button
+                  type="button"
+                  id="pos-reset-btn"
+                  role="menuitem"
+                  onClick={() => {
+                    handleResetState();
+                    setIsMoreMenuOpen(false);
+                  }}
+                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-rose-400 hover:bg-rose-950/30 text-left transition-colors cursor-pointer"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  <span>{isVi ? 'Đặt lại' : 'Reset'}</span>
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
-      {/* 3. The 3-Step Lifecycle Visual Guide */}
+      {/* 2. Progress Stepper: Flat Minimalist Stepper */}
       <SimulationTimeline
         activeStep={activeStep}
         onSelectStep={(step) => setActiveStep(step)}
@@ -413,33 +455,31 @@ export const ProofOfStakeLab: React.FC = () => {
         scenarioOutcome={scenarioOutcome}
       />
 
-      {/* 4. Streamlined Just-in-Time Guided Mode Guidance Banner (when guided mode active) */}
+      {/* 3. Step Instruction: Contextual Left-accent Area (No Heavy Box) */}
       {guideMode === 'guided' && (
         <div
           id="pos-guided-banner"
-          className="p-3.5 sm:p-4 rounded-xl bg-[#0C0F14] border border-[rgba(0,201,141,0.35)] flex items-start sm:items-center gap-3 shadow-sm animate-in fade-in duration-200"
+          className="border-l-2 border-[#00C98D] pl-3.5 py-1 bg-white/[0.015] rounded-r-lg animate-in fade-in duration-200"
         >
-          <div className="w-8 h-8 rounded-lg bg-[rgba(0,201,141,0.12)] border border-[rgba(0,201,141,0.35)] flex items-center justify-center text-[#00C98D] shrink-0 mt-0.5 sm:mt-0">
-            <Compass className="w-4 h-4" />
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] font-mono font-bold text-[#00C98D] uppercase tracking-wider">
+              {isVi ? `BƯỚC ${activeStep} / 3` : `STEP ${activeStep} / 3`}
+            </span>
+            <span className="text-[#1C2430]">·</span>
+            <h4 className="text-xs sm:text-sm font-semibold text-[#F2F4F7]">
+              {isVi
+                ? currentStepGuide.titleVi.replace(/^Bước \d+:\s*/i, '')
+                : currentStepGuide.titleEn.replace(/^Step \d+:\s*/i, '')}
+            </h4>
           </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-[rgba(0,201,141,0.15)] text-[#00C98D]">
-                {isVi ? `BƯỚC ${activeStep}/3` : `STEP ${activeStep}/3`}
-              </span>
-              <h4 className="text-xs sm:text-sm font-bold text-[#F2F4F7] font-display">
-                {isVi ? currentStepGuide.titleVi : currentStepGuide.titleEn}
-              </h4>
-            </div>
-            <p className="text-xs text-[#A5AFBF] font-sans mt-0.5 leading-snug">
-              {isVi ? currentStepGuide.instructionVi : currentStepGuide.instructionEn}
-            </p>
-          </div>
+          <p className="text-xs text-[#9AA5B5] mt-0.5 max-w-3xl leading-relaxed">
+            {isVi ? currentStepGuide.instructionVi : currentStepGuide.instructionEn}
+          </p>
         </div>
       )}
 
-      {/* 5. Main Simulation Workspace: Clean Step View */}
-      <div className="space-y-5">
+      {/* 4. Main Simulation Workspace */}
+      <div className="space-y-6">
         {activeStep === 1 && (
           <ValidatorDashboard
             validators={validators}
@@ -475,41 +515,39 @@ export const ProofOfStakeLab: React.FC = () => {
         )}
       </div>
 
-      {/* 6. Secondary Collapsible Educational Section: 💡 TẠI SAO CƠ CHẾ NÀY HOẠT ĐỘNG? (Collapsed by default) */}
+      {/* 5. Educational Collapsible Sections */}
       <PoSWhyAccordion />
-
-      {/* 7. Secondary Collapsible Educational Section: ⚖️ SO SÁNH PoW VÀ PoS (Collapsed by default) */}
       <PoWVsPoSComparison />
 
-      {/* 8. Quick Help 4-Questions Modal */}
+      {/* 6. Help Modal */}
       <PoSHelpModal
         isOpen={isHelpModalOpen}
         onClose={() => setIsHelpModalOpen(false)}
         questions={posQuestions}
       />
 
-      {/* 9. Dedicated Fullscreen Proof of Stake Simulation Mode */}
+      {/* 7. Dedicated Fullscreen Proof of Stake Simulation Mode */}
       {isSimulationMode && (
         <div
           id="pos-fullscreen-simulation-modal"
           className="fixed inset-0 z-50 bg-[#090A0F] p-4 sm:p-8 overflow-y-auto space-y-6 animate-in fade-in zoom-in-95 duration-200"
         >
           {/* Fullscreen Header */}
-          <div className="sticky top-0 z-40 bg-[#090A0F]/95 backdrop-blur-xl pb-4 border-b border-[#1C2430] flex flex-wrap items-center justify-between gap-4">
+          <div className="sticky top-0 z-40 bg-[#090A0F]/95 backdrop-blur-xl pb-4 border-b border-white/[0.08] flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-[rgba(0,201,141,0.12)] border border-[rgba(0,201,141,0.35)] flex items-center justify-center text-[#00C98D]">
+              <div className="w-10 h-10 rounded-2xl bg-[#00C98D]/10 border border-[#00C98D]/30 flex items-center justify-center text-[#00C98D]">
                 <Sparkles className="w-5 h-5" />
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <h3 className="text-base sm:text-lg font-black font-display text-[#F2F4F7]">
+                  <h3 className="text-base sm:text-lg font-bold text-[#F2F4F7]">
                     {isVi ? 'CHẾ ĐỘ MÔ PHỎNG PROOF OF STAKE' : 'PROOF OF STAKE SIMULATION MODE'}
                   </h3>
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[rgba(0,201,141,0.15)] text-[#00C98D] border border-[rgba(0,201,141,0.35)]">
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#00C98D]/15 text-[#00C98D] border border-[#00C98D]/30">
                     FULLSCREEN LAB
                   </span>
                 </div>
-                <p className="text-xs text-[#A5AFBF]">
+                <p className="text-xs text-[#9AA5B5]">
                   {isVi
                     ? 'Mô phỏng quy trình Proof of Stake trực quan qua 3 bước: Đặt cọc ETH, Chọn người giải khối, Kiểm tra khối.'
                     : 'Visual 3-step Proof of Stake lifecycle: Deposit ETH, Block Solver selection, Block verification.'}
@@ -518,20 +556,20 @@ export const ProofOfStakeLab: React.FC = () => {
             </div>
 
             {/* Simulation Mode Action Buttons & Exit */}
-            <div className="flex items-center gap-2.5">
+            <div className="flex items-center gap-2">
               <button
                 type="button"
                 onClick={() => setIsHelpModalOpen(true)}
-                className="px-3 py-2 rounded-xl bg-[#0F131A] hover:bg-[#11161E] text-[#00C98D] border border-[#1C2430] text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer"
+                className="px-3 py-2 rounded-lg bg-[#0C0F14] hover:bg-white/[0.04] text-[#00C98D] border border-white/[0.08] text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
               >
                 <HelpCircle className="w-3.5 h-3.5" />
-                <span>{isVi ? 'ⓘ Trợ giúp' : 'ⓘ Help'}</span>
+                <span>{isVi ? 'Trợ giúp' : 'Help'}</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setIsCodeModalOpen(true)}
-                className="px-3.5 py-2 rounded-xl bg-[#0F131A] hover:bg-[#11161E] text-[#F2F4F7] border border-[#1C2430] text-xs flex items-center gap-1.5 transition-all cursor-pointer"
+                className="px-3.5 py-2 rounded-lg bg-[#0C0F14] hover:bg-white/[0.04] text-[#F2F4F7] border border-white/[0.08] text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
               >
                 <Code className="w-3.5 h-3.5 text-[#00C98D]" />
                 <span>{strings.proofOfStake.viewCodeBtn}</span>
@@ -540,7 +578,7 @@ export const ProofOfStakeLab: React.FC = () => {
               <button
                 type="button"
                 onClick={handleResetState}
-                className="p-2 rounded-xl bg-[#0F131A] hover:bg-[#11161E] text-[#A5AFBF] hover:text-[#F2F4F7] border border-[#1C2430] cursor-pointer"
+                className="p-2 rounded-lg bg-[#0C0F14] hover:bg-white/[0.04] text-[#9AA5B5] hover:text-[#F2F4F7] border border-white/[0.08] cursor-pointer transition-colors"
                 title={strings.proofOfStake.resetStateBtn}
               >
                 <RotateCcw className="w-3.5 h-3.5" />
@@ -550,7 +588,7 @@ export const ProofOfStakeLab: React.FC = () => {
                 type="button"
                 id="pos-exit-fullscreen-btn"
                 onClick={handleExitSimulationMode}
-                className="px-3.5 py-2 rounded-xl bg-rose-950/80 hover:bg-rose-900 text-rose-300 border border-rose-500/40 text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer"
+                className="px-3.5 py-2 rounded-lg bg-rose-950/60 hover:bg-rose-900/80 text-rose-300 border border-rose-500/30 text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
               >
                 <X className="w-4 h-4" />
                 <span>{isVi ? 'Thoát toàn màn hình' : 'Exit Fullscreen'}</span>
@@ -614,5 +652,3 @@ export const ProofOfStakeLab: React.FC = () => {
     </section>
   );
 };
-
-

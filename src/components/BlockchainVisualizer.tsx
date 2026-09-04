@@ -11,26 +11,38 @@ import {
   CheckCircle2,
   Lock,
   ArrowRight,
+  ArrowDown,
   ShieldCheck,
   Sparkles,
+  MoreHorizontal,
+  Edit3,
+  Eye,
+  Layers,
+  Lightbulb,
 } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 import { hashSha256 } from '../utils/sha256';
 import { INITIAL_BLOCKCHAIN_DATA } from '../data/researchData';
 import { BlockchainBlock } from '../types';
 
+// ==========================================
+// 1. INLINE HASH DISPLAY COMPONENT
+// ==========================================
 interface InlineHashProps {
   hash: string;
   prefixHighlight?: number;
   isError?: boolean;
+  variant?: 'previous' | 'current';
 }
 
 const InlineHash: React.FC<InlineHashProps> = ({
   hash,
   prefixHighlight,
   isError,
+  variant = 'current',
 }) => {
   const [copied, setCopied] = useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   const handleCopy = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -44,54 +56,152 @@ const InlineHash: React.FC<InlineHashProps> = ({
     }
   };
 
-  const formatted = `${hash.slice(0, 8)}...${hash.slice(-6)}`;
-  const [expanded, setExpanded] = useState(false);
+  const formatted = hash ? `${hash.slice(0, 8)}...${hash.slice(-6)}` : '00000000...0000';
+
   return (
     <div className="flex items-center justify-between font-mono text-xs py-0.5 group/hash">
-      <span 
-        className={`${expanded ? 'break-all' : 'truncate'} select-all cursor-pointer`}
-        title="Click to expand/collapse full hash"
-        onClick={(e) => { e.stopPropagation(); setExpanded(!expanded); }}
+      <span
+        className={`${expanded ? 'break-all' : 'truncate'} select-all cursor-pointer font-semibold`}
+        title="Click để xem toàn bộ 64 ký tự"
+        onClick={(e) => {
+          e.stopPropagation();
+          setExpanded(!expanded);
+        }}
       >
         {expanded ? (
-          <span className={isError ? 'text-rose-400 font-semibold' : 'text-[#F2F4F7]'}>{hash}</span>
+          <span
+            className={
+              isError
+                ? 'text-[#fb7185]'
+                : variant === 'previous'
+                ? 'text-[#94a3b8]'
+                : 'text-[#2dd4bf]'
+            }
+          >
+            {hash}
+          </span>
+        ) : isError ? (
+          <span className="text-[#fb7185] font-bold">{formatted}</span>
+        ) : variant === 'previous' ? (
+          <span className="text-[#94a3b8] hover:text-[#cbd5e1] transition-colors">
+            {formatted}
+          </span>
         ) : prefixHighlight && hash.startsWith('0'.repeat(prefixHighlight)) ? (
           <>
-            <span className={isError ? 'text-rose-400 font-bold' : 'text-[#00C98D] font-bold'}>
+            <span className="text-[#2dd4bf] font-bold">
               {hash.slice(0, prefixHighlight)}
             </span>
-            <span className="text-[#A5AFBF]">
+            <span className="text-[#2dd4bf]/85">
               {hash.slice(prefixHighlight, 8)}...{hash.slice(-6)}
             </span>
           </>
         ) : (
-          <span className={isError ? 'text-rose-400 font-semibold' : 'text-[#F2F4F7]'}>
-            {formatted}
-          </span>
+          <span className="text-[#2dd4bf] font-medium">{formatted}</span>
         )}
       </span>
       <button
         type="button"
         onClick={handleCopy}
-        aria-label="Copy hash"
-        className="p-1 text-[#717B8C] hover:text-[#F2F4F7] transition-colors cursor-pointer shrink-0"
-        title="Sao chép mã băm"
+        aria-label="Sao chép"
+        className="p-1 text-[#94a3b8] hover:text-[#e5e7eb] transition-colors cursor-pointer shrink-0 ml-1"
+        title="Sao chép"
       >
         {copied ? (
-          <Check className="w-3.5 h-3.5 text-[#00C98D]" />
+          <Check className="w-3.5 h-3.5 text-[#2dd4bf]" />
         ) : (
-          <Copy className="w-3.5 h-3.5 opacity-60 group-hover/hash:opacity-100" />
+          <Copy className="w-3.5 h-3.5 opacity-50 group-hover/hash:opacity-100 transition-opacity" />
         )}
       </button>
     </div>
   );
 };
 
+// ==========================================
+// 2. BLOCK PAYLOAD DISPLAY (BTC & TX FORMATTING)
+// ==========================================
+interface BlockDataDisplayProps {
+  data: string;
+  isGenesis?: boolean;
+  isTampered?: boolean;
+  isVi: boolean;
+}
+
+const BlockDataDisplay: React.FC<BlockDataDisplayProps> = ({
+  data,
+  isGenesis,
+  isTampered,
+  isVi,
+}) => {
+  if (isGenesis) {
+    return (
+      <div className="space-y-0.5 py-0.5">
+        <div className="text-xs font-semibold text-[#e5e7eb] flex items-center gap-1.5">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#f5c451]" />
+          <span>Khởi tạo chuỗi</span>
+        </div>
+        <div className="text-[11px] text-[#94a3b8] font-mono truncate">
+          {data.replace(/^GENESIS BLOCK #\d+:\s*/i, '') || 'Genesis Node Anchor'}
+        </div>
+      </div>
+    );
+  }
+
+  // Check if data is formatted as transaction: "Tx: Sender -> Receiver [Amount BTC]"
+  // Or "Alice -> Bob 10 BTC" or similar
+  const txMatch = data.match(/(?:Tx:\s*)?([A-Za-z0-9_]+)\s*(?:->|→)\s*([A-Za-z0-9_]+)(?:\s*\[?([\d\.]+\s*BTC)\]?)?/i);
+
+  if (txMatch && !isTampered) {
+    const sender = txMatch[1];
+    const receiver = txMatch[2];
+    const btcAmount = txMatch[3];
+
+    return (
+      <div className="space-y-1 py-0.5">
+        <div className="flex items-center justify-between text-xs">
+          <span className="font-medium text-[#e5e7eb]">{sender}</span>
+          <span className="text-[#64748b] px-1 font-mono text-[11px]">→</span>
+          <span className="font-medium text-[#e5e7eb]">{receiver}</span>
+        </div>
+        {btcAmount ? (
+          <div className="flex justify-end items-center font-mono text-xs font-semibold text-[#f5c451]">
+            <span>{btcAmount}</span>
+          </div>
+        ) : (
+          <div className="text-[11px] text-[#94a3b8] text-right font-mono">
+            {isVi ? 'Giao dịch chuyển khoản' : 'Transfer transaction'}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // If it mentions BTC anywhere in string, highlight BTC with #f5c451
+  const btcRegex = /(\b\d+(?:\.\d+)?\s*BTC\b)/gi;
+  const parts = data.split(btcRegex);
+
+  return (
+    <div className={`text-xs leading-relaxed break-words font-sans py-0.5 ${isTampered ? 'text-rose-300 font-medium' : 'text-[#e5e7eb]'}`}>
+      {parts.map((part, i) =>
+        btcRegex.test(part) ? (
+          <span key={i} className="font-mono font-semibold text-[#f5c451] px-0.5">
+            {part}
+          </span>
+        ) : (
+          <span key={i}>{part}</span>
+        )
+      )}
+    </div>
+  );
+};
+
+// ==========================================
+// 3. MAIN COMPONENT
+// ==========================================
 export const BlockchainVisualizer: React.FC = () => {
   const { strings, language } = useLanguage();
   const isVi = language === 'vi';
 
-  // 100% Preserved State & Logic with Enhanced Interaction
+  // State
   const [blocks, setBlocks] = useState<BlockchainBlock[]>(INITIAL_BLOCKCHAIN_DATA);
   const [isMining, setIsMining] = useState<number | null>(null);
   const [simulatedNonce, setSimulatedNonce] = useState<number | null>(null);
@@ -108,18 +218,35 @@ export const BlockchainVisualizer: React.FC = () => {
   const [guideMode, setGuideMode] = useState<'guided' | 'free'>('guided');
   const [guideStepIndex, setGuideStepIndex] = useState<number>(0);
 
-  // Progressive Disclosure UI States
+  // Per-block UI toggles
+  const [activeActionMenu, setActiveActionMenu] = useState<number | null>(null);
+  const [editingBlockId, setEditingBlockId] = useState<number | null>(null);
   const [expandedBlockId, setExpandedBlockId] = useState<number | null>(null);
+
+  // Global drawers
   const [isAuditMatrixExpanded, setIsAuditMatrixExpanded] = useState<boolean>(false);
   const [isDeepDiveOpen, setIsDeepDiveOpen] = useState<boolean>(false);
 
   // Cascade invalidation active state (tracks blocks in transition)
   const [invalidatingIndices, setInvalidatingIndices] = useState<Set<number>>(new Set());
 
+  // Close menus when clicking outside
+  const menuContainerRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (menuContainerRef.current && !menuContainerRef.current.contains(e.target as Node)) {
+        setActiveActionMenu(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   // Check prefers-reduced-motion
-  const isReducedMotion = typeof window !== 'undefined'
-    ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    : false;
+  const isReducedMotion =
+    typeof window !== 'undefined'
+      ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      : false;
 
   const computeBlockHash = async (
     index: number,
@@ -164,17 +291,14 @@ export const BlockchainVisualizer: React.FC = () => {
         });
       }
 
-      // If a specific tamper index triggered this and motion is allowed, play a 150ms cascade ripple
       if (triggerTamperIndex !== undefined && !isReducedMotion && triggerTamperIndex < updated.length - 1) {
         const downstreamIndices: number[] = [];
         for (let j = triggerTamperIndex; j < updated.length; j++) {
           downstreamIndices.push(j);
         }
 
-        // Set immediate state
         setBlocks(updated);
 
-        // Stagger cascade invalidation cues
         downstreamIndices.forEach((idx, step) => {
           setTimeout(() => {
             setInvalidatingIndices((prev) => new Set([...prev, idx]));
@@ -204,10 +328,11 @@ export const BlockchainVisualizer: React.FC = () => {
     validateAndSyncChain(nextBlocks);
   };
 
-  // Proof of Work Nonce Mining Animation (600-900ms realistic laboratory simulation)
+  // Proof of Work Nonce Mining Animation
   const mineBlock = async (index: number) => {
     setIsMining(index);
     setMinedFeedback(null);
+    setActiveActionMenu(null);
     const targetPrefix = '0'.repeat(difficulty);
     const b = blocks[index];
     const prevHash = index === 0 ? '0'.repeat(64) : blocks[index - 1].hash;
@@ -218,7 +343,6 @@ export const BlockchainVisualizer: React.FC = () => {
     let finalHash = '';
     let totalTried = 0;
 
-    // Calculate actual winning nonce
     for (let i = 0; i < maxIters; i++) {
       nonce++;
       totalTried++;
@@ -230,10 +354,9 @@ export const BlockchainVisualizer: React.FC = () => {
       }
     }
 
-    // Interactive simulated ticker animation (if not reduced motion)
     if (!isReducedMotion) {
       const steps = 12;
-      const stepDuration = 55; // ms
+      const stepDuration = 50;
       for (let s = 0; s < steps; s++) {
         await new Promise((res) => setTimeout(res, stepDuration));
         const pseudoNonce = Math.floor(
@@ -243,7 +366,6 @@ export const BlockchainVisualizer: React.FC = () => {
       }
     }
 
-    // Apply winning block and resync
     const nextBlocks = blocks.map((item, idx) =>
       idx === index
         ? {
@@ -266,7 +388,6 @@ export const BlockchainVisualizer: React.FC = () => {
       triedCount: totalTried,
     });
 
-    // Clear feedback after 4.5s
     setTimeout(() => {
       setMinedFeedback(null);
     }, 4500);
@@ -287,7 +408,7 @@ export const BlockchainVisualizer: React.FC = () => {
         : b
     );
     validateAndSyncChain(nextBlocks, 2);
-    setExpandedBlockId(2);
+    setEditingBlockId(2);
   };
 
   const handleAddBlock = async (e: React.FormEvent) => {
@@ -324,11 +445,12 @@ export const BlockchainVisualizer: React.FC = () => {
     setBlocks(INITIAL_BLOCKCHAIN_DATA);
     setTamperedIndex(null);
     setGuideStepIndex(0);
+    setActiveActionMenu(null);
+    setEditingBlockId(null);
     setExpandedBlockId(null);
     setMinedFeedback(null);
   };
 
-  // Evaluate individual validation checks
   const isAllLinksValid = blocks.every((b, i) => i === 0 || b.previousHash === blocks[i - 1].hash);
   const isChainValid = blocks.every((b) => b.isValid);
 
@@ -336,142 +458,153 @@ export const BlockchainVisualizer: React.FC = () => {
   const chainSteps = [
     {
       step: 1,
-      titleVi: 'Quan sát chuỗi khối toàn vẹn',
-      titleEn: 'Observe a Valid Blockchain',
-      instructionVi: 'Mỗi khối được gắn kết bằng mã băm của khối trước (Mã băm trước). Toàn bộ chuỗi đang ở trạng thái hợp lệ.',
-      instructionEn: 'Each block references the hash of the preceding block (Previous Hash). All blocks are currently valid.',
-      isDone: isChainValid,
+      titleVi: 'Quan sát chuỗi khối toàn vẹn và mối liên kết giữa các Block',
+      titleEn: 'Observe block continuity and cryptographic hash links',
+      instructionVi: 'Mỗi khối lưu trữ mã băm của khối trước đó (Mã băm trước). Toàn bộ chuỗi đang ở trạng thái hợp lệ.',
+      instructionEn: 'Each block embeds the hash of its parent block. All blocks are cryptographically verified.',
     },
     {
       step: 2,
-      titleVi: 'Thử sửa dữ liệu (Mô phỏng tấn công)',
-      titleEn: 'Simulate Data Tampering',
-      instructionVi: 'Thử sửa nội dung trong Khối #2 hoặc bấm nút "Sửa Khối #2 (Tấn công)".',
-      instructionEn: 'Modify data in Block #2 or click "Tamper Block #2".',
-      isDone: !isChainValid || tamperedIndex !== null,
+      titleVi: 'Sửa dữ liệu mô phỏng tấn công (Thay đổi 1 ký tự)',
+      titleEn: 'Simulate tampering by altering transaction data',
+      instructionVi: 'Bấm nút "Sửa dữ liệu" hoặc sửa nội dung trong Khối #2 để chứng kiến hiệu ứng đứt gãy dây chuyền.',
+      instructionEn: 'Click "Tamper Data" or modify Block #2 payload to watch downstream links break.',
     },
     {
       step: 3,
-      titleVi: 'Quan sát hiệu ứng dây chuyền & Đào lại',
-      titleEn: 'Cascade Invalidation & Re-Mining',
-      instructionVi: 'Khối bị sửa đổi lập tức đổi mã băm, làm đứt gãy liên kết của toàn bộ khối phía sau. Bấm "Đào lại khối" trên từng khối để phục hồi.',
-      instructionEn: 'The altered block invalidates all downstream blocks. Click "Re-mine block" on invalid blocks to recalculate.',
-      isDone: guideStepIndex === 2,
+      titleVi: 'Phục hồi chuỗi bằng cơ chế Đào lại khối (Proof-of-Work)',
+      titleEn: 'Recover chain validity via Proof-of-Work re-mining',
+      instructionVi: 'Kẻ tấn công phải giải lại Proof-of-Work cho khối bị sửa và TẤT CẢ các khối phía sau.',
+      instructionEn: 'The adversary must re-mine Proof-of-Work for the tampered block and all subsequent blocks.',
     },
   ];
 
   const currentStep = chainSteps[guideStepIndex];
 
   return (
-    <section id="blockchain" className="py-6 sm:py-8 max-w-7xl mx-auto font-sans scroll-mt-20 text-[#F2F4F7]">
-      {/* 1. Header Bar */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-[#1C2430] mb-6">
+    <section
+      id="blockchain"
+      ref={menuContainerRef}
+      className="py-6 sm:py-8 max-w-7xl mx-auto font-sans scroll-mt-20 text-[#e5e7eb]"
+    >
+      {/* ========================================================
+          1. HEADER & TOP CONTROL BAR
+          ======================================================== */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-[rgba(148,163,184,0.14)] mb-5">
         <div>
-          <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#F2F4F7] font-sans">
+          <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#e5e7eb]">
             {isVi ? 'Mô phỏng chuỗi khối' : 'Blockchain Simulation'}
           </h2>
-          <p className="text-xs sm:text-sm text-[#A5AFBF] mt-1 max-w-2xl font-sans leading-relaxed">
+          <p className="text-xs sm:text-sm text-[#94a3b8] mt-1 leading-relaxed">
             {isVi
               ? 'Quan sát cách liên kết mật mã bảo vệ tính bất biến của sổ cái khi dữ liệu bị thay đổi.'
-              : 'Observe how cryptographic linking guarantees ledger immutability against historical data tampering.'}
+              : 'Observe how cryptographic linking guarantees ledger immutability when data is altered.'}
           </p>
         </div>
 
-        {/* Action Controls & Mode Switcher */}
-        <div className="flex flex-wrap items-center gap-2 self-start lg:self-auto">
-          {/* Segmented Mode Switcher */}
-          <div className="flex items-center bg-[#090A0F] p-1 rounded-lg border border-[#1C2430] font-sans text-xs">
+        {/* Top Control Clusters */}
+        <div className="flex flex-wrap items-center gap-3">
+          {/* Cụm bên trái: Chế độ (Segmented control) */}
+          <div className="flex items-center bg-[#090d12] p-1 rounded-lg border border-[rgba(148,163,184,0.14)] text-xs">
             <button
               type="button"
               id="blockchain-mode-guided-btn"
               onClick={() => setGuideMode('guided')}
-              className={`px-3 py-1.5 rounded-md font-medium transition-all cursor-pointer ${
+              className={`px-3 py-1 rounded-md font-medium transition-colors cursor-pointer flex items-center gap-1.5 ${
                 guideMode === 'guided'
-                  ? 'bg-[#1C2430] text-[#F2F4F7] font-semibold'
-                  : 'text-[#A5AFBF] hover:text-[#F2F4F7]'
+                  ? 'bg-[#161f2c] text-[#e5e7eb] font-semibold'
+                  : 'text-[#94a3b8] hover:text-[#e5e7eb]'
               }`}
             >
-              {isVi ? 'Hướng dẫn' : 'Guided'}
+              {guideMode === 'guided' && <span className="w-1.5 h-1.5 rounded-full bg-[#2dd4bf]" />}
+              <span>{isVi ? 'Hướng dẫn' : 'Guided'}</span>
             </button>
 
             <button
               type="button"
               id="blockchain-mode-free-btn"
               onClick={() => setGuideMode('free')}
-              className={`px-3 py-1.5 rounded-md font-medium transition-all cursor-pointer ${
+              className={`px-3 py-1 rounded-md font-medium transition-colors cursor-pointer flex items-center gap-1.5 ${
                 guideMode === 'free'
-                  ? 'bg-[#1C2430] text-[#F2F4F7] font-semibold'
-                  : 'text-[#A5AFBF] hover:text-[#F2F4F7]'
+                  ? 'bg-[#161f2c] text-[#e5e7eb] font-semibold'
+                  : 'text-[#94a3b8] hover:text-[#e5e7eb]'
               }`}
             >
-              {isVi ? 'Tự do' : 'Free'}
+              {guideMode === 'free' && <span className="w-1.5 h-1.5 rounded-full bg-[#2dd4bf]" />}
+              <span>{isVi ? 'Tự do' : 'Free'}</span>
             </button>
           </div>
 
-          {/* Tamper Attack Trigger */}
-          <button
-            type="button"
-            id="blockchain-tamper-btn"
-            onClick={handleSimulateBlock2Tamper}
-            className="px-3.5 py-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 font-sans font-medium text-xs transition-all cursor-pointer flex items-center gap-1.5"
-            title={isVi ? 'Sửa đổi dữ liệu Khối #2 để mô phỏng tấn công' : 'Tamper Block #2 to demonstrate invalidation'}
-          >
-            <AlertTriangle className="w-3.5 h-3.5 text-rose-400" />
-            <span>{isVi ? 'Sửa Khối #2 (Tấn công)' : 'Tamper Block #2'}</span>
-          </button>
+          {/* Cụm bên phải: Actions */}
+          <div className="flex items-center gap-2">
+            {/* Sửa dữ liệu (Cảnh báo/Nguy hiểm nhẹ) */}
+            <button
+              type="button"
+              id="blockchain-tamper-btn"
+              onClick={handleSimulateBlock2Tamper}
+              className="px-3 py-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/25 font-medium text-xs transition-colors cursor-pointer flex items-center gap-1.5"
+              title={isVi ? 'Sửa dữ liệu Khối #2 để mô phỏng tấn công' : 'Modify Block #2 data'}
+            >
+              <AlertTriangle className="w-3.5 h-3.5 text-rose-400" />
+              <span>{isVi ? 'Sửa dữ liệu' : 'Tamper Data'}</span>
+            </button>
 
-          {/* Add Block */}
-          <button
-            type="button"
-            id="blockchain-add-block-btn"
-            onClick={() => setIsAddBlockModalOpen(true)}
-            className="px-3.5 py-1.5 rounded-lg bg-[#11161E] hover:bg-[#161D26] text-[#F2F4F7] border border-[#1C2430] font-sans font-medium text-xs flex items-center gap-1.5 transition-all cursor-pointer"
-          >
-            <Plus className="w-3.5 h-3.5 text-[#00C98D]" />
-            <span>{isVi ? 'Thêm khối' : 'Add Block'}</span>
-          </button>
+            {/* Thêm khối (Teal) */}
+            <button
+              type="button"
+              id="blockchain-add-block-btn"
+              onClick={() => setIsAddBlockModalOpen(true)}
+              className="px-3 py-1.5 rounded-lg bg-[#2dd4bf]/15 hover:bg-[#2dd4bf]/25 text-[#2dd4bf] border border-[#2dd4bf]/30 font-medium text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span>{isVi ? 'Thêm khối' : 'Add Block'}</span>
+            </button>
 
-          {/* Reset */}
-          <button
-            type="button"
-            id="blockchain-reset-btn"
-            onClick={resetChain}
-            className="p-2 rounded-lg bg-[#11161E] hover:bg-[#161D26] text-[#A5AFBF] hover:text-[#F2F4F7] border border-[#1C2430] transition-colors cursor-pointer"
-            title={isVi ? 'Đặt lại chuỗi khối' : 'Reset blockchain'}
-          >
-            <RefreshCw className="w-3.5 h-3.5" />
-          </button>
+            {/* Reset icon button */}
+            <button
+              type="button"
+              id="blockchain-reset-btn"
+              onClick={resetChain}
+              className="p-2 rounded-lg bg-[#0d131b] hover:bg-[#161f2c] text-[#94a3b8] hover:text-[#e5e7eb] border border-[rgba(148,163,184,0.14)] transition-colors cursor-pointer"
+              title={isVi ? 'Đặt lại chuỗi khối' : 'Reset blockchain'}
+            >
+              <RefreshCw className="w-3.5 h-3.5" />
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* 2. Step-by-step Interactive Guidance (Guided Mode) */}
+      {/* ========================================================
+          2. SLIM INSTRUCTION BAR (THẺ HƯỚNG DẪN BƯỚC)
+          ======================================================== */}
       {guideMode === 'guided' && (
         <div
           id="blockchain-guided-banner"
-          className="mb-6 p-4 rounded-xl bg-[#0C0F14] border border-[#1C2430] flex flex-col sm:flex-row sm:items-center justify-between gap-4 font-sans text-xs shadow-sm"
+          className="mb-6 px-4 py-3 rounded-xl bg-[#0d131b] border border-[rgba(148,163,184,0.14)] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shadow-sm"
         >
-          <div className="space-y-1">
+          <div className="space-y-0.5">
             <div className="flex items-center gap-2">
-              <span className="text-[11px] font-mono font-medium text-[#00C98D] px-2 py-0.5 rounded bg-[#00C98D]/10 border border-[#00C98D]/30">
-                {isVi ? `Bước ${guideStepIndex + 1}/3:` : `Step ${guideStepIndex + 1}/3:`}
+              <span className="font-mono font-bold text-[#2dd4bf] tracking-wider text-[11px]">
+                {isVi ? `BƯỚC ${guideStepIndex + 1} / 3` : `STEP ${guideStepIndex + 1} / 3`}
               </span>
-              <span className="font-semibold text-[#F2F4F7]">
+              <span className="text-[#64748b]">·</span>
+              <span className="font-semibold text-[#e5e7eb]">
                 {isVi ? currentStep.titleVi : currentStep.titleEn}
               </span>
             </div>
-            <p className="text-[#A5AFBF] font-sans leading-relaxed">
+            <p className="text-[#94a3b8] text-xs leading-normal">
               {isVi ? currentStep.instructionVi : currentStep.instructionEn}
             </p>
           </div>
 
-          <div className="flex items-center gap-2 self-end sm:self-center shrink-0">
+          <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
             {guideStepIndex > 0 && (
               <button
                 type="button"
                 onClick={() => setGuideStepIndex((prev) => Math.max(0, prev - 1))}
-                className="px-3 py-1.5 rounded-lg bg-[#11161E] hover:bg-[#161D26] text-[#A5AFBF] hover:text-[#F2F4F7] border border-[#1C2430] text-xs font-medium transition-all cursor-pointer font-sans"
+                className="px-2.5 py-1 rounded-lg text-[#94a3b8] hover:text-[#e5e7eb] text-xs transition-colors cursor-pointer"
               >
-                {isVi ? '← Lùi lại' : '← Back'}
+                {isVi ? 'Lùi lại' : 'Back'}
               </button>
             )}
 
@@ -479,15 +612,16 @@ export const BlockchainVisualizer: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setGuideStepIndex((prev) => Math.min(2, prev + 1))}
-                className="px-3.5 py-1.5 rounded-lg bg-[#00C98D] hover:bg-[#00C98D]/90 text-slate-950 font-semibold text-xs transition-all cursor-pointer font-sans"
+                className="px-3.5 py-1.5 rounded-lg bg-[#2dd4bf] hover:bg-[#2dd4bf]/90 text-slate-950 font-semibold text-xs transition-colors cursor-pointer flex items-center gap-1 shadow-sm"
               >
-                {isVi ? 'Bước tiếp →' : 'Next →'}
+                <span>{isVi ? 'Tiếp' : 'Next'}</span>
+                <ArrowRight className="w-3.5 h-3.5" />
               </button>
             ) : (
               <button
                 type="button"
                 onClick={resetChain}
-                className="px-3.5 py-1.5 rounded-lg bg-[#11161E] hover:bg-[#161D26] text-[#F2F4F7] font-medium text-xs border border-[#1C2430] transition-all cursor-pointer font-sans"
+                className="px-3.5 py-1.5 rounded-lg bg-[#161f2c] hover:bg-[#202c3d] text-[#e5e7eb] font-medium text-xs border border-[rgba(148,163,184,0.14)] transition-colors cursor-pointer"
               >
                 {isVi ? 'Bắt đầu lại' : 'Restart'}
               </button>
@@ -496,22 +630,21 @@ export const BlockchainVisualizer: React.FC = () => {
         </div>
       )}
 
-      {/* 3. Attack State Prominent Feedback */}
+      {/* Attack Alert Bar (When Tampered/Invalid) */}
       {!isChainValid && (
-        <div className="mb-6 p-4 rounded-xl bg-rose-950/20 border border-rose-500/40 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-sans animate-in fade-in duration-150">
-          <div className="space-y-0.5">
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
-              <span className="font-semibold text-rose-300 text-sm flex items-center gap-1.5">
-                <Unlink className="w-4 h-4 text-rose-400" />
-                <span>{isVi ? 'Phát hiện tấn công: Chuỗi bị đứt gãy' : 'Tampering Detected: Chain Broken'}</span>
+        <div className="mb-6 px-4 py-3 rounded-xl bg-rose-950/25 border border-rose-500/35 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+          <div className="flex items-start sm:items-center gap-2.5">
+            <Unlink className="w-4 h-4 text-rose-400 shrink-0 mt-0.5 sm:mt-0" />
+            <div>
+              <span className="font-semibold text-rose-300">
+                {isVi ? 'Phát hiện can thiệp dữ liệu: Chuỗi bị đứt gãy' : 'Tampering Detected: Chain Broken'}
               </span>
+              <p className="text-[#94a3b8] text-[11px] mt-0.5">
+                {isVi
+                  ? 'Mã băm của khối bị sửa đổi không còn khớp với "Mã băm trước" của các khối liền sau.'
+                  : 'Modified payload altered the block hash, breaking downstream Previous Hash links.'}
+              </p>
             </div>
-            <p className="text-[#A5AFBF] text-xs">
-              {isVi
-                ? 'Dữ liệu thay đổi làm đổi mã băm của khối bị sửa, khiến các khối phía sau không còn khớp mã băm trước.'
-                : 'Modified payload altered the block hash, breaking subsequent Previous Hash links down the chain.'}
-            </p>
           </div>
 
           <div className="flex items-center gap-2 shrink-0">
@@ -524,502 +657,605 @@ export const BlockchainVisualizer: React.FC = () => {
                   el.scrollIntoView({ behavior: 'smooth' });
                 }
               }}
-              className="px-3 py-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 text-xs font-medium cursor-pointer transition-colors"
+              className="px-2.5 py-1 rounded-md bg-rose-500/15 hover:bg-rose-500/25 text-rose-300 text-xs font-medium cursor-pointer transition-colors"
             >
-              {isVi ? 'Xem giải thích →' : 'Why it happened →'}
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setIsAuditMatrixExpanded(!isAuditMatrixExpanded)}
-              className="px-3 py-1.5 rounded-lg bg-[#11161E] hover:bg-[#161D26] text-[#F2F4F7] border border-[#1C2430] text-xs font-medium cursor-pointer transition-colors"
-            >
-              {isAuditMatrixExpanded ? (isVi ? 'Thu gọn' : 'Collapse') : (isVi ? 'Chi tiết' : 'Details')}
+              {isVi ? 'Xem giải thích →' : 'Explanation →'}
             </button>
           </div>
         </div>
       )}
 
-      {/* 4. Nonce Mined Success Alert */}
+      {/* Nonce Mined Success Alert */}
       {minedFeedback && (
-        <div className="mb-6 p-3.5 rounded-xl bg-[#00C98D]/10 border border-[#00C98D]/30 flex items-center justify-between text-xs font-sans text-[#00C98D] animate-in fade-in duration-150">
+        <div className="mb-6 px-4 py-2.5 rounded-xl bg-[#2dd4bf]/10 border border-[#2dd4bf]/30 flex items-center justify-between text-xs text-[#2dd4bf]">
           <div className="flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-[#00C98D] shrink-0" />
+            <CheckCircle2 className="w-4 h-4 text-[#2dd4bf] shrink-0" />
             <span>
               {isVi
-                ? `Đã đào thành công Khối #${minedFeedback.blockIndex}: Tìm thấy Nonce = ${minedFeedback.nonce.toLocaleString()} (Đã thử ${minedFeedback.triedCount.toLocaleString()} giá trị nonces)`
-                : `Successfully mined Block #${minedFeedback.blockIndex}: Valid Nonce = ${minedFeedback.nonce.toLocaleString()} (Tested ${minedFeedback.triedCount.toLocaleString()} candidates)`}
+                ? `Đã đào thành công Khối #${minedFeedback.blockIndex}: Nonce = ${minedFeedback.nonce.toLocaleString()} (Đã kiểm tra ${minedFeedback.triedCount.toLocaleString()} nonces)`
+                : `Block #${minedFeedback.blockIndex} mined: Nonce = ${minedFeedback.nonce.toLocaleString()} (${minedFeedback.triedCount.toLocaleString()} tested)`}
             </span>
           </div>
-          <span className="text-[11px] font-mono text-[#00C98D] font-bold shrink-0">
-            000... ✓
-          </span>
+          <span className="font-mono text-[11px] font-bold shrink-0">000... ✓</span>
         </div>
       )}
 
-      {/* 5. Collapsible Master Audit Matrix */}
-      {isAuditMatrixExpanded && (
-        <div className="mb-6 p-4 rounded-xl bg-[#0C0F14] border border-[#1C2430] space-y-3 font-sans animate-in fade-in duration-150 shadow-sm">
-          <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-[#1C2430]">
-            <div className="flex items-center gap-2">
-              <span className="text-[#F2F4F7] font-semibold text-xs">
-                {isVi ? 'Bảng kiểm tra tính toàn vẹn' : strings.blockchain.auditMatrix}
-              </span>
-              <span
-                className={`text-xs font-medium ${
-                  isChainValid ? 'text-[#00C98D]' : 'text-rose-400'
-                }`}
-              >
-                {isChainValid
-                  ? isVi ? '✓ Chuỗi hợp lệ' : `✓ ${strings.blockchain.blockValid}`
-                  : isVi ? '✕ Chuỗi bị đứt gãy' : `✕ ${strings.blockchain.blockTampered}`}
-              </span>
-            </div>
-
-            <span className="text-[#717B8C] text-[11px] font-mono">
-              SHA-256 (0x{difficulty} {isVi ? 'số 0 đầu' : 'zeros'})
-            </span>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
-            {/* Metric 1: Hash Integrity */}
-            <div className="p-3 rounded-lg bg-[#11161E] border border-[#1C2430] flex items-center justify-between">
-              <div>
-                <span className="text-[#F2F4F7] font-medium block text-xs">
-                  {isVi ? 'Toàn vẹn mã băm' : strings.blockchain.hashIntegrity}
-                </span>
-                <span className="text-[11px] text-[#717B8C] font-sans">
-                  {isVi ? 'Dữ liệu khớp mã băm' : 'Payload matches hash'}
-                </span>
-              </div>
-              <span
-                className={`font-semibold text-xs ${
-                  isChainValid ? 'text-[#00C98D]' : 'text-rose-400'
-                }`}
-              >
-                {isChainValid
-                  ? isVi ? 'ĐẠT' : strings.blockchain.pass
-                  : isVi ? 'CHƯA ĐẠT' : strings.blockchain.fail}
-              </span>
-            </div>
-
-            {/* Metric 2: Previous Hash Links */}
-            <div className="p-3 rounded-lg bg-[#11161E] border border-[#1C2430] flex items-center justify-between">
-              <div>
-                <span className="text-[#F2F4F7] font-medium block text-xs">
-                  {isVi ? 'Liên kết mã băm trước' : strings.blockchain.prevHashLinks}
-                </span>
-                <span className="text-[11px] text-[#717B8C] font-sans">
-                  {isVi ? 'Mã băm trước khớp khối liền trước' : 'previousHash matches parent'}
-                </span>
-              </div>
-              <span
-                className={`font-semibold text-xs ${
-                  isAllLinksValid ? 'text-[#00C98D]' : 'text-rose-400'
-                }`}
-              >
-                {isAllLinksValid
-                  ? isVi ? 'ĐẠT' : strings.blockchain.pass
-                  : isVi ? 'CHƯA ĐẠT' : strings.blockchain.fail}
-              </span>
-            </div>
-
-            {/* Metric 3: Overall Chain Validity */}
-            <div className="p-3 rounded-lg bg-[#11161E] border border-[#1C2430] flex items-center justify-between">
-              <div>
-                <span className="text-[#F2F4F7] font-medium block text-xs">
-                  {isVi ? 'Toàn vẹn chuỗi khối' : 'Overall Integrity'}
-                </span>
-                <span className="text-[11px] text-[#717B8C] font-sans">
-                  {isVi ? 'Xác thực mật mã liên tục' : 'Sequential cryptographic proof'}
-                </span>
-              </div>
-              <span
-                className={`font-semibold text-xs ${
-                  isChainValid ? 'text-[#00C98D]' : 'text-rose-400'
-                }`}
-              >
-                {isChainValid
-                  ? isVi ? 'ĐẠT' : 'PASS'
-                  : isVi ? 'ĐỨT GÃY' : 'BROKEN'}
-              </span>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* 6. HERO ELEMENT: Connected Blockchain Blocks Flow (#0 → #1 → #2 → #3 → #4) */}
-      <div className="mb-8">
+      {/* ========================================================
+          3. HERO BLOCKCHAIN VISUALIZATION SECTION
+          ======================================================== */}
+      <div className="mb-6">
+        {/* Section Header */}
         <div className="flex items-center justify-between mb-3 px-1">
-          <div className="flex items-center gap-2">
-            <h3 className="text-xs font-sans font-semibold text-[#F2F4F7] tracking-wider">
-              {isVi ? 'Chuỗi khối liên kết mật mã' : 'Cryptographically Linked Chain'}
+          <div>
+            <h3 className="text-sm font-semibold text-[#e5e7eb]">
+              {isVi ? 'Chuỗi khối liên kết' : 'Connected Blockchain'}
             </h3>
-            <span className="text-xs text-[#717B8C] font-mono">
-              ({blocks.length} {isVi ? 'khối' : 'blocks'})
+            <span className="text-xs text-[#94a3b8] font-mono">
+              {blocks.length} {isVi ? 'khối' : 'blocks'}
             </span>
           </div>
-          {isChainValid && (
-            <button
-              type="button"
-              onClick={() => setIsAuditMatrixExpanded(!isAuditMatrixExpanded)}
-              className="text-xs text-[#A5AFBF] hover:text-[#F2F4F7] transition-colors cursor-pointer font-sans"
-            >
-              {isAuditMatrixExpanded ? (isVi ? 'Ẩn kiểm tra kỹ thuật' : 'Hide audit') : (isVi ? 'Kiểm tra kỹ thuật →' : 'Technical audit →')}
-            </button>
-          )}
+
+          <button
+            type="button"
+            onClick={() => setIsAuditMatrixExpanded(!isAuditMatrixExpanded)}
+            className="text-xs text-[#94a3b8] hover:text-[#2dd4bf] transition-colors cursor-pointer"
+          >
+            {isAuditMatrixExpanded
+              ? (isVi ? 'Ẩn kiểm tra kỹ thuật' : 'Hide audit')
+              : (isVi ? 'Kiểm tra kỹ thuật →' : 'Technical audit →')}
+          </button>
         </div>
 
-        {/* Continuous Horizontal Connected Chain Container */}
-        <div className="overflow-x-auto pb-4 pt-1 px-1 flex items-stretch gap-0 scrollbar-thin">
-          {blocks.map((block, idx) => {
-            const isInvalid = !block.isValid;
-            const isGenesis = idx === 0;
-            const isPrevLinkBroken = idx > 0 && block.previousHash !== blocks[idx - 1].hash;
-            const isExpanded = expandedBlockId === block.id;
-            const isCascading = invalidatingIndices.has(idx);
+        {/* Collapsible Technical Audit Matrix */}
+        {isAuditMatrixExpanded && (
+          <div className="mb-4 p-4 rounded-xl bg-[#0d131b] border border-[rgba(148,163,184,0.14)] space-y-3 text-xs shadow-sm animate-in fade-in duration-100">
+            <div className="flex items-center justify-between pb-2 border-b border-[rgba(148,163,184,0.14)]">
+              <span className="font-semibold text-[#e5e7eb]">
+                {isVi ? 'Bảng kiểm tra tính toàn vẹn chuỗi' : 'Chain Integrity Audit Matrix'}
+              </span>
+              <span className={`font-mono font-medium ${isChainValid ? 'text-[#2dd4bf]' : 'text-[#fb7185]'}`}>
+                {isChainValid
+                  ? (isVi ? '● Chuỗi hợp lệ' : '● Valid Chain')
+                  : (isVi ? '● Chuỗi đứt gãy' : '● Broken Chain')}
+              </span>
+            </div>
 
-            // Hash diff check
-            const hasOriginalHash = !!block.originalHash;
-            const isHashAltered = hasOriginalHash && block.originalHash !== block.hash;
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div className="p-2.5 rounded-lg bg-[#090d12] border border-[rgba(148,163,184,0.14)] flex items-center justify-between">
+                <div>
+                  <span className="text-[#e5e7eb] font-medium block">
+                    {isVi ? 'Toàn vẹn mã băm' : 'Hash Integrity'}
+                  </span>
+                  <span className="text-[10px] text-[#94a3b8]">
+                    SHA-256 (0x3 {isVi ? 'số 0 đầu' : 'zeros'})
+                  </span>
+                </div>
+                <span className={`font-semibold ${isChainValid ? 'text-[#2dd4bf]' : 'text-[#fb7185]'}`}>
+                  {isChainValid ? (isVi ? 'ĐẠT' : 'PASS') : (isVi ? 'LỖI' : 'FAIL')}
+                </span>
+              </div>
 
-            // Link connection to the next block
-            const hasNextBlock = idx < blocks.length - 1;
-            const nextBlock = hasNextBlock ? blocks[idx + 1] : null;
-            const isLinkToNextValid =
-              hasNextBlock &&
-              block.isValid &&
-              nextBlock !== null &&
-              nextBlock.previousHash === block.hash;
+              <div className="p-2.5 rounded-lg bg-[#090d12] border border-[rgba(148,163,184,0.14)] flex items-center justify-between">
+                <div>
+                  <span className="text-[#e5e7eb] font-medium block">
+                    {isVi ? 'Liên kết khối trước' : 'Parent Hash Link'}
+                  </span>
+                  <span className="text-[10px] text-[#94a3b8]">
+                    previousHash == parent.hash
+                  </span>
+                </div>
+                <span className={`font-semibold ${isAllLinksValid ? 'text-[#2dd4bf]' : 'text-[#fb7185]'}`}>
+                  {isAllLinksValid ? (isVi ? 'ĐẠT' : 'PASS') : (isVi ? 'LỖI' : 'FAIL')}
+                </span>
+              </div>
 
-            return (
-              <React.Fragment key={block.id}>
-                {/* Block Card */}
-                <div className="min-w-[260px] sm:min-w-[280px] max-w-[320px] flex-1 flex flex-col shrink-0">
-                  <div
-                    className={`p-4 rounded-xl border transition-all duration-200 flex flex-col justify-between flex-1 shadow-sm relative ${
-                      isInvalid
-                        ? isCascading
-                          ? 'bg-rose-950/40 border-rose-500 ring-2 ring-rose-500/30'
-                          : 'bg-rose-950/20 border-rose-500/50'
-                        : 'bg-[#0C0F14] border-[#1C2430] hover:border-[#283547]'
-                    }`}
-                  >
-                    <div>
-                      {/* Header: #0, #1, #2, etc. + status indicator (Color + Icon + Text) */}
-                      <div className="flex items-center justify-between pb-2 mb-3 border-b border-[#1C2430]">
-                        <div className="flex items-center gap-1.5 font-mono">
-                          <span className="text-sm font-bold text-[#F2F4F7]">#{block.index}</span>
-                          {isGenesis && (
-                            <span className="text-[11px] text-[#717B8C] font-sans">
-                              {isVi ? '(Khởi nguồn)' : '(Genesis)'}
-                            </span>
-                          )}
-                        </div>
+              <div className="p-2.5 rounded-lg bg-[#090d12] border border-[rgba(148,163,184,0.14)] flex items-center justify-between">
+                <div>
+                  <span className="text-[#e5e7eb] font-medium block">
+                    {isVi ? 'Toàn vẹn tổng thể' : 'Overall Consensus'}
+                  </span>
+                  <span className="text-[10px] text-[#94a3b8]">
+                    {isVi ? 'Xác thực mật mã liên tục' : 'Sequential proof'}
+                  </span>
+                </div>
+                <span className={`font-semibold ${isChainValid ? 'text-[#2dd4bf]' : 'text-[#fb7185]'}`}>
+                  {isChainValid ? (isVi ? 'ĐẠT' : 'PASS') : (isVi ? 'ĐỨT GÃY' : 'BROKEN')}
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
 
-                        <div className="flex items-center gap-1.5">
+        {/* ========================================================
+            RESPONSIVE BLOCKCHAIN CHAIN:
+            - Desktop: horizontal overflow-x-auto with thin clean scrollbar
+            - Mobile (< lg): vertical stack with downward arrows
+            ======================================================== */}
+        <div className="overflow-x-auto pb-4 pt-1 px-1 scrollbar-thin">
+          <div className="flex flex-col lg:flex-row lg:items-stretch gap-0 min-w-full lg:min-w-max">
+            {blocks.map((block, idx) => {
+              const isGenesis = idx === 0;
+              const isInvalid = !block.isValid;
+              const isPrevLinkBroken = idx > 0 && block.previousHash !== blocks[idx - 1].hash;
+              const isExpanded = expandedBlockId === block.id;
+              const isEditing = editingBlockId === block.id;
+              const isMenuOpen = activeActionMenu === block.id;
+              const isCascading = invalidatingIndices.has(idx);
+
+              const hasOriginalHash = !!block.originalHash;
+              const isHashAltered = hasOriginalHash && block.originalHash !== block.hash;
+
+              const hasNextBlock = idx < blocks.length - 1;
+              const nextBlock = hasNextBlock ? blocks[idx + 1] : null;
+              const isLinkToNextValid =
+                hasNextBlock &&
+                block.isValid &&
+                nextBlock !== null &&
+                nextBlock.previousHash === block.hash;
+
+              return (
+                <React.Fragment key={block.id}>
+                  {/* SINGLE BLOCK CARD */}
+                  <div className="w-full lg:w-[290px] xl:w-[310px] flex flex-col shrink-0">
+                    <div
+                      className={`p-4 rounded-xl border transition-all duration-200 flex flex-col justify-between flex-1 relative ${
+                        isGenesis
+                          ? isInvalid
+                            ? 'bg-[#0d131b] border-rose-500/60 ring-1 ring-rose-500/30'
+                            : 'bg-[#0d131b] border-[rgba(245,196,81,0.3)] hover:border-[rgba(245,196,81,0.5)]'
+                          : isInvalid
+                          ? isCascading
+                            ? 'bg-rose-950/30 border-rose-500 ring-2 ring-rose-500/30'
+                            : 'bg-[#0d131b] border-rose-500/50'
+                          : 'bg-[#0d131b] border-[rgba(148,163,184,0.14)] hover:border-[rgba(148,163,184,0.25)]'
+                      }`}
+                    >
+                      <div>
+                        {/* 1. TOP ROW: Status badge on left, Menu ••• on right */}
+                        <div className="flex items-center justify-between pb-2 mb-2 border-b border-[rgba(148,163,184,0.14)]">
+                          {/* Status: ● Hợp lệ / ● Không hợp lệ */}
                           {isInvalid ? (
-                            <span className="flex items-center gap-1 text-[11px] text-rose-400 font-sans font-medium">
-                              <AlertTriangle className="w-3.5 h-3.5 text-rose-400" />
+                            <span className="flex items-center gap-1.5 text-[11px] font-medium text-[#fb7185]">
+                              <span className="w-1.5 h-1.5 rounded-full bg-[#fb7185]" />
                               <span>{isVi ? 'Không hợp lệ' : 'Invalid'}</span>
                             </span>
                           ) : (
-                            <span className="flex items-center gap-1 text-[11px] text-[#00C98D] font-sans font-medium">
-                              <CheckCircle2 className="w-3.5 h-3.5 text-[#00C98D]" />
+                            <span className="flex items-center gap-1.5 text-[11px] font-medium text-[#2dd4bf]">
+                              <span className="w-1.5 h-1.5 rounded-full bg-[#2dd4bf]" />
                               <span>{isVi ? 'Hợp lệ' : 'Valid'}</span>
                             </span>
                           )}
-                        </div>
-                      </div>
 
-                      {/* Field 1: Previous Hash */}
-                      <div className="mb-2.5">
-                        <div className="text-[10px] font-medium text-[#717B8C] mb-0.5">
-                          {isVi ? 'Mã băm trước' : 'Previous Hash'}
-                        </div>
-                        <InlineHash
-                          hash={block.previousHash}
-                          isError={isPrevLinkBroken}
-                        />
-                      </div>
+                          {/* Menu ••• (More options) */}
+                          <div className="relative">
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setActiveActionMenu(isMenuOpen ? null : block.id);
+                              }}
+                              className="p-1 rounded text-[#94a3b8] hover:text-[#e5e7eb] hover:bg-[#161f2c] transition-colors cursor-pointer"
+                              title="Tùy chọn khối"
+                              aria-label="Tùy chọn khối"
+                            >
+                              <MoreHorizontal className="w-3.5 h-3.5" />
+                            </button>
 
-                      {/* Field 2: Static Clean Data Display */}
-                      <div className="mb-2.5">
-                        <div className="text-[10px] font-medium text-[#717B8C] mb-0.5">
-                          {isVi ? 'Dữ liệu' : 'Data'}
-                        </div>
-                        <div
-                          className={`w-full bg-[#080C10] border rounded-lg p-2.5 text-xs font-mono min-h-[50px] leading-relaxed break-words whitespace-pre-wrap transition-colors ${
-                            isInvalid
-                              ? 'border-rose-500/40 text-rose-200'
-                              : 'border-[#1C2430] text-[#F2F4F7]'
-                          }`}
-                        >
-                          {block.data}
-                        </div>
-                      </div>
+                            {/* Dropdown Popover */}
+                            {isMenuOpen && (
+                              <div className="absolute right-0 top-full mt-1 w-44 rounded-lg bg-[#0d131b] border border-[rgba(148,163,184,0.18)] shadow-xl py-1 text-xs z-30 font-sans">
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setExpandedBlockId(isExpanded ? null : block.id);
+                                    setActiveActionMenu(null);
+                                  }}
+                                  className="w-full px-3 py-1.5 text-left text-[#e5e7eb] hover:bg-[#161f2c] flex items-center gap-2 cursor-pointer"
+                                >
+                                  <Eye className="w-3.5 h-3.5 text-[#94a3b8]" />
+                                  <span>{isExpanded ? (isVi ? 'Ẩn chi tiết' : 'Hide details') : (isVi ? 'Xem chi tiết' : 'View details')}</span>
+                                </button>
 
-                      {/* Field 3: Current Hash */}
-                      <div className="mb-2.5">
-                        <div className="text-[10px] font-medium text-[#717B8C] mb-0.5">
-                          {isVi ? 'Mã băm hiện tại' : 'Current Hash'}
-                        </div>
-                        <InlineHash
-                          hash={block.hash}
-                          prefixHighlight={difficulty}
-                          isError={!block.hash.startsWith('0'.repeat(difficulty))}
-                        />
-                      </div>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setEditingBlockId(isEditing ? null : block.id);
+                                    setActiveActionMenu(null);
+                                  }}
+                                  className="w-full px-3 py-1.5 text-left text-[#e5e7eb] hover:bg-[#161f2c] flex items-center gap-2 cursor-pointer"
+                                >
+                                  <Edit3 className="w-3.5 h-3.5 text-[#94a3b8]" />
+                                  <span>{isEditing ? (isVi ? 'Đóng ô sửa' : 'Close edit') : (isVi ? 'Chỉnh sửa dữ liệu' : 'Edit data')}</span>
+                                </button>
 
-                      {/* 7. HASH DIFF VISUALIZATION (When Block is Modified or Tampered) */}
-                      {isHashAltered && block.originalHash && (
-                        <div className="mb-3 p-2.5 rounded-lg bg-[#080C10] border border-rose-500/40 text-[11px] font-mono space-y-1.5 animate-in fade-in duration-100">
-                          <div className="text-[10px] font-sans font-semibold text-rose-300 uppercase tracking-wider">
-                            {isVi ? 'So sánh mã băm (Hash Diff)' : 'Hash Diff Analysis'}
-                          </div>
-
-                          <div className="flex items-center justify-between text-[#A5AFBF]">
-                            <span className="font-sans text-[10px]">{isVi ? 'Trước sửa:' : 'Before:'}</span>
-                            <span className="text-[#00C98D] font-bold">
-                              {block.originalHash.slice(0, 8)}...{block.originalHash.slice(-6)}
-                            </span>
-                          </div>
-
-                          <div className="flex items-center justify-between text-[#A5AFBF]">
-                            <span className="font-sans text-[10px]">{isVi ? 'Sau sửa:' : 'After:'}</span>
-                            <span className="text-rose-400 font-bold">
-                              {block.hash.slice(0, 8)}...{block.hash.slice(-6)}
-                            </span>
-                          </div>
-
-                          <div className="text-[10px] text-[#717B8C] font-sans pt-1 border-t border-[#1C2430] leading-tight">
-                            {isVi
-                              ? 'Hiệu ứng thác đổ: Đổi 1 ký tự dữ liệu làm đảo lộn hoàn toàn mã băm.'
-                              : 'Avalanche effect: 1 character change completely scrambles the output hash.'}
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    mineBlock(idx);
+                                    setActiveActionMenu(null);
+                                  }}
+                                  className="w-full px-3 py-1.5 text-left text-[#2dd4bf] hover:bg-[#161f2c] flex items-center gap-2 cursor-pointer font-medium"
+                                >
+                                  <RefreshCw className="w-3.5 h-3.5" />
+                                  <span>{isVi ? 'Đào lại khối' : 'Re-mine block'}</span>
+                                </button>
+                              </div>
+                            )}
                           </div>
                         </div>
-                      )}
 
-                      {/* Field 4: Progressive Disclosure Details */}
-                      <div className="mb-3">
-                        <button
-                          type="button"
-                          onClick={() => setExpandedBlockId(isExpanded ? null : block.id)}
-                          className="w-full py-1 text-[#A5AFBF] hover:text-[#F2F4F7] text-[11px] font-sans flex items-center justify-between transition-colors cursor-pointer"
-                        >
-                          <span>{isExpanded ? (isVi ? 'Ẩn chi tiết' : 'Hide details') : (isVi ? 'Chi tiết khối →' : 'Block details →')}</span>
-                          {isExpanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
-                        </button>
-
-                        {isExpanded && (
-                          <div className="mt-2 pt-2 border-t border-[#1C2430] space-y-2.5 text-[11px] font-sans animate-in fade-in duration-100">
-                            <div>
-                              <span className="text-[#717B8C] text-[10px] block mb-1">
-                                {isVi ? 'Chỉnh sửa dữ liệu' : 'Edit payload'}
+                        {/* 2. BLOCK TITLE */}
+                        <div className="mb-1">
+                          {isGenesis ? (
+                            <div className="flex items-center gap-1.5">
+                              <span className="text-[#f5c451] font-mono font-bold text-xs">◈</span>
+                              <span className="font-mono font-bold text-xs text-[#e5e7eb] tracking-wide">
+                                GENESIS BLOCK
                               </span>
+                            </div>
+                          ) : (
+                            <div className="font-mono font-bold text-xs text-[#e5e7eb] tracking-wide">
+                              BLOCK #{block.index}
+                            </div>
+                          )}
+                        </div>
+
+                        {/* 3. PREVIOUS HASH (Hash đầu tiên - trực tiếp dưới tiêu đề, không có label) */}
+                        <div className="mb-3">
+                          {isGenesis ? (
+                            <InlineHash
+                              hash="0000000000000000000000000000000000000000000000000000000000000000"
+                              variant="previous"
+                            />
+                          ) : (
+                            <InlineHash
+                              hash={block.previousHash}
+                              variant="previous"
+                              isError={isPrevLinkBroken}
+                            />
+                          )}
+                        </div>
+
+                        {/* 4. DỮ LIỆU (Giữ lại nhãn DỮ LIỆU) */}
+                        <div className="mb-3">
+                          <div className="flex items-center justify-between mb-1.5">
+                            <span className="text-[10px] font-semibold text-[#94a3b8] uppercase tracking-wider">
+                              {isVi ? 'DỮ LIỆU' : 'DATA'}
+                            </span>
+                            {!isEditing && (
+                              <button
+                                type="button"
+                                onClick={() => setEditingBlockId(block.id)}
+                                className="text-[10px] text-[#94a3b8] hover:text-[#2dd4bf] transition-colors cursor-pointer flex items-center gap-0.5"
+                                title="Sửa dữ liệu khối này"
+                              >
+                                <span>{isVi ? 'Sửa' : 'Edit'}</span>
+                              </button>
+                            )}
+                          </div>
+
+                          {/* Editable Area or Clean Display Card */}
+                          {isEditing ? (
+                            <div className="space-y-1.5">
                               <textarea
                                 rows={2}
                                 value={block.data}
                                 onChange={(e) => handleDataChange(idx, e.target.value)}
-                                className="w-full bg-[#080C10] border border-[#1C2430] rounded-lg p-2 text-xs font-mono text-[#F2F4F7] focus:outline-none focus:border-[#00C98D]/60 resize-none"
+                                placeholder="Nhập dữ liệu giao dịch..."
+                                className="w-full bg-[#090d12] border border-[rgba(148,163,184,0.18)] focus:border-[#2dd4bf] rounded-lg p-2 text-xs font-mono text-[#e5e7eb] focus:outline-none resize-none"
                               />
-                            </div>
-                            <div>
-                              <span className="text-[#717B8C] text-[10px] uppercase font-mono block">Timestamp</span>
-                              <span className="text-[#A5AFBF] font-mono text-xs">{block.timestamp}</span>
-                            </div>
-                            <div>
-                              <div className="flex items-center justify-between text-[10px] uppercase font-mono text-[#717B8C] mb-1">
-                                <span>Nonce</span>
-                                <span className="text-[#F2F4F7] font-mono">
-                                  {isMining === idx && simulatedNonce !== null
-                                    ? simulatedNonce.toLocaleString()
-                                    : block.nonce.toLocaleString()}
-                                </span>
+                              <div className="flex justify-end">
+                                <button
+                                  type="button"
+                                  onClick={() => setEditingBlockId(null)}
+                                  className="px-2.5 py-1 rounded bg-[#161f2c] text-[#e5e7eb] text-[11px] font-medium hover:bg-[#202c3d] cursor-pointer"
+                                >
+                                  {isVi ? 'Xong' : 'Done'}
+                                </button>
                               </div>
-                              <input
-                                type="number"
-                                value={isMining === idx && simulatedNonce !== null ? simulatedNonce : block.nonce}
-                                onChange={(e) => handleNonceChange(idx, Number(e.target.value))}
-                                className="w-full bg-[#080C10] border border-[#1C2430] rounded-lg px-2.5 py-1 text-xs text-[#F2F4F7] font-mono focus:outline-none focus:border-[#00C98D]/60"
+                            </div>
+                          ) : (
+                            <div
+                              onClick={() => setEditingBlockId(block.id)}
+                              className={`w-full bg-[#090d12] border rounded-lg p-2.5 text-xs transition-colors cursor-pointer min-h-[46px] flex flex-col justify-center ${
+                                isInvalid
+                                  ? 'border-rose-500/40 text-rose-200'
+                                  : 'border-[rgba(148,163,184,0.14)] text-[#e5e7eb] hover:border-[rgba(148,163,184,0.25)]'
+                              }`}
+                              title={isVi ? 'Bấm để sửa dữ liệu' : 'Click to edit payload'}
+                            >
+                              <BlockDataDisplay
+                                data={block.data}
+                                isGenesis={isGenesis}
+                                isTampered={isInvalid && block.data.includes('Tin Tặc')}
+                                isVi={isVi}
                               />
+                            </div>
+                          )}
+                        </div>
+
+                        {/* 5. CURRENT HASH (Hash cuối cùng - ở cuối Block Card, không có label) */}
+                        <div className="mb-2">
+                          <InlineHash
+                            hash={block.hash}
+                            variant="current"
+                            prefixHighlight={difficulty}
+                            isError={!block.hash.startsWith('0'.repeat(difficulty))}
+                          />
+                        </div>
+
+                        {/* 5. HASH DIFF ANALYSIS (When modified / tampered) */}
+                        {isHashAltered && block.originalHash && (
+                          <div className="mb-3 p-2.5 rounded-lg bg-[#090d12] border border-rose-500/35 text-[11px] font-mono space-y-1">
+                            <div className="text-[10px] font-sans font-semibold text-rose-300 uppercase tracking-wider">
+                              {isVi ? 'So sánh mã băm (Avalanche Effect)' : 'Hash Diff'}
+                            </div>
+                            <div className="flex items-center justify-between text-[#94a3b8] text-[10px]">
+                              <span>{isVi ? 'Trước:' : 'Before:'}</span>
+                              <span className="text-[#2dd4bf] font-bold">
+                                {block.originalHash.slice(0, 8)}...{block.originalHash.slice(-6)}
+                              </span>
+                            </div>
+                            <div className="flex items-center justify-between text-[#94a3b8] text-[10px]">
+                              <span>{isVi ? 'Sau:' : 'After:'}</span>
+                              <span className="text-[#fb7185] font-bold">
+                                {block.hash.slice(0, 8)}...{block.hash.slice(-6)}
+                              </span>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* 6. EXPANDABLE TECHNICAL DETAILS */}
+                        {isExpanded && (
+                          <div className="mt-2 pt-2 border-t border-[rgba(148,163,184,0.14)] space-y-2 text-[11px] font-mono">
+                            <div className="flex items-center justify-between">
+                              <span className="text-[#94a3b8] text-[10px] uppercase">Timestamp</span>
+                              <span className="text-[#e5e7eb] text-xs">{block.timestamp}</span>
+                            </div>
+                            <div className="flex items-center justify-between">
+                              <span className="text-[#94a3b8] text-[10px] uppercase">Nonce</span>
+                              <span className="text-[#2dd4bf] font-bold text-xs">
+                                {isMining === idx && simulatedNonce !== null
+                                  ? simulatedNonce.toLocaleString()
+                                  : block.nonce.toLocaleString()}
+                              </span>
+                            </div>
+                            <div className="flex items-center justify-between">
+                              <span className="text-[#94a3b8] text-[10px] uppercase">Độ khó mục tiêu</span>
+                              <span className="text-[#e5e7eb] text-xs">{difficulty} số 0 (000...)</span>
                             </div>
                           </div>
                         )}
                       </div>
-                    </div>
 
-                    {/* Primary Action on Block: Re-Mine Button with Live Nonce Ticker */}
-                    <div className="pt-2 border-t border-[#1C2430]">
-                      <button
-                        type="button"
-                        onClick={() => mineBlock(idx)}
-                        disabled={isMining !== null}
-                        aria-label={isVi ? `Đào lại khối #${block.index}` : `Re-mine block #${block.index}`}
-                        className={`w-full py-1.5 px-2.5 rounded-lg font-sans text-xs font-medium transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
-                          isInvalid
-                            ? 'bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 font-semibold shadow-sm'
-                            : 'bg-[#11161E] hover:bg-[#161D26] text-[#A5AFBF] hover:text-[#F2F4F7] border border-[#1C2430]'
-                        }`}
-                      >
-                        {isMining === idx ? (
-                          <>
-                            <RefreshCw className="w-3 h-3 animate-spin text-[#00C98D]" />
-                            <span className="font-mono text-[11px] text-[#00C98D]">
-                              {isVi ? 'Đang giải block...' : 'Mining...'} Nonce:{' '}
-                              {simulatedNonce ? simulatedNonce.toLocaleString() : block.nonce.toLocaleString()}
-                            </span>
-                          </>
-                        ) : (
-                          <>
-                            <RefreshCw className="w-3 h-3 opacity-70" />
-                            <span>{isVi ? 'Giải lại khối' : 'Re-mine block'}</span>
-                          </>
-                        )}
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                {/* CHAIN CONNECTOR LINK (Between Block idx and Block idx+1) */}
-                {hasNextBlock && (
-                  <div className="flex flex-col items-center justify-center shrink-0 w-8 sm:w-11 md:w-12 self-center z-10 px-0.5 select-none py-2">
-                    <div className="relative flex flex-col items-center justify-center w-full">
-                      {/* Label on Chain Link */}
-                      <span
-                        className={`text-[9px] font-mono mb-1 px-1 py-0.5 rounded border transition-colors flex items-center gap-0.5 ${
-                          isLinkToNextValid
-                            ? 'text-[#00C98D] bg-[#00C98D]/10 border-[#00C98D]/30'
-                            : 'text-rose-400 bg-rose-950/50 border-rose-500/40'
-                        }`}
-                        title={
-                          isLinkToNextValid
-                            ? isVi
-                              ? 'Mã băm khối trước khớp'
-                              : 'Hash link valid'
-                            : isVi
-                            ? 'Mã băm trước không khớp'
-                            : 'Hash link broken'
-                        }
-                      >
-                        {isLinkToNextValid ? (
-                          <>
-                            <Check className="w-2.5 h-2.5 text-[#00C98D]" />
-                            <span>{isVi ? 'Mã băm' : 'Hash'}</span>
-                          </>
-                        ) : (
-                          <>
-                            <Unlink className="w-2.5 h-2.5 text-rose-400" />
-                            <span>{isVi ? 'Đứt gãy' : 'Broken'}</span>
-                          </>
-                        )}
-                      </span>
-
-                      {/* SVG Arrow with dynamic Data Packet animation */}
-                      <svg className="w-full h-8 overflow-visible" viewBox="0 0 44 24">
-                        <defs>
-                          <marker
-                            id={`arrow-${idx}-${isLinkToNextValid ? 'valid' : 'invalid'}`}
-                            viewBox="0 0 10 10"
-                            refX="6"
-                            refY="5"
-                            markerWidth="5"
-                            markerHeight="5"
-                            orient="auto-start-reverse"
+                      {/* 7. BOTTOM ACTION AREA:
+                          - Mặc định KHÔNG hiển thị nút "Giải lại khối" trên các block hợp lệ bình thường!
+                          - CHỈ hiển thị khi:
+                            a) Block không hợp lệ (cần đào lại để sửa lỗi)
+                            b) Hoặc đang thực hiện đào (isMining === idx)
+                      */}
+                      {(isInvalid || isMining === idx) && (
+                        <div className="pt-2.5 mt-1 border-t border-[rgba(148,163,184,0.14)]">
+                          <button
+                            type="button"
+                            onClick={() => mineBlock(idx)}
+                            disabled={isMining !== null}
+                            className={`w-full py-1.5 px-3 rounded-lg text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 cursor-pointer ${
+                              isMining === idx
+                                ? 'bg-[#2dd4bf]/20 text-[#2dd4bf] border border-[#2dd4bf]/40'
+                                : 'bg-rose-500/15 hover:bg-rose-500/25 text-rose-300 border border-rose-500/30'
+                            }`}
                           >
-                            <path
-                              d="M 0 1.5 L 8 5 L 0 8.5 z"
-                              fill={isLinkToNextValid ? '#00C98D' : '#f43f5e'}
-                            />
-                          </marker>
-                        </defs>
-
-                        {/* Base connecting line */}
-                        <line
-                          x1="2"
-                          y1="12"
-                          x2="36"
-                          y2="12"
-                          stroke={isLinkToNextValid ? '#00C98D' : '#f43f5e'}
-                          strokeWidth="2"
-                          strokeDasharray={isLinkToNextValid ? 'none' : '3,3'}
-                          strokeOpacity={isLinkToNextValid ? 0.8 : 0.65}
-                          markerEnd={`url(#arrow-${idx}-${isLinkToNextValid ? 'valid' : 'invalid'})`}
-                        />
-
-                        {/* Smooth data packet moving from left to right block */}
-                        {isLinkToNextValid && !isReducedMotion && (
-                          <circle r="2.8" fill="#00C98D">
-                            <animate
-                              attributeName="cx"
-                              values="4; 34"
-                              dur="2.0s"
-                              repeatCount="indefinite"
-                            />
-                            <animate
-                              attributeName="cy"
-                              values="12; 12"
-                              dur="2.0s"
-                              repeatCount="indefinite"
-                            />
-                          </circle>
-                        )}
-                      </svg>
+                            {isMining === idx ? (
+                              <>
+                                <RefreshCw className="w-3.5 h-3.5 animate-spin text-[#2dd4bf]" />
+                                <span className="font-mono text-[11px]">
+                                  {isVi ? 'Đang giải...' : 'Mining...'} Nonce:{' '}
+                                  {simulatedNonce ? simulatedNonce.toLocaleString() : block.nonce.toLocaleString()}
+                                </span>
+                              </>
+                            ) : (
+                              <>
+                                <RefreshCw className="w-3.5 h-3.5" />
+                                <span>{isVi ? 'Đào lại khối này' : 'Re-mine this block'}</span>
+                              </>
+                            )}
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
-                )}
-              </React.Fragment>
-            );
-          })}
+
+                  {/* CHAIN CONNECTOR LINK (BETWEEN BLOCK idx AND BLOCK idx+1) */}
+                  {hasNextBlock && (
+                    <div className="flex lg:flex-col items-center justify-center shrink-0 w-full lg:w-12 py-2 lg:py-0 px-2 lg:px-1 self-center select-none z-10">
+                      {/* DESKTOP CONNECTOR (HORIZONTAL ───────────────▶) */}
+                      <div className="hidden lg:flex items-center justify-center w-full">
+                        <svg className="w-full h-6 overflow-visible" viewBox="0 0 48 20">
+                          <defs>
+                            <marker
+                              id={`arrow-${idx}-${isLinkToNextValid ? 'valid' : 'invalid'}`}
+                              viewBox="0 0 10 10"
+                              refX="7"
+                              refY="5"
+                              markerWidth="6"
+                              markerHeight="6"
+                              orient="auto-start-reverse"
+                            >
+                              <path
+                                d="M 0 1.5 L 8 5 L 0 8.5 z"
+                                fill={isLinkToNextValid ? '#2dd4bf' : '#fb7185'}
+                              />
+                            </marker>
+                          </defs>
+
+                          <line
+                            x1="2"
+                            y1="10"
+                            x2="40"
+                            y2="10"
+                            stroke={isLinkToNextValid ? '#2dd4bf' : '#fb7185'}
+                            strokeWidth="1.75"
+                            strokeDasharray={isLinkToNextValid ? 'none' : '4,4'}
+                            strokeOpacity={isLinkToNextValid ? 0.8 : 0.85}
+                            markerEnd={`url(#arrow-${idx}-${isLinkToNextValid ? 'valid' : 'invalid'})`}
+                          />
+
+                          {isLinkToNextValid && !isReducedMotion && (
+                            <circle r="2.2" fill="#2dd4bf">
+                              <animate
+                                attributeName="cx"
+                                values="4; 38"
+                                dur="2s"
+                                repeatCount="indefinite"
+                              />
+                              <animate
+                                attributeName="cy"
+                                values="10; 10"
+                                dur="2s"
+                                repeatCount="indefinite"
+                              />
+                            </circle>
+                          )}
+                        </svg>
+                      </div>
+
+                      {/* MOBILE CONNECTOR (VERTICAL ↓) */}
+                      <div className="flex lg:hidden items-center justify-center my-2 w-full">
+                        <svg className="w-6 h-8 overflow-visible" viewBox="0 0 20 32">
+                          <defs>
+                            <marker
+                              id={`arrow-v-${idx}-${isLinkToNextValid ? 'valid' : 'invalid'}`}
+                              viewBox="0 0 10 10"
+                              refX="5"
+                              refY="7"
+                              markerWidth="6"
+                              markerHeight="6"
+                              orient="auto"
+                            >
+                              <path
+                                d="M 1.5 0 L 5 8 L 8.5 0 z"
+                                fill={isLinkToNextValid ? '#2dd4bf' : '#fb7185'}
+                              />
+                            </marker>
+                          </defs>
+
+                          <line
+                            x1="10"
+                            y1="2"
+                            x2="10"
+                            y2="24"
+                            stroke={isLinkToNextValid ? '#2dd4bf' : '#fb7185'}
+                            strokeWidth="1.75"
+                            strokeDasharray={isLinkToNextValid ? 'none' : '4,4'}
+                            strokeOpacity={isLinkToNextValid ? 0.8 : 0.85}
+                            markerEnd={`url(#arrow-v-${idx}-${isLinkToNextValid ? 'valid' : 'invalid'})`}
+                          />
+
+                          {isLinkToNextValid && !isReducedMotion && (
+                            <circle r="2.2" fill="#2dd4bf">
+                              <animate
+                                attributeName="cy"
+                                values="4; 22"
+                                dur="2s"
+                                repeatCount="indefinite"
+                              />
+                              <animate
+                                attributeName="cx"
+                                values="10; 10"
+                                dur="2s"
+                                repeatCount="indefinite"
+                              />
+                            </circle>
+                          )}
+                        </svg>
+                      </div>
+                    </div>
+                  )}
+                </React.Fragment>
+              );
+            })}
+          </div>
         </div>
       </div>
 
-      {/* 8. Level 3: Collapsible Deep-Dive & Academic Explanations */}
-      <div id="blockchain-deep-dive" className="rounded-xl bg-[#0C0F14] border border-[#1C2430] overflow-hidden font-sans shadow-sm">
+      {/* ========================================================
+          4. MINIMALIST ACCORDION: "VÌ SAO BLOCKCHAIN CÓ TÍNH BẤT BIẾN?"
+          ======================================================== */}
+      <div id="blockchain-deep-dive" className="pt-2 border-t border-[rgba(148,163,184,0.14)]">
         <button
           type="button"
           onClick={() => setIsDeepDiveOpen(!isDeepDiveOpen)}
-          className="w-full p-4 flex items-center justify-between text-left hover:bg-[#11161E]/50 transition-colors cursor-pointer"
+          className="w-full py-3 flex items-center justify-between text-left text-xs text-[#94a3b8] hover:text-[#e5e7eb] transition-colors cursor-pointer group"
         >
-          <div>
-            <div className="text-xs sm:text-sm font-semibold text-[#F2F4F7]">
-              {isVi ? 'Tìm hiểu thêm: Vì sao Blockchain có tính bất biến?' : 'Deep Dive: Why is Blockchain Tamper-Proof?'}
-            </div>
-            <div className="text-xs text-[#A5AFBF] mt-0.5 font-sans">
-              {isVi
-                ? 'Giải thích cơ chế liên kết mã băm & câu hỏi định hướng tư duy'
-                : 'Cryptographic hash linking mechanics & core concepts'}
-            </div>
+          <div className="flex items-center gap-2">
+            <span className="text-[#f5c451]">💡</span>
+            <span className="font-semibold text-[#e5e7eb] group-hover:text-[#2dd4bf] transition-colors">
+              {isVi ? 'Vì sao Blockchain có tính bất biến?' : 'Why is Blockchain immutable?'}
+            </span>
           </div>
 
-          <div className="text-[#A5AFBF] flex items-center gap-1.5 text-xs font-sans">
+          <div className="flex items-center gap-1 text-[11px] text-[#94a3b8]">
             <span>{isDeepDiveOpen ? (isVi ? 'Thu gọn' : 'Collapse') : (isVi ? 'Mở rộng' : 'Expand')}</span>
             {isDeepDiveOpen ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
           </div>
         </button>
 
         {isDeepDiveOpen && (
-          <div className="p-4 sm:p-6 border-t border-[#1C2430] space-y-6 bg-[#090C12] animate-in fade-in duration-150">
-            {/* Core Explanations Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-sans">
-              <div className="p-4 rounded-lg bg-[#0C0F14] border border-[#1C2430] space-y-2">
-                <div className="text-[#F2F4F7] font-semibold flex items-center gap-2">
-                  <Lock className="w-4 h-4 text-[#00C98D]" />
+          <div className="pt-2 pb-6 space-y-6 text-xs animate-in fade-in duration-150">
+            {/* Visual Flow Diagram */}
+            <div className="p-4 rounded-xl bg-[#0d131b] border border-[rgba(148,163,184,0.14)] space-y-3">
+              <p className="text-[#94a3b8] leading-relaxed">
+                {isVi
+                  ? 'Blockchain không hoàn toàn “không thể thay đổi”. Tính bất biến đến từ việc mỗi Block chứa mã băm của Block trước đó.'
+                  : 'Blockchain is not inherently uneditable. Its immutability arises because every Block embeds the hash of its parent block.'}
+              </p>
+
+              <div className="text-[11px] font-semibold text-[#2dd4bf]">
+                {isVi ? 'Nếu dữ liệu Block #1 thay đổi:' : 'If Block #1 payload is modified:'}
+              </div>
+
+              {/* Step Flow Box */}
+              <div className="grid grid-cols-1 sm:grid-cols-4 gap-2 font-mono text-xs">
+                <div className="p-2.5 rounded-lg bg-[#090d12] border border-[rgba(148,163,184,0.14)] text-center">
+                  <span className="text-[#fb7185] font-semibold block">Hash #1</span>
+                  <span className="text-[10px] text-[#94a3b8]">{isVi ? 'thay đổi hoàn toàn' : 'changes completely'}</span>
+                </div>
+                <div className="p-2.5 rounded-lg bg-[#090d12] border border-[rgba(148,163,184,0.14)] text-center">
+                  <span className="text-[#fb7185] font-semibold block">Prev Hash #2</span>
+                  <span className="text-[10px] text-[#94a3b8]">{isVi ? 'không còn khớp' : 'no longer matches'}</span>
+                </div>
+                <div className="p-2.5 rounded-lg bg-[#090d12] border border-[rgba(148,163,184,0.14)] text-center">
+                  <span className="text-[#fb7185] font-semibold block">Block #2</span>
+                  <span className="text-[10px] text-[#94a3b8]">{isVi ? 'trở nên không hợp lệ' : 'becomes invalid'}</span>
+                </div>
+                <div className="p-2.5 rounded-lg bg-[#090d12] border border-rose-500/40 text-center">
+                  <span className="text-rose-300 font-semibold block">{isVi ? 'Toàn bộ chuỗi' : 'Entire chain'}</span>
+                  <span className="text-[10px] text-[#94a3b8]">{isVi ? 'phía sau bị vô hiệu hóa' : 'downstream breaks'}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Core Explanations */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="p-4 rounded-xl bg-[#0d131b] border border-[rgba(148,163,184,0.14)] space-y-2">
+                <div className="text-[#e5e7eb] font-semibold flex items-center gap-2">
+                  <Lock className="w-4 h-4 text-[#2dd4bf]" />
                   <span>{isVi ? 'Vì sao mã băm trước phát hiện được sự thay đổi?' : 'Why does previousHash detect tampering?'}</span>
                 </div>
-                <p className="text-[#A5AFBF] leading-relaxed">
+                <p className="text-[#94a3b8] leading-relaxed">
                   {isVi
                     ? 'Mỗi khối tính toán mã băm trên toàn bộ dữ liệu của chính nó VÀ mã băm của khối liền trước (Mã băm trước). Khi bạn sửa đổi dù chỉ 1 ký tự ở Khối #2, mã băm Khối #2 thay đổi hoàn toàn. Do Khối #3 vẫn lưu mã băm cũ, liên kết bị đứt gãy, kéo theo toàn bộ các khối #3, #4 phía sau bị vô hiệu hóa.'
                     : 'Every block computes its hash over its payload plus the preceding block’s previousHash digest. Modifying even a single character in Block #2 changes its hash drastically, immediately breaking the link to Block #3 and invalidating all subsequent blocks in the chain.'}
                 </p>
               </div>
 
-              <div className="p-4 rounded-lg bg-[#0C0F14] border border-[#1C2430] space-y-2">
-                <div className="text-[#F2F4F7] font-semibold flex items-center gap-2">
-                  <ShieldCheck className="w-4 h-4 text-[#00C98D]" />
+              <div className="p-4 rounded-xl bg-[#0d131b] border border-[rgba(148,163,184,0.14)] space-y-2">
+                <div className="text-[#e5e7eb] font-semibold flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4 text-[#2dd4bf]" />
                   <span>{isVi ? 'Tính bất biến của sổ cái được bảo vệ như thế nào?' : 'How is ledger immutability enforced?'}</span>
                 </div>
-                <p className="text-[#A5AFBF] leading-relaxed">
+                <p className="text-[#94a3b8] leading-relaxed">
                   {isVi
                     ? 'Để thay đổi một giao dịch trong quá khứ một cách trót lọt, kẻ tấn công bắt buộc phải đào lại khối đó và tất cả các khối tiếp theo nhanh hơn toàn bộ phần còn lại của mạng lưới phân tán — một điều bất khả thi về mặt chi phí và năng lực tính toán.'
                     : 'To successfully alter a historical transaction, an adversary would have to recalculate the proof-of-work for that block and ALL downstream blocks faster than the cumulative hash power of the rest of the network.'}
@@ -1027,62 +1263,9 @@ export const BlockchainVisualizer: React.FC = () => {
               </div>
             </div>
 
-            {/* 4-Question Thinking Framework */}
-            <div className="space-y-3">
-              <div className="text-xs font-semibold text-[#F2F4F7] tracking-wider">
-                {isVi ? 'Hỏi đáp định hướng tư duy' : 'Core Thinking Framework'}
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
-                <div className="p-3.5 rounded-lg bg-[#0C0F14] border border-[#1C2430] space-y-1.5">
-                  <span className="font-semibold text-[#F2F4F7] block">
-                    {isVi ? '1. Bạn đang nhìn thấy gì?' : '1. What are you seeing?'}
-                  </span>
-                  <p className="text-[#A5AFBF] text-[11px] leading-relaxed">
-                    {isVi
-                      ? 'Sổ cái chuỗi khối phân tán nơi mỗi khối liên kết mật mã chặt chẽ với khối trước qua Mã băm trước.'
-                      : 'A distributed blockchain ledger where sequential blocks are cryptographically tied via Previous Hash pointers.'}
-                  </p>
-                </div>
-
-                <div className="p-3.5 rounded-lg bg-[#0C0F14] border border-[#1C2430] space-y-1.5">
-                  <span className="font-semibold text-[#F2F4F7] block">
-                    {isVi ? '2. Cần làm gì tiếp theo?' : '2. What to do next?'}
-                  </span>
-                  <p className="text-[#A5AFBF] text-[11px] leading-relaxed">
-                    {isVi
-                      ? 'Bấm "Sửa Khối #2 (Tấn công)", sau đó bấm "Đào lại khối" để quan sát cách phục hồi liên kết.'
-                      : 'Click "Tamper Block #2", then click "Re-mine block" to observe link recovery.'}
-                  </p>
-                </div>
-
-                <div className="p-3.5 rounded-lg bg-[#0C0F14] border border-[#1C2430] space-y-1.5">
-                  <span className="font-semibold text-[#F2F4F7] block">
-                    {isVi ? '3. Kết quả vừa nhận được?' : '3. What was the outcome?'}
-                  </span>
-                  <p className="text-[#A5AFBF] text-[11px] leading-relaxed">
-                    {isVi
-                      ? 'Khi dữ liệu khối đổi, mã băm khối thay đổi hoàn toàn, làm đứt gãy liên kết của toàn bộ chuỗi phía sau.'
-                      : 'Changing block data creates a completely different hash, breaking subsequent links down the line.'}
-                  </p>
-                </div>
-
-                <div className="p-3.5 rounded-lg bg-[#0C0F14] border border-[#1C2430] space-y-1.5">
-                  <span className="font-semibold text-[#F2F4F7] block">
-                    {isVi ? '4. Vì sao lại như vậy?' : '4. Why did it happen?'}
-                  </span>
-                  <p className="text-[#A5AFBF] text-[11px] leading-relaxed">
-                    {isVi
-                      ? 'Hàm băm SHA-256 một chiều và liên kết đệ quy biến chuỗi khối thành cấu trúc bất biến không thể bị sửa trộm.'
-                      : 'One-way SHA-256 and recursive pointers make historical tampering mathematically impossible to conceal.'}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Core Terminology */}
-            <div className="pt-2 border-t border-[#1C2430]">
-              <span className="text-[#A5AFBF] text-[11px] font-sans font-semibold block mb-2">
+            {/* Core Terminology Tooltips */}
+            <div className="pt-2 border-t border-[rgba(148,163,184,0.14)]">
+              <span className="text-[#94a3b8] text-[11px] font-semibold block mb-2">
                 {isVi ? 'Thuật ngữ cốt lõi:' : 'Core Terminology:'}
               </span>
               <div className="flex flex-wrap items-center gap-2 text-xs font-mono">
@@ -1109,14 +1292,14 @@ export const BlockchainVisualizer: React.FC = () => {
                   },
                 ].map((item, i) => (
                   <div key={i} className="group relative inline-block">
-                    <span className="px-2.5 py-1 bg-[#11161E] border border-[#1C2430] text-[#F2F4F7] rounded-lg cursor-help hover:border-[#00C98D]/40 hover:text-[#00C98D] transition-colors font-medium">
+                    <span className="px-2.5 py-1 bg-[#0d131b] border border-[rgba(148,163,184,0.14)] text-[#e5e7eb] rounded-lg cursor-help hover:border-[#2dd4bf]/40 hover:text-[#2dd4bf] transition-colors font-medium">
                       {item.term}
                     </span>
-                    <div className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-3 bg-[#0C0F14] border border-[#1C2430] rounded-lg text-xs font-sans text-[#F2F4F7] shadow-xl opacity-0 group-hover:opacity-100 transition-all duration-150 z-50">
-                      <div className="font-semibold text-[#00C98D] mb-1 border-b border-[#1C2430] pb-1">
+                    <div className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-3 bg-[#0d131b] border border-[rgba(148,163,184,0.2)] rounded-lg text-xs font-sans text-[#e5e7eb] shadow-xl opacity-0 group-hover:opacity-100 transition-all duration-150 z-50">
+                      <div className="font-semibold text-[#2dd4bf] mb-1 border-b border-[rgba(148,163,184,0.14)] pb-1">
                         {item.term}
                       </div>
-                      <div className="text-[11px] leading-relaxed text-[#A5AFBF]">
+                      <div className="text-[11px] leading-relaxed text-[#94a3b8]">
                         {isVi ? item.descVi : item.descEn}
                       </div>
                     </div>
@@ -1128,40 +1311,47 @@ export const BlockchainVisualizer: React.FC = () => {
         )}
       </div>
 
-      {/* Add Block Modal */}
+      {/* ========================================================
+          5. ADD BLOCK MODAL
+          ======================================================== */}
       {isAddBlockModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm font-sans">
-          <div className="relative w-full max-w-lg bg-[#0C0F14] border border-[#1C2430] rounded-xl p-6 shadow-2xl text-xs space-y-4 text-[#F2F4F7] font-sans animate-in fade-in duration-150">
-            <h3 className="text-sm font-bold text-[#F2F4F7] tracking-wider font-sans">
-              {isVi ? `Thêm khối mới vào chuỗi (Khối #${blocks.length})` : `Add New Block (Block #${blocks.length})`}
-            </h3>
+          <div className="relative w-full max-w-md bg-[#0d131b] border border-[rgba(148,163,184,0.18)] rounded-xl p-5 shadow-2xl text-xs space-y-4 text-[#e5e7eb] animate-in fade-in duration-150">
+            <div className="flex items-center justify-between pb-2 border-b border-[rgba(148,163,184,0.14)]">
+              <h3 className="text-sm font-bold text-[#e5e7eb]">
+                {isVi ? `Thêm khối mới (Khối #${blocks.length})` : `Add New Block (Block #${blocks.length})`}
+              </h3>
+              <span className="text-[11px] font-mono text-[#2dd4bf]">
+                Prev: {blocks[blocks.length - 1].hash.slice(0, 6)}...
+              </span>
+            </div>
 
-            <form onSubmit={handleAddBlock} className="space-y-4">
+            <form onSubmit={handleAddBlock} className="space-y-3">
               <div>
-                <label className="text-[#A5AFBF] text-[10px] block mb-1 font-sans font-medium">
-                  {isVi ? 'Dữ liệu giao dịch:' : 'Block Data Payload:'}
+                <label className="text-[#94a3b8] text-[11px] font-medium block mb-1">
+                  {isVi ? 'Dữ liệu giao dịch:' : 'Transaction Payload:'}
                 </label>
                 <textarea
                   rows={3}
                   required
                   value={newBlockData}
                   onChange={(e) => setNewBlockData(e.target.value)}
-                  placeholder={isVi ? "Ví dụ: Alice gửi 50 BTC cho Charlie..." : "e.g. Alice transfers 50 BTC to Charlie..."}
-                  className="w-full bg-[#080C10] border border-[#1C2430] rounded-lg p-3 text-xs text-[#F2F4F7] focus:outline-none focus:border-[#00C98D]/60 font-mono resize-none"
+                  placeholder={isVi ? "Ví dụ: Alice -> Charlie 10 BTC" : "e.g. Alice -> Charlie 10 BTC"}
+                  className="w-full bg-[#090d12] border border-[rgba(148,163,184,0.18)] focus:border-[#2dd4bf] rounded-lg p-2.5 text-xs text-[#e5e7eb] focus:outline-none font-mono resize-none"
                 />
               </div>
 
-              <div className="flex justify-end gap-2 pt-2 font-sans">
+              <div className="flex justify-end gap-2 pt-2">
                 <button
                   type="button"
                   onClick={() => setIsAddBlockModalOpen(false)}
-                  className="px-4 py-2 bg-[#11161E] text-[#A5AFBF] hover:text-[#F2F4F7] border border-[#1C2430] rounded-lg cursor-pointer text-xs font-medium transition-colors"
+                  className="px-3.5 py-1.5 bg-[#161f2c] text-[#94a3b8] hover:text-[#e5e7eb] rounded-lg text-xs font-medium cursor-pointer transition-colors"
                 >
                   {isVi ? 'Hủy' : 'Cancel'}
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-[#00C98D] hover:bg-[#00C98D]/90 text-slate-950 font-semibold text-xs rounded-lg transition-colors cursor-pointer"
+                  className="px-4 py-1.5 bg-[#2dd4bf] hover:bg-[#2dd4bf]/90 text-slate-950 font-semibold text-xs rounded-lg transition-colors cursor-pointer"
                 >
                   {isVi ? 'Thêm khối' : 'Append Block'}
                 </button>

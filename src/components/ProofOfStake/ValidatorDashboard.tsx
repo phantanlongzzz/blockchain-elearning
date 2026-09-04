@@ -1,7 +1,7 @@
 import React from 'react';
 import { PoSValidator } from '../../types';
 import { useLanguage } from '../../i18n/LanguageContext';
-import { UserPlus, UserMinus, ArrowRight, Plus, Minus } from 'lucide-react';
+import { UserPlus, UserMinus, ArrowRight } from 'lucide-react';
 import { getValidatorPreset, PARTICIPANT_PRESETS } from './posConstants';
 
 interface ValidatorDashboardProps {
@@ -110,20 +110,9 @@ export const ValidatorDashboard: React.FC<ValidatorDashboardProps> = ({
                 >
                   {validator.name[0]}
                 </div>
-                <div className="min-w-0">
-                  <h4 className="text-sm font-semibold text-[#F2F4F7] truncate">
-                    {validator.name}
-                  </h4>
-                  <span className="text-[11px] text-[#717B8C] block">
-                    {hasDeposit
-                      ? isVi
-                        ? 'Đã đặt cọc'
-                        : 'Staked'
-                      : isVi
-                      ? 'Chưa đặt cọc (0 ETH)'
-                      : 'No deposit (0 ETH)'}
-                  </span>
-                </div>
+                <h4 className="text-sm font-semibold text-[#F2F4F7] truncate">
+                  {validator.name}
+                </h4>
               </div>
 
               {/* Primary Data: Stake Amount (ETH in Amber/Yellow) */}
@@ -140,7 +129,7 @@ export const ValidatorDashboard: React.FC<ValidatorDashboardProps> = ({
 
               {/* Divider & Controls */}
               <div className="border-t border-white/[0.06] pt-3 space-y-3">
-                {/* Stake Adjustment Controls: -10 ETH and +10 ETH */}
+                {/* Stake Adjustment Controls: −10 ETH and +10 ETH */}
                 {onUpdateStake && (
                   <div className="grid grid-cols-2 gap-2">
                     <button
@@ -148,21 +137,19 @@ export const ValidatorDashboard: React.FC<ValidatorDashboardProps> = ({
                       id={`pos-minus-stake-btn-${validator.id}`}
                       onClick={() => onUpdateStake(validator.id, -10)}
                       disabled={validator.stake <= 0}
-                      className="px-2 py-1.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] disabled:opacity-30 disabled:cursor-not-allowed border border-white/[0.06] text-[#F2F4F7] text-xs font-mono font-medium flex items-center justify-center gap-1 transition-colors cursor-pointer active:scale-95"
+                      className="px-2.5 py-1.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] disabled:opacity-30 disabled:cursor-not-allowed border border-white/[0.06] text-[#F2F4F7] hover:text-rose-400 text-xs font-mono font-medium flex items-center justify-center transition-colors cursor-pointer active:scale-95"
                       title={isVi ? 'Giảm 10 ETH' : 'Decrease 10 ETH'}
                     >
-                      <Minus className="w-3 h-3 text-rose-400" />
-                      <span>-10 ETH</span>
+                      <span>−10 ETH</span>
                     </button>
 
                     <button
                       type="button"
                       id={`pos-plus-stake-btn-${validator.id}`}
                       onClick={() => onUpdateStake(validator.id, 10)}
-                      className="px-2 py-1.5 rounded-lg bg-[#00C98D]/10 hover:bg-[#00C98D]/20 border border-[#00C98D]/30 text-[#00C98D] text-xs font-mono font-semibold flex items-center justify-center gap-1 transition-colors cursor-pointer active:scale-95"
+                      className="px-2.5 py-1.5 rounded-lg bg-[#00C98D]/10 hover:bg-[#00C98D]/20 border border-[#00C98D]/30 text-[#00C98D] text-xs font-mono font-semibold flex items-center justify-center transition-colors cursor-pointer active:scale-95"
                       title={isVi ? 'Tăng 10 ETH' : 'Increase 10 ETH'}
                     >
-                      <Plus className="w-3 h-3 text-[#00C98D]" />
                       <span>+10 ETH</span>
                     </button>
                   </div>

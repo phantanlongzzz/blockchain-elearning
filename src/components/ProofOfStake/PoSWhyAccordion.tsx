@@ -68,38 +68,28 @@ export const PoSWhyAccordion: React.FC = () => {
   ];
 
   return (
-    <div className="bg-[#0C0F14] border border-[#1C2430] rounded-2xl overflow-hidden shadow-xl transition-all">
+    <div className="bg-[#0C0F14] border border-white/[0.08] rounded-xl overflow-hidden transition-all">
       {/* Accordion Toggle Header */}
       <button
         type="button"
         id="pos-why-accordion-toggle"
         onClick={() => setIsSectionOpen(!isSectionOpen)}
-        className="w-full p-4 sm:p-5 flex items-center justify-between text-left hover:bg-[#0F131A] transition-colors cursor-pointer"
+        className="w-full p-4 sm:p-5 flex items-center justify-between text-left hover:bg-white/[0.02] transition-colors cursor-pointer group"
       >
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-[rgba(0,201,141,0.08)] border border-[rgba(0,201,141,0.35)] flex items-center justify-center text-[#00C98D] shrink-0">
+          <div className="w-9 h-9 rounded-xl bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-[#00C98D] shrink-0">
             <Lightbulb className="w-5 h-5" />
           </div>
-          <div>
-            <h3 className="text-sm sm:text-base font-bold text-[#F2F4F7] font-display flex items-center gap-2">
-              <span>{isVi ? '💡 TẠI SAO CƠ CHẾ NÀY HOẠT ĐỘNG?' : '💡 WHY DOES THIS MECHANISM WORK?'}</span>
-              <span className="text-[10px] font-mono font-normal px-2 py-0.5 rounded bg-[#0F131A] text-[#A5AFBF] border border-[#1C2430]">
-                {isVi ? '4 Nguyên lý & 6 Câu hỏi mở rộng' : '4 Principles & 6 Deep Dive Q&As'}
-              </span>
-            </h3>
-            <p className="text-xs text-[#A5AFBF] mt-0.5">
-              {isVi
-                ? 'Giải thích lý thuyết kinh tế học hành vi & cơ chế bảo mật đằng sau Proof of Stake'
-                : 'Behavioral economics & game theory security behind Proof of Stake'}
-            </p>
-          </div>
+          <h3 className="text-sm sm:text-base font-bold text-[#F2F4F7] font-display">
+            {isVi ? 'TẠI SAO CƠ CHẾ NÀY HOẠT ĐỘNG?' : 'WHY DOES THIS MECHANISM WORK?'}
+          </h3>
         </div>
 
-        <div className="flex items-center gap-2 text-xs font-mono text-[#A5AFBF]">
+        <div className="flex items-center gap-2 text-xs font-mono text-[#9AA5B5]">
           <span className="hidden sm:inline">
             {isSectionOpen ? (isVi ? 'Thu gọn' : 'Collapse') : (isVi ? 'Xem chi tiết' : 'Expand details')}
           </span>
-          <div className="w-8 h-8 rounded-lg bg-[#0F131A] border border-[#1C2430] flex items-center justify-center text-[#00C98D]">
+          <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/[0.06] flex items-center justify-center text-[#9AA5B5] group-hover:text-[#F2F4F7] transition-colors">
             {isSectionOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
           </div>
         </div>

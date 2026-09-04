@@ -340,17 +340,16 @@ export const Navbar: React.FC<NavbarProps> = ({
 
               {settingsOpen && (
                 <div
-                  className="absolute right-0 top-full mt-1.5 w-64 bg-[#0C0F14] backdrop-blur-md border border-[#1C2430] rounded-xl shadow-2xl p-3 z-50 font-sans text-xs animate-in fade-in slide-in-from-top-1 duration-150"
+                  className="absolute right-0 top-full mt-1.5 w-52 bg-[#0C0F14] backdrop-blur-md border border-[#1C2430] rounded-xl shadow-2xl p-3 z-50 font-sans text-xs animate-in fade-in slide-in-from-top-1 duration-150"
                   role="dialog"
                   aria-label="Cài đặt giao diện"
                 >
-                  <div className="flex items-center justify-between pb-2 mb-2.5 border-b border-[#1C2430]">
-                    <span className="font-semibold text-[#F2F4F7] uppercase tracking-wider text-[11px] flex items-center gap-1.5">
-                      <Sliders className="w-3.5 h-3.5 text-[#00C98D]" />
-                      <span>{isVi ? 'Cài đặt giao diện' : 'Interface'}</span>
+                  <div className="pb-2 mb-2.5 border-b border-[#1C2430]">
+                    <span className="font-semibold text-[#717B8C] uppercase tracking-wider text-[11px]">
+                      {isVi ? 'Cài đặt giao diện' : 'Interface'}
                     </span>
                   </div>
-                  <CursorToggle showSubtitle={true} />
+                  <CursorToggle />
                 </div>
               )}
             </div>
@@ -421,8 +420,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                       </button>
 
                       {/* Cursor toggle in user menu */}
-                      <div className="border-t border-[#1C2430] my-1 pt-1 px-2.5 py-1.5">
-                        <CursorToggle compact={true} />
+                      <div className="border-t border-[#1C2430] my-1 pt-2 pb-1.5 px-3">
+                        <CursorToggle />
                       </div>
 
                       <div className="border-t border-[#1C2430] my-1" />
@@ -537,7 +536,12 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Mobile Cursor Toggle */}
           <div className="rounded-lg border border-[#1C2430] bg-[#0C0F14] p-3 mt-2">
-            <CursorToggle showSubtitle={true} />
+            <div className="pb-2 mb-2 border-b border-[#1C2430]">
+              <span className="font-semibold text-[#717B8C] uppercase tracking-wider text-[10px]">
+                {isVi ? 'Cài đặt giao diện' : 'Interface'}
+              </span>
+            </div>
+            <CursorToggle />
           </div>
 
           {/* Mobile GitHub Repository Link */}

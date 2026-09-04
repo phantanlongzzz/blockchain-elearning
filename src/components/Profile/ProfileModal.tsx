@@ -381,14 +381,13 @@ export const ProfileModal: React.FC = () => {
           </div>
         </div>
 
-        {/* Giao diện & Tùy chọn */}
+        {/* Giao diện */}
         <div className="py-5 border-b border-[#1C2430]">
-          <h4 className="text-xs uppercase tracking-wider font-semibold text-[#717B8C] mb-3 flex items-center gap-1.5 font-sans">
-            <Sliders className="w-3.5 h-3.5 text-[#00C98D]" />
-            <span>{language === 'vi' ? 'Giao diện' : 'Interface Settings'}</span>
+          <h4 className="text-xs uppercase tracking-wider font-semibold text-[#717B8C] mb-3 font-sans">
+            <span>{language === 'vi' ? 'Cài đặt giao diện' : 'Interface Settings'}</span>
           </h4>
           <div className="p-3 bg-[#090A0F] border border-[#1C2430] rounded-xl">
-            <CursorToggle showSubtitle={true} />
+            <CursorToggle />
           </div>
         </div>
 

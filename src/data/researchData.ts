@@ -18,7 +18,7 @@ export const RESEARCH_METADATA = {
 export const NIST_TEST_VECTORS: TestVector[] = [
   {
     id: 'empty',
-    name: 'Chuỗi Rỗng (Empty String)',
+    name: 'Chuỗi rỗng (0-byte)',
     category: 'Chuẩn NIST',
     input: '',
     expectedHex: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
@@ -34,7 +34,7 @@ export const NIST_TEST_VECTORS: TestVector[] = [
   },
   {
     id: 'nist-abc',
-    name: 'Vector Ngắn NIST ("abc")',
+    name: 'Vector NIST: "abc"',
     category: 'NIST FIPS 180-4',
     input: 'abc',
     expectedHex: 'ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad',
@@ -42,7 +42,7 @@ export const NIST_TEST_VECTORS: TestVector[] = [
   },
   {
     id: 'quick-brown-fox',
-    name: 'Quick Brown Fox (Pangram)',
+    name: 'Câu Pangram đầy đủ',
     category: 'NIST Reference',
     input: 'The quick brown fox jumps over the lazy dog',
     expectedHex: 'd7a8fbb307d7809469ca9abcb0082e4f8d5651e46d3cdb762d02d0bf37c9e592',
@@ -50,7 +50,7 @@ export const NIST_TEST_VECTORS: TestVector[] = [
   },
   {
     id: 'quick-brown-fox-dot',
-    name: 'Quick Brown Fox (thêm dấu chấm)',
+    name: 'Pangram có dấu chấm (Thử thác đổ)',
     category: 'Hiệu Ứng Thác Đổ (Avalanche)',
     input: 'The quick brown fox jumps over the lazy dog.',
     expectedHex: 'ef537f25c895bfa782526529a9b63d97aa631564d5d789c2b765448c8635fb6c',
@@ -58,7 +58,7 @@ export const NIST_TEST_VECTORS: TestVector[] = [
   },
   {
     id: 'bitcoin-genesis',
-    name: 'Khối Khởi Nguồn Bitcoin (Genesis Coinbase)',
+    name: 'Dữ liệu Khối Genesis',
     category: 'Lịch Sử Blockchain',
     input: 'The Times 03/Jan/2009 Chancellor on brink of second bailout for banks',
     expectedHex: '37731f241a76f6880da6a445cb4ca134df39c18d96b176ba46faef53e778ca14',

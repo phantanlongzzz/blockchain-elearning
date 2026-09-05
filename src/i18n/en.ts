@@ -72,9 +72,9 @@ export const enTranslations: TranslationSchema = {
     bitsBytes: '256 bits · 32 bytes',
   },
   hashGenerator: {
-    badge: 'Interactive Cryptographic Tool',
-    title: 'SHA-256 HASH GENERATOR',
-    description: 'Type any text and calculate its SHA-256 cryptographic hash instantly.',
+    badge: 'Cryptographic Experimentation',
+    title: 'SHA-256 Hash Generator',
+    description: 'Direct text hashing conforming to NIST FIPS 180-4 standard.',
     inputMessage: 'Input Message',
     inputSubtitle: '(Arbitrary length string or binary data)',
     tabText: 'Plain Text (UTF-8)',

@@ -144,7 +144,7 @@ export const MODULES_REGISTRY: ModuleMeta[] = [
         moduleId: 'hash',
         titleVi: '1.5 Phòng Thí nghiệm Băm Nâng cao (Brute-Force & Collision)',
         titleEn: '1.5 Advanced Hash Lab (Brute-Force & Collision)',
-        shortTitleVi: 'Lab Brute-force',
+        shortTitleVi: 'Thử sai Vét cạn',
         shortTitleEn: 'Advanced Lab',
         descriptionVi: 'Thử thách tìm tiền ảnh bằng vét cạn và mô phỏng tấn công ngày sinh nhật (Birthday Attack).',
         descriptionEn: 'Challenge preimage search via brute-force and birthday collision simulations.',

@@ -72,9 +72,9 @@ export const viTranslations: TranslationSchema = {
     "bitsBytes": "256 bit · 32 byte"
   },
   "hashGenerator": {
-    "badge": "Công Cụ Tương Tác",
-    "title": "CÔNG CỤ TẠO MÃ BĂM SHA-256",
-    "description": "Nhập văn bản để tính toán mã băm SHA-256 trực tiếp.",
+    "badge": "Thực nghiệm Mật mã học",
+    "title": "Trình tạo Mã băm SHA-256",
+    "description": "Băm trực tiếp dữ liệu văn bản theo chuẩn NIST FIPS 180-4.",
     "inputMessage": "Thông Điệp Đầu Vào",
     "inputSubtitle": "Chuỗi văn bản hoặc dữ liệu nhị phân",
     "tabText": "Văn bản",

@@ -30,33 +30,33 @@ export const ModuleProgressRail: React.FC = () => {
         {/* ROW 2: Breadcrumb Path & Stats */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           {/* Breadcrumb Path */}
-          <div className="flex items-center gap-2 overflow-hidden text-xs font-sans text-slate-400 tracking-normal">
-            <span className="text-cyan-400 font-sans font-semibold tracking-normal uppercase text-xs shrink-0">
+          <div className="flex items-center overflow-hidden text-xs font-sans tracking-normal">
+            <span className="font-sans text-xs font-semibold text-cyan-400 tracking-wider uppercase shrink-0">
               {isVi ? currentModule.titleVi : currentModule.titleEn}
             </span>
-            <ChevronRight className="w-3.5 h-3.5 text-slate-600 shrink-0" />
-            <span className="text-slate-300 font-sans font-medium truncate text-xs">
+            <span className="text-slate-600 mx-2 select-none">&gt;</span>
+            <span className="font-sans text-xs font-medium text-slate-300 truncate">
               {isVi ? currentLesson.titleVi : currentLesson.titleEn}
             </span>
           </div>
 
           {/* Time & Global Progress Bar */}
           <div className="flex items-center gap-3.5 shrink-0 text-xs font-sans text-slate-400 tracking-normal">
-            <div className="flex items-center gap-1.5">
-              <Clock className="w-3.5 h-3.5 text-slate-400" />
+            <span className="flex items-center gap-1.5 text-xs font-sans text-slate-400">
+              <Clock className="w-3.5 h-3.5" />
               <span>
                 {currentLesson.estimatedMinutes} {isVi ? 'phút' : 'mins'}
               </span>
-            </div>
+            </span>
 
             <div className="hidden sm:flex items-center gap-2">
-              <div className="w-20 bg-white/[0.08] h-[2px] rounded-full overflow-hidden">
+              <div className="w-24 bg-white/[0.08] h-1 rounded-full overflow-hidden">
                 <div
-                  className="bg-gradient-to-r from-cyan-400 to-blue-500 h-full rounded-full transition-all duration-300 shadow-[0_0_6px_rgba(0,210,255,0.6)]"
+                  className="bg-gradient-to-r from-cyan-500 to-blue-500 h-full rounded-full transition-all duration-300"
                   style={{ width: `${totalProgress.percentage}%` }}
                 />
               </div>
-              <span className="text-slate-400 text-xs font-sans">
+              <span className="font-mono text-xs text-slate-400 tabular-nums">
                 <AnimatedNumber value={totalProgress.completedCount} />/{totalProgress.totalCount} (<AnimatedNumber value={totalProgress.percentage} />%)
               </span>
             </div>
@@ -71,7 +71,7 @@ export const ModuleProgressRail: React.FC = () => {
                 const isSelected = lesson.id === currentLesson.id;
                 const lessonProg = progressMap[lesson.id];
                 const isDone = lessonProg?.status === 'completed';
-                const prefix = `${String(idx + 1).padStart(2, '0')}.`;
+                const prefix = `${String(idx + 1).padStart(2, '0')}. `;
 
                 return (
                   <button
@@ -80,14 +80,13 @@ export const ModuleProgressRail: React.FC = () => {
                     onClick={() => navigateTo(currentModule.id, lesson.id)}
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-sans tracking-normal transition-all shrink-0 cursor-pointer ${
                       isSelected
-                        ? 'bg-gradient-to-r from-cyan-500/15 to-blue-500/15 border border-cyan-500/30 text-cyan-300 font-medium shadow-[0_0_12px_rgba(0,210,255,0.15)]'
-                        : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.03] border border-transparent font-medium'
+                        ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/35 shadow-[0_0_12px_rgba(0,210,255,0.2)] font-semibold'
+                        : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04] border border-transparent font-medium'
                     }`}
                   >
-                    <span className={`font-mono text-xs ${isSelected ? 'text-cyan-400 font-semibold' : 'text-slate-500'}`}>
-                      {prefix}
+                    <span>
+                      {prefix}{isVi ? lesson.shortTitleVi : lesson.shortTitleEn}
                     </span>
-                    <span className="font-sans">{isVi ? lesson.shortTitleVi : lesson.shortTitleEn}</span>
                     {isDone && (
                       <CheckCircle2 className="w-3.5 h-3.5 text-success shrink-0 ml-0.5" />
                     )}

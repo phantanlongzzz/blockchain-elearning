@@ -90,12 +90,15 @@ export const DataStructuresFoundations: React.FC = () => {
   return (
     <section
       id="foundations"
-      className="py-6 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-6"
+      className="py-6 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-6 relative"
     >
+      {/* Ambient Glow Background Effect */}
+      <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[650px] h-[280px] bg-cyan-500/[0.04] blur-[120px] pointer-events-none -z-10" />
+
       {/* Section Header */}
       <div className="space-y-1.5 pb-2">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h1 className="text-base font-semibold text-white tracking-tight">
+          <h1 className="text-base font-semibold text-white tracking-tight font-sans">
             {language === 'vi' ? '2.1 Cấu trúc Dữ liệu Nền tảng' : '2.1 Foundational Data Structures'}
           </h1>
 
@@ -106,15 +109,15 @@ export const DataStructuresFoundations: React.FC = () => {
               ({currentStageIndex + 1}/{STAGES.length})
             </span>
             {learningProgress?.foundations && (
-              <span className="inline-flex items-center gap-1 text-success">
-                <span className="w-1.5 h-1.5 rounded-full bg-success"></span>
+              <span className="inline-flex items-center gap-1 text-cyan-400">
+                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
                 {language === 'vi' ? 'Đã lưu' : 'Saved'}
               </span>
             )}
           </div>
         </div>
 
-        <p className="text-xs text-slate-400 leading-relaxed max-w-4xl">
+        <p className="text-xs text-slate-400 leading-relaxed max-w-4xl font-sans">
           {language === 'vi'
             ? 'So sánh tính toàn vẹn giữa Mảng tuần tự (RAM), Danh sách liên kết và Con trỏ mã băm.'
             : 'Compare integrity between Sequential RAM Arrays, Linked Lists, and Hash Pointers.'}
@@ -122,7 +125,7 @@ export const DataStructuresFoundations: React.FC = () => {
       </div>
 
       {/* Modern Compact Stepper 6 Steps */}
-      <div className="bg-[#0B101E]/90 p-1.5 rounded-xl border border-white/[0.08]">
+      <div className="bg-[#0B101E]/90 backdrop-blur-md p-1.5 rounded-xl border border-white/[0.08] shadow-[0_4px_20px_rgba(0,0,0,0.3)]">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-1.5">
           {STAGES.map((stage) => {
             const isActive = activeStage === stage.id;
@@ -151,7 +154,7 @@ export const DataStructuresFoundations: React.FC = () => {
                   >
                     {stage.num}
                   </span>
-                  <span className="text-xs font-medium truncate font-mono">
+                  <span className="text-xs font-medium truncate font-sans">
                     {stage.title[language]}
                   </span>
                 </div>
@@ -160,7 +163,7 @@ export const DataStructuresFoundations: React.FC = () => {
                   <Check className="w-3 h-3 text-slate-500 shrink-0" />
                 )}
                 {isActive && (
-                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shrink-0"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shrink-0 shadow-[0_0_8px_rgba(0,210,255,0.8)]"></span>
                 )}
               </button>
             );

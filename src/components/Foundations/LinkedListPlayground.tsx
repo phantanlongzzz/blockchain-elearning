@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Search, RotateCcw, ArrowRight, Utensils, Trash2 } from 'lucide-react';
+import { Search, RotateCcw, ArrowRight, Play, Trash2 } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { LinkedListNodeItem } from '../../types';
 import {
@@ -163,50 +163,53 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
 
   return (
     <div className="space-y-4 animate-in fade-in duration-200">
-      {/* Header */}
-      <div className="p-4 rounded-xl bg-[#0B101E]/80 border border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      {/* Header Section */}
+      <div className="bg-[#0B101E]/60 backdrop-blur-md border border-white/[0.08] rounded-2xl p-5 mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-[0_4px_20px_rgba(0,0,0,0.3)]">
         <div className="space-y-1">
-          <h3 className="text-sm font-semibold text-white">
+          <div className="text-xs font-mono text-cyan-400 uppercase tracking-wider mb-1">
+            {language === 'vi' ? 'Giai đoạn 02 · Cấu trúc danh sách' : 'Stage 02 · Linked Data Structure'}
+          </div>
+          <h3 className="text-lg font-sans font-bold text-white">
             {language === 'vi'
               ? 'Danh sách liên kết (Linked List)'
               : 'Linked List Data Structure'}
           </h3>
-          <p className="text-xs text-slate-400 max-w-2xl leading-relaxed">
+          <p className="text-xs font-sans text-slate-400 leading-relaxed max-w-2xl">
             {language === 'vi'
-              ? 'Mỗi phần tử là một Nút (Node) chứa Dữ liệu (DATA) và Con trỏ (NEXT) trỏ tới địa chỉ ô nhớ của nút tiếp theo.'
-              : 'Each element is a Node containing payload (DATA) and a reference pointer (NEXT) pointing to the next node in memory.'}
+              ? 'Khảo sát tính phân tán ô nhớ RAM và cơ chế liên kết tuyến tính qua con trỏ NEXT.'
+              : 'Examine dispersed RAM addresses and linear reference chaining via NEXT pointers.'}
           </p>
         </div>
 
-        <div className="flex items-center gap-2 self-start sm:self-auto">
+        <div className="flex items-center gap-2 self-start sm:self-auto shrink-0">
           <button
             type="button"
             onClick={handleLoadSushiExample}
-            className="px-3 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white border border-white/10 text-xs font-mono font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono text-slate-300 bg-white/[0.04] border border-white/[0.08] hover:border-cyan-500/30 hover:text-white transition-all cursor-pointer"
           >
-            <Utensils className="w-3.5 h-3.5" />
-            <span>{strings.foundations.linkedList.sushiExampleBtn}</span>
+            <Play className="w-3.5 h-3.5 text-cyan-400" />
+            <span>{language === 'vi' ? 'Chạy Quy Trình Mẫu' : 'Run Sample Pipeline'}</span>
           </button>
           <button
             type="button"
             onClick={handleReset}
-            className="px-3 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white border border-white/10 text-xs font-mono font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono text-slate-400 bg-white/[0.02] border border-white/[0.06] hover:text-slate-200 transition-all cursor-pointer"
           >
             <RotateCcw className="w-3.5 h-3.5" />
-            <span>{strings.foundations.linkedList.reset}</span>
+            <span>{language === 'vi' ? 'Đặt Lại' : 'Reset'}</span>
           </button>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-1 border-b border-zinc-800 pb-2">
+      <div className="flex items-center gap-1 border-b border-white/[0.08] pb-2">
         <button
           type="button"
           onClick={() => setViewMode('visual')}
-          className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-colors cursor-pointer ${
+          className={`px-3 py-1.5 rounded-lg text-xs font-sans font-medium transition-colors cursor-pointer ${
             viewMode === 'visual'
-              ? 'bg-zinc-800 text-zinc-100 border border-zinc-700'
-              : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/60'
+              ? 'bg-slate-800 text-cyan-400 border border-cyan-500/30 shadow-sm'
+              : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
           }`}
         >
           {language === 'vi' ? '1. Mô phỏng Node & Con trỏ' : '1. Node & Pointer Simulator'}
@@ -215,10 +218,10 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
         <button
           type="button"
           onClick={() => setViewMode('sushi')}
-          className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-colors cursor-pointer ${
+          className={`px-3 py-1.5 rounded-lg text-xs font-sans font-medium transition-colors cursor-pointer ${
             viewMode === 'sushi'
-              ? 'bg-zinc-800 text-zinc-100 border border-zinc-700'
-              : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/60'
+              ? 'bg-slate-800 text-cyan-400 border border-cyan-500/30 shadow-sm'
+              : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
           }`}
         >
           {language === 'vi' ? '2. Quy trình mẫu' : '2. Sample Pipeline'}
@@ -227,21 +230,21 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
         <button
           type="button"
           onClick={() => setViewMode('code')}
-          className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-colors cursor-pointer ${
+          className={`px-3 py-1.5 rounded-lg text-xs font-sans font-medium transition-colors cursor-pointer ${
             viewMode === 'code'
-              ? 'bg-zinc-800 text-zinc-100 border border-zinc-700'
-              : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/60'
+              ? 'bg-slate-800 text-cyan-400 border border-cyan-500/30 shadow-sm'
+              : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
           }`}
         >
           {language === 'vi' ? '3. Code Node Class' : '3. Node Class Code'}
         </button>
       </div>
 
-      {/* Mode 1: Visual Interactive Linked List */}
+      {/* Mode 1: Visual Interactive Linked List (Outer Card Wrapper) */}
       {viewMode === 'visual' && (
-        <div className="p-6 rounded-xl bg-[#090a0f] border border-zinc-800 space-y-6">
+        <div className="p-6 rounded-2xl bg-[#0B0F19]/60 backdrop-blur-xl border border-white/[0.08] shadow-[0_12px_40px_rgba(0,0,0,0.5)] space-y-4">
           {/* Action Toolbar */}
-          <div className="p-3.5 rounded-lg bg-zinc-900/60 border border-zinc-800 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 text-xs font-mono">
+          <div className="bg-[#070B14]/80 border border-white/[0.06] rounded-xl p-3 flex flex-wrap items-center justify-between gap-3 mb-4">
             {/* Insertion controls */}
             <div className="flex-1 flex flex-wrap items-center gap-2">
               <input
@@ -249,19 +252,19 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
                 value={inputData}
                 onChange={(e) => setInputData(e.target.value)}
                 placeholder={strings.foundations.pythonList.valuePlaceholder}
-                className="flex-1 min-w-[120px] px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-700 text-zinc-200 focus:outline-none focus:border-zinc-500"
+                className="bg-black/50 border border-white/[0.08] focus:border-cyan-500/40 rounded-lg px-3 py-1.5 text-xs font-mono text-slate-200 outline-none w-48 placeholder:text-slate-600"
               />
               <button
                 type="button"
                 onClick={handleInsertBeginning}
-                className="px-3 py-1.5 rounded-lg bg-zinc-100 hover:bg-white text-zinc-900 font-semibold font-mono text-xs transition-colors cursor-pointer whitespace-nowrap shrink-0"
+                className="bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 hover:bg-cyan-500/20 text-xs font-sans font-medium px-3 py-1.5 rounded-lg transition-all cursor-pointer whitespace-nowrap shrink-0"
               >
                 {strings.foundations.linkedList.insertBeginning}
               </button>
               <button
                 type="button"
                 onClick={handleInsertEnd}
-                className="px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-medium font-mono text-xs border border-zinc-700 transition-colors cursor-pointer whitespace-nowrap shrink-0"
+                className="bg-white/[0.04] text-slate-300 border border-white/[0.08] hover:text-white text-xs font-sans px-3 py-1.5 rounded-lg transition-all cursor-pointer whitespace-nowrap shrink-0"
               >
                 {strings.foundations.linkedList.insertEnd}
               </button>
@@ -274,15 +277,15 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
                 value={searchTarget}
                 onChange={(e) => setSearchTarget(e.target.value)}
                 placeholder={strings.foundations.linkedList.searchValue}
-                className="w-36 sm:w-44 px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-700 text-zinc-200 focus:outline-none focus:border-zinc-500"
+                className="bg-black/50 border border-white/[0.08] focus:border-cyan-500/40 rounded-lg px-3 py-1.5 text-xs font-mono text-slate-200 outline-none w-36 placeholder:text-slate-600"
               />
               <button
                 type="button"
                 disabled={isSearching}
                 onClick={handleSearch}
-                className="px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 disabled:opacity-50 text-zinc-200 font-medium font-mono text-xs border border-zinc-700 flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap shrink-0"
+                className="bg-white/[0.04] border border-white/[0.08] text-slate-300 hover:border-cyan-500/30 hover:text-white disabled:opacity-50 text-xs font-sans px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap shrink-0"
               >
-                <Search className="w-3.5 h-3.5" />
+                <Search className="w-3.5 h-3.5 text-cyan-400" />
                 <span>{strings.foundations.linkedList.search}</span>
               </button>
             </div>
@@ -290,9 +293,9 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
 
           {/* Search Result Feedback */}
           {searchResult.searched && (
-            <div className="p-3 rounded-lg bg-zinc-900/60 border border-zinc-800 text-xs font-mono flex items-center gap-2">
-              <span className={`w-1.5 h-1.5 rounded-full ${searchResult.found ? 'bg-emerald-400' : 'bg-rose-400'}`}></span>
-              <span className={searchResult.found ? 'text-success' : 'text-rose-400'}>
+            <div className="p-3 rounded-lg bg-black/40 border border-white/[0.06] text-xs font-mono flex items-center gap-2">
+              <span className={`w-2 h-2 rounded-full ${searchResult.found ? 'bg-cyan-400 shadow-[0_0_8px_rgba(0,210,255,0.8)]' : 'bg-rose-400'}`}></span>
+              <span className={searchResult.found ? 'text-cyan-300' : 'text-rose-400'}>
                 {searchResult.found
                   ? language === 'vi'
                     ? `Tìm thấy "${searchTarget}" tại Nút #${searchResult.index}`
@@ -304,68 +307,75 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
             </div>
           )}
 
-          {/* Linked List Canvas */}
-          <div className="p-5 rounded-lg bg-black/40 border border-zinc-800/80 min-h-[150px] flex items-center overflow-x-auto">
+          {/* Layer 2: Struct Inspector Canvas */}
+          <div className="bg-black/35 backdrop-blur-md border border-white/[0.05] rounded-xl p-6 relative overflow-x-auto bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:16px_16px] min-h-[190px] flex items-center">
             {nodes.length === 0 ? (
-              <div className="w-full text-center text-xs font-mono text-zinc-600 py-6">
+              <div className="w-full text-center text-xs font-mono text-slate-500 py-6">
                 HEAD = NULL (Danh sách rỗng)
               </div>
             ) : (
               <div className="flex items-center gap-2 w-full pb-2">
-                {/* HEAD Anchor */}
-                <div className="flex flex-col items-center mr-2 shrink-0">
-                  <span className="px-2 py-0.5 rounded bg-zinc-800 text-zinc-300 font-mono text-[10px] font-medium border border-zinc-700">
-                    HEAD
-                  </span>
-                  <div className="h-4 w-px bg-zinc-600 my-1"></div>
-                  <span className="text-[10px] font-mono text-zinc-500">→ [0]</span>
+                {/* HEAD Register Pointer */}
+                <div className="bg-cyan-950/30 border border-cyan-500/30 text-cyan-400 rounded-lg px-3 py-2 text-xs font-mono flex flex-col items-center justify-center gap-1 shadow-[0_0_12px_rgba(0,210,255,0.1)] shrink-0 mr-2">
+                  <span className="text-[10px] font-semibold tracking-wider uppercase">HEAD</span>
+                  <div className="w-4 h-[2px] bg-cyan-400 my-0.5 shadow-[0_0_6px_rgba(0,210,255,0.6)]" />
+                  <span className="text-[10px] text-cyan-300 font-mono">→ [0]</span>
                 </div>
 
-                {/* Nodes List */}
+                {/* Layer 3: Struct 2-Compartment Nodes */}
                 {nodes.map((node, idx) => {
                   const isHead = idx === 0;
                   const isTail = idx === nodes.length - 1;
                   const isCurrentInSearch = currentSearchIdx === idx;
                   const isFoundNode = searchResult.found && searchResult.index === idx;
+                  const hexAddr = `0x${((idx + 1) * 2048).toString(16).toUpperCase()}`;
+                  const nextHexAddr = node.nextId ? `0x${((idx + 2) * 2048).toString(16).toUpperCase()}` : 'NULL';
 
                   return (
                     <React.Fragment key={node.id}>
                       <div className="flex flex-col items-center shrink-0">
-                        {/* Node Label */}
-                        <div className="flex items-center gap-1.5 text-[10px] font-mono text-zinc-500 mb-1">
-                          <span>#{idx}</span>
-                          {isHead && <span className="text-zinc-400">· HEAD</span>}
-                          {isTail && <span className="text-text-secondary">· TAIL</span>}
-                        </div>
-
-                        {/* Node Cell: Data & Next */}
+                        {/* Struct Node Card */}
                         <div
-                          className={`w-36 rounded-lg border transition-colors ${
+                          className={`bg-[#0B101E]/85 backdrop-blur-md border rounded-xl p-3.5 min-w-[200px] shadow-[0_8px_24px_rgba(0,0,0,0.5)] transition-all ${
                             isFoundNode
-                              ? 'bg-zinc-900 border-border-primary ring-1 ring-white/20'
+                              ? 'border-cyan-400 ring-2 ring-cyan-400/40 shadow-[0_0_24px_rgba(0,210,255,0.3)]'
                               : isCurrentInSearch
-                              ? 'bg-zinc-900 border-amber-500 ring-1 ring-amber-500/30'
-                              : 'bg-zinc-900/90 border-zinc-800 hover:border-zinc-700'
+                              ? 'border-amber-400 ring-1 ring-amber-400/30 shadow-[0_0_16px_rgba(251,191,36,0.2)]'
+                              : 'border-white/[0.08] hover:border-cyan-500/30'
                           }`}
                         >
-                          <div className="p-2 border-b border-zinc-800 flex items-center justify-between">
-                            <span className="text-[10px] font-mono text-zinc-500 uppercase">DATA</span>
-                            <span className="font-mono text-xs font-medium text-zinc-100 truncate max-w-[90px]">
-                              &quot;{node.data}&quot;
+                          {/* Header Meta: Index & Address */}
+                          <div className="text-[10px] font-mono text-slate-400 flex items-center justify-between pb-2 border-b border-white/[0.06] mb-2">
+                            <span className="font-semibold text-slate-200">
+                              #{idx} {isHead ? '· HEAD' : isTail ? '· TAIL' : '· NODE'}
                             </span>
+                            <span className="text-slate-500 font-mono">Addr: {hexAddr}</span>
                           </div>
 
-                          <div className="p-2 flex items-center justify-between text-[10px] font-mono">
-                            <span className="text-zinc-500">NEXT</span>
-                            <div className="flex items-center gap-1.5">
-                              <span className="text-zinc-400">
-                                {node.nextId ? `0x${((idx + 2) * 2048).toString(16)}` : 'NULL'}
+                          {/* Data Compartment */}
+                          <div className="mb-2">
+                            <span className="text-[9px] font-sans text-slate-500 uppercase font-medium block">
+                              DATA
+                            </span>
+                            <div className="bg-black/40 border border-white/[0.05] rounded px-2 py-1.5 font-mono text-xs text-cyan-300 font-semibold text-center my-1 truncate">
+                              &quot;{node.data}&quot;
+                            </div>
+                          </div>
+
+                          {/* Next Pointer Compartment */}
+                          <div className="pt-1.5 border-t border-white/[0.06]">
+                            <span className="text-[9px] font-sans text-slate-500 uppercase font-medium block mb-1">
+                              NEXT
+                            </span>
+                            <div className="bg-white/[0.02] border border-white/[0.06] rounded px-2 py-1 font-mono text-[11px] text-slate-300 flex items-center justify-between">
+                              <span className={nextHexAddr === 'NULL' ? 'text-slate-500 font-semibold' : 'text-cyan-400'}>
+                                {nextHexAddr}
                               </span>
                               <button
                                 type="button"
                                 onClick={() => handleDeleteNode(idx)}
-                                className="text-zinc-600 hover:text-rose-400 transition-colors cursor-pointer"
-                                title="Delete node"
+                                className="text-slate-500 hover:text-rose-400 transition-colors cursor-pointer p-0.5"
+                                title="Xóa Node này"
                               >
                                 <Trash2 className="w-3 h-3" />
                               </button>
@@ -374,17 +384,19 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
                         </div>
                       </div>
 
-                      {/* Arrow */}
+                      {/* Pointer Connector */}
                       {idx < nodes.length - 1 ? (
-                        <div className="flex flex-col items-center px-1 shrink-0 text-zinc-600">
-                          <ArrowRight className="w-4 h-4 text-zinc-500" />
-                          <span className="text-[9px] font-mono text-zinc-600">.next</span>
+                        <div className="flex flex-col items-center justify-center px-2 gap-1 shrink-0">
+                          <span className="text-[9px] font-mono text-cyan-400/80">.next</span>
+                          <div className="w-8 h-[2px] bg-gradient-to-r from-cyan-500/40 to-cyan-400 shadow-[0_0_6px_rgba(0,210,255,0.3)] relative flex items-center justify-end">
+                            <ArrowRight className="w-3 h-3 text-cyan-400 -mr-1" />
+                          </div>
                         </div>
                       ) : (
-                        <div className="flex flex-col items-center pl-2 shrink-0">
-                          <span className="px-2 py-0.5 rounded bg-zinc-900 text-zinc-500 font-mono text-[10px] border border-zinc-800">
-                            NULL
-                          </span>
+                        <div className="flex items-center pl-2 shrink-0">
+                          <div className="px-3 py-2 rounded-lg bg-white/[0.02] border border-dashed border-white/[0.15] text-slate-400 font-mono text-xs flex items-center justify-center">
+                            <span>NULL (Ground)</span>
+                          </div>
                         </div>
                       )}
                     </React.Fragment>
@@ -393,28 +405,14 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
               </div>
             )}
           </div>
-
-          {/* Minimal Concept Note */}
-          <div className="p-3.5 rounded-lg bg-zinc-900/60 border border-zinc-800 text-xs leading-relaxed space-y-1">
-            <div className="text-zinc-300 font-mono font-medium">
-              {language === 'vi'
-                ? 'Kiến trúc Node: [ DATA | NEXT POINTER ]'
-                : 'Node Architecture: [ DATA | NEXT POINTER ]'}
-            </div>
-            <p className="text-zinc-400">
-              {language === 'vi'
-                ? 'Các Node trong Linked List có thể phân tán ở các địa chỉ RAM khác nhau, kết nối nhờ con trỏ NEXT. Tuy nhiên, con trỏ NEXT này chỉ là địa chỉ bộ nhớ tạm thời và không mang tính chất xác thực bảo mật.'
-                : 'Linked list nodes can be scattered across memory addresses, linked via NEXT pointers. These pointers are transient memory offsets and offer no cryptographic integrity.'}
-            </p>
-          </div>
         </div>
       )}
 
       {/* Mode 2: Sushi Recipe Step */}
       {viewMode === 'sushi' && (
-        <div className="p-6 rounded-xl bg-[#090a0f] border border-zinc-800 space-y-4">
+        <div className="p-6 rounded-2xl bg-[#0B0F19]/60 backdrop-blur-xl border border-white/[0.08] shadow-[0_12px_40px_rgba(0,0,0,0.5)] space-y-4">
           <div className="flex items-center justify-between">
-            <div className="text-sm font-semibold text-zinc-100">
+            <div className="text-sm font-sans font-semibold text-slate-100">
               {language === 'vi'
                 ? 'Ví dụ quy trình thực hiện các bước'
                 : 'Curriculum Step Pipeline'}
@@ -423,43 +421,43 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
             <button
               type="button"
               onClick={handleLoadSushiExample}
-              className="px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white border border-zinc-700 text-xs font-mono font-medium transition-colors cursor-pointer"
+              className="px-3 py-1.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-white border border-white/[0.08] hover:border-cyan-500/30 text-xs font-sans font-medium transition-colors cursor-pointer"
             >
               {language === 'vi' ? 'Nạp lại chuỗi mẫu' : 'Reload sample chain'}
             </button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
-            <div className="p-3.5 rounded-lg bg-zinc-900/60 border border-zinc-800 space-y-1">
-              <span className="text-[10px] font-mono text-zinc-500 uppercase block font-medium">
+            <div className="p-4 rounded-xl bg-[#0E1424]/85 backdrop-blur-md border border-cyan-500/20 space-y-1.5">
+              <span className="text-[10px] font-mono text-cyan-400 uppercase block font-medium">
                 BƯỚC 1 · HEAD
               </span>
-              <div className="font-mono text-xs font-medium text-zinc-200">&quot;assemble&quot;</div>
-              <p className="text-xs text-zinc-400">
+              <div className="font-mono text-xs font-medium text-cyan-300">&quot;assemble&quot;</div>
+              <p className="text-xs font-sans text-slate-400">
                 {language === 'vi'
                   ? 'Nút đầu tiên trong danh sách liên kết.'
                   : 'The head node inserted at the front.'}
               </p>
             </div>
 
-            <div className="p-3.5 rounded-lg bg-zinc-900/60 border border-zinc-800 space-y-1">
-              <span className="text-[10px] font-mono text-zinc-500 uppercase block font-medium">
+            <div className="p-4 rounded-xl bg-[#0E1424]/85 backdrop-blur-md border border-cyan-500/20 space-y-1.5">
+              <span className="text-[10px] font-mono text-cyan-400 uppercase block font-medium">
                 BƯỚC 2 · MIDDLE
               </span>
-              <div className="font-mono text-xs font-medium text-zinc-200">&quot;prepare&quot;</div>
-              <p className="text-xs text-zinc-400">
+              <div className="font-mono text-xs font-medium text-cyan-300">&quot;prepare&quot;</div>
+              <p className="text-xs font-sans text-slate-400">
                 {language === 'vi'
                   ? 'Nút kế tiếp được trỏ bởi assemble.'
                   : 'Next node referenced by assemble.next.'}
               </p>
             </div>
 
-            <div className="p-3.5 rounded-lg bg-zinc-900/60 border border-zinc-800 space-y-1">
-              <span className="text-[10px] font-mono text-zinc-500 uppercase block font-medium">
+            <div className="p-4 rounded-xl bg-[#0E1424]/85 backdrop-blur-md border border-cyan-500/20 space-y-1.5">
+              <span className="text-[10px] font-mono text-cyan-400 uppercase block font-medium">
                 BƯỚC 3 · TAIL
               </span>
-              <div className="font-mono text-xs font-medium text-zinc-200">&quot;roll&quot; → NULL</div>
-              <p className="text-xs text-zinc-400">
+              <div className="font-mono text-xs font-medium text-cyan-300">&quot;roll&quot; → NULL</div>
+              <p className="text-xs font-sans text-slate-400">
                 {language === 'vi'
                   ? 'Nút cuối cùng trỏ tới con trỏ rỗng NULL.'
                   : 'The tail node pointing to NULL.'}
@@ -471,12 +469,12 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
 
       {/* Mode 3: Python Code View */}
       {viewMode === 'code' && (
-        <div className="p-6 rounded-xl bg-[#090a0f] border border-zinc-800 space-y-3">
-          <div className="flex items-center justify-between text-xs font-mono text-zinc-400">
-            <span className="font-medium text-zinc-300">
+        <div className="p-6 rounded-2xl bg-[#0B0F19]/60 backdrop-blur-xl border border-white/[0.08] shadow-[0_12px_40px_rgba(0,0,0,0.5)] space-y-3">
+          <div className="flex items-center justify-between text-xs font-sans text-slate-400">
+            <span className="font-medium text-slate-200">
               {language === 'vi' ? 'Lớp Node & LinkedList trong Python' : 'Node & LinkedList Classes'}
             </span>
-            <span className="text-zinc-500">Python 3.12</span>
+            <span className="text-slate-500 font-mono">Python 3.12</span>
           </div>
 
           <CodeViewer
@@ -489,20 +487,25 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
       )}
 
       {/* Navigation Footer */}
-      <div className="pt-2 flex items-center justify-end">
+      <div className="flex flex-col sm:flex-row items-center justify-between pt-6 mt-6 border-t border-white/[0.06] gap-3">
+        <span className="text-xs font-sans text-slate-400">
+          {language === 'vi'
+            ? 'Tiếp theo: Quan sát sự chuyển đổi từ con trỏ RAM sang Con trỏ băm (Hash Pointer)'
+            : 'Next: Observe transition from RAM pointers to Hash Pointers'}
+        </span>
         <button
           type="button"
           onClick={onNextStage}
-          className="px-4 py-2 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold font-mono text-xs flex items-center gap-1.5 transition-colors shadow-sm cursor-pointer"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-xs font-sans font-medium text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 shadow-[0_0_15px_rgba(0,210,255,0.25)] transition-all cursor-pointer"
         >
           <span>
             {language === 'vi'
-              ? 'Tiếp tục: Con trỏ Hash'
-              : 'Continue: Hash Pointer'}
+              ? 'Tiếp tục: Con trỏ Hash →'
+              : 'Continue: Hash Pointer →'}
           </span>
-          <ArrowRight className="w-3.5 h-3.5" />
         </button>
       </div>
     </div>
   );
 };
+

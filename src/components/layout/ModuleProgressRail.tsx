@@ -30,18 +30,18 @@ export const ModuleProgressRail: React.FC = () => {
         {/* ROW 2: Breadcrumb Path & Stats */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           {/* Breadcrumb Path */}
-          <div className="flex items-center gap-2 overflow-hidden text-xs font-mono text-slate-400">
-            <span className="text-cyan-400 font-semibold tracking-wide uppercase text-[11px] shrink-0">
+          <div className="flex items-center gap-2 overflow-hidden text-xs font-sans text-slate-400 tracking-normal">
+            <span className="text-cyan-400 font-sans font-semibold tracking-normal uppercase text-xs shrink-0">
               {isVi ? currentModule.titleVi : currentModule.titleEn}
             </span>
             <ChevronRight className="w-3.5 h-3.5 text-slate-600 shrink-0" />
-            <span className="text-slate-300 font-medium truncate text-xs">
+            <span className="text-slate-300 font-sans font-medium truncate text-xs">
               {isVi ? currentLesson.titleVi : currentLesson.titleEn}
             </span>
           </div>
 
           {/* Time & Global Progress Bar */}
-          <div className="flex items-center gap-3.5 shrink-0 text-xs font-mono text-slate-400">
+          <div className="flex items-center gap-3.5 shrink-0 text-xs font-sans text-slate-400 tracking-normal">
             <div className="flex items-center gap-1.5">
               <Clock className="w-3.5 h-3.5 text-slate-400" />
               <span>
@@ -56,7 +56,7 @@ export const ModuleProgressRail: React.FC = () => {
                   style={{ width: `${totalProgress.percentage}%` }}
                 />
               </div>
-              <span className="text-slate-400 text-[11px]">
+              <span className="text-slate-400 text-xs font-sans">
                 <AnimatedNumber value={totalProgress.completedCount} />/{totalProgress.totalCount} (<AnimatedNumber value={totalProgress.percentage} />%)
               </span>
             </div>
@@ -78,16 +78,16 @@ export const ModuleProgressRail: React.FC = () => {
                     key={lesson.id}
                     id={`tab-lesson-${lesson.id}`}
                     onClick={() => navigateTo(currentModule.id, lesson.id)}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono transition-all shrink-0 cursor-pointer ${
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-sans tracking-normal transition-all shrink-0 cursor-pointer ${
                       isSelected
                         ? 'bg-gradient-to-r from-cyan-500/15 to-blue-500/15 border border-cyan-500/30 text-cyan-300 font-medium shadow-[0_0_12px_rgba(0,210,255,0.15)]'
-                        : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.03] border border-transparent'
+                        : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.03] border border-transparent font-medium'
                     }`}
                   >
-                    <span className={isSelected ? 'text-cyan-400 font-semibold' : 'text-slate-500'}>
+                    <span className={`font-mono text-xs ${isSelected ? 'text-cyan-400 font-semibold' : 'text-slate-500'}`}>
                       {prefix}
                     </span>
-                    <span>{isVi ? lesson.shortTitleVi : lesson.shortTitleEn}</span>
+                    <span className="font-sans">{isVi ? lesson.shortTitleVi : lesson.shortTitleEn}</span>
                     {isDone && (
                       <CheckCircle2 className="w-3.5 h-3.5 text-success shrink-0 ml-0.5" />
                     )}

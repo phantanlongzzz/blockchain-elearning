@@ -397,7 +397,7 @@ export const MempoolDashboard: React.FC = () => {
     { name: isVi ? 'Khóa công khai người gửi' : 'Sender public key', pass: lastVerifiedTx?.verificationChecks.publicKey, desc: isVi ? 'Điểm đường cong SECP256K1 hợp lệ' : 'Valid SECP256K1 point' },
     { name: isVi ? 'Chữ ký ECDSA' : 'ECDSA signature', pass: lastVerifiedTx?.verificationChecks.signature, desc: isVi ? 'Khớp mã băm SHA-256 nội dung' : 'Matches SHA-256 digest' },
     { name: isVi ? 'Kiểm tra số dư khả dụng' : 'Available funds check', pass: lastVerifiedTx?.verificationChecks.balance, desc: isVi ? 'Số dư người gửi ≥ số tiền chuyển' : 'Balance ≥ amount' },
-    { name: isVi ? 'Đang kiểm tra chống phát lại' : 'Replay protection running', pass: lastVerifiedTx?.verificationChecks.replay, desc: isVi ? 'Tính duy nhất của Nonce / Chữ ký' : 'Unique nonce & sig' },
+    { name: isVi ? 'Chống phát lại (Replay Protection)' : 'Replay Protection', pass: lastVerifiedTx?.verificationChecks.replay, desc: isVi ? 'Tính duy nhất của Nonce / Chữ ký' : 'Unique nonce & sig' },
     { name: isVi ? 'Trường dữ liệu bắt buộc' : 'Required fields', pass: lastVerifiedTx?.verificationChecks.fields, desc: isVi ? 'Đầy đủ người gửi, người nhận, thời gian' : 'Complete fields' },
   ];
 
@@ -1002,9 +1002,9 @@ export const MempoolDashboard: React.FC = () => {
 
       {/* 3. Real-Time Node Verification Audit Log */}
       <div id="audit-panel" className="grid grid-cols-1 gap-6">
-        <div className="p-5 rounded-xl bg-[#0F1014] border border-white/[0.08] space-y-4">
+        <div className="p-4 sm:p-5 rounded-xl bg-bg-secondary border border-border-primary space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-medium uppercase tracking-wider text-[#71717A]">
+            <span className="text-xs font-medium uppercase tracking-wider text-text-muted">
               {vStr.auditEngineTitle}
             </span>
           </div>
@@ -1012,33 +1012,33 @@ export const MempoolDashboard: React.FC = () => {
           <div id="result-panel">
             {lastVerifiedTx ? (
               lastVerifiedTx.isValid ? (
-                <div className="px-3.5 py-2.5 mb-4 rounded-lg bg-[#10B981]/10 border border-[#10B981]/30 flex items-center justify-between text-xs">
-                  <div className="flex items-center gap-2 text-[#10B981] font-medium">
-                    <span className="w-2 h-2 rounded-full bg-[#10B981] shrink-0" />
+                <div className="px-3.5 py-2.5 mb-3 rounded-lg bg-success/10 border border-success/30 flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-2 text-success font-medium">
+                    <span className="w-2 h-2 rounded-full bg-success shrink-0" />
                     <span>{isVi ? 'Đã chấp nhận vào Mempool' : 'Accepted into Mempool'}</span>
-                    <span className="text-[#A1A1AA] font-normal">
-                      · {lastVerifiedTx.txNumber}: {lastVerifiedTx.senderName} → {lastVerifiedTx.receiverName} (<span className="text-financial">{lastVerifiedTx.amount} BTC</span>)
+                    <span className="text-text-muted font-normal">
+                      · {lastVerifiedTx.txNumber}: {lastVerifiedTx.senderName} → {lastVerifiedTx.receiverName} (<span className="text-financial font-mono">{lastVerifiedTx.amount} BTC</span>)
                     </span>
                   </div>
                 </div>
               ) : (
-                <div className="px-3.5 py-2.5 mb-4 rounded-lg bg-rose-950/20 border border-rose-500/30 space-y-1 text-xs">
+                <div className="px-3.5 py-2.5 mb-3 rounded-lg bg-error/10 border border-error/30 space-y-1 text-xs">
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2 text-rose-400 font-medium">
-                      <span className="w-2 h-2 rounded-full bg-rose-400 shrink-0" />
+                    <div className="flex items-center gap-2 text-error font-medium">
+                      <span className="w-2 h-2 rounded-full bg-error shrink-0" />
                       <span>{isVi ? 'Giao dịch bị từ chối' : 'Transaction rejected'}</span>
-                      <span className="text-[#A1A1AA] font-normal">· {lastVerifiedTx.txNumber}</span>
+                      <span className="text-text-muted font-normal">· {lastVerifiedTx.txNumber}</span>
                     </div>
                   </div>
                   {lastVerifiedTx.rejectionReason && (
-                    <div className="text-rose-300/90 text-xs pl-4 font-normal">
+                    <div className="text-error/90 text-xs pl-4 font-normal">
                       {lastVerifiedTx.rejectionReason}
                     </div>
                   )}
                 </div>
               )
             ) : (
-              <div className="px-3.5 py-2.5 mb-4 rounded-lg bg-[#09090B] border border-white/[0.06] text-xs text-[#71717A] flex items-center gap-2">
+              <div className="px-3.5 py-2.5 mb-3 rounded-lg bg-bg-primary border border-border-secondary text-xs text-text-muted flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-white/20" />
                 <span>
                   {isVi
@@ -1049,16 +1049,16 @@ export const MempoolDashboard: React.FC = () => {
             )}
           </div>
 
-          <div className="divide-y divide-white/[0.06] border border-white/[0.06] rounded-lg overflow-hidden bg-[#09090B]">
+          <div className="divide-y divide-border-secondary/40 border border-border-secondary rounded-lg overflow-hidden bg-bg-primary">
             {verificationRules.map((chk, i) => (
               <div
                 key={i}
-                className="px-3.5 py-2.5 flex items-center justify-between text-xs transition-colors duration-150"
+                title={chk.desc}
+                className="px-3.5 py-2 sm:py-2.5 flex items-center justify-between text-xs transition-colors duration-150 hover:bg-bg-elevated/40"
               >
                 <div>
-                  <span className="text-[#F4F4F5] font-medium">{chk.name}</span>
-                  <span className="text-[#71717A] text-[11px] ml-2 hidden sm:inline">
-                    · {chk.desc}
+                  <span className={chk.pass !== undefined ? 'font-medium text-text-primary' : 'font-medium text-text-secondary'}>
+                    {chk.name}
                   </span>
                 </div>
                 <div className="flex items-center text-xs font-mono">

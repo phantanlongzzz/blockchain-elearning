@@ -14,7 +14,11 @@ import {
   Pause,
   SkipBack,
   SkipForward,
-  ArrowRight
+  ArrowRight,
+  Inbox,
+  Layers,
+  AlertOctagon,
+  CheckCircle2
 } from 'lucide-react';
 import { PassIcon, DenyIcon } from '../common/StatusIcons';
 import { useLanguage } from '../../i18n/LanguageContext';
@@ -935,88 +939,144 @@ export const MempoolDashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* 4. Live Mempool (Accepted) vs Rejected Transactions */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="p-5 rounded-xl bg-[#0F1014] border border-white/[0.08] space-y-3">
-          <div className="flex items-center justify-between pb-2 border-b border-white/[0.06] text-xs">
-            <span className="font-semibold text-[#F4F4F5]">
-              {vStr.activeMempool} ({mempool.length})
-            </span>
-            <span className="text-[#71717A]">{vStr.readyForBlock}</span>
+      {/* 4. Live Mempool (Accepted) vs Rejected Transactions - Deep Inspector */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 w-full">
+        {/* Active Mempool Column */}
+        <div className="p-5 sm:p-6 rounded-xl bg-[#0F1014] border border-white/[0.08] space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-white/[0.06] text-xs">
+            <div className="flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#10B981] animate-pulse" />
+              <span className="font-semibold text-[#F4F4F5] text-sm">
+                {vStr.activeMempool} ({mempool.length})
+              </span>
+            </div>
+            <span className="text-[#71717A] font-mono text-[11px]">{vStr.readyForBlock}</span>
           </div>
-          <div className="space-y-2.5 text-xs max-h-80 overflow-y-auto pr-1">
+
+          <div className="space-y-3.5 text-xs max-h-[520px] overflow-y-auto pr-1">
             {mempool.length === 0 ? (
-              <div className="p-5 rounded-lg bg-[#09090B] border border-white/[0.06] text-center text-[#71717A] text-xs">
-                {isVi ? 'Mempool hiện đang trống.' : 'Mempool is currently empty.'}
+              <div className="p-8 rounded-lg bg-[#09090B] border border-white/[0.06] min-h-[160px] flex flex-col items-center justify-center text-center space-y-2 text-[#71717A] text-xs">
+                <Layers className="w-8 h-8 text-[#71717A]/40 mb-1" />
+                <div className="font-medium text-[#A1A1AA]">
+                  {isVi ? 'Mempool hiện đang trống' : 'Mempool is currently empty'}
+                </div>
+                <div className="text-[11px] text-[#71717A] max-w-sm leading-relaxed">
+                  {isVi
+                    ? 'Các giao dịch hợp lệ sau khi kiểm tra chữ ký và số dư sẽ được xếp hàng tại đây để chờ thợ đào đóng khối.'
+                    : 'Valid transactions passing cryptographic & ledger checks will queue here awaiting miner block inclusion.'}
+                </div>
               </div>
             ) : (
               mempool.map((tx) => (
                 <div
                   key={tx.id}
-                  className="p-3 rounded-lg bg-[#15161A]/70 border border-white/[0.08] hover:border-white/20 hover:bg-[#15161A] transition-all duration-150 space-y-2"
+                  className="p-4 sm:p-5 rounded-xl bg-[#15161A]/80 border border-white/[0.08] hover:border-white/20 hover:bg-[#15161A] transition-all duration-150 space-y-3.5"
                 >
-                  {/* Upper Row: Status Dot + Badge + Flow --- Amount + Fee */}
-                  <div className="flex items-center justify-between gap-2">
-                    {/* Left: Indicator + TX Badge + Flow */}
-                    <div className="flex items-center gap-2 min-w-0">
-                      <span
-                        className="w-2 h-2 rounded-full bg-amber-400 animate-pulse shrink-0"
-                        title={isVi ? 'Đang chờ đóng block' : 'Pending block inclusion'}
-                      />
-                      <span className="font-mono text-xs bg-[#0F1014] text-[#F4F4F5] px-2 py-0.5 rounded border border-white/[0.06] shrink-0 font-medium">
-                        {tx.txNumber}
-                      </span>
-                      <div className="flex items-center gap-1.5 text-xs font-medium text-[#F4F4F5] truncate">
-                        <span>{tx.senderName}</span>
-                        <ArrowRight className="w-3 h-3 text-[#71717A] shrink-0" />
-                        <span>{tx.receiverName}</span>
+                  {/* TẦNG 1: HEADER & GIÁ TRỊ (Rộng & Rõ ràng) */}
+                  <div className="flex items-start justify-between gap-3 flex-wrap sm:flex-nowrap">
+                    {/* Left: Indicator + TX Tag + Flow with full addresses */}
+                    <div className="space-y-1.5 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span
+                          className="w-2.5 h-2.5 rounded-full bg-[#10B981] animate-pulse shrink-0"
+                          title={isVi ? 'Đang chờ đóng block' : 'Pending block inclusion'}
+                        />
+                        <span className="font-mono text-xs px-2.5 py-1 rounded bg-[#09090B] text-[#F4F4F5] border border-white/10 font-semibold shrink-0">
+                          {tx.txNumber}
+                        </span>
+                        <span className="text-[11px] font-mono text-[#71717A] hidden sm:inline">
+                          {tx.timestamp || 'Just now'}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 text-xs text-[#F4F4F5] font-medium flex-wrap">
+                        <span>
+                          {tx.senderName}{' '}
+                          <span className="font-mono text-[11px] text-[#71717A]">
+                            ({truncateAddress(tx.senderAddress)})
+                          </span>
+                        </span>
+                        <ArrowRight className="w-3.5 h-3.5 text-[#71717A] shrink-0" />
+                        <span>
+                          {tx.receiverName}{' '}
+                          <span className="font-mono text-[11px] text-[#71717A]">
+                            ({truncateAddress(tx.receiverAddress)})
+                          </span>
+                        </span>
                       </div>
                     </div>
 
-                    {/* Right: Amount + Fee */}
-                    <div className="text-right shrink-0">
-                      <div className="font-mono font-bold text-sm text-financial leading-tight">
-                        {Number(tx.amount).toFixed(2)} BTC
+                    {/* Right: Amount & Fee */}
+                    <div className="text-left sm:text-right shrink-0">
+                      <div className="text-xl font-mono font-bold leading-tight text-financial">
+                        {Number(tx.amount).toFixed(2)}{' '}
+                        <span className="text-sm font-semibold">BTC</span>
                       </div>
-                      <div className="text-[10px] text-[#71717A] font-mono leading-none mt-0.5">
-                        +0.00045 BTC fee
+                      <div className="text-xs text-[#71717A] font-mono mt-0.5">
+                        Fee: 0.00045 BTC (18 sat/vB)
                       </div>
                     </div>
                   </div>
 
-                  {/* Lower Row: Inline Technical Telemetry */}
-                  <div className="pt-2 border-t border-white/[0.06] font-mono text-[11px] text-[#71717A] flex items-center gap-3 flex-wrap justify-between sm:justify-start">
-                    <div className="flex items-center gap-1">
-                      <span className="text-[#71717A]/70">sig:</span>
-                      <span className="text-[#A1A1AA] hover:text-[#F4F4F5] transition-colors">
-                        {tx.signature.slice(0, 8)}...{tx.signature.slice(-4)}
-                      </span>
+                  {/* TẦNG 2: THAM SỐ MẬT MÃ & KỸ THUẬT (DÀN HÀNG NGANG / GRID) */}
+                  <div className="space-y-2 pt-2.5 border-t border-white/[0.06]">
+                    {/* Signature Box */}
+                    <div className="bg-[#09090B] border border-white/[0.06] px-3 py-2 rounded-lg font-mono text-xs text-[#A1A1AA] flex items-center justify-between gap-2 overflow-hidden">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <span className="text-[#71717A] font-semibold text-[11px] uppercase tracking-wider shrink-0">
+                          SIG:
+                        </span>
+                        <span className="text-[#F4F4F5] truncate tracking-tight" title={tx.signature}>
+                          {tx.signature.slice(0, 24)}...{tx.signature.slice(-8)}
+                        </span>
+                      </div>
                       <button
                         onClick={() => handleCopy(tx.signature, `sig-${tx.id}`)}
-                        className="text-[#71717A] hover:text-[#F4F4F5] p-0.5 rounded transition-colors cursor-pointer"
-                        title={isVi ? 'Sao chép chữ ký' : 'Copy signature'}
+                        className="text-[#71717A] hover:text-[#F4F4F5] p-1 rounded hover:bg-white/5 transition-colors cursor-pointer shrink-0 flex items-center gap-1 text-[11px]"
+                        title={isVi ? 'Sao chép chữ ký đầy đủ' : 'Copy full signature'}
                       >
                         {copiedKey === `sig-${tx.id}` ? (
-                          <Check className="w-3 h-3 text-[#10B981]" />
+                          <>
+                            <Check className="w-3.5 h-3.5 text-[#10B981]" />
+                            <span className="text-[#10B981] text-[10px] hidden sm:inline">Copied</span>
+                          </>
                         ) : (
-                          <Copy className="w-3 h-3" />
+                          <>
+                            <Copy className="w-3.5 h-3.5" />
+                            <span className="text-[#71717A] text-[10px] hidden sm:inline">Copy</span>
+                          </>
                         )}
                       </button>
                     </div>
 
-                    <div className="flex items-center gap-1">
-                      <span className="text-[#71717A]/70">nonce:</span>
-                      <span className="text-[#A1A1AA]">{tx.nonce}</span>
+                    {/* Tech Parameters Grid */}
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 font-mono text-xs">
+                      <div className="bg-[#09090B] border border-white/[0.06] px-2.5 py-1.5 rounded flex items-center justify-between">
+                        <span className="text-[#71717A] text-[11px]">nonce:</span>
+                        <span className="text-[#F4F4F5] font-semibold">{tx.nonce}</span>
+                      </div>
+                      <div className="bg-[#09090B] border border-white/[0.06] px-2.5 py-1.5 rounded flex items-center justify-between">
+                        <span className="text-[#71717A] text-[11px]">size:</span>
+                        <span className="text-[#F4F4F5]">224 Bytes</span>
+                      </div>
+                      <div className="bg-[#09090B] border border-white/[0.06] px-2.5 py-1.5 rounded flex items-center justify-between col-span-2 sm:col-span-1">
+                        <span className="text-[#71717A] text-[11px]">format:</span>
+                        <span className="text-sky-400 text-[11px]">SECP256k1 / SHA-256</span>
+                      </div>
                     </div>
+                  </div>
 
-                    <div className="flex items-center gap-1">
-                      <span className="text-[#71717A]/70">size:</span>
-                      <span className="text-[#A1A1AA]">224 B</span>
-                    </div>
-
-                    <div className="flex items-center gap-1">
-                      <span className="text-[#71717A]/70">fee-rate:</span>
-                      <span className="text-[#A1A1AA]">18 sat/vB</span>
+                  {/* TẦNG 3: TRẠNG THÁI & LÝ DO CHI TIẾT */}
+                  <div className="w-full bg-[#10B981]/10 border border-[#10B981]/25 text-[#10B981] px-3.5 py-2.5 rounded-lg text-xs font-mono flex items-center gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 shrink-0 text-[#10B981]" />
+                    <div className="leading-snug">
+                      <span className="font-semibold uppercase text-[#10B981] mr-1.5">
+                        {isVi ? 'SẴN SÀNG ĐÓNG KHỐI:' : 'READY FOR BLOCK:'}
+                      </span>
+                      <span className="text-[#A1A1AA]">
+                        {isVi
+                          ? 'Đang nằm trong hàng đợi ưu tiên cao của Miner'
+                          : 'In high-priority queue ready for miner inclusion'}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -1025,85 +1085,143 @@ export const MempoolDashboard: React.FC = () => {
           </div>
         </div>
 
-        <div className="p-5 rounded-xl bg-[#0F1014] border border-white/[0.08] space-y-3">
-          <div className="flex items-center justify-between pb-2 border-b border-white/[0.06] text-xs">
-            <span className="font-semibold text-[#F4F4F5]">
-              {vStr.rejectedTransactions} ({rejected.length})
-            </span>
-            <span className="text-[#71717A]">{vStr.droppedFromConsensus}</span>
+        {/* Rejected Transactions Column */}
+        <div className="p-5 sm:p-6 rounded-xl bg-[#0F1014] border border-white/[0.08] space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-white/[0.06] text-xs">
+            <div className="flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-rose-500" />
+              <span className="font-semibold text-[#F4F4F5] text-sm">
+                {vStr.rejectedTransactions} ({rejected.length})
+              </span>
+            </div>
+            <span className="text-[#71717A] font-mono text-[11px]">{vStr.droppedFromConsensus}</span>
           </div>
-          <div className="space-y-2.5 text-xs max-h-80 overflow-y-auto pr-1">
+
+          <div className="space-y-3.5 text-xs max-h-[520px] overflow-y-auto pr-1">
             {rejected.length === 0 ? (
-              <div className="p-5 rounded-lg bg-[#09090B] border border-white/[0.06] text-center text-[#71717A] text-xs">
-                {vStr.noRejected}
+              <div className="p-8 rounded-lg bg-[#09090B] border border-white/[0.06] min-h-[160px] flex flex-col items-center justify-center text-center space-y-2 text-[#71717A] text-xs">
+                <Inbox className="w-8 h-8 text-[#71717A]/40 mb-1" />
+                <div className="font-medium text-[#A1A1AA]">
+                  {vStr.noRejected || (isVi ? 'Chưa có giao dịch nào bị từ chối' : 'No rejected transactions')}
+                </div>
+                <div className="text-[11px] text-[#71717A] max-w-sm leading-relaxed">
+                  {isVi
+                    ? 'Các giao dịch vi phạm chữ ký giả mạo, thiếu số dư hoặc tấn công phát lại sẽ hiển thị tại đây.'
+                    : 'Transactions with forged signatures, insufficient funds, or replay attacks will appear here.'}
+                </div>
               </div>
             ) : (
               rejected.map((tx) => (
                 <div
                   key={tx.id}
-                  className="p-3 rounded-lg bg-[#15161A]/70 border border-rose-500/20 hover:border-rose-500/30 hover:bg-[#15161A] transition-all duration-150 space-y-2"
+                  className="p-4 sm:p-5 rounded-xl bg-[#15161A]/80 border border-rose-500/25 hover:border-rose-500/40 hover:bg-[#15161A] transition-all duration-150 space-y-3.5"
                 >
-                  {/* Upper Row: Status Dot + Badge + Flow --- Amount + Fee */}
-                  <div className="flex items-center justify-between gap-2">
-                    {/* Left: Red Indicator + TX Badge + Flow */}
-                    <div className="flex items-center gap-2 min-w-0">
-                      <span
-                        className="w-2 h-2 rounded-full bg-rose-500 shrink-0"
-                        title={isVi ? 'Giao dịch bị từ chối' : 'Transaction rejected'}
-                      />
-                      <span className="font-mono text-xs bg-[#0F1014] text-[#F4F4F5] px-2 py-0.5 rounded border border-white/[0.06] shrink-0 font-medium">
-                        {tx.txNumber}
-                      </span>
-                      <div className="flex items-center gap-1.5 text-xs font-medium text-[#F4F4F5] truncate">
-                        <span>{tx.senderName}</span>
-                        <ArrowRight className="w-3 h-3 text-[#71717A] shrink-0" />
-                        <span>{tx.receiverName}</span>
+                  {/* TẦNG 1: HEADER & GIÁ TRỊ (Rộng & Rõ ràng) */}
+                  <div className="flex items-start justify-between gap-3 flex-wrap sm:flex-nowrap">
+                    {/* Left: Indicator + TX Tag + Flow with full addresses */}
+                    <div className="space-y-1.5 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span
+                          className="w-2.5 h-2.5 rounded-full bg-rose-500 shrink-0"
+                          title={isVi ? 'Giao dịch bị từ chối' : 'Transaction rejected'}
+                        />
+                        <span className="font-mono text-xs px-2.5 py-1 rounded bg-[#09090B] text-[#F4F4F5] border border-white/10 font-semibold shrink-0">
+                          {tx.txNumber}
+                        </span>
+                        <span className="text-[11px] font-mono text-[#71717A] hidden sm:inline">
+                          {tx.timestamp || 'Just now'}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 text-xs text-[#F4F4F5] font-medium flex-wrap">
+                        <span>
+                          {tx.senderName}{' '}
+                          <span className="font-mono text-[11px] text-[#71717A]">
+                            ({truncateAddress(tx.senderAddress)})
+                          </span>
+                        </span>
+                        <ArrowRight className="w-3.5 h-3.5 text-[#71717A] shrink-0" />
+                        <span>
+                          {tx.receiverName}{' '}
+                          <span className="font-mono text-[11px] text-[#71717A]">
+                            ({truncateAddress(tx.receiverAddress)})
+                          </span>
+                        </span>
                       </div>
                     </div>
 
-                    {/* Right: Amount */}
-                    <div className="text-right shrink-0">
-                      <div className="font-mono font-bold text-sm text-rose-400 leading-tight">
-                        {Number(tx.amount).toFixed(2)} BTC
+                    {/* Right: Amount & Fee */}
+                    <div className="text-left sm:text-right shrink-0">
+                      <div className="text-xl font-mono font-bold leading-tight text-rose-400">
+                        {Number(tx.amount).toFixed(2)}{' '}
+                        <span className="text-sm font-semibold">BTC</span>
                       </div>
-                      <div className="text-[10px] text-[#71717A] font-mono leading-none mt-0.5">
-                        +0.00045 BTC fee
+                      <div className="text-xs text-[#71717A] font-mono mt-0.5">
+                        Fee: 0.00045 BTC (18 sat/vB)
                       </div>
                     </div>
                   </div>
 
-                  {/* Lower Row: Rejection Reason Badge + Telemetry */}
-                  <div className="pt-2 border-t border-white/[0.06] font-mono text-[11px] text-[#71717A] flex items-center gap-2.5 flex-wrap justify-between sm:justify-start">
-                    <div className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono font-medium text-rose-400 bg-rose-500/10 border border-rose-500/20">
-                      {tx.rejectionReason || (isVi ? 'Từ chối xác thực' : 'Validation Failed')}
-                    </div>
-
-                    <div className="flex items-center gap-1">
-                      <span className="text-[#71717A]/70">sig:</span>
-                      <span className="text-[#A1A1AA] hover:text-[#F4F4F5] transition-colors">
-                        {tx.signature.slice(0, 8)}...{tx.signature.slice(-4)}
-                      </span>
+                  {/* TẦNG 2: THAM SỐ MẬT MÃ & KỸ THUẬT (DÀN HÀNG NGANG / GRID) */}
+                  <div className="space-y-2 pt-2.5 border-t border-white/[0.06]">
+                    {/* Signature Box */}
+                    <div className="bg-[#09090B] border border-white/[0.06] px-3 py-2 rounded-lg font-mono text-xs text-[#A1A1AA] flex items-center justify-between gap-2 overflow-hidden">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <span className="text-[#71717A] font-semibold text-[11px] uppercase tracking-wider shrink-0">
+                          SIG:
+                        </span>
+                        <span className="text-[#F4F4F5] truncate tracking-tight" title={tx.signature}>
+                          {tx.signature.slice(0, 24)}...{tx.signature.slice(-8)}
+                        </span>
+                      </div>
                       <button
                         onClick={() => handleCopy(tx.signature, `sig-${tx.id}`)}
-                        className="text-[#71717A] hover:text-[#F4F4F5] p-0.5 rounded transition-colors cursor-pointer"
-                        title={isVi ? 'Sao chép chữ ký' : 'Copy signature'}
+                        className="text-[#71717A] hover:text-[#F4F4F5] p-1 rounded hover:bg-white/5 transition-colors cursor-pointer shrink-0 flex items-center gap-1 text-[11px]"
+                        title={isVi ? 'Sao chép chữ ký đầy đủ' : 'Copy full signature'}
                       >
                         {copiedKey === `sig-${tx.id}` ? (
-                          <Check className="w-3 h-3 text-[#10B981]" />
+                          <>
+                            <Check className="w-3.5 h-3.5 text-[#10B981]" />
+                            <span className="text-[#10B981] text-[10px] hidden sm:inline">Copied</span>
+                          </>
                         ) : (
-                          <Copy className="w-3 h-3" />
+                          <>
+                            <Copy className="w-3.5 h-3.5" />
+                            <span className="text-[#71717A] text-[10px] hidden sm:inline">Copy</span>
+                          </>
                         )}
                       </button>
                     </div>
 
-                    <div className="flex items-center gap-1">
-                      <span className="text-[#71717A]/70">nonce:</span>
-                      <span className="text-[#A1A1AA]">{tx.nonce}</span>
+                    {/* Tech Parameters Grid */}
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 font-mono text-xs">
+                      <div className="bg-[#09090B] border border-white/[0.06] px-2.5 py-1.5 rounded flex items-center justify-between">
+                        <span className="text-[#71717A] text-[11px]">nonce:</span>
+                        <span className="text-[#F4F4F5] font-semibold">{tx.nonce}</span>
+                      </div>
+                      <div className="bg-[#09090B] border border-white/[0.06] px-2.5 py-1.5 rounded flex items-center justify-between">
+                        <span className="text-[#71717A] text-[11px]">size:</span>
+                        <span className="text-[#F4F4F5]">224 Bytes</span>
+                      </div>
+                      <div className="bg-[#09090B] border border-white/[0.06] px-2.5 py-1.5 rounded flex items-center justify-between col-span-2 sm:col-span-1">
+                        <span className="text-[#71717A] text-[11px]">format:</span>
+                        <span className="text-sky-400 text-[11px]">SECP256k1 / SHA-256</span>
+                      </div>
                     </div>
+                  </div>
 
-                    <div className="flex items-center gap-1">
-                      <span className="text-[#71717A]/70">size:</span>
-                      <span className="text-[#A1A1AA]">224 B</span>
+                  {/* TẦNG 3: TRẠNG THÁI & LÝ DO CHI TIẾT */}
+                  <div className="w-full bg-rose-500/10 border border-rose-500/25 text-rose-400 px-3.5 py-2.5 rounded-lg text-xs font-mono flex items-start sm:items-center gap-2.5">
+                    <AlertOctagon className="w-4 h-4 shrink-0 text-rose-400 mt-0.5 sm:mt-0" />
+                    <div className="leading-snug">
+                      <span className="font-semibold uppercase text-rose-300 mr-1.5">
+                        {isVi ? 'LÝ DO TỪ CHỐI:' : 'REJECTION REASON:'}
+                      </span>
+                      <span>
+                        {tx.rejectionReason ||
+                          (isVi
+                            ? 'Chữ ký ECDSA không hợp lệ hoặc dữ liệu bị sửa đổi'
+                            : 'Invalid ECDSA signature or payload tampered')}
+                      </span>
                     </div>
                   </div>
                 </div>

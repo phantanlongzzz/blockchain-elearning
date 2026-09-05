@@ -143,16 +143,16 @@ export const PropertiesSection: React.FC = () => {
             </div>
 
             {/* Avalanche Visual Card */}
-            <div className="bg-[#090A0F] rounded-lg p-4 border border-[#1C2430] space-y-2 font-sans text-xs">
-              <div className="flex justify-between items-center text-[#F2F4F7]">
+            <div className="bg-[#070A12] rounded-xl p-4 border border-white/[0.06] space-y-2 font-sans text-xs">
+              <div className="flex justify-between items-center text-[#F4F4F5]">
                 <span>{strings.properties.prop3InputLabel} <span className="font-mono text-white">"Hello World"</span></span>
                 <span className="text-teach-1 font-mono">77e35c71...</span>
               </div>
-              <div className="flex justify-between items-center text-[#F2F4F7]">
-                <span>{strings.properties.prop3InputLabel} <span className="font-mono text-white">"Hello world"</span> <span className="text-[#F59E0B] font-medium">(1 char diff)</span></span>
-                <span className="text-[#F59E0B] font-mono">a93f18c2...</span>
+              <div className="flex justify-between items-center text-[#F4F4F5]">
+                <span>{strings.properties.prop3InputLabel} <span className="font-mono text-white">"Hello world"</span> <span className="text-purple-400 font-medium font-mono text-[11px]">(1 char diff)</span></span>
+                <span className="text-purple-400 font-mono">a93f18c2...</span>
               </div>
-              <div className="pt-2 border-t border-[#1C2430] flex items-center justify-between text-[#F59E0B] font-semibold font-sans">
+              <div className="pt-2 border-t border-white/[0.06] flex items-center justify-between text-teach-1 font-semibold font-sans">
                 <span>{strings.properties.prop3ObservedDist}</span>
                 <span className="font-mono">~128 / 256 bits changed (~50%)</span>
               </div>

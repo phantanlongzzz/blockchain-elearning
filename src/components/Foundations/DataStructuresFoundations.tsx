@@ -53,32 +53,32 @@ export const DataStructuresFoundations: React.FC = () => {
     {
       id: 'pythonList',
       num: '01',
-      title: { vi: 'Python List', en: 'Python List' },
+      title: { vi: 'Mảng RAM', en: 'RAM Array' },
     },
     {
       id: 'linkedList',
       num: '02',
-      title: { vi: 'Danh Sách Liên Kết', en: 'Linked List' },
+      title: { vi: 'Linked List', en: 'Linked List' },
     },
     {
       id: 'vsBlockchain',
       num: '03',
-      title: { vi: 'Chuyển Đổi', en: 'Morphing' },
+      title: { vi: 'Con trỏ Hash', en: 'Hash Pointer' },
     },
     {
       id: 'tamperLab',
       num: '04',
-      title: { vi: 'Kháng Giả Mạo', en: 'Tamper Lab' },
+      title: { vi: 'Chống giả mạo', en: 'Tamper Resistance' },
     },
     {
       id: 'cryptography',
       num: '05',
-      title: { vi: 'Mật Mã Học', en: 'Cryptography' },
+      title: { vi: 'Mật mã', en: 'Cryptography' },
     },
     {
       id: 'pipeline',
       num: '06',
-      title: { vi: 'Mô Phỏng Toàn Cảnh', en: 'Master Pipeline' },
+      title: { vi: 'Tổng kết', en: 'Summary' },
     },
   ];
 
@@ -90,50 +90,41 @@ export const DataStructuresFoundations: React.FC = () => {
   return (
     <section
       id="foundations"
-      className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-8"
+      className="py-6 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-6"
     >
       {/* Section Header */}
-      <div className="space-y-3">
-        <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-zinc-800/80">
-          <div className="flex items-center gap-2.5">
-            <span className="text-xs font-mono text-zinc-400 font-medium tracking-wide">
-              {strings.foundations.badge}
-            </span>
-            <span className="text-zinc-600 text-xs">·</span>
-            <span className="text-xs font-mono text-zinc-500">
-              {strings.foundations.levelBadge}
-            </span>
-          </div>
+      <div className="space-y-1.5 pb-2">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h1 className="text-base font-semibold text-white tracking-tight">
+            {language === 'vi' ? '2.1 Cấu trúc Dữ liệu Nền tảng' : '2.1 Foundational Data Structures'}
+          </h1>
 
-          <div className="flex items-center gap-3 text-xs font-mono text-zinc-400">
+          <div className="flex items-center gap-2 text-xs font-mono text-slate-400">
             <span>
               {language === 'vi' ? 'Tiến độ:' : 'Progress:'}{' '}
-              <strong className="text-zinc-200 font-semibold">{progressPercent}%</strong>{' '}
+              <strong className="text-slate-200 font-medium">{progressPercent}%</strong>{' '}
               ({currentStageIndex + 1}/{STAGES.length})
             </span>
             {learningProgress?.foundations && (
-              <span className="inline-flex items-center gap-1 text-text-primary">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                {language === 'vi' ? 'Đã lưu tương tác' : 'Saved'}
+              <span className="inline-flex items-center gap-1 text-success">
+                <span className="w-1.5 h-1.5 rounded-full bg-success"></span>
+                {language === 'vi' ? 'Đã lưu' : 'Saved'}
               </span>
             )}
           </div>
         </div>
 
-        <div className="space-y-2">
-          <h2 className="text-2xl sm:text-3xl font-semibold text-zinc-100 tracking-tight">
-            {strings.foundations.title}
-          </h2>
-          <p className="text-sm text-zinc-400 leading-relaxed max-w-3xl">
-            {strings.foundations.subtitle}
-          </p>
-        </div>
+        <p className="text-xs text-slate-400 leading-relaxed max-w-4xl">
+          {language === 'vi'
+            ? 'So sánh tính toàn vẹn giữa Mảng tuần tự (RAM), Danh sách liên kết và Con trỏ mã băm.'
+            : 'Compare integrity between Sequential RAM Arrays, Linked Lists, and Hash Pointers.'}
+        </p>
       </div>
 
-      {/* Modern Compact Stage Navigation Toolbar */}
-      <div className="bg-[#090a0f] p-1.5 rounded-xl border border-zinc-800/80">
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-1">
-          {STAGES.map((stage, idx) => {
+      {/* Modern Compact Stepper 6 Steps */}
+      <div className="bg-[#0B101E]/90 p-1.5 rounded-xl border border-white/[0.08]">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-1.5">
+          {STAGES.map((stage) => {
             const isActive = activeStage === stage.id;
             const isDone = completedStages[stage.id];
 
@@ -142,34 +133,34 @@ export const DataStructuresFoundations: React.FC = () => {
                 key={stage.id}
                 type="button"
                 onClick={() => handleStageChange(stage.id)}
-                className={`px-3 py-2.5 rounded-lg text-left transition-all duration-150 cursor-pointer flex items-center justify-between gap-2 ${
+                className={`px-3 py-2 rounded-lg text-left transition-all duration-150 cursor-pointer flex items-center justify-between gap-2 ${
                   isActive
-                    ? 'bg-zinc-800/90 text-zinc-100 border border-zinc-700 shadow-sm'
-                    : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/60 border border-transparent'
+                    ? 'bg-slate-800/90 text-white border border-cyan-500/40 shadow-sm ring-1 ring-cyan-500/20'
+                    : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04] border border-transparent'
                 }`}
               >
                 <div className="flex items-center gap-2 min-w-0">
                   <span
-                    className={`text-[11px] font-mono shrink-0 font-medium ${
+                    className={`text-xs font-mono shrink-0 font-medium ${
                       isActive
-                        ? 'text-text-primary'
+                        ? 'text-cyan-400'
                         : isDone
-                        ? 'text-zinc-500'
-                        : 'text-zinc-600'
+                        ? 'text-slate-500'
+                        : 'text-slate-600'
                     }`}
                   >
                     {stage.num}
                   </span>
-                  <span className="text-xs font-medium truncate">
+                  <span className="text-xs font-medium truncate font-mono">
                     {stage.title[language]}
                   </span>
                 </div>
 
                 {isDone && !isActive && (
-                  <Check className="w-3 h-3 text-zinc-500 shrink-0" />
+                  <Check className="w-3 h-3 text-slate-500 shrink-0" />
                 )}
                 {isActive && (
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shrink-0"></span>
                 )}
               </button>
             );
@@ -221,37 +212,6 @@ export const DataStructuresFoundations: React.FC = () => {
           />
         )}
         {activeStage === 'theoryToPractice' && <TheoryToPracticeBridge />}
-      </div>
-
-      {/* Minimal Footer Lab Bridge */}
-      <div className="p-4 rounded-xl bg-[#090a0f] border border-zinc-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div className="space-y-0.5">
-          <div className="text-xs font-mono text-zinc-400 font-medium">
-            {language === 'vi' ? 'Tiếp nối:' : 'Next module:'}{' '}
-            <span className="text-zinc-200">
-              {language === 'vi'
-                ? 'Phòng Thí Nghiệm SHA-256 (64 Vòng Lặp & Ma Trận Băm)'
-                : 'SHA-256 Deep Laboratory (64 Compression Rounds)'}
-            </span>
-          </div>
-          <p className="text-xs text-zinc-500">
-            {language === 'vi'
-              ? 'Quan sát trực tiếp thanh ghi A-H và hằng số K_t theo chuẩn FIPS 180-4.'
-              : 'Inspect internal registers A-H and round constants K_t per FIPS 180-4.'}
-          </p>
-        </div>
-
-        <a
-          href="#hash-generator"
-          className="px-3.5 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 hover:text-white border border-zinc-700 text-xs font-mono font-medium flex items-center justify-center gap-1.5 transition-colors shrink-0"
-        >
-          <span>
-            {language === 'vi'
-              ? 'Mở Phòng Thí Nghiệm SHA-256'
-              : 'Open SHA-256 Laboratory'}
-          </span>
-          <ArrowRight className="w-3.5 h-3.5 text-zinc-400" />
-        </a>
       </div>
     </section>
   );

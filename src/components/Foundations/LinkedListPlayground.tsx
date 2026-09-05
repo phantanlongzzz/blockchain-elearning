@@ -162,21 +162,16 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
   };
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-200">
+    <div className="space-y-4 animate-in fade-in duration-200">
       {/* Header */}
-      <div className="p-5 rounded-xl bg-[#090a0f] border border-zinc-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="p-4 rounded-xl bg-[#0B101E]/80 border border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="space-y-1">
-          <div className="text-xs font-mono text-zinc-500 font-medium">
-            {language === 'vi'
-              ? 'Giai đoạn 02 · Cấu trúc liên kết động'
-              : 'Stage 02 · Dynamic Linked Structure'}
-          </div>
-          <h3 className="text-lg font-semibold text-zinc-100">
+          <h3 className="text-sm font-semibold text-white">
             {language === 'vi'
               ? 'Danh sách liên kết (Linked List)'
               : 'Linked List Data Structure'}
           </h3>
-          <p className="text-xs text-zinc-400 max-w-2xl leading-relaxed">
+          <p className="text-xs text-slate-400 max-w-2xl leading-relaxed">
             {language === 'vi'
               ? 'Mỗi phần tử là một Nút (Node) chứa Dữ liệu (DATA) và Con trỏ (NEXT) trỏ tới địa chỉ ô nhớ của nút tiếp theo.'
               : 'Each element is a Node containing payload (DATA) and a reference pointer (NEXT) pointing to the next node in memory.'}
@@ -187,7 +182,7 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
           <button
             type="button"
             onClick={handleLoadSushiExample}
-            className="px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white border border-zinc-700 text-xs font-mono font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
+            className="px-3 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white border border-white/10 text-xs font-mono font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
           >
             <Utensils className="w-3.5 h-3.5" />
             <span>{strings.foundations.linkedList.sushiExampleBtn}</span>
@@ -195,7 +190,7 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
           <button
             type="button"
             onClick={handleReset}
-            className="px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white border border-zinc-700 text-xs font-mono font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
+            className="px-3 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white border border-white/10 text-xs font-mono font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             <span>{strings.foundations.linkedList.reset}</span>
@@ -494,22 +489,16 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
       )}
 
       {/* Navigation Footer */}
-      <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3">
-        <span className="text-xs font-mono text-zinc-500">
-          {language === 'vi'
-            ? 'Tiếp theo: Quan sát cách Linked List chuyển đổi thành Blockchain'
-            : 'Next: Observe the visual transformation from Linked List to Blockchain'}
-        </span>
-
+      <div className="pt-2 flex items-center justify-end">
         <button
           type="button"
           onClick={onNextStage}
-          className="w-full sm:w-auto px-4 py-2 rounded-lg bg-zinc-100 hover:bg-white text-zinc-900 font-semibold font-mono text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer"
+          className="px-4 py-2 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold font-mono text-xs flex items-center gap-1.5 transition-colors shadow-sm cursor-pointer"
         >
           <span>
             {language === 'vi'
-              ? 'Tiếp tục sang Chuyển Đổi Blockchain'
-              : 'Continue to Morphing'}
+              ? 'Tiếp tục: Con trỏ Hash'
+              : 'Continue: Hash Pointer'}
           </span>
           <ArrowRight className="w-3.5 h-3.5" />
         </button>

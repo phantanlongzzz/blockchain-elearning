@@ -16,14 +16,11 @@ export const PythonListPlayground: React.FC<PythonListPlaygroundProps> = ({
 }) => {
   const { strings, language } = useLanguage();
   const [items, setItems] = useState<PythonListItem[]>(INITIAL_PYTHON_LIST_ITEMS);
-  const [newValue, setNewValue] = useState('D');
+  const [newValue, setNewValue] = useState('serve');
   const [newType, setNewType] = useState<'int' | 'float' | 'str' | 'bool'>('str');
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [editValue, setEditValue] = useState('');
   const [lastOperation, setLastOperation] = useState<string>('my_list = ["prepare", "roll", "assemble"]');
-
-  // Challenge tracking: user modifies element in the middle
-  const [challengeCompleted, setChallengeCompleted] = useState<boolean>(false);
 
   // Progressive disclosure mode: 'visual' | 'example' | 'code'
   const [viewMode, setViewMode] = useState<'visual' | 'example' | 'code'>('visual');
@@ -87,27 +84,17 @@ export const PythonListPlayground: React.FC<PythonListPlaygroundProps> = ({
     const displayVal = currentItem.type === 'str' ? `"${parsedVal}"` : String(parsedVal);
     setLastOperation(`my_list[${index}] = ${displayVal}`);
     setEditingIndex(null);
-
-    // If edited an element in between index > 0 and index < items.length - 1
-    if (index > 0 && index < items.length - 1) {
-      setChallengeCompleted(true);
-    } else if (items.length <= 2 && index === 0) {
-      setChallengeCompleted(true);
-    }
-
     onInteracted?.();
   };
 
   const handleQuickModifyBtoX = () => {
-    // Demo B -> X transformation directly
     const demoItems: PythonListItem[] = [
-      { id: 'demo-1', value: 'A', type: 'str' },
+      { id: 'demo-1', value: 'prepare', type: 'str' },
       { id: 'demo-2', value: 'X', type: 'str' },
-      { id: 'demo-3', value: 'C', type: 'str' },
+      { id: 'demo-3', value: 'assemble', type: 'str' },
     ];
     setItems(demoItems);
-    setLastOperation('my_list[1] = "X"  # Đổi B thành X trong tích tắc');
-    setChallengeCompleted(true);
+    setLastOperation('my_list[1] = "X"  # Đổi giá trị tại ô 0x0800 thành "X" trực tiếp');
     onInteracted?.();
   };
 
@@ -115,297 +102,275 @@ export const PythonListPlayground: React.FC<PythonListPlaygroundProps> = ({
     setItems(INITIAL_PYTHON_LIST_ITEMS);
     setLastOperation('my_list = ["prepare", "roll", "assemble"]');
     setEditingIndex(null);
-    setChallengeCompleted(false);
   };
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-200">
-      {/* Header */}
-      <div className="p-5 rounded-xl bg-[#090a0f] border border-zinc-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="space-y-1">
-          <div className="text-xs font-mono text-zinc-500 font-medium">
-            {language === 'vi'
-              ? 'Giai đoạn 01 · Cấu trúc mảng động'
-              : 'Stage 01 · Dynamic Array Structure'}
-          </div>
-          <h3 className="text-lg font-semibold text-zinc-100">
-            {language === 'vi'
-              ? 'Danh sách Python (Python List)'
-              : 'Python List Data Structure'}
-          </h3>
-          <p className="text-xs text-zinc-400 max-w-2xl leading-relaxed">
-            {language === 'vi'
-              ? 'Lưu trữ các phần tử liên tiếp trong bộ nhớ RAM. Do tính dễ thay đổi (mutability), dữ liệu có thể bị sửa mà không có cơ chế phát hiện tự động.'
-              : 'Stores contiguous elements in memory. Due to list mutability, items can be modified in place without cryptographic audit traces.'}
-          </p>
+    <div className="space-y-4 animate-in fade-in duration-200">
+      {/* Tab Switcher & Quick Actions */}
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/[0.08] pb-2">
+        <div className="flex items-center gap-1.5">
+          <button
+            type="button"
+            onClick={() => setViewMode('visual')}
+            className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-colors cursor-pointer ${
+              viewMode === 'visual'
+                ? 'bg-slate-800 text-cyan-400 border border-cyan-500/30 shadow-sm'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
+            }`}
+          >
+            {language === 'vi' ? '1. Trình gỡ lỗi RAM' : '1. RAM Memory Inspector'}
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setViewMode('example')}
+            className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-colors cursor-pointer ${
+              viewMode === 'example'
+                ? 'bg-slate-800 text-cyan-400 border border-cyan-500/30 shadow-sm'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
+            }`}
+          >
+            {language === 'vi' ? '2. So sánh sổ tay' : '2. Scratchpad Metaphor'}
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setViewMode('code')}
+            className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-colors cursor-pointer ${
+              viewMode === 'code'
+                ? 'bg-slate-800 text-cyan-400 border border-cyan-500/30 shadow-sm'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
+            }`}
+          >
+            {language === 'vi' ? '3. Mã Python 3.12' : '3. Python Source'}
+          </button>
         </div>
 
         <button
           type="button"
           onClick={handleReset}
-          className="px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white border border-zinc-700 text-xs font-mono font-medium flex items-center gap-1.5 transition-colors self-start sm:self-auto cursor-pointer"
+          className="px-2.5 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white border border-white/10 text-xs font-mono flex items-center gap-1.5 transition-colors cursor-pointer"
         >
           <RefreshCw className="w-3.5 h-3.5" />
           <span>{language === 'vi' ? 'Đặt lại' : 'Reset'}</span>
         </button>
       </div>
 
-      {/* Tabs */}
-      <div className="flex items-center gap-1 border-b border-zinc-800 pb-2">
-        <button
-          type="button"
-          onClick={() => setViewMode('visual')}
-          className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-colors cursor-pointer ${
-            viewMode === 'visual'
-              ? 'bg-zinc-800 text-zinc-100 border border-zinc-700'
-              : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/60'
-          }`}
-        >
-          {language === 'vi' ? '1. Mô phỏng bộ nhớ' : '1. Memory Simulation'}
-        </button>
-
-        <button
-          type="button"
-          onClick={() => setViewMode('example')}
-          className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-colors cursor-pointer ${
-            viewMode === 'example'
-              ? 'bg-zinc-800 text-zinc-100 border border-zinc-700'
-              : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/60'
-          }`}
-        >
-          {language === 'vi' ? '2. Ví dụ so sánh' : '2. Real-World Metaphor'}
-        </button>
-
-        <button
-          type="button"
-          onClick={() => setViewMode('code')}
-          className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-colors cursor-pointer ${
-            viewMode === 'code'
-              ? 'bg-zinc-800 text-zinc-100 border border-zinc-700'
-              : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/60'
-          }`}
-        >
-          {language === 'vi' ? '3. Code Python' : '3. Python Code'}
-        </button>
-      </div>
-
-      {/* Mode 1: Visual Interactive RAM Array Simulator */}
+      {/* Mode 1: Memory Debugger (Memory Inspector) */}
       {viewMode === 'visual' && (
-        <div className="p-6 rounded-xl bg-[#090a0f] border border-zinc-800 space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-zinc-800/80">
-            <div>
-              <div className="text-xs font-mono text-zinc-300 font-medium flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                <span>{strings.foundations.pythonList.currentList} ({items.length} {language === 'vi' ? 'phần tử' : 'elements'})</span>
+        <div className="space-y-4">
+          {/* Memory Inspector Container */}
+          <div className="bg-[#0B101E]/80 border border-white/[0.08] rounded-xl p-4 space-y-4">
+            {/* Header / Sub-toolbar */}
+            <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-white/[0.06]">
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+                <span className="text-xs font-mono font-semibold text-slate-200 uppercase tracking-wide">
+                  Memory Inspector · RAM Address Space
+                </span>
+                <span className="text-[11px] font-mono text-slate-500">
+                  ({items.length} slots · 0x0400..0x{((items.length) * 1024).toString(16).toUpperCase().padStart(4, '0')})
+                </span>
               </div>
-              <p className="text-xs text-zinc-500 mt-0.5">
-                {language === 'vi'
-                  ? 'Địa chỉ ô nhớ RAM tăng dần tuần tự theo kích thước từng kiểu dữ liệu.'
-                  : 'Contiguous RAM slots allocated sequentially for each array element.'}
-              </p>
+
+              <button
+                type="button"
+                onClick={handleQuickModifyBtoX}
+                className="px-2.5 py-1 rounded-md bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-mono flex items-center gap-1.5 transition-colors cursor-pointer"
+              >
+                <Edit3 className="w-3.5 h-3.5" />
+                <span>{language === 'vi' ? 'Thử đổi [1] → "X"' : 'Quick Test: [1] → "X"'}</span>
+              </button>
             </div>
 
-            <button
-              type="button"
-              onClick={handleQuickModifyBtoX}
-              className="px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-zinc-300 hover:text-white text-xs font-mono font-medium flex items-center gap-1.5 transition-colors cursor-pointer shrink-0"
-            >
-              <Edit3 className="w-3.5 h-3.5" />
-              <span>{language === 'vi' ? 'Thử đổi [1] → "X"' : 'Quick Demo: [1] → "X"'}</span>
-            </button>
-          </div>
-
-          {/* Array Visualization */}
-          <div className="p-4 rounded-lg bg-black/40 border border-zinc-800/80 min-h-[130px] flex items-center overflow-x-auto">
+            {/* Memory Slots Grid */}
             {items.length === 0 ? (
-              <div className="w-full text-center text-xs font-mono text-zinc-600 py-6">
-                [ ] (Danh sách rỗng)
+              <div className="p-8 text-center text-xs font-mono text-slate-500 border border-dashed border-white/[0.08] rounded-lg">
+                [ ] Danh sách rỗng / Empty Buffer
               </div>
             ) : (
-              <div className="flex items-center gap-2.5 w-full pb-1">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                 {items.map((item, idx) => {
                   const isEditing = editingIndex === idx;
-                  const isMiddle = idx > 0 && idx < items.length - 1;
+                  const hexAddr = `0x${((idx + 1) * 1024).toString(16).toUpperCase().padStart(4, '0')}`;
+                  const isIndex1 = idx === 1;
 
                   return (
                     <div
                       key={item.id}
-                      className="flex flex-col items-center shrink-0"
+                      className={`p-3.5 rounded-lg border transition-all font-mono text-xs flex flex-col justify-between ${
+                        isEditing
+                          ? 'bg-slate-900/90 border-cyan-500/60 ring-1 ring-cyan-500/30'
+                          : isIndex1 && item.value === 'X'
+                          ? 'bg-amber-500/[0.04] border-amber-500/40'
+                          : 'bg-slate-900/50 border-white/[0.08] hover:border-white/20'
+                      }`}
                     >
-                      <div className="text-[10px] font-mono text-zinc-500 mb-1 flex items-center gap-1">
-                        <span>[{idx}]</span>
-                        {isMiddle && (
-                          <span className="text-[9px] text-amber-400">· giữa</span>
-                        )}
+                      {/* Slot Header: [ Index: 0 ] [ Addr: 0x0400 ] [ Type: str ] */}
+                      <div className="flex items-center justify-between gap-1 pb-2 mb-2 border-b border-white/[0.06] text-[11px]">
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-cyan-400 font-bold">Index: {idx}</span>
+                          <span className="text-slate-600">·</span>
+                          <span className="text-slate-400">Addr: {hexAddr}</span>
+                        </div>
+                        <span className="px-1.5 py-0.5 rounded bg-white/[0.04] border border-white/[0.06] text-slate-400 text-[10px]">
+                          Type: {item.type}
+                        </span>
                       </div>
 
-                      <div
-                        className={`w-28 p-2.5 rounded-lg border transition-colors ${
-                          isEditing
-                            ? 'bg-zinc-900 border-border-primary ring-1 ring-white/20'
-                            : 'bg-zinc-900/90 border-zinc-800 hover:border-zinc-700'
-                        }`}
-                      >
-                        <div className="flex items-center justify-between text-[10px] font-mono text-zinc-500 mb-1.5">
-                          <span>0x{((idx + 1) * 1024).toString(16)}</span>
-                          <span className="text-zinc-400 font-medium">
-                            {item.type}
-                          </span>
-                        </div>
-
-                        {isEditing ? (
-                          <div className="space-y-1.5">
-                            <input
-                              type="text"
-                              value={editValue}
-                              onChange={(e) => setEditValue(e.target.value)}
-                              className="w-full px-2 py-1 rounded bg-black border border-border-primary text-zinc-100 font-mono text-xs font-medium focus:outline-none focus:ring-1 focus:ring-white/20"
-                              autoFocus
-                            />
-                            <div className="flex items-center gap-1">
-                              <button
-                                type="button"
-                                onClick={() => handleSaveEdit(idx)}
-                                className="flex-1 py-0.5 rounded bg-emerald-500 hover:bg-emerald-400 text-black text-[10px] font-bold font-mono transition-colors"
-                              >
-                                {language === 'vi' ? 'Lưu' : 'Save'}
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() => setEditingIndex(null)}
-                                className="px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-400 hover:text-white text-[10px] font-mono"
-                              >
-                                {language === 'vi' ? 'Hủy' : 'Cancel'}
-                              </button>
-                            </div>
+                      {/* Slot Body Value */}
+                      {isEditing ? (
+                        <div className="space-y-2 py-1">
+                          <input
+                            type="text"
+                            value={editValue}
+                            onChange={(e) => setEditValue(e.target.value)}
+                            className="w-full px-2.5 py-1.5 rounded bg-black/80 border border-cyan-500/50 text-white font-mono text-xs focus:outline-none focus:ring-1 focus:ring-cyan-400"
+                            autoFocus
+                          />
+                          <div className="flex items-center gap-1.5">
+                            <button
+                              type="button"
+                              onClick={() => handleSaveEdit(idx)}
+                              className="flex-1 py-1 rounded bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold font-mono text-[11px] transition-colors cursor-pointer"
+                            >
+                              {language === 'vi' ? 'Lưu' : 'Save'}
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setEditingIndex(null)}
+                              className="px-2 py-1 rounded bg-slate-800 text-slate-400 hover:text-white text-[11px] font-mono transition-colors cursor-pointer"
+                            >
+                              {language === 'vi' ? 'Hủy' : 'Cancel'}
+                            </button>
                           </div>
-                        ) : (
-                          <div className="space-y-1.5">
-                            <div className="font-mono text-xs font-medium text-zinc-100 truncate text-center py-1 bg-black/50 rounded border border-zinc-800/80">
+                        </div>
+                      ) : (
+                        <div className="space-y-2 py-1">
+                          <div className="flex items-center justify-between gap-2 p-2 bg-black/40 rounded border border-white/[0.04]">
+                            <span className="text-slate-500 text-[11px]">Value:</span>
+                            <span className={`font-mono text-xs font-medium truncate ${item.value === 'X' ? 'text-amber-300 font-bold' : 'text-slate-200'}`}>
                               {item.type === 'str' ? `"${item.value}"` : String(item.value)}
+                            </span>
+                          </div>
+
+                          <div className="flex items-center justify-between gap-2 pt-1">
+                            <div className="flex items-center gap-1">
+                              {isIndex1 && (
+                                <button
+                                  type="button"
+                                  onClick={handleQuickModifyBtoX}
+                                  title={language === 'vi' ? 'Đổi thành "X"' : 'Change to "X"'}
+                                  className="px-2 py-0.5 rounded bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 text-[10px] font-mono border border-amber-500/30 transition-colors cursor-pointer"
+                                >
+                                  Đổi [1]→'X'
+                                </button>
+                              )}
                             </div>
 
-                            <div className="flex items-center justify-center gap-2 pt-1">
+                            <div className="flex items-center gap-2">
                               <button
                                 type="button"
                                 onClick={() => handleStartEdit(idx)}
                                 title={language === 'vi' ? 'Sửa' : 'Edit'}
-                                className="text-zinc-500 hover:text-zinc-200 transition-colors cursor-pointer"
+                                className="text-slate-400 hover:text-cyan-400 p-1 transition-colors cursor-pointer"
                               >
-                                <Edit3 className="w-3 h-3" />
+                                <Edit3 className="w-3.5 h-3.5" />
                               </button>
                               <button
                                 type="button"
                                 onClick={() => handleDeleteItem(idx)}
                                 title={language === 'vi' ? 'Xóa' : 'Delete'}
-                                className="text-zinc-500 hover:text-rose-400 transition-colors cursor-pointer"
+                                className="text-slate-400 hover:text-rose-400 p-1 transition-colors cursor-pointer"
                               >
-                                <Trash2 className="w-3 h-3" />
+                                <Trash2 className="w-3.5 h-3.5" />
                               </button>
                             </div>
                           </div>
-                        )}
-                      </div>
+                        </div>
+                      )}
                     </div>
                   );
                 })}
               </div>
             )}
-          </div>
 
-          {/* Minimal Status Note */}
-          <div className="p-3.5 rounded-lg bg-zinc-900/60 border border-zinc-800 text-xs leading-relaxed space-y-1">
-            <div className="flex items-center gap-2 font-mono font-medium text-xs">
-              <span className={`w-1.5 h-1.5 rounded-full ${challengeCompleted ? 'bg-emerald-400' : 'bg-amber-400'}`}></span>
-              <span className={challengeCompleted ? 'text-success' : 'text-amber-400'}>
-                {challengeCompleted
-                  ? language === 'vi'
-                    ? 'Đã quan sát: Phần tử bị thay đổi trực tiếp trong RAM'
-                    : 'Observed: Element mutated directly in RAM'
-                  : language === 'vi'
-                  ? 'Thử thách: Thử chỉnh sửa hoặc xóa một phần tử ở giữa'
-                  : 'Observation test: Try modifying an element in the middle'}
-              </span>
+            {/* Anti-Overexplaining 1-Line Callout Alert */}
+            <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs font-mono">
+              <span>⚠️ Rủi ro Mutability: Các ô nhớ RAM độc lập không có cơ chế phát hiện sửa đổi.</span>
             </div>
-            <p className="text-zinc-400 text-xs">
-              {language === 'vi'
-                ? 'Trong Python List, bất kỳ ai có quyền truy cập bộ nhớ đều có thể ghi đè dữ liệu ở chỉ số bất kỳ mà không làm thay đổi các phần tử xung quanh hay tạo cảnh báo. Blockchain cần cơ chế mạnh hơn thế.'
-                : 'In a standard array, memory slots can be overwritten without affecting neighbor elements or leaving tamper traces. Blockchain requires cryptographic sealing.'}
-            </p>
-          </div>
 
-          {/* Add Element Toolbar */}
-          <form
-            onSubmit={handleAddItem}
-            className="flex flex-wrap items-center gap-2 text-xs font-mono"
-          >
-            <input
-              type="text"
-              value={newValue}
-              onChange={(e) => setNewValue(e.target.value)}
-              placeholder={strings.foundations.pythonList.valuePlaceholder}
-              className="flex-1 min-w-[140px] px-3 py-2 rounded-lg bg-zinc-900 border border-zinc-700 text-zinc-200 focus:outline-none focus:border-zinc-500"
-            />
-
-            <select
-              value={newType}
-              onChange={(e) =>
-                setNewType(e.target.value as 'int' | 'float' | 'str' | 'bool')
-              }
-              className="px-3 py-2 rounded-lg bg-zinc-900 border border-zinc-700 text-zinc-300 focus:outline-none focus:border-zinc-500"
+            {/* Add Element Toolbar */}
+            <form
+              onSubmit={handleAddItem}
+              className="flex flex-wrap items-center gap-2 text-xs font-mono pt-1"
             >
-              <option value="str">str</option>
-              <option value="int">int</option>
-              <option value="float">float</option>
-              <option value="bool">bool</option>
-            </select>
+              <input
+                type="text"
+                value={newValue}
+                onChange={(e) => setNewValue(e.target.value)}
+                placeholder={strings.foundations.pythonList.valuePlaceholder}
+                className="flex-1 min-w-[140px] px-3 py-2 rounded-lg bg-slate-900 border border-white/10 text-slate-200 focus:outline-none focus:border-cyan-500"
+              />
 
-            <button
-              type="submit"
-              className="px-4 py-2 rounded-lg bg-zinc-100 hover:bg-white text-zinc-900 font-semibold font-mono text-xs flex items-center gap-1.5 transition-colors cursor-pointer shrink-0 whitespace-nowrap"
-            >
-              <Plus className="w-3.5 h-3.5" />
-              <span>{strings.foundations.pythonList.addElement}</span>
-            </button>
-          </form>
+              <select
+                value={newType}
+                onChange={(e) =>
+                  setNewType(e.target.value as 'int' | 'float' | 'str' | 'bool')
+                }
+                className="px-3 py-2 rounded-lg bg-slate-900 border border-white/10 text-slate-300 focus:outline-none focus:border-cyan-500"
+              >
+                <option value="str">str</option>
+                <option value="int">int</option>
+                <option value="float">float</option>
+                <option value="bool">bool</option>
+              </select>
 
-          {/* Operation Preview */}
-          <div className="p-2.5 bg-black/40 rounded-lg border border-zinc-800/80 font-mono text-xs text-zinc-400 flex items-center justify-between">
-            <span className="text-zinc-500">{strings.foundations.pythonList.codePreview}:</span>
-            <code className="text-zinc-200">{lastOperation}</code>
+              <button
+                type="submit"
+                className="px-4 py-2 rounded-lg bg-slate-100 hover:bg-white text-slate-950 font-semibold font-mono text-xs flex items-center gap-1.5 transition-colors cursor-pointer shrink-0 whitespace-nowrap"
+              >
+                <Plus className="w-3.5 h-3.5" />
+                <span>{strings.foundations.pythonList.addElement}</span>
+              </button>
+            </form>
+
+            {/* Operation Executed Preview */}
+            <div className="p-2.5 bg-black/40 rounded-lg border border-white/[0.06] font-mono text-xs text-slate-400 flex flex-wrap items-center justify-between gap-2">
+              <span className="text-slate-500">Lệnh Python vừa thực thi:</span>
+              <code className="text-cyan-300">{lastOperation}</code>
+            </div>
           </div>
         </div>
       )}
 
-      {/* Mode 2: Real-World Example */}
+      {/* Mode 2: Metaphor Comparison */}
       {viewMode === 'example' && (
-        <div className="p-6 rounded-xl bg-[#090a0f] border border-zinc-800 space-y-4 text-xs sm:text-sm text-zinc-300 leading-relaxed">
-          <div className="text-sm font-semibold text-zinc-100">
-            {language === 'vi'
-              ? 'Sổ tay thông thường vs. Sổ cái bất biến'
-              : 'Scratchpad vs. Immutable Ledger'}
+        <div className="p-5 rounded-xl bg-[#0B101E]/80 border border-white/[0.08] space-y-3 font-mono text-xs">
+          <div className="text-xs font-semibold text-white uppercase tracking-wide">
+            {language === 'vi' ? 'Sổ tay thông thường vs. Sổ cái bất biến' : 'Scratchpad vs. Immutable Ledger'}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
-            <div className="p-4 rounded-lg bg-zinc-900/60 border border-zinc-800 space-y-1.5">
-              <span className="text-xs font-mono font-medium text-zinc-200 block">
+            <div className="p-3.5 rounded-lg bg-slate-900/60 border border-white/[0.08] space-y-1">
+              <span className="font-semibold text-amber-300 block">
                 {language === 'vi' ? 'Python List = Tờ giấy nháp' : 'Python List = Scratchpad'}
               </span>
-              <p className="text-xs text-zinc-400 leading-relaxed">
+              <p className="text-slate-400 leading-relaxed text-[11px] font-sans">
                 {language === 'vi'
                   ? 'Dễ dàng tẩy xóa hoặc sửa đổi dòng bất kỳ mà người khác xem lại không thể biết được nội dung ban đầu là gì.'
-                  : 'Like writing with pencil on paper: any entry can be erased or replaced without leaving a cryptographic trace.'}
+                  : 'Any entry can be overwritten or deleted without leaving a verifiable audit trail.'}
               </p>
             </div>
 
-            <div className="p-4 rounded-lg bg-zinc-900/60 border border-zinc-800 space-y-1.5">
-              <span className="text-xs font-mono font-medium text-zinc-200 block">
+            <div className="p-3.5 rounded-lg bg-slate-900/60 border border-white/[0.08] space-y-1">
+              <span className="font-semibold text-cyan-300 block">
                 {language === 'vi' ? 'Blockchain = Sổ cái mật mã' : 'Blockchain = Cryptographic Ledger'}
               </span>
-              <p className="text-xs text-zinc-400 leading-relaxed">
+              <p className="text-slate-400 leading-relaxed text-[11px] font-sans">
                 {language === 'vi'
                   ? 'Mỗi bản ghi được niêm phong bằng mã băm của bản ghi trước. Sửa 1 ký tự sẽ làm đứt gãy toàn bộ chuỗi.'
-                  : 'Each record is cryptographically linked to the previous one. Modifying one record invalidates all subsequent links.'}
+                  : 'Each block is sealed with the previous block hash. Changing one character breaks all downstream links.'}
               </p>
             </div>
           </div>
@@ -414,50 +379,40 @@ export const PythonListPlayground: React.FC<PythonListPlaygroundProps> = ({
 
       {/* Mode 3: Python Code */}
       {viewMode === 'code' && (
-        <div className="p-6 rounded-xl bg-[#090a0f] border border-zinc-800 space-y-3">
-          <div className="flex items-center justify-between text-xs font-mono text-zinc-400">
-            <span className="font-medium text-zinc-300">
+        <div className="p-5 rounded-xl bg-[#0B101E]/80 border border-white/[0.08] space-y-3">
+          <div className="flex items-center justify-between text-xs font-mono text-slate-400">
+            <span className="font-medium text-slate-200">
               {language === 'vi' ? 'Minh họa thao tác danh sách Python' : 'Python List Implementation'}
             </span>
-            <span className="text-zinc-500">Python 3.12</span>
+            <span className="text-slate-500">Python 3.12</span>
           </div>
 
           <CodeViewer
-            code={`# 1. Khởi tạo danh sách các công đoạn
+            code={`# 1. Khởi tạo danh sách các công đoạn trong RAM
 my_list = ["prepare", "roll", "assemble"]
 
-# 2. Thay đổi phần tử ở giữa (Không có kiểm tra toàn vẹn)
-my_list[1] = "tampered_data"  # "roll" bị thay thế trực tiếp
+# 2. Thay đổi phần tử ở giữa (Không có cơ chế kiểm tra toàn vẹn)
+my_list[1] = "X"  # Ô 0x0800 bị ghi đè trực tiếp mà không báo động
 
 # 3. Thêm phần tử vào cuối
 my_list.append("serve")
 
-print(my_list)  # Output: ['prepare', 'tampered_data', 'assemble', 'serve']`}
+print(my_list)  # Output: ['prepare', 'X', 'assemble', 'serve']`}
             language="python"
             filename="python_list_demo.py"
-            maxHeight="320px"
+            maxHeight="300px"
           />
         </div>
       )}
 
-      {/* Navigation Footer */}
-      <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3">
-        <span className="text-xs font-mono text-zinc-500">
-          {language === 'vi'
-            ? 'Tiếp theo: Tìm hiểu cách Linked List kết nối các Node bằng con trỏ'
-            : 'Next: Learn how Linked Lists connect Nodes using pointers'}
-        </span>
-
+      {/* Single Primary Navigation CTA at Bottom */}
+      <div className="pt-2 flex items-center justify-end">
         <button
           type="button"
           onClick={onNextStage}
-          className="w-full sm:w-auto px-4 py-2 rounded-lg bg-zinc-100 hover:bg-white text-zinc-900 font-semibold font-mono text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer"
+          className="px-4 py-2 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold font-mono text-xs flex items-center gap-1.5 transition-colors shadow-sm cursor-pointer"
         >
-          <span>
-            {language === 'vi'
-              ? 'Tiếp tục sang Danh Sách Liên Kết'
-              : 'Continue to Linked List'}
-          </span>
+          <span>{language === 'vi' ? 'Tiếp tục: Danh sách liên kết' : 'Continue: Linked List'}</span>
           <ArrowRight className="w-3.5 h-3.5" />
         </button>
       </div>

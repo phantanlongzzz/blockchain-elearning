@@ -68,7 +68,7 @@ export const Footer: React.FC = () => {
                   <span className="text-xs font-medium text-[#8E9AA8] block font-sans">
                     {strings.footer.instructorLabel}
                   </span>
-                  <div className="text-[#F2F4F7] font-semibold text-sm font-sans">
+                  <div className="font-sans font-semibold text-xs text-white">
                     {strings.footer.instructorName}
                   </div>
                 </div>
@@ -81,7 +81,7 @@ export const Footer: React.FC = () => {
                   <span className="text-xs font-medium text-[#8E9AA8] block font-sans">
                     {strings.footer.studentLabel}
                   </span>
-                  <div className="text-[#F2F4F7] font-semibold text-sm font-sans">
+                  <div className="font-sans font-semibold text-xs text-white">
                     {strings.footer.studentName}
                   </div>
                 </div>

@@ -13,7 +13,11 @@ import {
   Check, 
   Layers, 
   ShieldCheck, 
-  Binary
+  Binary,
+  Pencil,
+  AlertTriangle,
+  FileCode,
+  X
 } from 'lucide-react';
 import { hashSha256 } from '../../utils/sha256';
 import { useLanguage } from '../../i18n/LanguageContext';
@@ -23,8 +27,17 @@ interface TransactionItem {
   sender: string;
   receiver: string;
   amount: number;
+  originalAmount: number;
   hash: string;
+  originalHash: string;
 }
+
+const INITIAL_TRANSACTIONS: TransactionItem[] = [
+  { id: 'tx0', sender: 'Coinbase (Reward)', receiver: 'Miner_Node_1', amount: 3.125, originalAmount: 3.125, hash: 'a1b2c3d4e5f60718293a4b5c6d7e8f90123456789abcdef0123456789abcdef0', originalHash: 'a1b2c3d4e5f60718293a4b5c6d7e8f90123456789abcdef0123456789abcdef0' },
+  { id: 'tx1', sender: '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa', receiver: '1BoatSLRHtKNngkdXEeobR76b53LETtpyT', amount: 0.850, originalAmount: 0.850, hash: 'f0e1d2c3b4a5968778695a4b3c2d1e0f123456789abcdef0123456789abcdef0', originalHash: 'f0e1d2c3b4a5968778695a4b3c2d1e0f123456789abcdef0123456789abcdef0' },
+  { id: 'tx2', sender: '3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy', receiver: 'bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq', amount: 1.420, originalAmount: 1.420, hash: '9876543210abcdef0123456789abcdef0123456789abcdef0123456789abcdef', originalHash: '9876543210abcdef0123456789abcdef0123456789abcdef0123456789abcdef' },
+  { id: 'tx3', sender: 'bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4', receiver: '1Q2TWHE3GMdB6BZKafqwxxiWAWgYqhedqu', amount: 0.500, originalAmount: 0.500, hash: '456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123', originalHash: '456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123' },
+];
 
 export const InteractiveBlockInspector: React.FC = () => {
   const { language } = useLanguage();
@@ -39,13 +52,14 @@ export const InteractiveBlockInspector: React.FC = () => {
   const [tamperedTxIndex, setTamperedTxIndex] = useState<number | null>(null);
   const [calculatedBlockHash, setCalculatedBlockHash] = useState<string>('000000a4f9e1d82c7b30f4e95126830a1c4b7e9f0d2a5c8e1b3d6f9a0c2e4b7a');
 
+  // Modal State
+  const [selectedTx, setSelectedTx] = useState<TransactionItem | null>(null);
+  const [selectedTxIndex, setSelectedTxIndex] = useState<number | null>(null);
+  const [isTxModalOpen, setIsTxModalOpen] = useState<boolean>(false);
+  const [editAmount, setEditAmount] = useState<number>(0);
+
   // Sample transactions in this block
-  const [transactions, setTransactions] = useState<TransactionItem[]>([
-    { id: 'tx0', sender: 'Coinbase (Reward)', receiver: 'Miner_Node_1', amount: 3.125, hash: 'a1b2c3d4e5f60718293a4b5c6d7e8f90123456789abcdef0123456789abcdef0' },
-    { id: 'tx1', sender: '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa', receiver: '1BoatSLRHtKNngkdXEeobR76b53LETtpyT', amount: 0.850, hash: 'f0e1d2c3b4a5968778695a4b3c2d1e0f123456789abcdef0123456789abcdef0' },
-    { id: 'tx2', sender: '3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy', receiver: 'bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq', amount: 1.420, hash: '9876543210abcdef0123456789abcdef0123456789abcdef0123456789abcdef' },
-    { id: 'tx3', sender: 'bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4', receiver: '1Q2TWHE3GMdB6BZKafqwxxiWAWgYqhedqu', amount: 0.250, hash: '456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123' },
-  ]);
+  const [transactions, setTransactions] = useState<TransactionItem[]>(INITIAL_TRANSACTIONS);
 
   // Compute Merkle Root
   const merkleRoot = useMemo(() => {
@@ -86,32 +100,54 @@ export const InteractiveBlockInspector: React.FC = () => {
     }, 60);
   };
 
-  const toggleTamperTx = (index: number) => {
-    if (tamperedTxIndex === index) {
-      setTransactions((prev) => {
-        const copy = [...prev];
-        copy[index] = {
-          ...copy[index],
-          amount: index === 1 ? 0.850 : 1.420,
-          hash: index === 1 
-            ? 'f0e1d2c3b4a5968778695a4b3c2d1e0f123456789abcdef0123456789abcdef0'
-            : '9876543210abcdef0123456789abcdef0123456789abcdef0123456789abcdef'
-        };
-        return copy;
+  const handleOpenTxModal = (index: number) => {
+    const tx = transactions[index];
+    setSelectedTx(tx);
+    setSelectedTxIndex(index);
+    setEditAmount(tx.amount);
+    setIsTxModalOpen(true);
+  };
+
+  const handleCloseTxModal = () => {
+    setIsTxModalOpen(false);
+    setSelectedTx(null);
+    setSelectedTxIndex(null);
+  };
+
+  const handleApplyTamper = () => {
+    if (selectedTxIndex === null || selectedTx === null) return;
+    const targetIdx = selectedTxIndex;
+    const numAmount = Math.max(0, Number(editAmount) || 0);
+
+    setTransactions((prev) => {
+      return prev.map((tx, idx) => {
+        if (idx === targetIdx) {
+          const isChanged = Math.abs(numAmount - tx.originalAmount) > 0.000001;
+          return {
+            ...tx,
+            amount: numAmount,
+            hash: isChanged ? ('deadbeef' + tx.originalHash.slice(8)) : tx.originalHash,
+          };
+        }
+        return { ...tx };
       });
-      setTamperedTxIndex(null);
+    });
+
+    const isChanged = Math.abs(numAmount - transactions[targetIdx].originalAmount) > 0.000001;
+    if (isChanged) {
+      setTamperedTxIndex(targetIdx);
     } else {
-      setTransactions((prev) => {
-        const copy = [...prev];
-        copy[index] = {
-          ...copy[index],
-          amount: copy[index].amount * 10,
-          hash: 'deadbeef' + copy[index].hash.slice(8)
-        };
-        return copy;
-      });
-      setTamperedTxIndex(index);
+      if (tamperedTxIndex === targetIdx) {
+        setTamperedTxIndex(null);
+      }
     }
+
+    handleCloseTxModal();
+  };
+
+  const handleRevertTamper = () => {
+    setTransactions(INITIAL_TRANSACTIONS);
+    setTamperedTxIndex(null);
   };
 
   const rawHeaderBytes = useMemo(() => {
@@ -326,7 +362,7 @@ export const InteractiveBlockInspector: React.FC = () => {
             <span>{isVi ? 'Nhấp vào giao dịch để mô phỏng phát hiện gian lận:' : 'Click on any transaction to simulate tamper detection:'}</span>
             {tamperedTxIndex !== null && (
               <button
-                onClick={() => toggleTamperTx(tamperedTxIndex)}
+                onClick={handleRevertTamper}
                 className="text-cyan-400 hover:underline flex items-center gap-1 cursor-pointer font-sans"
               >
                 <RotateCcw className="w-3 h-3" />
@@ -341,11 +377,12 @@ export const InteractiveBlockInspector: React.FC = () => {
               return (
                 <div
                   key={tx.id}
-                  onClick={() => toggleTamperTx(idx)}
-                  className={`p-2 rounded-lg border transition-all duration-150 cursor-pointer flex items-center justify-between gap-2 ${
+                  onClick={() => handleOpenTxModal(idx)}
+                  title={isVi ? 'Nhấp để kiểm tra và can thiệp giao dịch' : 'Click to inspect and tamper transaction'}
+                  className={`p-2 rounded-lg border transition-all duration-150 cursor-pointer flex items-center justify-between gap-2 group ${
                     isTampered
-                      ? 'bg-rose-950/30 border-rose-500/50 text-rose-300'
-                      : 'bg-black/30 border-white/[0.06] hover:border-white/[0.12] text-slate-300'
+                      ? 'bg-rose-950/20 border-rose-500/50 shadow-[0_0_15px_rgba(244,63,94,0.15)] text-rose-300'
+                      : 'bg-black/30 border-white/[0.06] hover:bg-white/[0.04] hover:border-amber-500/30 text-slate-300'
                   }`}
                 >
                   <div className="flex items-center gap-2 min-w-0 font-sans">
@@ -360,16 +397,29 @@ export const InteractiveBlockInspector: React.FC = () => {
                   </div>
 
                   <div className="flex items-center gap-2 shrink-0">
-                    <span className="text-amber-400 font-mono font-semibold text-[11px]">
-                      {tx.amount.toFixed(3)} BTC
-                    </span>
-                    <span className={`text-[9px] px-1.5 py-0.5 rounded uppercase font-sans font-semibold ${
-                      isTampered
-                        ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30'
-                        : 'bg-white/[0.06] text-slate-400'
-                    }`}>
-                      {isTampered ? (isVi ? 'GIAN LẬN' : 'TAMPERED') : (isVi ? 'HỢP LỆ' : 'VERIFIED')}
-                    </span>
+                    {isTampered ? (
+                      <span className="font-mono font-bold text-xs text-rose-400">
+                        {tx.amount.toFixed(3)} BTC
+                      </span>
+                    ) : (
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-amber-400 font-mono font-semibold text-[11px]">
+                          {tx.amount.toFixed(3)} BTC
+                        </span>
+                        <Pencil className="w-3 h-3 text-slate-500 group-hover:text-amber-400 transition-colors" />
+                      </div>
+                    )}
+
+                    {isTampered ? (
+                      <span className="flex items-center gap-1 text-[10px] font-mono text-rose-400 bg-rose-500/10 border border-rose-500/30 px-2 py-0.5 rounded">
+                        <AlertTriangle className="w-3 h-3" />
+                        <span>{isVi ? 'Đã can thiệp' : 'Tampered'}</span>
+                      </span>
+                    ) : (
+                      <span className="text-[9px] px-1.5 py-0.5 rounded uppercase font-sans font-semibold bg-white/[0.06] text-slate-400">
+                        {isVi ? 'HỢP LỆ' : 'VERIFIED'}
+                      </span>
+                    )}
                   </div>
                 </div>
               );
@@ -419,12 +469,146 @@ export const InteractiveBlockInspector: React.FC = () => {
 
       {/* 5. Footer trạng thái mạng (Network Status Bar) */}
       <div className="flex items-center justify-between text-xs font-mono text-slate-400 pt-2 border-t border-white/[0.06] mt-4">
-        <span className="flex items-center gap-1.5 text-success">
-          <span className="w-1.5 h-1.5 rounded-full bg-success animate-pulse" />
-          {isVi ? 'Đã đồng bộ' : 'Synchronized'}
+        {tamperedTxIndex !== null ? (
+          <span className="flex items-center gap-1.5 text-xs font-mono text-rose-400">
+            <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-ping" />
+            <span>{isVi ? 'Gốc Merkle sai lệch · Khối vô hiệu' : 'Invalid Merkle Root · Block Rejected'}</span>
+          </span>
+        ) : (
+          <span className="flex items-center gap-1.5 text-success">
+            <span className="w-1.5 h-1.5 rounded-full bg-success animate-pulse" />
+            <span>{isVi ? 'Đã đồng bộ' : 'Synchronized'}</span>
+          </span>
+        )}
+        <span>
+          {tamperedTxIndex !== null 
+            ? (isVi ? '12 nút kết nối (từ chối khối)' : '12 peers connected (rejected)') 
+            : (isVi ? '12 nút kết nối' : '12 peers connected')}
         </span>
-        <span>{isVi ? '12 nút kết nối' : '12 peers connected'}</span>
       </div>
+
+      {/* Transaction Inspector Modal (Glassmorphism Popup) */}
+      {isTxModalOpen && selectedTx && (
+        <div 
+          className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-150"
+          onClick={handleCloseTxModal}
+        >
+          <div 
+            className="max-w-md w-full bg-[#0B101E]/95 backdrop-blur-xl border border-cyan-500/30 rounded-2xl p-5 shadow-[0_20px_60px_rgba(0,0,0,0.8)] relative font-sans text-xs"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="flex items-center justify-between pb-3 border-b border-white/[0.08]">
+              <div className="flex items-center gap-2">
+                <FileCode className="w-4 h-4 text-cyan-400" />
+                <span className="font-sans font-semibold text-sm text-white">
+                  {isVi ? `Chi tiết giao dịch #${selectedTxIndex ?? 0}` : `Transaction details #${selectedTxIndex ?? 0}`}
+                </span>
+              </div>
+              <button 
+                onClick={handleCloseTxModal}
+                className="p-1 rounded-lg hover:bg-white/[0.06] text-slate-400 hover:text-white transition-colors cursor-pointer"
+                aria-label="Close"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="space-y-3.5 mt-3.5">
+              {/* TxID */}
+              <div>
+                <span className="text-[10px] font-sans font-medium uppercase tracking-wider text-slate-400 mb-1 block">
+                  {isVi ? 'Mã giao dịch' : 'Transaction ID'}
+                </span>
+                <div className="font-mono text-[11px] text-slate-300 bg-black/50 border border-white/[0.06] rounded-lg p-2 break-all select-all">
+                  {selectedTx.hash}
+                </div>
+              </div>
+
+              {/* Sender & Receiver */}
+              <div className="space-y-2">
+                <div>
+                  <span className="text-[10px] font-sans font-medium uppercase tracking-wider text-slate-400 mb-1 block">
+                    {isVi ? 'Người gửi' : 'Sender'}
+                  </span>
+                  <div className="font-mono text-xs text-slate-300 bg-black/40 border border-white/[0.05] p-2 rounded-lg break-all">
+                    {selectedTx.sender}
+                  </div>
+                </div>
+                <div>
+                  <span className="text-[10px] font-sans font-medium uppercase tracking-wider text-slate-400 mb-1 block">
+                    {isVi ? 'Người nhận' : 'Recipient'}
+                  </span>
+                  <div className="font-mono text-xs text-slate-300 bg-black/40 border border-white/[0.05] p-2 rounded-lg break-all">
+                    {selectedTx.receiver}
+                  </div>
+                </div>
+              </div>
+
+              {/* Amount BTC - Tamper Zone */}
+              <div>
+                <label className="text-xs font-sans font-semibold text-slate-200 mb-1.5 flex items-center gap-1.5">
+                  <Pencil className="w-3.5 h-3.5 text-amber-400" />
+                  <span>{isVi ? 'Giá trị giao dịch' : 'Transaction Value'}</span>
+                </label>
+                <div className="relative">
+                  <input
+                    type="number"
+                    step="0.1"
+                    min="0"
+                    value={editAmount}
+                    onChange={(e) => setEditAmount(Number(e.target.value))}
+                    className="w-full bg-black/60 border border-amber-500/40 focus:border-amber-400 rounded-lg px-3 py-2 text-sm font-mono text-amber-300 font-bold outline-none pr-14"
+                  />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-mono font-bold text-slate-400">
+                    BTC
+                  </span>
+                </div>
+
+                {/* Quick Edit Buttons */}
+                <div className="flex items-center gap-2 mt-2">
+                  <button
+                    type="button"
+                    onClick={() => setEditAmount((prev) => +(Number(prev) + 1.0).toFixed(3))}
+                    className="text-xs font-mono px-2.5 py-1 rounded bg-white/[0.04] border border-white/[0.08] hover:border-cyan-500/30 text-slate-300 hover:text-white transition-all cursor-pointer"
+                  >
+                    +1.0 BTC
+                  </button>
+                  {editAmount !== selectedTx.originalAmount && (
+                    <button
+                      type="button"
+                      onClick={() => setEditAmount(selectedTx.originalAmount)}
+                      className="text-xs font-sans px-2.5 py-1 rounded bg-white/[0.02] border border-white/[0.06] hover:text-white text-slate-400 transition-all cursor-pointer ml-auto flex items-center gap-1"
+                    >
+                      <RotateCcw className="w-3 h-3" />
+                      <span>{isVi ? 'Khôi phục gốc' : 'Reset'}</span>
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="flex items-center justify-end gap-2.5 pt-4 border-t border-white/[0.08] mt-4">
+              <button
+                type="button"
+                onClick={handleCloseTxModal}
+                className="px-3.5 py-1.5 rounded-lg text-xs font-sans text-slate-300 hover:bg-white/[0.05] border border-white/[0.08] cursor-pointer transition-all"
+              >
+                {isVi ? 'Đóng' : 'Close'}
+              </button>
+              <button
+                type="button"
+                onClick={handleApplyTamper}
+                className="px-4 py-2 rounded-lg text-xs font-sans font-medium text-rose-200 bg-rose-500/20 border border-rose-500/40 hover:bg-rose-500/30 shadow-[0_0_12px_rgba(244,63,94,0.2)] transition-all cursor-pointer"
+              >
+                {isVi ? 'Lưu thay đổi' : 'Save changes'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

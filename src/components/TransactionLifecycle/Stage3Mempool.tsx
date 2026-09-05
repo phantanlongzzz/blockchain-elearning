@@ -59,23 +59,23 @@ export const Stage3Mempool: React.FC<Props> = ({ currentTransaction, mempool, se
               <div 
                 key={tx.id} 
                 id={`tx-${tx.id}`}
-                className={`p-4 rounded-xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition-all ${
-                  isUserTx ? 'bg-purple-900/20 border-purple-500/50 shadow-[0_0_15px_rgba(168,85,247,0.15)]' : 'bg-[#0B0E12] border-slate-800'
+                className={`p-4 rounded-xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition-colors ${
+                  isUserTx ? 'bg-purple-950/30 border-purple-500/50' : 'bg-bg-elevated/40 border-border-primary'
                 }`}
               >
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-xs font-bold text-slate-300">{tx.id}</span>
+                    <span className="text-xs font-bold text-text-primary font-mono">{tx.id}</span>
                     {isUserTx && <span className="text-[10px] px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-bold border border-purple-500/30">Your TX</span>}
                   </div>
-                  <div className="text-xs text-slate-500 font-mono">
+                  <div className="text-xs text-text-muted font-mono">
                     Inputs: {tx.inputs.length} | Outputs: {tx.outputs.length}
                   </div>
                 </div>
 
                 <div className="flex items-center gap-2 text-sm">
-                  <span className="text-slate-400 font-mono">Total:</span>
-                  <span className="font-bold text-money">
+                  <span className="text-text-muted font-mono">Total:</span>
+                  <span className="font-bold text-money font-mono">
                     {tx.outputs.reduce((sum, o) => sum + o.value, 0).toFixed(2)} BTC
                   </span>
                 </div>
@@ -88,7 +88,7 @@ export const Stage3Mempool: React.FC<Props> = ({ currentTransaction, mempool, se
       <div className="flex justify-end">
         <button
           onClick={handleCreateCandidateBlock}
-          className="px-6 py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-sm font-bold flex items-center gap-2 transition-all shadow-[0_0_20px_rgba(147,51,234,0.3)] cursor-pointer"
+          className="px-5 py-2.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold flex items-center gap-2 transition-colors cursor-pointer font-mono"
         >
           <Box className="w-4 h-4" />
           <span>{isVi ? 'Đóng gói vào Khối Ứng cử viên' : 'Package into Candidate Block'}</span>

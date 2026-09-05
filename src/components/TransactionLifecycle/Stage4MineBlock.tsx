@@ -131,10 +131,10 @@ export const Stage4MineBlock: React.FC<Props> = ({ mempool, setMempool, blockcha
             <button
               onClick={handleMineBlock}
               disabled={!merkleRoot || merkleMismatch || blockMined}
-              className={`w-full py-3 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-all ${
+              className={`w-full py-2.5 rounded-lg text-xs font-semibold flex items-center justify-center gap-2 transition-colors font-mono ${
                 !merkleRoot || merkleMismatch || blockMined
-                  ? 'bg-slate-800 text-slate-500 cursor-not-allowed'
-                  : 'bg-orange-500 hover:bg-orange-400 text-orange-950 shadow-[0_0_20px_rgba(249,115,22,0.3)] cursor-pointer'
+                  ? 'bg-bg-elevated text-text-muted cursor-not-allowed border border-border-primary'
+                  : 'bg-warning hover:bg-warning/90 text-bg-primary cursor-pointer'
               }`}
             >
               <Pickaxe className="w-4 h-4" />
@@ -146,30 +146,30 @@ export const Stage4MineBlock: React.FC<Props> = ({ mempool, setMempool, blockcha
 
       {/* Blockchain View */}
       {blockMined && (
-        <div id="blockchain-view" className="bg-[#101419] rounded-2xl border border-slate-800 p-5 mt-6 animate-in fade-in slide-in-from-bottom-4 duration-500 overflow-x-auto">
-          <h3 className="text-sm font-bold text-white mb-6 flex items-center gap-2">
-            <Link className="w-4 h-4 text-blue-400" />
+        <div id="blockchain-view" className="bg-bg-secondary rounded-xl border border-border-primary p-5 mt-6 animate-in fade-in slide-in-from-bottom-4 duration-500 overflow-x-auto">
+          <h3 className="text-xs font-bold text-white mb-4 flex items-center gap-2 font-mono">
+            <Link className="w-4 h-4 text-teach-2" />
             Blockchain
           </h3>
           
-          <div className="flex items-center gap-4 min-w-max pb-4">
+          <div className="flex items-center gap-4 min-w-max pb-2">
             {blockchain.slice(-4).map((block, idx, arr) => (
               <React.Fragment key={block.index}>
-                <div className={`w-48 p-4 rounded-xl border flex flex-col ${idx === arr.length - 1 ? 'bg-success/10 border-success shadow-[0_0_15px_rgba(46,204,113,0.2)]' : 'bg-[#0B0E12] border-border-primary'}`}>
-                  <div className="text-xs font-bold text-slate-400 mb-2">Block #{block.index}</div>
-                  <div className="text-[10px] text-slate-500 mb-1">Hash:</div>
-                  <div className={`text-[10px] font-mono break-all ${idx === arr.length - 1 ? 'text-success' : 'text-slate-300'}`}>
+                <div className={`w-48 p-3.5 rounded-lg border flex flex-col ${idx === arr.length - 1 ? 'bg-success/10 border-success/40' : 'bg-bg-elevated/40 border-border-primary'}`}>
+                  <div className="text-xs font-bold text-text-muted mb-2 font-mono">Block #{block.index}</div>
+                  <div className="text-[10px] text-text-muted mb-1 font-mono">Hash:</div>
+                  <div className={`text-[10px] font-mono break-all ${idx === arr.length - 1 ? 'text-success font-bold' : 'text-text-secondary'}`}>
                     {block.hash.slice(0, 16)}...
                   </div>
                   {block.transactions.length > 0 && (
-                    <div className="mt-3 text-[10px] text-slate-500">
+                    <div className="mt-2.5 text-[10px] text-text-muted font-mono">
                       {block.transactions.length} TXs
                     </div>
                   )}
                 </div>
                 {idx < arr.length - 1 && (
-                  <div className="flex items-center text-slate-700">
-                    <ArrowRight className="w-5 h-5" />
+                  <div className="flex items-center text-border-secondary">
+                    <ArrowRight className="w-4 h-4" />
                   </div>
                 )}
               </React.Fragment>

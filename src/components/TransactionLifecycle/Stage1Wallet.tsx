@@ -53,39 +53,39 @@ export const Stage1Wallet: React.FC<Props> = ({ utxos, selectedUtxoIds, setSelec
         </div>
       </div>
 
-      <div className="bg-[#101419] rounded-2xl border border-slate-800 p-5">
-        <p className="text-sm text-slate-300 mb-4 whitespace-pre-line">
+      <div className="bg-bg-secondary rounded-xl border border-border-primary p-5">
+        <p className="text-xs text-text-secondary mb-4 whitespace-pre-line leading-relaxed font-sans">
           {isVi
             ? 'Bitcoin không lưu trữ tiền dưới dạng một số dư cố định.\nTài sản được thể hiện thông qua các UTXO chưa được chi tiêu.\n\nHãy chọn các UTXO đủ để tạo giao dịch gửi 10 BTC cho Bob.'
             : 'Bitcoin does not store static balances. It stores Unspent Transaction Outputs (UTXOs).\nSelect enough UTXOs to cover 10 BTC.'}
         </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {aliceUtxos.map((utxo) => {
             const isSelected = selectedUtxoIds.includes(utxo.id);
             return (
               <div
                 key={utxo.id}
                 onClick={() => toggleSelection(utxo.id)}
-                className={`p-4 rounded-xl border cursor-pointer transition-all ${
+                className={`p-3.5 rounded-lg border cursor-pointer transition-colors ${
                   isSelected
-                    ? 'bg-[#F5C451]/10 border-[#F5C451] shadow-[0_0_15px_rgba(214,168,74,0.1)]'
-                    : 'bg-[#0B0E12] border-slate-800 hover:border-slate-600'
+                    ? 'bg-warning/10 border-warning/60'
+                    : 'bg-bg-elevated/40 border-border-primary hover:border-border-secondary'
                 }`}
               >
-                <div className="flex justify-between items-start mb-3">
-                  <span className="text-2xl font-bold text-money">{utxo.value} BTC</span>
-                  <div className={`w-5 h-5 rounded flex items-center justify-center ${isSelected ? 'bg-[#F5C451] text-amber-950' : 'bg-slate-800 text-transparent'}`}>
-                    <Check className="w-3.5 h-3.5" />
+                <div className="flex justify-between items-start mb-2.5">
+                  <span className="text-xl font-bold text-money font-mono">{utxo.value} BTC</span>
+                  <div className={`w-4 h-4 rounded flex items-center justify-center ${isSelected ? 'bg-warning text-bg-primary' : 'bg-bg-secondary text-transparent'}`}>
+                    <Check className="w-3 h-3" />
                   </div>
                 </div>
                 <div className="space-y-1">
                   <div className="flex justify-between text-xs">
-                    <span className="text-slate-500">TxID:</span>
-                    <span className="text-blue-400 font-mono">{utxo.txid.slice(0, 8)}...</span>
+                    <span className="text-text-muted font-mono">TxID:</span>
+                    <span className="text-teach-2 font-mono">{utxo.txid.slice(0, 8)}...</span>
                   </div>
                   <div className="flex justify-between text-xs">
-                    <span className="text-slate-500">Index:</span>
-                    <span className="text-slate-300 font-mono">{utxo.index}</span>
+                    <span className="text-text-muted font-mono">Index:</span>
+                    <span className="text-text-secondary font-mono">{utxo.index}</span>
                   </div>
                 </div>
               </div>

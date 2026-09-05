@@ -97,34 +97,34 @@ export const TamperModal: React.FC<TamperModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-md overflow-y-auto animate-in fade-in duration-200">
-      <div className="relative w-full max-w-2xl rounded-3xl bg-[#0B0E12] border border-rose-500/50 p-6 sm:p-8 shadow-[0_0_50px_rgba(244,63,94,0.3)] text-[#E7E9ED] font-mono text-xs space-y-5">
+      <div className="relative w-full max-w-2xl rounded-xl bg-bg-primary border border-border-primary p-6 sm:p-7 text-text-primary font-mono text-xs space-y-5">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-[#1B2027] pb-4">
+        <div className="flex items-center justify-between border-b border-border-primary pb-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-rose-950/80 border border-rose-500/50 flex items-center justify-center text-rose-400">
-              <ShieldAlert className="w-6 h-6" />
+            <div className="w-9 h-9 rounded-lg bg-rose-950/40 border border-rose-500/40 flex items-center justify-center text-rose-400">
+              <ShieldAlert className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-lg sm:text-xl font-bold text-white tracking-wider font-mono">
+              <h3 className="text-base sm:text-lg font-bold text-white tracking-wider font-mono">
                 DATA TAMPERING DEMONSTRATION
               </h3>
-              <p className="text-xs text-[#9AA2AE] font-sans mt-0.5">
+              <p className="text-xs text-text-muted font-sans mt-0.5">
                 Modify transaction fields to observe how SHA-256 and ECDSA cryptographic authentication detect tampering.
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-2 rounded-xl bg-[#0F1217] hover:bg-[#1A2028] text-[#9AA2AE] hover:text-white border border-[#1B2027]"
+            className="p-2 rounded-lg bg-bg-secondary hover:bg-bg-elevated text-text-muted hover:text-white border border-border-primary cursor-pointer transition-colors"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Educational Callout */}
-        <div className="p-4 rounded-xl bg-rose-950/30 border border-rose-500/40 text-[#C5CBD3] font-sans text-xs space-y-2">
+        <div className="p-3.5 rounded-lg bg-rose-950/20 border border-rose-500/30 text-text-secondary font-sans text-xs space-y-1.5">
           <div className="flex items-center gap-2 font-mono font-bold text-rose-400 text-[11px] uppercase tracking-wider">
-            <AlertTriangle className="w-4 h-4" />
+            <AlertTriangle className="w-3.5 h-3.5" />
             <span>Cryptographic Principle under Demonstration</span>
           </div>
           <p className="leading-relaxed">
@@ -134,7 +134,7 @@ export const TamperModal: React.FC<TamperModalProps> = ({
 
         {/* Tamper Mode Tabs */}
         <div>
-          <label className="text-[#9AA2AE] font-bold uppercase text-[10px] block mb-2">
+          <label className="text-text-muted font-bold uppercase text-[10px] block mb-2 font-mono">
             Select Field to Tamper:
           </label>
           <div className="grid grid-cols-3 gap-2">
@@ -146,10 +146,10 @@ export const TamperModal: React.FC<TamperModalProps> = ({
               <button
                 key={tab.id}
                 onClick={() => setSelectedTamperType(tab.id as any)}
-                className={`py-2 px-3 rounded-xl border text-center transition-all text-xs font-semibold ${
+                className={`py-2 px-3 rounded-lg border text-center transition-colors text-xs font-semibold font-mono cursor-pointer ${
                   selectedTamperType === tab.id
-                    ? 'bg-rose-500/20 text-rose-300 border-rose-400 shadow-[0_0_15px_rgba(244,63,94,0.25)]'
-                    : 'bg-[#090C10] text-[#9AA2AE] border-[#1B2027] hover:border-[#252B33]'
+                    ? 'bg-rose-500/15 text-rose-300 border-rose-500/50'
+                    : 'bg-bg-secondary text-text-muted border-border-primary hover:border-border-secondary hover:text-text-primary'
                 }`}
               >
                 {tab.label}
@@ -159,14 +159,14 @@ export const TamperModal: React.FC<TamperModalProps> = ({
         </div>
 
         {/* Active Tamper Form */}
-        <div className="p-4 rounded-xl bg-[#090C10] border border-[#1B2027] space-y-4">
+        <div className="p-4 rounded-lg bg-bg-secondary border border-border-primary space-y-4">
           {selectedTamperType === 'amount' && (
             <div>
-              <div className="flex justify-between items-center text-[11px] mb-2">
-                <span className="text-[#9AA2AE]">Original Signed Amount:</span>
-                <span className="text-[#00D084] font-bold">{original.amount.toFixed(2)} Units</span>
+              <div className="flex justify-between items-center text-[11px] mb-2 font-mono">
+                <span className="text-text-muted">Original Signed Amount:</span>
+                <span className="text-financial font-bold">{original.amount.toFixed(2)} Units</span>
               </div>
-              <label className="text-rose-400 font-bold uppercase text-[10px] block mb-1">
+              <label className="text-rose-400 font-bold uppercase text-[10px] block mb-1 font-mono">
                 Modified Amount (e.g. inflating transaction):
               </label>
               <input
@@ -174,14 +174,14 @@ export const TamperModal: React.FC<TamperModalProps> = ({
                 step="0.1"
                 value={tamperedAmount}
                 onChange={(e) => setTamperedAmount(Number(e.target.value))}
-                className="w-full bg-[#0F1217] border border-rose-500/60 rounded-xl px-3.5 py-2 text-white focus:outline-none focus:border-rose-400 font-mono text-sm"
+                className="w-full bg-bg-elevated border border-rose-500/50 rounded-lg px-3.5 py-2 text-white focus:outline-none focus:border-rose-400 font-mono text-sm"
               />
               <div className="mt-2 flex gap-2">
                 {[original.amount * 2, original.amount * 10, 100, 999].map((val) => (
                   <button
                     key={val}
                     onClick={() => setTamperedAmount(val)}
-                    className="px-2.5 py-1 rounded bg-[#0F1217] hover:bg-[#1A2028] border border-[#1B2027] text-[#C5CBD3] text-[10px]"
+                    className="px-2.5 py-1 rounded bg-bg-primary hover:bg-bg-elevated border border-border-secondary text-text-secondary text-[10px] font-mono cursor-pointer transition-colors"
                   >
                     Set {val}
                   </button>
@@ -192,55 +192,55 @@ export const TamperModal: React.FC<TamperModalProps> = ({
 
           {selectedTamperType === 'receiver' && (
             <div>
-              <div className="flex justify-between items-center text-[11px] mb-2">
-                <span className="text-[#9AA2AE]">Original Receiver:</span>
-                <span className="text-[#00D084] font-bold truncate max-w-[200px]">
+              <div className="flex justify-between items-center text-[11px] mb-2 font-mono">
+                <span className="text-text-muted">Original Receiver:</span>
+                <span className="text-teach-1 font-bold truncate max-w-[200px]">
                   {original.receiver.slice(0, 14)}...
                 </span>
               </div>
-              <label className="text-rose-400 font-bold uppercase text-[10px] block mb-1">
+              <label className="text-rose-400 font-bold uppercase text-[10px] block mb-1 font-mono">
                 Tampered / Rogue Destination Address:
               </label>
               <input
                 type="text"
                 value={tamperedReceiver}
                 onChange={(e) => setTamperedReceiver(e.target.value)}
-                className="w-full bg-[#0F1217] border border-rose-500/60 rounded-xl px-3.5 py-2 text-rose-200 focus:outline-none focus:border-rose-400 font-mono text-xs"
+                className="w-full bg-bg-elevated border border-rose-500/50 rounded-lg px-3.5 py-2 text-rose-200 focus:outline-none focus:border-rose-400 font-mono text-xs"
               />
             </div>
           )}
 
           {selectedTamperType === 'timestamp' && (
             <div>
-              <div className="flex justify-between items-center text-[11px] mb-2">
-                <span className="text-[#9AA2AE]">Original Signed Timestamp:</span>
-                <span className="text-[#00D084] font-bold">{original.timestamp}</span>
+              <div className="flex justify-between items-center text-[11px] mb-2 font-mono">
+                <span className="text-text-muted">Original Signed Timestamp:</span>
+                <span className="text-teach-1 font-bold">{original.timestamp}</span>
               </div>
-              <label className="text-rose-400 font-bold uppercase text-[10px] block mb-1">
+              <label className="text-rose-400 font-bold uppercase text-[10px] block mb-1 font-mono">
                 Modified Timestamp:
               </label>
               <input
                 type="text"
                 value={tamperedTimestamp}
                 onChange={(e) => setTamperedTimestamp(e.target.value)}
-                className="w-full bg-[#0F1217] border border-rose-500/60 rounded-xl px-3.5 py-2 text-white focus:outline-none focus:border-rose-400 font-mono text-xs"
+                className="w-full bg-bg-elevated border border-rose-500/50 rounded-lg px-3.5 py-2 text-white focus:outline-none focus:border-rose-400 font-mono text-xs"
               />
             </div>
           )}
         </div>
 
         {/* Footer Actions */}
-        <div className="flex items-center justify-between gap-3 pt-3 border-t border-[#1B2027]">
+        <div className="flex items-center justify-between gap-3 pt-3 border-t border-border-primary font-mono">
           <button
             onClick={onClose}
-            className="px-4 py-2 rounded-xl bg-[#0F1217] hover:bg-[#1A2028] text-[#9AA2AE] hover:text-white border border-[#1B2027]"
+            className="px-4 py-2 rounded-lg bg-bg-secondary hover:bg-bg-elevated text-text-muted hover:text-white border border-border-primary cursor-pointer transition-colors text-xs"
           >
             Cancel
           </button>
 
           <button
             onClick={handleApply}
-            className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-rose-500 to-amber-500 hover:from-rose-400 hover:to-amber-400 text-black font-bold font-mono text-xs tracking-wider transition-all shadow-[0_0_20px_rgba(244,63,94,0.4)] flex items-center gap-1.5"
+            className="px-4 py-2 rounded-lg bg-rose-500 hover:bg-rose-600 text-white font-bold font-mono text-xs tracking-wider transition-colors flex items-center gap-1.5 cursor-pointer"
           >
             <ShieldAlert className="w-4 h-4" />
             <span>Apply Tamper & Verify</span>

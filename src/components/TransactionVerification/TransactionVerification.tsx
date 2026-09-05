@@ -154,25 +154,25 @@ export const TransactionVerification: React.FC = () => {
       <div className="flex flex-wrap items-center justify-center gap-2.5 mb-8 font-sans">
         <button
           onClick={() => setActiveView('mempool')}
-          className={`px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all flex items-center gap-2 border font-sans cursor-pointer ${
+          className={`px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors duration-150 ease-out flex items-center gap-2 border font-sans cursor-pointer ${
             activeView === 'mempool'
-              ? 'bg-[#00D084]/15 text-[#00D084] border-[#00D084]/50 shadow-sm'
-              : 'bg-[#0B0E12] text-[#9AA2AE] hover:text-[#E7E9ED] border-[#1B2027] hover:border-[#252B33]'
+              ? 'bg-[#15161A] text-[#F4F4F5] border-white/10 shadow-sm'
+              : 'bg-[#09090B] text-[#71717A] hover:text-[#F4F4F5] hover:bg-[#0F1014] border-white/[0.06] hover:border-white/10'
           }`}
         >
-          <Layers className="w-4 h-4 text-[#00D084]" />
+          <Layers className={`w-4 h-4 transition-colors duration-150 ${activeView === 'mempool' ? 'text-[#F4F4F5]' : 'text-[#71717A]'}`} />
           <span>{strings.verification.tabMempool}</span>
         </button>
 
         <button
           onClick={() => setActiveView('ledger')}
-          className={`px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all flex items-center gap-2 border font-sans cursor-pointer ${
+          className={`px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors duration-150 ease-out flex items-center gap-2 border font-sans cursor-pointer ${
             activeView === 'ledger'
-              ? 'bg-[#00D084]/15 text-[#00D084] border-[#00D084]/50 shadow-sm'
-              : 'bg-[#0B0E12] text-[#9AA2AE] hover:text-[#E7E9ED] border-[#1B2027] hover:border-[#252B33]'
+              ? 'bg-[#15161A] text-[#F4F4F5] border-white/10 shadow-sm'
+              : 'bg-[#09090B] text-[#71717A] hover:text-[#F4F4F5] hover:bg-[#0F1014] border-white/[0.06] hover:border-white/10'
           }`}
         >
-          <Boxes className="w-4 h-4 text-[#00D084]" />
+          <Boxes className={`w-4 h-4 transition-colors duration-150 ${activeView === 'ledger' ? 'text-[#F4F4F5]' : 'text-[#71717A]'}`} />
           <span>{strings.verification.tabLedger}</span>
         </button>
       </div>

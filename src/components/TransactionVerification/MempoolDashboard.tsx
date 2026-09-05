@@ -382,7 +382,8 @@ export const MempoolDashboard: React.FC = () => {
   const totalSubmitted = mempool.length + rejected.length;
   const validCount = mempool.length;
   const rejectedCount = rejected.length;
-  const rejectionRate = totalSubmitted > 0 ? ((rejectedCount / totalSubmitted) * 100).toFixed(1) : '0.0';
+  const successRateValue =
+    totalSubmitted > 0 ? ((validCount / totalSubmitted) * 100).toFixed(1) : '--';
 
   const verificationRules = [
     { name: isVi ? 'Định dạng giao dịch' : 'Transaction format', pass: lastVerifiedTx?.verificationChecks.format, desc: isVi ? 'Cấu trúc gói tin chuẩn' : 'Canonical structure' },
@@ -394,20 +395,20 @@ export const MempoolDashboard: React.FC = () => {
   ];
 
   const steps = [
-    { step: 1, title: vStr.stepCreate, desc: vStr.stepCreateDesc, active: activeStep === 1 },
-    { step: 2, title: vStr.stepSign, desc: vStr.stepSignDesc, active: activeStep === 2 },
-    { step: 3, title: vStr.stepBroadcast, desc: vStr.stepBroadcastDesc, active: activeStep === 3 },
-    { step: 4, title: vStr.stepAudit, desc: vStr.stepAuditDesc, active: activeStep === 4 },
-    { step: 5, title: activeStep === 6 ? vStr.stepRejected : vStr.stepMempool, desc: activeStep === 6 ? vStr.stepRejectedDesc : vStr.stepMempoolDesc, active: activeStep === 5 || activeStep === 6, failed: activeStep === 6 },
+    { step: 1, title: vStr.stepWallet || (isVi ? '1. Tạo TX' : '1. Create TX'), desc: vStr.stepWalletDesc || (isVi ? 'Khởi tạo dữ liệu' : 'Payload Creation'), active: activeStep === 1 },
+    { step: 2, title: vStr.stepSign || (isVi ? '2. Ký số' : '2. Sign'), desc: vStr.stepSignDesc, active: activeStep === 2 },
+    { step: 3, title: vStr.stepBroadcast || (isVi ? '3. Truyền phát' : '3. Broadcast'), desc: vStr.stepBroadcastDesc, active: activeStep === 3 },
+    { step: 4, title: vStr.stepAudit || (isVi ? '4. Kiểm định nút' : '4. Node audit'), desc: vStr.stepAuditDesc, active: activeStep === 4 },
+    { step: 5, title: activeStep === 6 ? (vStr.stepRejected || (isVi ? '5. Từ chối' : '5. Rejected')) : (vStr.stepMempool || (isVi ? '5. Mempool' : '5. Mempool')), desc: activeStep === 6 ? vStr.stepRejectedDesc : vStr.stepMempoolDesc, active: activeStep === 5 || activeStep === 6, failed: activeStep === 6 },
   ];
 
   return (
     <div id="mempool-lab" className="space-y-6">
       
       {/* 0. Scenario Selection & Playback Controls */}
-      <div className="p-5 rounded-xl bg-[#0B0E12] border border-[#1B2027] space-y-4">
+      <div className="p-5 rounded-xl bg-[#0F1014] border border-white/[0.08] space-y-4">
         <div className="flex items-center justify-between">
-          <span className="text-sm font-semibold text-[#E7E9ED]">
+          <span className="text-xs font-medium uppercase tracking-wider text-[#71717A]">
             {isVi ? 'Kịch bản kiểm thử' : 'Test Scenarios'}
           </span>
         </div>
@@ -415,37 +416,53 @@ export const MempoolDashboard: React.FC = () => {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
           <button
             onClick={() => setSelectedScenario('VALID')}
-            className={`px-4 py-2.5 rounded-lg border text-xs font-medium transition-all text-center cursor-pointer ${selectedScenario === 'VALID' ? 'bg-[#1A2028] border-[#00D084] text-[#00D084]' : 'bg-[#0F1217] border-[#252B33] text-[#E7E9ED] hover:bg-[#1A2028] hover:border-[#00D084]/40 hover:text-[#00D084]'}`}
+            className={`px-4 py-2.5 rounded-lg border text-xs font-medium transition-colors duration-150 ease-out text-center cursor-pointer ${
+              selectedScenario === 'VALID'
+                ? 'bg-[#15161A] border-[#10B981] text-[#10B981]'
+                : 'bg-[#09090B] border-white/[0.08] text-[#A1A1AA] hover:bg-[#15161A] hover:border-[#10B981]/40 hover:text-[#10B981]'
+            }`}
           >
             {vStr.attack1Title}
           </button>
           <button
             onClick={() => setSelectedScenario('TAMPERED')}
-            className={`px-4 py-2.5 rounded-lg border text-xs font-medium transition-all text-center cursor-pointer ${selectedScenario === 'TAMPERED' ? 'bg-[#1A2028] border-rose-500 text-rose-400' : 'bg-[#0F1217] border-[#252B33] text-[#E7E9ED] hover:bg-[#1A2028] hover:border-rose-500/40 hover:text-rose-400'}`}
+            className={`px-4 py-2.5 rounded-lg border text-xs font-medium transition-colors duration-150 ease-out text-center cursor-pointer ${
+              selectedScenario === 'TAMPERED'
+                ? 'bg-[#15161A] border-rose-500 text-rose-400'
+                : 'bg-[#09090B] border-white/[0.08] text-[#A1A1AA] hover:bg-[#15161A] hover:border-rose-500/40 hover:text-rose-400'
+            }`}
           >
             {vStr.attack2Title}
           </button>
           <button
             onClick={() => setSelectedScenario('INSUFFICIENT')}
-            className={`px-4 py-2.5 rounded-lg border text-xs font-medium transition-all text-center cursor-pointer ${selectedScenario === 'INSUFFICIENT' ? 'bg-[#1A2028] border-amber-500 text-amber-400' : 'bg-[#0F1217] border-[#252B33] text-[#E7E9ED] hover:bg-[#1A2028] hover:border-amber-500/40 hover:text-amber-400'}`}
+            className={`px-4 py-2.5 rounded-lg border text-xs font-medium transition-colors duration-150 ease-out text-center cursor-pointer ${
+              selectedScenario === 'INSUFFICIENT'
+                ? 'bg-[#15161A] border-amber-500 text-amber-400'
+                : 'bg-[#09090B] border-white/[0.08] text-[#A1A1AA] hover:bg-[#15161A] hover:border-amber-500/40 hover:text-amber-400'
+            }`}
           >
             {vStr.attack3Title}
           </button>
           <button
             onClick={() => setSelectedScenario('REPLAY')}
-            className={`px-4 py-2.5 rounded-lg border text-xs font-medium transition-all text-center cursor-pointer ${selectedScenario === 'REPLAY' ? 'bg-[#1A2028] border-purple-500 text-purple-400' : 'bg-[#0F1217] border-[#252B33] text-[#E7E9ED] hover:bg-[#1A2028] hover:border-purple-500/40 hover:text-purple-400'}`}
+            className={`px-4 py-2.5 rounded-lg border text-xs font-medium transition-colors duration-150 ease-out text-center cursor-pointer ${
+              selectedScenario === 'REPLAY'
+                ? 'bg-[#15161A] border-purple-500 text-purple-400'
+                : 'bg-[#09090B] border-white/[0.08] text-[#A1A1AA] hover:bg-[#15161A] hover:border-purple-500/40 hover:text-purple-400'
+            }`}
           >
             {vStr.attack4Title}
           </button>
         </div>
 
         {selectedScenario && (
-          <div className="flex flex-wrap items-center gap-3 p-3 mt-4 rounded-lg bg-[#090C10] border border-[#1B2027]">
+          <div className="flex flex-wrap items-center gap-3 p-3 mt-4 rounded-lg bg-[#09090B] border border-white/[0.08]">
             {!trace.length ? (
               <button
                 onClick={handleStartSimulation}
                 disabled={isGenerating}
-                className="flex items-center gap-2 px-4 py-2 rounded bg-[#00D084]/10 text-[#00D084] border border-[#00D084]/30 hover:bg-[#00D084]/20 transition-colors text-sm font-medium"
+                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#10B981]/10 text-[#10B981] border border-[#10B981]/30 hover:bg-[#10B981]/20 transition-colors duration-150 text-sm font-medium cursor-pointer"
               >
                 <Play className="w-4 h-4" />
                 {isVi ? 'Bắt đầu mô phỏng' : 'Start Simulation'}
@@ -454,14 +471,14 @@ export const MempoolDashboard: React.FC = () => {
               <>
                 <button
                   onClick={() => setIsPlaying(!isPlaying)}
-                  className="flex items-center gap-2 px-4 py-2 rounded bg-[#1A2028] text-[#E7E9ED] border border-[#252B33] hover:border-[#374151] transition-colors text-sm font-medium"
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#15161A] text-[#F4F4F5] border border-white/10 hover:border-white/20 transition-colors duration-150 text-sm font-medium cursor-pointer"
                 >
                   {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
                   {isPlaying ? (isVi ? 'Tạm dừng' : 'Pause') : (isVi ? 'Tiếp tục' : 'Resume')}
                 </button>
                 <button
                   onClick={handleReset}
-                  className="flex items-center gap-2 px-4 py-2 rounded bg-[#1A2028] text-[#E7E9ED] border border-[#252B33] hover:border-rose-500/40 hover:text-rose-400 transition-colors text-sm font-medium"
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#15161A] text-[#A1A1AA] border border-white/10 hover:border-rose-500/40 hover:text-rose-400 transition-colors duration-150 text-sm font-medium cursor-pointer"
                 >
                   <RotateCcw className="w-4 h-4" />
                   {isVi ? 'Đặt lại' : 'Reset'}
@@ -469,37 +486,37 @@ export const MempoolDashboard: React.FC = () => {
 
                 <div className="flex-1 min-w-[20px]" />
 
-                <div className="flex items-center gap-2 border border-[#252B33] rounded-lg p-1 bg-[#0B0E12]">
+                <div className="flex items-center gap-2 border border-white/10 rounded-lg p-1 bg-[#09090B]">
                   <button
                     onClick={() => setStepIndex(Math.max(0, stepIndex - 1))}
                     disabled={stepIndex === 0}
-                    className="p-1.5 rounded hover:bg-[#1A2028] text-[#9AA2AE] hover:text-[#E7E9ED] disabled:opacity-50"
+                    className="p-1.5 rounded hover:bg-[#15161A] text-[#71717A] hover:text-[#F4F4F5] disabled:opacity-30 transition-colors cursor-pointer"
                   >
                     <SkipBack className="w-4 h-4" />
                   </button>
-                  <span className="text-xs text-[#9AA2AE] font-mono min-w-[60px] text-center">
+                  <span className="text-xs text-[#A1A1AA] font-mono min-w-[60px] text-center">
                     {isVi ? 'Bước' : 'Step'} {Math.max(1, Math.min(5, activeStep))} / 5
                   </span>
                   <button
                     onClick={() => setStepIndex(Math.min(trace.length - 1, stepIndex + 1))}
                     disabled={stepIndex === trace.length - 1}
-                    className="p-1.5 rounded hover:bg-[#1A2028] text-[#9AA2AE] hover:text-[#E7E9ED] disabled:opacity-50"
+                    className="p-1.5 rounded hover:bg-[#15161A] text-[#71717A] hover:text-[#F4F4F5] disabled:opacity-30 transition-colors cursor-pointer"
                   >
                     <SkipForward className="w-4 h-4" />
                   </button>
                 </div>
 
-                <div className="flex items-center gap-1 pl-3 sm:pl-4 border-l border-[#252B33]">
-                  <span className="text-xs text-[#68717D] mr-1 hidden sm:inline">Speed:</span>
-                  <div className="flex items-center bg-[#090a0f] border border-[#252B33] rounded overflow-hidden">
+                <div className="flex items-center gap-1 pl-3 sm:pl-4 border-l border-white/10">
+                  <span className="text-xs text-[#71717A] mr-1 hidden sm:inline">Speed:</span>
+                  <div className="flex items-center bg-[#09090B] border border-white/10 rounded overflow-hidden">
                     {[0.5, 1, 2].map((speed) => (
                       <button
                         key={speed}
                         onClick={() => setPlaybackSpeed(speed)}
-                        className={`px-2.5 py-1 text-xs font-mono transition-colors ${
+                        className={`px-2.5 py-1 text-xs font-mono transition-colors duration-150 cursor-pointer ${
                           playbackSpeed === speed
-                            ? 'bg-[#1A2028] text-[#E7E9ED] border-b-2 border-[#00D084]'
-                            : 'bg-transparent text-[#68717D] hover:bg-[#1A2028]/50 hover:text-[#9AA2AE] border-b-2 border-transparent'
+                            ? 'bg-[#15161A] text-[#F4F4F5] border-b-2 border-[#10B981]'
+                            : 'bg-transparent text-[#71717A] hover:bg-[#15161A]/50 hover:text-[#A1A1AA] border-b-2 border-transparent'
                         }`}
                       >
                         {speed}×
@@ -516,23 +533,23 @@ export const MempoolDashboard: React.FC = () => {
       {/* 1. Lifecycle Pipeline & Statistics Container */}
       <div id="pipeline-viz" className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Pipeline Visualization */}
-        <div className="lg:col-span-2 p-5 rounded-xl bg-[#0B0E12] border border-[#1B2027] flex flex-col justify-center">
+        <div className="lg:col-span-2 p-5 rounded-xl bg-[#0F1014] border border-white/[0.08] flex flex-col justify-center pb-8">
           <div className="flex flex-wrap sm:flex-nowrap items-center justify-between gap-2 sm:gap-4">
             {steps.map((s, idx) => (
               <React.Fragment key={s.step}>
                 <div
                   className={`flex flex-col items-center gap-2 relative ${
-                    s.active ? 'scale-110 z-10' : 'opacity-50 grayscale'
-                  } transition-all duration-300`}
+                    s.active ? 'opacity-100 z-10' : 'opacity-50'
+                  } transition-all duration-200`}
                 >
                   <div
-                    className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center border-2 font-mono text-sm sm:text-base font-bold shadow-lg
+                    className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center border font-mono text-sm sm:text-base font-bold transition-colors duration-150
                     ${
                       s.active
                         ? s.failed
-                          ? 'bg-rose-500/20 border-rose-500 text-rose-400 shadow-rose-500/20'
-                          : 'bg-[#00D084]/20 border-[#00D084] text-[#00D084] shadow-[#00D084]/20'
-                        : 'bg-[#090C10] border-[#252B33] text-[#68717D]'
+                          ? 'bg-rose-500/15 border-rose-500 text-rose-400'
+                          : 'bg-[#10B981]/15 border-[#10B981] text-[#10B981]'
+                        : 'bg-[#09090B] border-white/10 text-[#71717A]'
                     }
                   `}
                   >
@@ -540,12 +557,12 @@ export const MempoolDashboard: React.FC = () => {
                   </div>
                   <div className="text-center absolute top-14 w-24">
                     <div
-                      className={`text-[10px] sm:text-xs font-semibold ${
+                      className={`text-xs font-medium ${
                         s.active
                           ? s.failed
-                            ? 'text-rose-400'
-                            : 'text-[#00D084]'
-                          : 'text-[#68717D]'
+                            ? 'text-rose-400 font-semibold'
+                            : 'text-[#10B981] font-semibold'
+                          : 'text-[#71717A]'
                       }`}
                     >
                       {s.title}
@@ -553,9 +570,9 @@ export const MempoolDashboard: React.FC = () => {
                   </div>
                 </div>
                 {idx < steps.length - 1 && (
-                  <div className="flex-1 h-0.5 bg-[#1B2027] hidden sm:block relative mb-8">
+                  <div className="flex-1 h-0.5 bg-white/[0.06] hidden sm:block relative mb-8">
                     {activeStep > s.step && (
-                      <div className="absolute inset-0 bg-[#00D084]/50 animate-pulse" />
+                      <div className="absolute inset-0 bg-[#10B981]/60" />
                     )}
                   </div>
                 )}
@@ -567,12 +584,12 @@ export const MempoolDashboard: React.FC = () => {
 
         {/* Current Transaction Simulation Context */}
         {activeStep >= 1 && (
-          <div id="step-create" className="lg:col-span-3 p-5 rounded-xl bg-[#090C10] border border-[#1B2027] space-y-4">
-            <div className="flex items-center justify-between pb-2 border-b border-[#1B2027]">
-              <span className="text-sm font-semibold text-[#E7E9ED]">
+          <div id="step-create" className="lg:col-span-3 p-5 rounded-xl bg-[#09090B] border border-white/[0.08] space-y-4">
+            <div className="flex items-center justify-between pb-2 border-b border-white/[0.06]">
+              <span className="text-sm font-semibold text-[#F4F4F5]">
                 {isVi ? 'Giao dịch đang mô phỏng' : 'Current Simulation Context'}
               </span>
-              <span className="text-xs text-[#00D084] font-mono">
+              <span className="text-xs text-[#10B981] font-mono">
                 {activeStep === 1 && (isVi ? 'Đang tạo...' : 'Creating...')}
                 {activeStep === 2 && (isVi ? 'Đang ký...' : 'Signing...')}
                 {activeStep === 3 && (isVi ? 'Truyền P2P...' : 'Broadcasting...')}
@@ -584,17 +601,17 @@ export const MempoolDashboard: React.FC = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                {/* Payload block */}
-               <div className="p-3 rounded-lg bg-[#0F1217] border border-[#252B33] flex flex-col gap-2">
-                 <div className="text-xs text-[#68717D]">{isVi ? 'Người gửi' : 'Sender'}</div>
-                 <div className="text-sm font-semibold text-[#E7E9ED]">Alice</div>
-                 <div className="text-xs text-[#68717D] mt-2">{isVi ? 'Người nhận' : 'Receiver'}</div>
-                 <div className="text-sm font-semibold text-[#E7E9ED]">Bob</div>
-                 <div className="text-xs text-[#68717D] mt-2">{isVi ? 'Số tiền' : 'Amount'}</div>
-                 <div className="text-sm font-mono font-semibold text-money">
+               <div className="p-3.5 rounded-lg bg-[#0F1014] border border-white/[0.06] flex flex-col gap-1.5">
+                 <div className="text-xs text-[#71717A]">{isVi ? 'Người gửi' : 'Sender'}</div>
+                 <div className="text-sm font-semibold text-[#F4F4F5]">Alice</div>
+                 <div className="text-xs text-[#71717A] mt-1">{isVi ? 'Người nhận' : 'Receiver'}</div>
+                 <div className="text-sm font-semibold text-[#F4F4F5]">Bob</div>
+                 <div className="text-xs text-[#71717A] mt-1">{isVi ? 'Số tiền' : 'Amount'}</div>
+                 <div className="text-sm font-mono font-semibold text-financial">
                    {selectedScenario === 'TAMPERED' && activeStep >= 3 ? (
-                      <span className="text-money">100.0 BTC <span className="text-rose-400">(Bị sửa đổi!)</span></span>
+                      <span className="text-financial">100.0 BTC <span className="text-rose-400 text-xs font-sans">(Bị sửa đổi!)</span></span>
                    ) : selectedScenario === 'INSUFFICIENT' ? (
-                      <span className="text-money">100.0 BTC</span>
+                      <span className="text-financial">100.0 BTC</span>
                    ) : (
                       <span>10.0 BTC</span>
                    )}
@@ -603,18 +620,18 @@ export const MempoolDashboard: React.FC = () => {
 
                {/* Signing block */}
                {activeStep >= 2 && (
-                 <div id="step-sign" className="p-3 rounded-lg bg-[#0F1217] border border-[#252B33] flex flex-col gap-2 col-span-1 sm:col-span-2 lg:col-span-3">
-                   <div className="text-xs text-[#68717D]">{isVi ? 'Quá trình ký (Mô phỏng)' : 'Signing Process (Simulated)'}</div>
+                 <div id="step-sign" className="p-3.5 rounded-lg bg-[#0F1014] border border-white/[0.06] flex flex-col gap-2 col-span-1 sm:col-span-2 lg:col-span-3">
+                   <div className="text-xs text-[#71717A]">{isVi ? 'Quá trình ký (Mô phỏng)' : 'Signing Process (Simulated)'}</div>
                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 items-center">
-                     <div className="p-3 bg-[#0A0D11] rounded border border-[#1B2027] text-[11px] font-mono text-sky-300/80 break-all leading-relaxed">
-                       <span className="block text-[#68717D] mb-1">{isVi ? "Mã băm giao dịch (SHA-256)" : "Transaction Digest (SHA-256)"}</span>
+                     <div className="p-3 bg-[#09090B] rounded border border-white/[0.06] text-[11px] font-mono text-sky-400 break-all leading-relaxed">
+                       <span className="block text-[#71717A] mb-1">{isVi ? "Mã băm giao dịch (SHA-256)" : "Transaction Digest (SHA-256)"}</span>
                        a94f82c1...
                      </div>
-                     <div className="hidden md:flex justify-center text-[#68717D]">
+                     <div className="hidden md:flex justify-center text-[#71717A]">
                         <span className="text-xs font-mono">+ {isVi ? "Khóa riêng" : "Private Key"} (Alice)</span>
                      </div>
-                     <div className="p-3 bg-[#0A0D11] rounded border border-[#00D084]/30 text-[11px] font-mono text-[#00D084] break-all leading-relaxed">
-                       <span className="block text-[#00D084]/70 mb-1">{isVi ? "Chữ ký số (ECDSA)" : "Digital Signature (ECDSA)"}</span>
+                     <div className="p-3 bg-[#09090B] rounded border border-[#10B981]/30 text-[11px] font-mono text-[#10B981] break-all leading-relaxed">
+                       <span className="block text-[#10B981]/70 mb-1">{isVi ? "Chữ ký số (ECDSA)" : "Digital Signature (ECDSA)"}</span>
                        30450221008f...9e21
                      </div>
                    </div>
@@ -624,11 +641,11 @@ export const MempoolDashboard: React.FC = () => {
 
             {/* P2P Broadcast animation block */}
             {activeStep === 3 && (
-               <div id="step-broadcast" className="p-4 rounded-lg bg-[#0F1217] border border-[#252B33] flex items-center justify-center h-24">
+               <div id="step-broadcast" className="p-4 rounded-lg bg-[#0F1014] border border-white/[0.06] flex items-center justify-center h-24">
                   <div className="flex items-center gap-6 animate-pulse">
-                     <div className="text-xs font-semibold text-[#E7E9ED]">Alice</div>
-                     <div className="text-[#00D084] text-xs">───► (P2P Network) ───►</div>
-                     <div className="flex gap-4 text-xs font-mono text-[#68717D]">
+                     <div className="text-xs font-semibold text-[#F4F4F5]">Alice</div>
+                     <div className="text-[#10B981] text-xs">───► (P2P Network) ───►</div>
+                     <div className="flex gap-4 text-xs font-mono text-[#71717A]">
                        <span>Node A</span>
                        <span>Node B</span>
                        <span>Node C</span>
@@ -640,34 +657,74 @@ export const MempoolDashboard: React.FC = () => {
         )}
 
         {/* Global Network Stats */}
-        <div className="p-5 rounded-xl bg-[#0B0E12] border border-[#1B2027] space-y-4">
+        <div className="p-5 rounded-xl bg-[#0F1014] border border-white/[0.08] space-y-4">
           <div className="flex items-center justify-between">
-            <span className="text-sm font-semibold text-[#E7E9ED]">
+            <span className="text-xs font-medium uppercase tracking-wider text-[#71717A]">
               {vStr.matrixTitle}
             </span>
           </div>
           <div className="grid grid-cols-2 gap-3">
-            <div className="p-3 rounded-lg bg-[#090C10] border border-[#1B2027]">
-              <div className="text-xs text-[#68717D] mb-1">{vStr.statTotal}</div>
-              <div className="text-xl font-mono text-[#E7E9ED]">
+            <div className="p-3 rounded-lg bg-[#09090B] border border-white/[0.06]">
+              <div className="text-xs text-[#71717A] mb-1">{vStr.statTotal}</div>
+              <div className="text-xl font-mono tracking-tight text-[#F4F4F5]">
                 {totalSubmitted}
               </div>
             </div>
-            <div className="p-3 rounded-lg bg-[#090C10] border border-[#1B2027]">
-              <div className="text-xs text-[#68717D] mb-1">{vStr.successRate}</div>
-              <div className="text-xl font-mono text-[#00D084]">
-                {totalSubmitted > 0 ? (100 - parseFloat(rejectionRate)).toFixed(1) : '100.0'}%
+            <div className="p-3 rounded-lg bg-[#09090B] border border-white/[0.06]">
+              <div className="text-xs text-[#71717A] mb-1">{vStr.successRate}</div>
+              <div
+                className={`text-xl font-mono tracking-tight ${
+                  totalSubmitted > 0 && validCount > 0
+                    ? 'text-[#10B981]'
+                    : totalSubmitted > 0
+                    ? 'text-rose-400'
+                    : 'text-[#71717A]'
+                }`}
+              >
+                {totalSubmitted > 0 ? `${successRateValue}%` : '--'}
               </div>
             </div>
-            <div className="p-3 rounded-lg bg-[#00D084]/5 border border-[#00D084]/20">
-              <div className="text-xs text-[#00D084]/70 mb-1">{vStr.statValid}</div>
-              <div className="text-xl font-mono text-[#00D084]">
+            <div
+              className={`p-3 rounded-lg transition-colors duration-150 ${
+                validCount > 0
+                  ? 'bg-[#10B981]/5 border border-[#10B981]/30'
+                  : 'bg-[#09090B] border border-white/[0.06]'
+              }`}
+            >
+              <div
+                className={`text-xs mb-1 ${
+                  validCount > 0 ? 'text-[#10B981]/80' : 'text-[#71717A]'
+                }`}
+              >
+                {vStr.statValid}
+              </div>
+              <div
+                className={`text-xl font-mono tracking-tight ${
+                  validCount > 0 ? 'text-[#10B981]' : 'text-[#71717A]'
+                }`}
+              >
                 {validCount}
               </div>
             </div>
-            <div className="p-3 rounded-lg bg-rose-950/20 border border-rose-500/20">
-              <div className="text-xs text-rose-400/70 mb-1">{vStr.statInvalid}</div>
-              <div className="text-xl font-mono text-rose-400">
+            <div
+              className={`p-3 rounded-lg transition-colors duration-150 ${
+                rejectedCount > 0
+                  ? 'bg-rose-950/20 border border-rose-500/30'
+                  : 'bg-[#09090B] border border-white/[0.06]'
+              }`}
+            >
+              <div
+                className={`text-xs mb-1 ${
+                  rejectedCount > 0 ? 'text-rose-400/80' : 'text-[#71717A]'
+                }`}
+              >
+                {vStr.statInvalid}
+              </div>
+              <div
+                className={`text-xl font-mono tracking-tight ${
+                  rejectedCount > 0 ? 'text-rose-400' : 'text-[#71717A]'
+                }`}
+              >
                 {rejectedCount}
               </div>
             </div>
@@ -676,12 +733,12 @@ export const MempoolDashboard: React.FC = () => {
       </div>
 
       {/* 2. Educational Ledger & Account States */}
-      <div className="p-5 rounded-xl bg-[#0B0E12] border border-[#1B2027] space-y-4">
+      <div className="p-5 rounded-xl bg-[#0F1014] border border-white/[0.08] space-y-4">
         <div className="flex items-center justify-between">
-          <span className="text-sm font-semibold text-[#E7E9ED]">
+          <span className="text-xs font-medium uppercase tracking-wider text-[#71717A]">
             {vStr.ledgerTitle}
           </span>
-          <span className="text-xs text-[#68717D]">{vStr.ledgerSubtitle}</span>
+          <span className="text-xs text-[#71717A]">{vStr.ledgerSubtitle}</span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
@@ -692,65 +749,67 @@ export const MempoolDashboard: React.FC = () => {
             return (
               <div
                 key={acc.name}
-                className="rounded-lg bg-[#090C10] border border-[#1B2027] overflow-hidden"
+                className="rounded-lg bg-[#09090B] border border-white/[0.06] overflow-hidden"
               >
-                <div className="p-3.5 space-y-3">
+                <div className="p-3.5 space-y-2.5">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-semibold text-[#E7E9ED]">
+                    <span className="text-sm font-semibold text-[#F4F4F5]">
                       {acc.name}
                     </span>
-                    <span className="font-mono text-money font-medium">
+                    <span className="font-mono text-financial font-semibold text-sm">
                       {acc.balance.toFixed(2)} BTC
                     </span>
                   </div>
 
-                  <div className="flex items-center justify-between text-[11px] font-mono">
-                    <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-[#1A2028] border border-[#252B33]">
-                      <span className="text-[#9AA2AE]">
+                  <div className="flex items-center justify-between text-xs font-mono">
+                    <div className="flex items-center gap-1.5 text-xs text-[#71717A] tracking-tight">
+                      <span>
                         {truncateAddress(acc.address)}
                       </span>
                       <button
                         onClick={() => handleCopy(acc.address, acc.name)}
-                        className="text-[#68717D] hover:text-[#E7E9ED] cursor-pointer"
+                        className="text-[#71717A] hover:text-[#F4F4F5] p-0.5 rounded transition-colors cursor-pointer"
+                        title={isVi ? "Sao chép địa chỉ" : "Copy address"}
                       >
-                        {copiedKey === acc.name ? <Check className="w-3 h-3 text-[#00D084]" /> : <Copy className="w-3 h-3" />}
+                        {copiedKey === acc.name ? <Check className="w-3.5 h-3.5 text-[#10B981]" /> : <Copy className="w-3.5 h-3.5" />}
                       </button>
                     </div>
                     <button
                       onClick={() => setExpandedAccount(isExpanded ? null : acc.name)}
-                      className="text-[#68717D] hover:text-[#E7E9ED] p-1 cursor-pointer"
+                      className="text-[#71717A] hover:text-[#F4F4F5] p-1 rounded transition-colors cursor-pointer"
+                      title={isExpanded ? (isVi ? "Thu gọn" : "Collapse") : (isVi ? "Mở rộng" : "Expand")}
                     >
-                      {isExpanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+                      {isExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
                     </button>
                   </div>
 
                   {isExpanded && (
-                    <div className="pt-3 mt-3 border-t border-[#1B2027] space-y-3">
+                    <div className="pt-3 mt-3 border-t border-white/[0.06] space-y-3">
                       <div>
-                        <span className="text-[#68717D] block font-sans text-[10px] mb-1">
+                        <span className="text-[#71717A] block font-sans text-[10px] mb-1">
                           {isVi ? 'Địa chỉ ví' : 'Wallet Address'}
                         </span>
-                        <div className="bg-[#0A0D11] border border-[#1B2027] p-2 rounded text-[#E7E9ED] font-mono text-[11px] break-all leading-relaxed">
+                        <div className="bg-[#0F1014] border border-white/[0.06] p-2 rounded text-[#F4F4F5] font-mono text-[11px] break-all leading-relaxed">
                           {acc.address}
                         </div>
                       </div>
                       <div>
-                        <span className="text-[#68717D] block font-sans text-[10px] mb-1">
+                        <span className="text-[#71717A] block font-sans text-[10px] mb-1">
                           {isVi ? 'Khóa công khai' : 'Public Key'}
                         </span>
-                        <div className="bg-[#0A0D11] border border-[#1B2027] p-2 rounded text-sky-300/80 font-mono text-[11px] break-all leading-relaxed">
+                        <div className="bg-[#0F1014] border border-white/[0.06] p-2 rounded text-sky-400 font-mono text-[11px] break-all leading-relaxed">
                           {acc.publicKey.slice(0, 48)}...
                         </div>
                       </div>
                       <div>
                         <div className="flex items-center justify-between mb-1">
-                          <span className="text-[#68717D] flex items-center gap-1 font-sans text-[10px]">
-                            <Lock className="w-3 h-3 text-[#68717D]" />
+                          <span className="text-[#71717A] flex items-center gap-1 font-sans text-[10px]">
+                            <Lock className="w-3 h-3 text-[#71717A]" />
                             <span>{isVi ? 'Khóa riêng' : 'Private Key'}</span>
                           </span>
                           <button
                             onClick={() => setRevealedKeyAccount(isKeyRevealed ? null : acc.name)}
-                            className="text-[#9AA2AE] hover:text-[#E7E9ED] flex items-center gap-1 font-sans cursor-pointer text-[10px]"
+                            className="text-[#A1A1AA] hover:text-[#F4F4F5] flex items-center gap-1 font-sans cursor-pointer text-[10px] transition-colors"
                           >
                             {isKeyRevealed ? (
                               <>
@@ -765,7 +824,7 @@ export const MempoolDashboard: React.FC = () => {
                             )}
                           </button>
                         </div>
-                        <div className="bg-[#0A0D11] border border-[#1B2027] p-2 rounded text-rose-400/90 font-mono text-[11px] break-all leading-relaxed">
+                        <div className="bg-[#0F1014] border border-white/[0.06] p-2 rounded text-rose-400 font-mono text-[11px] break-all leading-relaxed">
                           {isKeyRevealed ? acc.privateKey : '••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••'}
                         </div>
                       </div>
@@ -780,23 +839,23 @@ export const MempoolDashboard: React.FC = () => {
 
       {/* 3. Real-Time Node Verification Audit Log */}
       <div id="audit-panel" className="grid grid-cols-1 gap-6">
-        <div className="p-5 rounded-xl bg-[#0B0E12] border border-[#1B2027] space-y-4">
+        <div className="p-5 rounded-xl bg-[#0F1014] border border-white/[0.08] space-y-4">
           <div className="flex items-center justify-between">
-            <span className="text-sm font-semibold text-[#E7E9ED]">
+            <span className="text-xs font-medium uppercase tracking-wider text-[#71717A]">
               {vStr.auditEngineTitle}
             </span>
-            <span className="text-xs text-[#68717D]">{vStr.auditRules}</span>
+            <span className="text-xs text-[#71717A]">{vStr.auditRules}</span>
           </div>
 
           <div id="result-panel">
             {lastVerifiedTx ? (
               lastVerifiedTx.isValid ? (
-                <div className="px-3.5 py-2.5 mb-4 rounded-lg bg-[#00D084]/10 border border-[#00D084]/35 flex items-center justify-between text-xs">
-                  <div className="flex items-center gap-2 text-[#00D084] font-medium">
-                    <span className="w-2 h-2 rounded-full bg-[#00D084] shrink-0" />
+                <div className="px-3.5 py-2.5 mb-4 rounded-lg bg-[#10B981]/10 border border-[#10B981]/30 flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-2 text-[#10B981] font-medium">
+                    <span className="w-2 h-2 rounded-full bg-[#10B981] shrink-0" />
                     <span>{isVi ? 'Đã chấp nhận vào Mempool' : 'Accepted into Mempool'}</span>
-                    <span className="text-[#9AA2AE] font-normal">
-                      · {lastVerifiedTx.txNumber}: {lastVerifiedTx.senderName} → {lastVerifiedTx.receiverName} (<span className="text-money">{lastVerifiedTx.amount} BTC</span>)
+                    <span className="text-[#A1A1AA] font-normal">
+                      · {lastVerifiedTx.txNumber}: {lastVerifiedTx.senderName} → {lastVerifiedTx.receiverName} (<span className="text-financial">{lastVerifiedTx.amount} BTC</span>)
                     </span>
                   </div>
                 </div>
@@ -806,7 +865,7 @@ export const MempoolDashboard: React.FC = () => {
                     <div className="flex items-center gap-2 text-rose-400 font-medium">
                       <span className="w-2 h-2 rounded-full bg-rose-400 shrink-0" />
                       <span>{isVi ? 'Giao dịch bị từ chối' : 'Transaction rejected'}</span>
-                      <span className="text-[#9AA2AE] font-normal">· {lastVerifiedTx.txNumber}</span>
+                      <span className="text-[#A1A1AA] font-normal">· {lastVerifiedTx.txNumber}</span>
                     </div>
                   </div>
                   {lastVerifiedTx.rejectionReason && (
@@ -817,8 +876,8 @@ export const MempoolDashboard: React.FC = () => {
                 </div>
               )
             ) : (
-              <div className="px-3.5 py-2.5 mb-4 rounded-lg bg-[#090C10] border border-[#1B2027] text-xs text-[#68717D] flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#4B5563]" />
+              <div className="px-3.5 py-2.5 mb-4 rounded-lg bg-[#09090B] border border-white/[0.06] text-xs text-[#71717A] flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-white/20" />
                 <span>
                   {isVi
                     ? 'Chọn kịch bản và Bắt đầu mô phỏng để xem tiến trình xác thực.'
@@ -828,23 +887,23 @@ export const MempoolDashboard: React.FC = () => {
             )}
           </div>
 
-          <div className="divide-y divide-[#1B2027] border border-[#1B2027] rounded-lg overflow-hidden bg-[#090C10]">
+          <div className="divide-y divide-white/[0.06] border border-white/[0.06] rounded-lg overflow-hidden bg-[#09090B]">
             {verificationRules.map((chk, i) => (
               <div
                 key={i}
-                className="px-3.5 py-2.5 flex items-center justify-between text-xs transition-colors duration-500"
+                className="px-3.5 py-2.5 flex items-center justify-between text-xs transition-colors duration-150"
               >
                 <div>
-                  <span className="text-[#E7E9ED] font-medium">{chk.name}</span>
-                  <span className="text-[#68717D] text-[11px] ml-2 hidden sm:inline">
+                  <span className="text-[#F4F4F5] font-medium">{chk.name}</span>
+                  <span className="text-[#71717A] text-[11px] ml-2 hidden sm:inline">
                     · {chk.desc}
                   </span>
                 </div>
                 <div className="flex items-center gap-1.5 text-xs font-mono">
                   {chk.pass !== undefined ? (
                     chk.pass ? (
-                      <span className="text-[#00D084] flex items-center gap-1.5 font-medium">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#00D084]" />
+                      <span className="text-[#10B981] flex items-center gap-1.5 font-medium">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#10B981]" />
                         <span>{isVi ? 'Hợp lệ' : 'Valid'}</span>
                       </span>
                     ) : (
@@ -854,8 +913,8 @@ export const MempoolDashboard: React.FC = () => {
                       </span>
                     )
                   ) : (
-                    <span className="text-[#68717D] flex items-center gap-1.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#374151]" />
+                    <span className="text-xs text-[#71717A] flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-white/20" />
                       <span>{isVi ? 'Chờ kiểm tra' : 'Pending'}</span>
                     </span>
                   )}
@@ -868,39 +927,39 @@ export const MempoolDashboard: React.FC = () => {
 
       {/* 4. Live Mempool (Accepted) vs Rejected Transactions */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="p-5 rounded-xl bg-[#0B0E12] border border-[#1B2027] space-y-3">
-          <div className="flex items-center justify-between pb-2 border-b border-[#1B2027] text-xs">
-            <span className="font-semibold text-[#E7E9ED]">
+        <div className="p-5 rounded-xl bg-[#0F1014] border border-white/[0.08] space-y-3">
+          <div className="flex items-center justify-between pb-2 border-b border-white/[0.06] text-xs">
+            <span className="font-semibold text-[#F4F4F5]">
               {vStr.activeMempool} ({mempool.length})
             </span>
-            <span className="text-[#68717D]">{vStr.readyForBlock}</span>
+            <span className="text-[#71717A]">{vStr.readyForBlock}</span>
           </div>
           <div className="space-y-2 text-xs max-h-80 overflow-y-auto pr-1">
             {mempool.length === 0 ? (
-              <div className="p-5 rounded-lg bg-[#090C10] border border-[#1B2027] text-center text-[#68717D] text-xs">
+              <div className="p-5 rounded-lg bg-[#09090B] border border-white/[0.06] text-center text-[#71717A] text-xs">
                 {isVi ? 'Mempool hiện đang trống.' : 'Mempool is currently empty.'}
               </div>
             ) : (
               mempool.map((tx) => (
                 <div
                   key={tx.id}
-                  className="p-3 rounded-lg bg-[#090C10] border border-[#1B2027] hover:border-[#252B33] transition-colors flex items-center justify-between"
+                  className="p-3 rounded-lg bg-[#09090B] border border-white/[0.06] hover:border-white/15 transition-colors duration-150 flex items-center justify-between"
                 >
                   <div className="space-y-0.5">
                     <div className="flex items-center gap-2">
-                      <span className="font-mono text-[11px] font-semibold text-[#E7E9ED] bg-[#0A0D11] border border-[#1B2027] px-1.5 py-0.5 rounded">
+                      <span className="font-mono text-[11px] font-semibold text-[#F4F4F5] bg-[#15161A] border border-white/10 px-1.5 py-0.5 rounded">
                         {tx.txNumber}
                       </span>
-                      <span className="text-[#C5CBD3]">
+                      <span className="text-[#A1A1AA]">
                         {tx.senderName} → {tx.receiverName}
                       </span>
                     </div>
-                    <div className="text-[11px] font-mono text-[#68717D]">
-                      Sig: <span className="text-[#E7E9ED] bg-[#1A2028] px-1 py-0.5 rounded">{tx.signature.slice(0, 14)}...</span> · Nonce: <span className="text-[#E7E9ED] bg-[#1A2028] px-1 py-0.5 rounded">{tx.nonce}</span>
+                    <div className="text-[11px] font-mono text-[#71717A]">
+                      Sig: <span className="text-[#F4F4F5] bg-[#15161A] px-1 py-0.5 rounded border border-white/[0.04]">{tx.signature.slice(0, 14)}...</span> · Nonce: <span className="text-[#F4F4F5] bg-[#15161A] px-1 py-0.5 rounded border border-white/[0.04]">{tx.nonce}</span>
                     </div>
                   </div>
                   <div className="text-right">
-                    <span className="font-mono text-xs font-semibold text-money">
+                    <span className="font-mono text-xs font-semibold text-financial">
                       {tx.amount} BTC
                     </span>
                   </div>
@@ -910,38 +969,38 @@ export const MempoolDashboard: React.FC = () => {
           </div>
         </div>
 
-        <div className="p-5 rounded-xl bg-[#0B0E12] border border-[#1B2027] space-y-3">
-          <div className="flex items-center justify-between pb-2 border-b border-[#1B2027] text-xs">
-            <span className="font-semibold text-[#E7E9ED]">
+        <div className="p-5 rounded-xl bg-[#0F1014] border border-white/[0.08] space-y-3">
+          <div className="flex items-center justify-between pb-2 border-b border-white/[0.06] text-xs">
+            <span className="font-semibold text-[#F4F4F5]">
               {vStr.rejectedTransactions} ({rejected.length})
             </span>
-            <span className="text-[#68717D]">{vStr.droppedFromConsensus}</span>
+            <span className="text-[#71717A]">{vStr.droppedFromConsensus}</span>
           </div>
           <div className="space-y-2 text-xs max-h-80 overflow-y-auto pr-1">
             {rejected.length === 0 ? (
-              <div className="p-5 rounded-lg bg-[#090C10] border border-[#1B2027] text-center text-[#68717D] text-xs">
+              <div className="p-5 rounded-lg bg-[#09090B] border border-white/[0.06] text-center text-[#71717A] text-xs">
                 {vStr.noRejected}
               </div>
             ) : (
               rejected.map((tx) => (
                 <div
                   key={tx.id}
-                  className="p-3 rounded-lg bg-[#090C10] border border-[#1B2027] space-y-1"
+                  className="p-3 rounded-lg bg-[#09090B] border border-white/[0.06] space-y-1"
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <span className="font-mono text-[11px] font-semibold text-[#E7E9ED] bg-[#0A0D11] border border-[#1B2027] px-1.5 py-0.5 rounded">
+                      <span className="font-mono text-[11px] font-semibold text-[#F4F4F5] bg-[#15161A] border border-white/10 px-1.5 py-0.5 rounded">
                         {tx.txNumber}
                       </span>
-                      <span className="text-[#C5CBD3]">
+                      <span className="text-[#A1A1AA]">
                         {tx.senderName} → {tx.receiverName}
                       </span>
                     </div>
-                    <span className="font-mono text-xs font-semibold text-money">
+                    <span className="font-mono text-xs font-semibold text-financial">
                       {tx.amount} BTC
                     </span>
                   </div>
-                  <div className="text-[11px] text-rose-400/90">
+                  <div className="text-[11px] text-rose-400">
                     {tx.rejectionReason || (isVi ? 'Xác minh thất bại' : 'Validation failed')}
                   </div>
                 </div>

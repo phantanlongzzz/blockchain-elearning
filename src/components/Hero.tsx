@@ -3,13 +3,26 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { Copy, Check, Cpu, ArrowRight, ListTree, FlaskConical, Boxes, CheckCircle2, PlayCircle } from 'lucide-react';
+import React, { useMemo } from 'react';
+import { 
+  ArrowRight, 
+  Cpu, 
+  ListTree, 
+  FlaskConical, 
+  Boxes, 
+  CheckCircle2, 
+  PlayCircle,
+  Github,
+  BookOpen,
+  Sparkles,
+  ShieldCheck,
+  Zap,
+  GraduationCap
+} from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 import { useNavigation, MODULES_REGISTRY, ModuleId, LessonId } from '../context/NavigationContext';
 import { useProgressStore } from '../stores/progressStore';
-import { hashSha256 } from '../utils/sha256';
-import { formatHexWords, hexToBinary } from '../utils/binary';
+import { InteractiveBlockInspector } from './Hero/InteractiveBlockInspector';
 
 export const Hero: React.FC = () => {
   const { strings, language } = useLanguage();
@@ -17,17 +30,9 @@ export const Hero: React.FC = () => {
   const progressMap = useProgressStore((s) => s.progressMap);
   const getTotalProgress = useProgressStore((s) => s.getTotalProgress);
   const getResumeLesson = useProgressStore((s) => s.getResumeLesson);
-  const resetProgress = useProgressStore((s) => s.resetProgress);
 
   const totalProgress = useMemo(() => getTotalProgress(), [progressMap, getTotalProgress]);
   const resumeInfo = useMemo(() => getResumeLesson(), [progressMap, getResumeLesson]);
-
-  const [heroInput, setHeroInput] = useState('Hello World');
-  const [hashOutput, setHashOutput] = useState('');
-  const [copied, setCopied] = useState(false);
-  const [isScrambling, setIsScrambling] = useState(false);
-  const [hoveredWordIndex, setHoveredWordIndex] = useState<number | null>(null);
-
   const isVi = language === 'vi';
 
   // Find metadata for resume target lesson
@@ -35,73 +40,45 @@ export const Hero: React.FC = () => {
   const resumeLessonMeta =
     resumeModuleMeta.lessons.find((l) => l.id === resumeInfo.lessonId) || resumeModuleMeta.lessons[0];
 
-  const calculateHash = useCallback(async (text: string) => {
-    setIsScrambling(true);
-    const result = await hashSha256(text);
-    // Quick scramble effect
-    setTimeout(() => {
-      setHashOutput(result.hex);
-      setIsScrambling(false);
-    }, 120);
-  }, []);
-
-  useEffect(() => {
-    calculateHash(heroInput);
-  }, [heroInput, calculateHash]);
-
-  const copyHash = async () => {
-    if (!hashOutput) return;
-    await navigator.clipboard.writeText(hashOutput);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  const samplePresets = [
-    { label: 'Hello World', value: 'Hello World' },
-    { label: 'Hello world (1 char diff)', value: 'Hello world' },
-    { label: 'Empty String', value: '' },
-    { label: 'Bitcoin Genesis', value: 'The Times 03/Jan/2009 Chancellor on brink of second bailout for banks' },
-  ];
-
-  const words = hashOutput ? formatHexWords(hashOutput) : [];
-  const binaryPreview = hashOutput ? hexToBinary(hashOutput).slice(0, 64) : '';
-
   const learningAreas = [
     {
       id: 'hash',
       title: strings.nav.overviewCards.hashTitle,
       subtitle: strings.nav.overviewCards.hashSubtitle,
-      desc: 'SHA-256, Avalanche Effect, One-Way Property, Brute Force & Hash Properties',
+      desc: isVi 
+        ? 'Mã hóa SHA-256, Hiệu ứng Thác đổ, Tính Đơn hướng, Thử sai Brute Force & Pipeline 64 vòng' 
+        : 'SHA-256, Avalanche Effect, One-Way Property, Brute Force & 64-Round Pipeline',
       icon: Cpu,
-      accent: 'emerald',
     },
     {
       id: 'theory',
       title: strings.nav.overviewCards.theoryTitle,
       subtitle: strings.nav.overviewCards.theorySubtitle,
-      desc: 'Cryptography, Block Structure, Decentralization & Consensus Mechanisms',
+      desc: isVi 
+        ? 'Mật mã học phi đối xứng ECDSA, Cấu trúc khối, Mạng P2P & Lịch sử Đồng thuận' 
+        : 'ECDSA Asymmetric Cryptography, Block Structure, P2P Networks & Consensus History',
       icon: ListTree,
-      accent: 'blue',
     },
     {
       id: 'simulation',
       title: strings.nav.overviewCards.simulationTitle,
       subtitle: strings.nav.overviewCards.simulationSubtitle,
-      desc: 'Transaction Simulator, Mempool, PoW Mining Competition & PoS Validators',
+      desc: isVi 
+        ? 'Bộ mô phỏng Giao dịch UTXO, Mempool, Cuộc đua Đào PoW & Trình xác thực PoS' 
+        : 'UTXO Transaction Simulator, Mempool, PoW Mining Competition & PoS Validators',
       icon: FlaskConical,
-      accent: 'purple',
     },
     {
       id: 'blockchain',
       title: strings.nav.overviewCards.blockchainTitle,
       subtitle: strings.nav.overviewCards.blockchainSubtitle,
-      desc: 'Genesis Block, Chain Integrity, Merkle Tree & Tampering Detection',
+      desc: isVi 
+        ? 'Khối Genesis, Tính toàn vẹn chuỗi, Cây Merkle & Phát hiện Giả mạo dữ liệu' 
+        : 'Genesis Block, Chain Integrity, Merkle Tree & Tampering Detection',
       icon: Boxes,
-      accent: 'emerald',
     },
   ];
 
-  // Helper to get completed count for a specific module
   const getModuleCompletedCount = (modId: string) => {
     const mod = MODULES_REGISTRY.find((m) => m.id === modId);
     if (!mod) return { completed: 0, total: 0 };
@@ -112,227 +89,197 @@ export const Hero: React.FC = () => {
   return (
     <section
       id="hero"
-      className="relative min-h-[85vh] pt-6 sm:pt-10 pb-16 flex flex-col justify-center items-center overflow-hidden font-sans"
+      className="relative min-h-[90vh] py-6 sm:py-10 flex flex-col justify-center overflow-hidden font-sans rounded-3xl bg-gradient-to-b from-[#090D16] to-[#050811] border border-white/[0.06]"
     >
-      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center font-sans">
-        {/* Main Title */}
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#f5f5f5] mb-3 font-display">
-          {strings.hero.title}
-        </h1>
+      {/* ========================================================================= */}
+      {/* STRICT LIGHTING: ONLY ONE SOFT RADIAL CYAN/BLUE FOCAL GLOW BEHIND HERO   */}
+      {/* ========================================================================= */}
+      <div 
+        className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] h-[450px] bg-[radial-gradient(ellipse_60%_50%_at_50%_40%,rgba(0,210,255,0.08),rgba(0,114,255,0.03),transparent_75%)] pointer-events-none z-0" 
+        aria-hidden="true"
+      />
 
-        {/* Subtitle */}
-        <p className="text-lg sm:text-xl md:text-2xl font-medium text-zinc-200 tracking-normal mb-3 font-display leading-snug">
-          {strings.hero.subtitle}
-        </p>
+      <div className="relative z-10 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        {/* ========================================================================= */}
+        {/* MINIMAL TOP HERO SUB-HEADER BAR                                          */}
+        {/* ========================================================================= */}
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/[0.06] pb-4">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border border-cyan-500/30 flex items-center justify-center text-cyan-400 font-mono font-bold text-sm">
+              ◈
+            </div>
+            <div>
+              <span className="font-display font-bold text-white tracking-tight text-base">
+                BlockLab
+              </span>
+              <span className="text-[11px] text-slate-400 block font-sans">
+                {isVi ? 'Nền tảng học tập trực quan về Blockchain & Mật mã' : 'Interactive Blockchain & Cryptography Education Platform'}
+              </span>
+            </div>
+          </div>
 
-        {/* Supporting text */}
-        <p className="text-sm sm:text-base text-zinc-400 max-w-2xl mx-auto mb-5 leading-relaxed font-sans">
-          {strings.hero.description}
-        </p>
+          <div className="flex items-center gap-2 sm:gap-4 text-xs font-mono">
+            <button
+              onClick={() => navigateTo('theory', 'data-structures')}
+              className="text-slate-400 hover:text-cyan-300 transition-colors cursor-pointer hidden md:inline-flex"
+            >
+              {isVi ? 'Lý thuyết' : 'Theory'}
+            </button>
+            <button
+              onClick={() => navigateTo('simulation', 'transactions')}
+              className="text-slate-400 hover:text-cyan-300 transition-colors cursor-pointer hidden md:inline-flex"
+            >
+              {isVi ? 'Mô phỏng 3.1' : 'Simulation 3.1'}
+            </button>
+            <button
+              onClick={() => navigateTo('simulation', 'proof-of-work')}
+              className="text-slate-400 hover:text-cyan-300 transition-colors cursor-pointer hidden sm:inline-flex"
+            >
+              {isVi ? 'Đồng thuận' : 'Consensus'}
+            </button>
+            <button
+              onClick={() => navigateTo('hash', 'generator')}
+              className="text-slate-400 hover:text-cyan-300 transition-colors cursor-pointer hidden sm:inline-flex"
+            >
+              {isVi ? 'Tài liệu NIST' : 'NIST Standards'}
+            </button>
+            <button
+              onClick={() => navigateTo('hash', 'generator')}
+              className="px-3 py-1.5 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.1] text-slate-200 hover:text-white text-xs font-mono font-medium transition-all duration-150 ease-out cursor-pointer flex items-center gap-1.5"
+            >
+              <span>{isVi ? 'Khám phá bài Lab' : 'Explore Labs'}</span>
+              <ArrowRight className="w-3.5 h-3.5 text-cyan-400" />
+            </button>
+          </div>
+        </div>
 
-
-
-        {/* ============================================================ */}
-        {/* LEARNING PROGRESS & RESUME LEARNING HERO CARD                */}
-        {/* ============================================================ */}
-        <div
-          id="hero-progress-banner"
-          className="max-w-3xl mx-auto bg-[#111111] border border-[#292929] rounded-xl p-5 sm:p-6 mb-8 text-left shadow-lg relative overflow-hidden"
-        >
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div className="space-y-2 flex-1 min-w-0">
-              <div className="flex items-center gap-2 flex-wrap">
-                <span className="w-2 h-2 rounded-full bg-emerald-400" />
-                <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#f5f5f5]">
-                  {isVi ? 'TIẾN ĐỘ HỌC TẬP CỦA BẠN' : 'YOUR LEARNING PROGRESS'}
-                </span>
-                <span className="text-[11px] font-mono text-[#a1a1aa] ml-auto sm:ml-0 font-medium">
-                  {totalProgress.completedCount}/{totalProgress.totalCount} {isVi ? 'bài hoàn thành' : 'completed'} ({totalProgress.percentage}%)
-                </span>
-              </div>
-
-              {/* Progress Bar */}
-              <div className="w-full bg-[#0a0a0a] h-2 rounded-full overflow-hidden border border-[#292929]">
-                <div
-                  className="bg-emerald-500 h-full rounded-full transition-all duration-500"
-                  style={{ width: `${Math.max(totalProgress.percentage, 5)}%` }}
-                />
-              </div>
-
-              <div className="flex items-center gap-2 text-xs text-[#a1a1aa]">
-                <span className="text-[#71717a]">{isVi ? 'Đang học gần nhất:' : 'Next up:'}</span>
-                <span className="font-semibold text-[#f5f5f5] truncate">
-                  {isVi ? resumeLessonMeta.titleVi : resumeLessonMeta.titleEn}
-                </span>
-              </div>
+        {/* ========================================================================= */}
+        {/* TWO-COLUMN HERO GRID (16:9 AESTHETIC COMPOSITION)                        */}
+        {/* ========================================================================= */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+          {/* LEFT COLUMN: Core Value Proposition, Typography & CTAs */}
+          <div className="lg:col-span-6 xl:col-span-6 space-y-6 text-left">
+            {/* Tech Tags Pill */}
+            <div className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-white/[0.03] backdrop-blur-md border border-white/[0.08] text-xs font-mono text-slate-300 shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_rgba(0,210,255,0.6)]" />
+              <span className="font-semibold text-cyan-300">NIST FIPS 180-4</span>
+              <span className="text-slate-500">•</span>
+              <span>SECP256k1</span>
+              <span className="text-slate-500">•</span>
+              <span>PoW / PoS</span>
             </div>
 
-            {/* Direct Resume Button - Primary CTA */}
-            <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto">
+            {/* Main Headline */}
+            <div className="space-y-2">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight text-[#F8FAFC] font-display">
+                Demystifying Blockchain{' '}
+                <span className="block mt-1 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                  From Zero to Consensus
+                </span>
+              </h1>
+            </div>
+
+            {/* Sub-headline */}
+            <p className="text-sm sm:text-base text-[#94A3B8] leading-relaxed max-w-xl font-sans font-normal">
+              {isVi 
+                ? 'Tương tác trực quan với hàm băm SHA-256, chữ ký số ECDSA, cây Merkle và các thuật toán đồng thuận theo chuẩn NIST FIPS 180-4.' 
+                : 'Interact visually with SHA-256 hashing, ECDSA digital signatures, Merkle trees, and decentralized consensus algorithms certified to NIST FIPS 180-4.'}
+            </p>
+
+            {/* CTA Group */}
+            <div className="flex flex-wrap items-center gap-3.5 pt-2">
               <button
-                id="btn-resume-learning"
-                onClick={() => navigateTo(resumeInfo.moduleId as ModuleId, resumeInfo.lessonId as LessonId)}
-                aria-label={isVi ? 'Tiếp tục học bài học gần nhất' : 'Resume recent lesson'}
- className="w-full sm:w-auto px-5 py-2.5 rounded-lg bg-text-primary hover:bg-white/90 text-[#0a0a0a] font-bold text-xs sm:text-sm uppercase tracking-wider transition-all duration-200 shadow-sm flex items-center justify-center gap-2 cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:outline-none active:scale-95"
+                id="hero-start-simulation-btn"
+                onClick={() => navigateTo('hash', 'generator')}
+                className="px-5 py-3 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-sm transition-all duration-150 ease-out shadow-sm hover:shadow-cyan-500/20 active:scale-95 flex items-center gap-2 cursor-pointer"
               >
-                <PlayCircle className="w-4 h-4" />
-                <span>{isVi ? 'Tiếp tục học' : 'Resume Learning'}</span>
+                <Zap className="w-4 h-4 text-white" />
+                <span>{isVi ? 'Bắt đầu mô phỏng' : 'Start Simulation'}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
-            </div>
-          </div>
-        </div>
 
-        {/* Action CTA Buttons */}
-        <div className="flex flex-wrap items-center justify-center gap-4 mb-10 font-sans">
-          <button
-            onClick={() => navigateTo('hash', 'generator')}
-            id="hero-primary-cta"
-            aria-label={strings.hero.trySha256}
-            className="group px-5 py-2.5 rounded-lg bg-[#111111] hover:bg-[#181818] text-[#f5f5f5] font-semibold text-xs sm:text-sm uppercase tracking-wider transition-all duration-200 border border-[#292929] hover:border-border-secondary flex items-center gap-2 cursor-pointer focus-visible:ring-1 focus-visible:ring-teach-1 focus-visible:outline-none"
-          >
-            <Cpu className="w-4 h-4 text-text-muted group-hover:text-text-primary transition-colors" />
-            <span>{strings.hero.trySha256}</span>
-            <ArrowRight className="w-4 h-4 text-text-muted group-hover:text-text-primary transition-colors" />
-          </button>
-          <button
-            onClick={() => navigateTo('simulation', 'proof-of-work')}
-            id="hero-secondary-cta"
-            aria-label={isVi ? 'Vào phòng thực nghiệm PoW' : 'Enter PoW simulation lab'}
-            className="group px-5 py-2.5 rounded-lg bg-[#111111] hover:bg-[#181818] text-[#f5f5f5] font-semibold text-xs sm:text-sm uppercase tracking-wider transition-all duration-200 border border-[#292929] hover:border-border-secondary flex items-center gap-2 cursor-pointer focus-visible:ring-1 focus-visible:ring-teach-1 focus-visible:outline-none"
-          >
-            <FlaskConical className="w-4 h-4 text-text-muted group-hover:text-text-primary transition-colors" />
-            <span>{isVi ? 'Phòng Thực Nghiệm PoW' : 'PoW Simulation Lab'}</span>
-          </button>
-        </div>
-
-        {/* Hero Live Animated Hash Simulation Card */}
-        <div
-          id="hero-hash-preview-card"
-          className="relative max-w-3xl mx-auto rounded-xl bg-[#111111] border border-[#292929] p-5 sm:p-6 shadow-xl text-left backdrop-blur-xl transition-all hover:border-border-secondary mb-14"
-        >
-          {/* Card Header Bar with Live Indicator */}
-          <div className="flex items-center justify-between border-b border-[#292929] pb-3 mb-4 font-sans">
-            <div className="flex items-center gap-2">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teach-1 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-teach-1" />
-              </span>
-
-              <span className="text-[10px] font-mono uppercase tracking-widest text-teach-1/90">
-                {isVi ? 'Trực tiếp' : 'Live'}
-              </span>
-
-              <span className="text-xs font-semibold text-[#f5f5f5] ml-1.5 tracking-wide font-display">
-                {strings.hero.engineTitle}
-              </span>
-            </div>
-            <div className="flex items-center gap-2 text-xs font-mono text-[#a1a1aa]">
-              <span className="text-[11px] text-[#a1a1aa] font-mono">NIST FIPS 180-4</span>
-            </div>
-          </div>
-
-          {/* Quick interactive input inside hero */}
-          <div className="mb-4 font-sans">
-            <div className="flex items-center justify-between text-xs text-[#a1a1aa] mb-1.5">
-              <span className="uppercase tracking-wider font-semibold text-[#a1a1aa]">{strings.hero.liveInputLabel}</span>
-              <span className="text-[#71717a] font-mono">{heroInput.length} {strings.hashGenerator.lengthChars} · {new TextEncoder().encode(heroInput).length} {strings.hashGenerator.lengthBytes}</span>
-            </div>
-            <div className="relative">
-              <input
-                id="hero-quick-input"
-                type="text"
-                value={heroInput}
-                onChange={(e) => setHeroInput(e.target.value)}
-                placeholder={strings.hero.inputPlaceholder}
-                className="w-full bg-[#0a0a0a] border border-[#292929] rounded-lg px-4 py-2.5 text-sm sm:text-base font-sans text-[#f5f5f5] placeholder-[#71717a] focus:outline-none focus:border-teach-1 focus:ring-1 focus:ring-teach-1/30 transition-colors shadow-inner"
-              />
-            </div>
-
-            {/* Preset quick test vectors */}
-            <div className="flex flex-wrap gap-1.5 mt-2.5">
-              <span className="text-[11px] font-sans text-[#71717a] self-center mr-1">{strings.hero.presetsLabel}</span>
-              {samplePresets.map((preset) => (
-                <button
-                  key={preset.label}
-                  onClick={() => setHeroInput(preset.value)}
-                  className={`text-xs font-sans px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
-                    heroInput === preset.value
-                      ? 'bg-teach-1/15 text-teach-1 border border-teach-1/30 font-medium'
-                      : 'bg-[#0a0a0a] text-[#a1a1aa] hover:text-[#f5f5f5] border border-[#292929]'
-                  }`}
-                >
-                  {preset.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* 256-bit Hexadecimal Output Display */}
-          <div className="space-y-3 font-sans">
-            <div className="flex items-center justify-between text-xs text-[#a1a1aa]">
-              <div className="flex items-center gap-2">
-                <span className="uppercase tracking-wider font-semibold text-[#a1a1aa]">{strings.hero.digestLabel}</span>
-                <span className="px-2 py-0.5 rounded bg-[#181818] border border-[#292929] text-[9px] font-mono uppercase tracking-widest text-[#a1a1aa]">SHA-256 (64 ROUNDS)</span>
-              </div>
-              <button
-                id="hero-copy-hash-btn"
-                onClick={copyHash}
-                className="text-xs font-mono text-[#a1a1aa] hover:text-[#f5f5f5] flex items-center gap-1 transition-colors px-2.5 py-1 rounded-lg bg-[#0a0a0a] border border-[#292929] hover:border-border-secondary cursor-pointer"
+              <a
+                href="https://github.com/phantanlongzzz/blockchain-elearning"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-5 py-3 rounded-lg bg-white/[0.03] hover:bg-white/[0.07] border border-white/[0.08] hover:border-white/[0.15] text-[#94A3B8] hover:text-[#F8FAFC] font-medium text-sm transition-all duration-150 ease-out flex items-center gap-2 cursor-pointer"
               >
-                {copied ? <Check className="w-3 h-3 text-success" /> : <Copy className="w-3 h-3" />}
-                <span className={copied ? 'text-success' : ''}>{copied ? strings.hero.copied : strings.hero.copyHash}</span>
-              </button>
+                <Github className="w-4 h-4 text-slate-300" />
+                <span>{isVi ? 'Xem mã nguồn đồ án' : 'View Source Code'}</span>
+              </a>
             </div>
 
-            {/* 8 32-bit Words Grid */}
-            <div className="bg-[#0a0a0a] border border-[#292929] rounded-lg p-3 sm:p-4">
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 font-mono text-xs sm:text-sm">
-                {words.map((word, idx) => (
-                  <div
-                    key={idx}
-                    onMouseEnter={() => setHoveredWordIndex(idx)}
-                    onMouseLeave={() => setHoveredWordIndex(null)}
-                    className={`p-2.5 rounded-lg transition-all text-center ${
-                      hoveredWordIndex === idx
-                        ? 'bg-teach-1/15 text-teach-1 border border-teach-1/40'
-                        : 'bg-[#111111] text-[#f5f5f5] border border-[#292929] hover:border-[#383838]'
-                    }`}
-                  >
-                    <div className="text-[10px] text-[#71717a] mb-0.5 font-sans">W{idx}</div>
-                    <div className="font-bold tracking-wider font-mono">{word}</div>
-                  </div>
-                ))}
+            {/* Metrics & Progress Glass Card */}
+            <div className="p-4 rounded-xl bg-white/[0.02] backdrop-blur-md border border-white/[0.08] grid grid-cols-2 sm:grid-cols-3 gap-4 text-xs font-mono">
+              <div className="space-y-0.5">
+                <div className="text-lg font-bold text-[#F8FAFC] tracking-tight">19</div>
+                <div className="text-[11px] text-[#94A3B8] font-sans">
+                  {isVi ? 'Phân hệ Tương tác' : 'Interactive Modules'}
+                </div>
+              </div>
+
+              <div className="space-y-0.5">
+                <div className="text-lg font-bold text-cyan-400 tracking-tight">0%</div>
+                <div className="text-[11px] text-[#94A3B8] font-sans">
+                  {isVi ? 'Trừu tượng hóa hộp đen' : 'Black-box Abstraction'}
+                </div>
+              </div>
+
+              <div className="col-span-2 sm:col-span-1 space-y-0.5">
+                <div className="text-lg font-bold text-[#F6C453] tracking-tight">
+                  {totalProgress.completedCount > 0 ? `${totalProgress.percentage}%` : 'NIST'}
+                </div>
+                <div className="text-[11px] text-[#94A3B8] font-sans">
+                  {totalProgress.completedCount > 0 
+                    ? (isVi ? 'Tiến độ của bạn' : 'Your Progress') 
+                    : (isVi ? 'Tiêu chuẩn Mật mã' : 'Rigorous Standard')}
+                </div>
               </div>
             </div>
 
-            {/* Binary Bitstream Preview */}
-            <div className="flex items-center justify-between text-[11px] font-mono text-[#71717a] bg-[#0a0a0a] px-3.5 py-2 rounded-lg border border-[#292929]">
-              <div className="flex items-center gap-2 truncate">
-                <span className="text-[#a1a1aa] shrink-0 font-semibold font-sans">{strings.hero.binaryPreview}</span>
-                <span className="text-zinc-400 break-all font-mono">{binaryPreview}...</span>
+            {/* Resume Learning Prompt if in progress */}
+            {totalProgress.completedCount > 0 && (
+              <div className="p-3.5 rounded-lg bg-cyan-950/20 border border-cyan-500/20 flex items-center justify-between gap-3 text-xs">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <PlayCircle className="w-4 h-4 text-cyan-400 shrink-0" />
+                  <span className="text-slate-300 truncate">
+                    {isVi ? 'Bài học tiếp theo:' : 'Next up:'}{' '}
+                    <strong className="text-white font-medium">
+                      {isVi ? resumeLessonMeta.titleVi : resumeLessonMeta.titleEn}
+                    </strong>
+                  </span>
+                </div>
+                <button
+                  onClick={() => navigateTo(resumeInfo.moduleId as ModuleId, resumeInfo.lessonId as LessonId)}
+                  className="px-2.5 py-1 rounded bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 font-mono text-[11px] font-medium transition-colors shrink-0 cursor-pointer"
+                >
+                  {isVi ? 'Tiếp tục' : 'Resume'} →
+                </button>
               </div>
-              <span className="text-[#71717a] font-mono shrink-0 ml-2">{strings.hero.bitsBytes}</span>
-            </div>
+            )}
+          </div>
+
+          {/* RIGHT COLUMN: Interactive 3D-styled Block Header & Merkle Inspector */}
+          <div className="lg:col-span-6 xl:col-span-6">
+            <InteractiveBlockInspector />
           </div>
         </div>
 
-        {/* ============================================================ */}
-        {/* HOMEPAGE NAVIGATION VISUALIZATION                            */}
-        {/* 4 Compact learning area cards with direct section routing    */}
-        {/* ============================================================ */}
-        <div className="max-w-5xl mx-auto text-left">
-          <div className="border-b border-[#292929] pb-3 mb-6 flex items-center justify-between">
+        {/* ========================================================================= */}
+        {/* HOMEPAGE 4 MODULES EXPLORATION CARDS (MATTE GLASS SURFACES)              */}
+        {/* ========================================================================= */}
+        <div className="pt-6 border-t border-white/[0.06] space-y-4 text-left">
+          <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-teach-1" />
-              <h2 className="text-xs font-mono font-medium tracking-wide text-[#a1a1aa]">
-                {strings.nav.projectTitle} · Các phân hệ học tập
+              <span className="w-2 h-2 rounded-full bg-cyan-400" />
+              <h2 className="text-xs font-mono font-medium tracking-wide text-slate-400 uppercase">
+                {isVi ? 'Cấu trúc Lộ trình Đào tạo' : 'Curriculum Architecture'} · 4 Phân hệ
               </h2>
             </div>
-            <span className="text-[11px] font-mono text-[#a1a1aa]">4 phân hệ chính</span>
+            <span className="text-[11px] font-mono text-slate-500">NIST FIPS & BTC Core Spec</span>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {learningAreas.map((area, index) => {
               const Icon = area.icon;
               const { completed, total } = getModuleCompletedCount(area.id);
@@ -343,50 +290,48 @@ export const Hero: React.FC = () => {
                   key={area.id}
                   id={`hero-card-module-${area.id}`}
                   onClick={() => navigateTo(area.id as ModuleId)}
-                  className="group rounded-xl bg-[#111111] border border-[#292929] hover:border-border-secondary p-5 transition-all duration-200 flex flex-col justify-between hover:bg-[#181818] relative text-left w-full cursor-pointer"
+                  className="group rounded-xl bg-white/[0.02] hover:bg-white/[0.05] border border-white/[0.08] hover:border-cyan-500/30 p-5 transition-all duration-150 ease-out flex flex-col justify-between relative text-left w-full cursor-pointer"
                 >
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <div className="w-8 h-8 rounded-lg bg-[#181818] border border-[#292929] group-hover:border-border-primary group-hover:bg-[#1f1f1f] flex items-center justify-center text-text-muted group-hover:text-text-primary transition-colors">
+                      <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/[0.08] group-hover:border-cyan-500/30 group-hover:bg-cyan-500/10 flex items-center justify-center text-slate-400 group-hover:text-cyan-300 transition-colors">
                         <Icon className="w-4 h-4" />
                       </div>
-                      <span className="text-[11px] font-mono text-[#71717a] group-hover:text-text-secondary transition-colors">
+                      <span className="text-[11px] font-mono text-slate-500 group-hover:text-cyan-400 transition-colors">
                         0{index + 1}
                       </span>
                     </div>
 
                     <div>
-                      <div className="flex items-center justify-between">
-                        <h3 className="text-sm font-semibold font-sans text-[#f5f5f5] group-hover:text-white transition-colors tracking-normal">
-                          {area.title}
-                        </h3>
-                      </div>
-                      <p className="text-xs text-[#a1a1aa] font-medium mt-0.5">
+                      <h3 className="text-sm font-semibold font-sans text-[#F8FAFC] group-hover:text-white transition-colors tracking-tight">
+                        {area.title}
+                      </h3>
+                      <p className="text-xs text-cyan-300/80 font-mono mt-0.5">
                         {area.subtitle}
                       </p>
                     </div>
 
-                    <p className="text-xs text-[#a1a1aa] leading-relaxed line-clamp-2">
+                    <p className="text-xs text-[#94A3B8] leading-relaxed line-clamp-2 font-sans">
                       {area.desc}
                     </p>
                   </div>
 
-                  <div className="pt-3 mt-4 border-t border-[#292929] flex items-center justify-between text-[11px] font-sans">
-                    <div className="flex items-center gap-1 text-[10px]">
+                  <div className="pt-3 mt-4 border-t border-white/[0.06] flex items-center justify-between text-[11px] font-sans">
+                    <div className="flex items-center gap-1 text-[10px] font-mono">
                       {isModuleDone ? (
                         <span className="text-success font-medium flex items-center gap-1">
                           <CheckCircle2 className="w-3 h-3" />
-                          {isVi ? 'Đã hoàn thành' : 'Completed'}
+                          {isVi ? 'Hoàn thành' : 'Completed'}
                         </span>
                       ) : (
-                        <span className="text-[#71717a]">
-                          {completed}/{total} {isVi ? 'bài' : 'lessons'}
+                        <span className="text-slate-400">
+                          {completed}/{total} {isVi ? 'bài học' : 'lessons'}
                         </span>
                       )}
                     </div>
-                    <div className="flex items-center gap-1 text-text-muted group-hover:text-text-primary text-xs transition-colors">
-                      <span>{isVi ? 'Khám phá' : 'Explore'}</span>
-                      <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+                    <div className="flex items-center gap-1 text-slate-400 group-hover:text-cyan-300 text-xs font-mono transition-colors">
+                      <span>{isVi ? 'Khám phá' : 'Enter'}</span>
+                      <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
                     </div>
                   </div>
                 </button>
@@ -394,39 +339,31 @@ export const Hero: React.FC = () => {
             })}
           </div>
         </div>
-      </div>
-        {/* Student Researcher Identity - Footer positioning */}
-        <div className="max-w-5xl mx-auto text-center mt-16 pt-8 border-t border-[#292929]">
-          <div className="inline-flex items-center flex-wrap justify-center gap-2 text-xs font-sans text-[#71717a]">
-            <span className="text-[#a1a1aa] font-medium">{strings.hero.researcherLabel}</span>
-            <span className="font-semibold text-[#f5f5f5]">Phan Tấn Long</span>
-            <span className="text-[#3f3f46]">·</span>
-            <span>CTK47B</span>
-            <span className="text-[#3f3f46]">·</span>
-            <span className="font-mono">ID: 2312679</span>
-            <div className="relative ml-2.5 group/gh flex items-center justify-center">
-              {/* Energy Ring */}
-              <div className="absolute inset-0 bg-[#2DD4BF] rounded-xl blur-md opacity-0 group-hover/gh:opacity-[0.15] group-hover/gh:scale-125 transition-all duration-[220ms] pointer-events-none"></div>
-              
-              <a
-                href="https://github.com/phantanlongzzz/blockchain-elearning"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="relative w-[42px] h-[42px] rounded-[11px] bg-[#0A0A0C] border border-[#2DD4BF]/30 flex items-center justify-center transition-all duration-[220ms] hover:-translate-y-[2px] hover:scale-[1.08] hover:border-[#2DD4BF]/70 cursor-pointer z-10 [box-shadow:0_0_8px_rgba(45,212,191,0.15),inset_0_0_8px_rgba(45,212,191,0.05)] hover:[box-shadow:0_0_8px_rgba(45,212,191,0.45),0_0_20px_rgba(45,212,191,0.25),0_0_40px_rgba(45,212,191,0.12),inset_0_0_10px_rgba(45,212,191,0.08)]"
-              >
-                <img 
-                  src="/github.webp" 
-                  alt="GitHub" 
-                  className="w-[22px] h-[22px] object-contain brightness-0 invert opacity-80 group-hover/gh:opacity-100 transition-opacity duration-[220ms]" 
-                />
-                
-                <div className="absolute -top-[38px] left-1/2 -translate-x-1/2 opacity-0 group-hover/gh:opacity-100 group-hover/gh:-translate-y-1 transition-all duration-[220ms] pointer-events-none px-3 py-1.5 bg-[#09090b] border border-[#2DD4BF]/40 rounded-lg flex items-center justify-center whitespace-nowrap z-50 shadow-xl">
-                  <span className="text-[11px] font-sans text-[#f5f5f5] font-medium tracking-wide">Xem mã nguồn trên GitHub</span>
-                </div>
-              </a>
-            </div>
+
+        {/* ========================================================================= */}
+        {/* RESEARCHER IDENTITY FOOTER                                               */}
+        {/* ========================================================================= */}
+        <div className="pt-6 border-t border-white/[0.06] flex flex-wrap items-center justify-between gap-3 text-xs font-sans text-slate-400">
+          <div className="flex items-center gap-2">
+            <GraduationCap className="w-4 h-4 text-cyan-400" />
+            <span className="text-slate-300 font-medium">Đồ án tốt nghiệp Công nghệ Thông tin</span>
+            <span className="text-slate-600">·</span>
+            <span>Sinh viên thực hiện: <strong className="text-white font-semibold">Phan Tấn Long</strong></span>
+            <span className="text-slate-600">·</span>
+            <span className="font-mono">MSSV: 2312679</span>
           </div>
+
+          <a
+            href="https://github.com/phantanlongzzz/blockchain-elearning"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-slate-400 hover:text-cyan-300 transition-colors font-mono text-[11px] flex items-center gap-1.5 cursor-pointer"
+          >
+            <Github className="w-3.5 h-3.5" />
+            <span>github.com/phantanlongzzz/blockchain-elearning</span>
+          </a>
         </div>
+      </div>
     </section>
   );
 };

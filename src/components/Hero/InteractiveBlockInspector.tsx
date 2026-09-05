@@ -188,9 +188,6 @@ export const InteractiveBlockInspector: React.FC = () => {
             <div className="font-mono font-bold text-sm text-slate-100">
               {isVi ? `Khối #${blockHeight}` : `Block #${blockHeight}`}
             </div>
-            <p className="text-slate-400 text-xs font-mono mt-0.5">
-              {isVi ? 'Độ khó: 0x1d00ffff · 4 giao dịch' : 'Difficulty: 0x1d00ffff · 4 transactions'}
-            </p>
           </div>
         </div>
 
@@ -371,66 +368,95 @@ export const InteractiveBlockInspector: React.FC = () => {
             )}
           </div>
 
-          <div className="space-y-1.5">
+          <div className="space-y-2">
             {transactions.map((tx, idx) => {
               const isTampered = tamperedTxIndex === idx;
+
+              if (isTampered) {
+                return (
+                  <div
+                    key={tx.id}
+                    onClick={() => handleOpenTxModal(idx)}
+                    title={isVi ? 'Nhấp để kiểm tra và can thiệp giao dịch' : 'Click to inspect and tamper transaction'}
+                    className="flex items-center justify-between p-3 rounded-xl border border-rose-500/80 bg-rose-500/10 shadow-[0_0_20px_rgba(244,63,94,0.3)] transition-all cursor-pointer group"
+                  >
+                    {idx === 0 ? (
+                      <div className="flex items-center gap-2">
+                        <span className="px-2 py-0.5 rounded-md font-mono text-[11px] font-bold text-rose-400 bg-rose-500/20 border border-rose-500/40">
+                          T0
+                        </span>
+                        <span className="font-sans text-xs text-rose-200 font-medium">
+                          {isVi ? 'Thưởng đào khối (Coinbase)' : 'Coinbase Block Reward'}
+                        </span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center">
+                        <span className="px-2 py-0.5 rounded-md font-mono text-[11px] font-bold text-rose-400 bg-rose-500/20 border border-rose-500/40">
+                          T{idx}
+                        </span>
+                        <span className="font-mono text-xs text-rose-200 ml-2.5">
+                          {tx.sender.slice(0, 6)}...{tx.receiver.slice(-6)}
+                        </span>
+                      </div>
+                    )}
+
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span className="font-mono font-bold text-xs text-rose-400 animate-pulse">
+                        {tx.amount.toFixed(3)} BTC
+                      </span>
+                      <span className="px-2 py-0.5 rounded-md text-[10px] font-sans font-bold text-rose-300 bg-rose-500/20 border border-rose-500/40">
+                        {isVi ? 'Đã sửa' : 'Edited'}
+                      </span>
+                    </div>
+                  </div>
+                );
+              }
+
+              if (idx === 0) {
+                return (
+                  <div
+                    key={tx.id}
+                    onClick={() => handleOpenTxModal(idx)}
+                    title={isVi ? 'Nhấp để kiểm tra và can thiệp giao dịch' : 'Click to inspect and tamper transaction'}
+                    className="flex items-center justify-between p-3 rounded-xl bg-white/[0.03] border border-white/[0.08] hover:border-cyan-400/50 hover:bg-cyan-500/[0.04] hover:shadow-[0_0_15px_rgba(0,210,255,0.15)] transition-all cursor-pointer group"
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="px-2 py-0.5 rounded-md font-mono text-[11px] font-bold text-purple-400 bg-purple-500/10 border border-purple-500/30">
+                        T0
+                      </span>
+                      <span className="font-sans text-xs text-slate-300 font-medium">
+                        {isVi ? 'Thưởng đào khối (Coinbase)' : 'Coinbase Block Reward'}
+                      </span>
+                    </div>
+                    <span className="font-mono font-bold text-xs bg-gradient-to-r from-amber-300 to-amber-400 bg-clip-text text-transparent">
+                      {tx.amount.toFixed(3)} BTC
+                    </span>
+                  </div>
+                );
+              }
+
               return (
                 <div
                   key={tx.id}
                   onClick={() => handleOpenTxModal(idx)}
                   title={isVi ? 'Nhấp để kiểm tra và can thiệp giao dịch' : 'Click to inspect and tamper transaction'}
-                  className={`p-2 rounded-lg border transition-all duration-150 cursor-pointer flex items-center justify-between gap-2 group ${
-                    isTampered
-                      ? 'bg-rose-950/20 border-rose-500/50 shadow-[0_0_15px_rgba(244,63,94,0.15)] text-rose-300'
-                      : 'bg-black/30 border-white/[0.06] hover:bg-white/[0.04] hover:border-amber-500/30 text-slate-300'
-                  }`}
+                  className="flex items-center justify-between p-3 rounded-xl bg-white/[0.03] border border-white/[0.08] hover:border-cyan-400/50 hover:bg-cyan-500/[0.04] hover:shadow-[0_0_15px_rgba(0,210,255,0.15)] transition-all cursor-pointer group"
                 >
-                  <div className="flex items-center gap-2 min-w-0 font-sans">
-                    <span className="w-5 h-5 rounded bg-white/[0.06] flex items-center justify-center text-[10px] font-mono font-bold shrink-0">
+                  <div className="flex items-center">
+                    <span className="px-2 py-0.5 rounded-md font-mono text-[11px] font-bold text-cyan-400 bg-cyan-500/10 border border-cyan-500/30">
                       T{idx}
                     </span>
-                    <div className="truncate text-[11px]">
-                      <span className="text-slate-400 font-mono">{tx.sender.slice(0, 10)}...</span>
-                      <span className="text-slate-500 mx-1">→</span>
-                      <span className="text-slate-200 font-mono">{tx.receiver.slice(0, 10)}...</span>
-                    </div>
+                    <span className="font-mono text-xs text-slate-300 ml-2.5">
+                      {tx.sender.slice(0, 6)}...{tx.receiver.slice(-6)}
+                    </span>
                   </div>
-
-                  <div className="flex items-center gap-2 shrink-0">
-                    {isTampered ? (
-                      <span className="font-mono font-bold text-xs text-rose-400">
-                        {tx.amount.toFixed(3)} BTC
-                      </span>
-                    ) : (
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-amber-400 font-mono font-semibold text-[11px]">
-                          {tx.amount.toFixed(3)} BTC
-                        </span>
-                        <Pencil className="w-3 h-3 text-slate-500 group-hover:text-amber-400 transition-colors" />
-                      </div>
-                    )}
-
-                    {isTampered ? (
-                      <span className="flex items-center gap-1 text-[10px] font-mono text-rose-400 bg-rose-500/10 border border-rose-500/30 px-2 py-0.5 rounded">
-                        <AlertTriangle className="w-3 h-3" />
-                        <span>{isVi ? 'Đã can thiệp' : 'Tampered'}</span>
-                      </span>
-                    ) : (
-                      <span className="text-[9px] px-1.5 py-0.5 rounded uppercase font-sans font-semibold bg-white/[0.06] text-slate-400">
-                        {isVi ? 'HỢP LỆ' : 'VERIFIED'}
-                      </span>
-                    )}
-                  </div>
+                  <span className="font-mono font-bold text-xs bg-gradient-to-r from-amber-300 to-amber-400 bg-clip-text text-transparent">
+                    {tx.amount.toFixed(3)} BTC
+                  </span>
                 </div>
               );
             })}
           </div>
-
-          <p className="text-[10px] text-slate-400 font-sans leading-relaxed">
-            {isVi 
-              ? 'Thay đổi dù chỉ 1 bit dữ liệu giao dịch sẽ lập tức làm biến đổi toàn bộ chuỗi băm Merkle cascade lên đến Merkle Root, vô hiệu hóa toàn bộ Block Header.'
-              : 'Changing a single transaction bit causes the pairwise Merkle intermediate hashes to cascade changes up to the Merkle Root, invalidating the entire Block Header.'}
-          </p>
         </div>
       )}
 
@@ -468,24 +494,17 @@ export const InteractiveBlockInspector: React.FC = () => {
       )}
 
       {/* 5. Footer trạng thái mạng (Network Status Bar) */}
-      <div className="flex items-center justify-between text-xs font-mono text-slate-400 pt-2 border-t border-white/[0.06] mt-4">
-        {tamperedTxIndex !== null ? (
-          <span className="flex items-center gap-1.5 text-xs font-mono text-rose-400">
-            <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-ping" />
-            <span>{isVi ? 'Gốc Merkle sai lệch · Khối vô hiệu' : 'Invalid Merkle Root · Block Rejected'}</span>
-          </span>
-        ) : (
-          <span className="flex items-center gap-1.5 text-success">
-            <span className="w-1.5 h-1.5 rounded-full bg-success animate-pulse" />
-            <span>{isVi ? 'Đã đồng bộ' : 'Synchronized'}</span>
-          </span>
-        )}
-        <span>
-          {tamperedTxIndex !== null 
-            ? (isVi ? '12 nút kết nối (từ chối khối)' : '12 peers connected (rejected)') 
-            : (isVi ? '12 nút kết nối' : '12 peers connected')}
-        </span>
-      </div>
+      {tamperedTxIndex !== null ? (
+        <div className="flex items-center gap-2 text-xs font-mono text-rose-400 pt-2 border-t border-rose-500/20 mt-4">
+          <span className="w-2 h-2 rounded-full bg-rose-500 animate-ping shadow-[0_0_10px_rgba(244,63,94,1)]" />
+          <span className="font-semibold">{isVi ? 'Mất đồng thuận · Khối vô hiệu' : 'Consensus Broken · Invalid Block'}</span>
+        </div>
+      ) : (
+        <div className="flex items-center gap-2 text-xs font-mono text-success pt-2 border-t border-white/[0.06] mt-4">
+          <span className="w-2 h-2 rounded-full bg-success animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
+          <span>{isVi ? 'Mạng đồng thuận' : 'Network Consensus'}</span>
+        </div>
+      )}
 
       {/* Transaction Inspector Modal (Glassmorphism Popup) */}
       {isTxModalOpen && selectedTx && (

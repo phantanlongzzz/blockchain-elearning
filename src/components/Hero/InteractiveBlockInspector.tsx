@@ -56,7 +56,7 @@ export const InteractiveBlockInspector: React.FC = () => {
   const [selectedTx, setSelectedTx] = useState<TransactionItem | null>(null);
   const [selectedTxIndex, setSelectedTxIndex] = useState<number | null>(null);
   const [isTxModalOpen, setIsTxModalOpen] = useState<boolean>(false);
-  const [editAmount, setEditAmount] = useState<number>(0);
+  const [editAmount, setEditAmount] = useState<string>('0.000');
 
   // Sample transactions in this block
   const [transactions, setTransactions] = useState<TransactionItem[]>(INITIAL_TRANSACTIONS);
@@ -104,7 +104,7 @@ export const InteractiveBlockInspector: React.FC = () => {
     const tx = transactions[index];
     setSelectedTx(tx);
     setSelectedTxIndex(index);
-    setEditAmount(tx.amount);
+    setEditAmount(tx.amount.toFixed(3));
     setIsTxModalOpen(true);
   };
 
@@ -117,7 +117,7 @@ export const InteractiveBlockInspector: React.FC = () => {
   const handleApplyTamper = () => {
     if (selectedTxIndex === null || selectedTx === null) return;
     const targetIdx = selectedTxIndex;
-    const numAmount = Math.max(0, Number(editAmount) || 0);
+    const numAmount = Math.max(0, parseFloat(editAmount) || 0);
 
     setTransactions((prev) => {
       return prev.map((tx, idx) => {
@@ -600,11 +600,10 @@ export const InteractiveBlockInspector: React.FC = () => {
                           type="number"
                           step="0.001"
                           min="0"
-                          value={typeof editAmount === 'number' ? editAmount.toString().replace(',', '.') : String(editAmount).replace(',', '.')}
-                          onChange={(e) => {
-                            const val = e.target.value.replace(',', '.');
-                            setEditAmount(val === '' ? 0 : Number(val));
-                          }}
+                          lang="en-US"
+                          inputMode="decimal"
+                          value={editAmount}
+                          onChange={(e) => setEditAmount(e.target.value)}
                           className="w-full bg-black/60 border border-amber-500/40 focus:border-amber-400 rounded-lg px-3 py-2 text-sm font-mono text-amber-300 font-bold outline-none pr-14"
                         />
                         <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-mono font-bold text-slate-400">
@@ -616,14 +615,14 @@ export const InteractiveBlockInspector: React.FC = () => {
                       <div className="flex items-center gap-2 mt-2">
                         <button
                           type="button"
-                          onClick={() => setEditAmount((prev) => +(Number(prev) + 1.0).toFixed(3))}
+                          onClick={() => setEditAmount((prev) => (Math.max(0, parseFloat(prev || '0')) + 1.0).toFixed(3))}
                           className="px-2.5 py-1 rounded-md text-xs font-mono text-cyan-300 bg-cyan-500/10 border border-cyan-500/30 hover:bg-cyan-500/20 transition-all cursor-pointer"
                         >
                           +1.0 BTC
                         </button>
                         <button
                           type="button"
-                          onClick={() => setEditAmount(selectedTx.originalAmount)}
+                          onClick={() => setEditAmount(selectedTx.originalAmount.toFixed(3))}
                           className="px-2.5 py-1 rounded-md text-xs font-sans text-slate-400 bg-white/[0.04] border border-white/[0.08] hover:text-white transition-all cursor-pointer"
                         >
                           {isVi ? 'Khôi phục mặc định' : 'Reset to default'}
@@ -648,7 +647,7 @@ export const InteractiveBlockInspector: React.FC = () => {
                 type="button"
                 onClick={handleApplyTamper}
                 className={`px-4 py-2 rounded-lg text-xs font-sans font-medium transition-all cursor-pointer ${
-                  Math.abs(Number(editAmount) - selectedTx.originalAmount) > 0.000001
+                  Math.abs((parseFloat(editAmount) || 0) - selectedTx.originalAmount) > 0.000001
                     ? 'bg-rose-600/30 text-rose-200 border border-rose-500/60 shadow-[0_0_15px_rgba(244,63,94,0.3)] hover:bg-rose-600/40'
                     : 'bg-white/[0.06] text-slate-400 border border-white/[0.08] hover:text-white'
                 }`}

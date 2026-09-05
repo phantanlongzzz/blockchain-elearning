@@ -105,6 +105,7 @@ export interface P2PForkConsensusVisualizerProps {
   focusedBlockIndex: number;
   navigateTimeline: (direction: 'prev' | 'next') => void;
   scrollToLatestBlock: () => void;
+  onSelectBlock?: (block: any) => void;
 }
 
 export const P2PForkConsensusVisualizer: React.FC<P2PForkConsensusVisualizerProps> = ({ 
@@ -112,7 +113,8 @@ export const P2PForkConsensusVisualizer: React.FC<P2PForkConsensusVisualizerProp
   appState,
   focusedBlockIndex,
   navigateTimeline,
-  scrollToLatestBlock
+  scrollToLatestBlock,
+  onSelectBlock
 }) => {
   const { language } = useLanguage();
   const isVi = language === 'vi';
@@ -127,11 +129,11 @@ export const P2PForkConsensusVisualizer: React.FC<P2PForkConsensusVisualizerProp
     displayNumber: `${b.index}`,
     height: b.index,
     minerName: b.minerName || 'Genesis',
-    minerRole: 'Miner',
+    minerRole: b.index === 0 ? 'Network Genesis' : 'Miner',
     branch: 'trunk',
     status: 'canonical',
-    isLeading: i === visibleBlockchain.length - 1,
-    hash: b.hash,
+    isLeading: i === visibleBlockchain.length - 1 && visibleBlockchain.length > 1,
+    hash: b.hash || '0000000000000000000000000000000000000000000000000000000000000000',
     prevHash: b.prevHash,
     merkleRoot: '...',
     nonce: b.nonce,
@@ -141,11 +143,7 @@ export const P2PForkConsensusVisualizer: React.FC<P2PForkConsensusVisualizerProp
     cumulativeWork: b.index
   })) : [{ ...GENESIS_BLOCK }];
   
-  const activeFork = null;
-  const staleBranches: P2PBlock[][] = [];
-  
   const treeScrollRef = useRef<HTMLDivElement>(null);
-  const mempoolScrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (treeScrollRef.current) {
@@ -158,22 +156,30 @@ export const P2PForkConsensusVisualizer: React.FC<P2PForkConsensusVisualizerProp
     }
   }, [focusedBlockIndex, trunk.length]);
 
+  const handleBlockClick = (blk: P2PBlock) => {
+    setSelectedBlock(blk);
+    if (onSelectBlock) {
+      const original = blockchain.find(b => b.index === blk.blockNumber);
+      if (original) onSelectBlock(original);
+    }
+  };
+
   return (
     <div className="flex flex-col gap-4">
       {/* P2P NETWORK VISUALIZER */}
       <div className="p-4 sm:p-5 rounded-2xl bg-[#0A0D12] border border-slate-800 flex flex-col relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500/0 via-emerald-500/20 to-emerald-500/0" />
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500/0 via-cyan-500/30 to-cyan-500/0" />
         
         <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 px-1 gap-2">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.5)]" />
+            <span className="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(0,210,255,0.6)] animate-pulse" />
             <h3 className="text-xs sm:text-sm font-display font-bold text-slate-300 tracking-wider">
-              {isVi ? 'Mạng Lưới P2P' : 'P2P Network'}
+              {isVi ? 'Mạng Lưới P2P (Chuỗi Tuyến Tính)' : 'P2P Network (Linear Chain)'}
             </h3>
           </div>
           <div className="flex flex-wrap items-center gap-2.5">
-            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-800/50 border border-slate-700/50 mr-2">
-              <Network size={12} className="text-text-muted" />
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/[0.04] border border-white/[0.08] mr-2">
+              <Network size={12} className="text-cyan-400" />
               <span className="text-xs font-mono text-slate-300">4 {isVi ? 'Nút' : 'Nodes'}</span>
             </div>
             <SimulationNavigation 
@@ -189,59 +195,92 @@ export const P2PForkConsensusVisualizer: React.FC<P2PForkConsensusVisualizerProp
         </div>
 
         {/* Tree Container */}
-        <div className="relative min-h-[340px] flex items-center bg-[#0E131A] rounded-xl border border-slate-800/50 p-6 overflow-hidden">
-          {/* Grid Background */}
-          <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(#1e293b 1px, transparent 1px)', backgroundSize: '24px 24px', opacity: 0.3 }} />
+        <div className="relative min-h-[340px] flex items-center bg-[#070A12]/90 rounded-xl border border-white/[0.08] p-6 overflow-hidden backdrop-blur-md">
+          {/* Subtle Grid Background */}
+          <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
           
           <div ref={treeScrollRef} className="w-full overflow-x-auto custom-scrollbar relative z-10 pb-4">
-            <div className="flex items-center gap-12 min-w-max px-8 py-16">
+            <div className="flex items-center gap-10 min-w-max px-8 py-14">
               {trunk.map((blk, idx) => {
                 const isGenesis = blk.blockNumber === 0;
+                const isAttacker = blk.minerName?.includes('Attacker') || blk.minerName?.includes('51%');
+                const isLatestTip = blk.isLeading;
+                const shortHash = blk.hash && blk.hash.length >= 8 ? blk.hash.substring(0, 8) : '00000000';
+
                 return (
-                  <div key={blk.id} id={`p2p-block-${blk.blockNumber}`} className="relative flex flex-col items-center group">
-                    <div className="absolute -top-8 text-[10px] font-mono text-slate-500">
+                  <div key={blk.id} id={`p2p-block-${blk.blockNumber}`} className="relative flex flex-col items-center group shrink-0">
+                    {/* Block Height Label */}
+                    <div className="absolute -top-7 font-mono text-xs text-slate-400 font-semibold tracking-wider select-none">
                       #{blk.displayNumber}
                     </div>
+
+                    {/* Blockchain Connection Line (Data Pipeline) */}
                     {idx < trunk.length - 1 && (
-                      <div className="absolute left-[100%] top-1/2 -translate-y-1/2 w-12 flex items-center z-0">
-                        <div className="h-0.5 w-full bg-emerald-500/40 relative">
-                          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 border-t-2 border-r-2 border-border-secondary rotate-45" />
+                      <div className="absolute left-[100%] top-1/2 -translate-y-1/2 w-10 flex items-center z-0">
+                        <div className="h-[2px] w-full bg-gradient-to-r from-cyan-500/30 via-cyan-400 to-cyan-500/30 shadow-[0_0_8px_rgba(0,210,255,0.35)] relative">
+                          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 border-t-2 border-r-2 border-cyan-400 rotate-45 shadow-[0_0_6px_rgba(0,210,255,0.5)]" />
                         </div>
                       </div>
                     )}
+
+                    {/* Block Card */}
                     <div
-                      onClick={() => setSelectedBlock(blk)}
-                      className={`relative z-10 w-32 rounded-xl border p-3 cursor-pointer transition-all duration-300 bg-[#0A0D12] ${
-                        blk.isLeading 
-                          ? 'border-border-primary ring-1 ring-white/20' 
-                          : 'border-slate-700 hover:border-slate-500'
+                      onClick={() => handleBlockClick(blk)}
+                      className={`relative z-10 w-36 bg-[#0B101E]/75 backdrop-blur-md border rounded-xl p-3 transition-all duration-200 cursor-pointer select-none ${
+                        isLatestTip 
+                          ? 'border-cyan-400/60 shadow-[0_0_15px_rgba(0,210,255,0.25)] ring-1 ring-cyan-400/30' 
+                          : 'border-white/[0.08] hover:border-cyan-500/40 hover:shadow-[0_0_10px_rgba(0,210,255,0.15)]'
                       }`}
                     >
-                      <div className="flex items-center gap-2 mb-2">
-                        <div className={`w-2 h-2 rounded-full ${blk.isLeading ? 'bg-emerald-400 animate-pulse' : 'bg-slate-600'}`} />
-                        <span className="text-[10px] font-mono font-medium text-slate-400">
-                          {blk.hash.substring(0, 8)}
-                        </span>
+                      {/* Top Bar: Status Dot & Short Hash */}
+                      <div className="flex items-center justify-between gap-1.5 mb-2.5">
+                        <div className="flex items-center gap-1.5 min-w-0">
+                          <div 
+                            className={`w-2 h-2 rounded-full shrink-0 ${
+                              isAttacker 
+                                ? 'bg-rose-500 shadow-[0_0_6px_rgba(244,63,94,0.6)]' 
+                                : 'bg-cyan-400 shadow-[0_0_6px_rgba(0,210,255,0.6)]'
+                            } ${isLatestTip ? 'animate-pulse' : ''}`} 
+                          />
+                          <span className="font-mono text-[11px] text-slate-300 truncate">
+                            {shortHash}...
+                          </span>
+                        </div>
+                        {isLatestTip && (
+                          <span className="text-[9px] font-mono font-bold uppercase tracking-wider text-cyan-400 bg-cyan-500/15 border border-cyan-500/30 px-1 py-0.2 rounded shrink-0">
+                            Tip
+                          </span>
+                        )}
                       </div>
                       
-                      <div className="flex justify-center mb-2">
+                      {/* Center Box Icon */}
+                      <div className="flex justify-center mb-2.5">
                         {isGenesis ? (
-                          <div className="w-10 h-10 rounded-lg bg-slate-800/50 flex items-center justify-center border border-slate-700/50">
-                            <span className="text-xl">🌱</span>
+                          <div className="w-10 h-10 rounded-lg bg-success/10 flex items-center justify-center border border-success/30 text-success shadow-[0_0_10px_rgba(16,185,129,0.2)]">
+                            <span className="text-lg">🌱</span>
                           </div>
                         ) : (
-                          <div className="w-10 h-10 rounded-lg bg-white/[0.04] flex items-center justify-center border border-border-primary text-text-muted">
-                            <Box size={20} />
+                          <div 
+                            className={`w-10 h-10 rounded-lg flex items-center justify-center border transition-all ${
+                              isLatestTip
+                                ? 'bg-cyan-500/15 border-cyan-400/40 text-cyan-300 shadow-[0_0_12px_rgba(0,210,255,0.3)]'
+                                : 'bg-white/[0.04] border-white/[0.08] text-slate-400 group-hover:text-cyan-400 group-hover:border-cyan-500/30'
+                            }`}
+                          >
+                            <Box size={20} className={isLatestTip ? 'animate-pulse' : ''} />
                           </div>
                         )}
                       </div>
 
+                      {/* Miner Attribution */}
                       <div className="text-center">
-                        <div className={`text-xs font-medium truncate ${blk.isLeading ? 'text-text-primary font-semibold' : 'text-slate-300'}`}>
+                        <div className={`text-xs font-semibold truncate ${
+                          isAttacker ? 'text-rose-300/80' : 'text-slate-200'
+                        }`}>
                           {blk.minerName}
                         </div>
                         {!isGenesis && (
-                          <div className="text-[10px] text-slate-500 mt-0.5">
+                          <div className="text-[10px] font-mono text-slate-400 mt-0.5 truncate">
                             {blk.minerRole}
                           </div>
                         )}

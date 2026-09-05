@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Play, RotateCcw, X, Pause, Clock, Activity, FileText, Trophy, Trash2, Code2, Info, Check, ArrowRight } from 'lucide-react';
+import { Play, RotateCcw, X, Pause, Clock, Activity, FileText, Trophy, Trash2, Code2, Info, Check, ArrowRight, Box } from 'lucide-react';
 import { createMiningWorkerBlob } from '../../utils/miningWorker';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { SimulationCodeModal } from './SimulationCodeModal';
@@ -921,16 +921,16 @@ export const PowLesson: React.FC = () => {
                   <button 
                     onClick={handleStart} 
                     disabled={miners.length === 0} 
- className="flex-1 sm:flex-none h-10 px-6 bg-financial hover:bg-financial/90 text-black font-semibold text-white font-medium text-sm rounded-lg flex items-center justify-center gap-2 transition-colors disabled:opacity-50 cursor-pointer shadow-sm"
+                    className="flex-1 sm:flex-none h-10 px-6 bg-financial hover:bg-financial/90 text-black font-semibold text-sm rounded-lg flex items-center justify-center gap-2 transition-colors disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none cursor-pointer shadow-sm"
                   >
                     <Play size={14} className="fill-current" /> {isVi ? 'Bắt Đầu' : 'Start'}
                   </button>
                 ) : appState === 'completed' || appState === 'animating_win' ? (
                   <button 
                     onClick={handleReset} 
- className="flex-1 sm:flex-none h-10 px-6 bg-text-primary hover:bg-white/90 text-white font-medium text-sm rounded-lg flex items-center justify-center gap-2 transition-colors cursor-pointer shadow-sm"
+                    className="inline-flex items-center justify-center gap-2 px-4 py-2 h-10 rounded-lg text-xs font-medium font-mono text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 shadow-[0_0_15px_rgba(0,210,255,0.3)] transition-all active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none cursor-pointer flex-1 sm:flex-none"
                   >
-                    <RotateCcw size={14} /> {isVi ? 'Chạy Lại' : 'Run Again'}
+                    <RotateCcw className="w-3.5 h-3.5 text-white" /> {isVi ? 'Chạy Lại' : 'Run Again'}
                   </button>
                 ) : appState === 'mining' ? (
                   <button 
@@ -943,7 +943,7 @@ export const PowLesson: React.FC = () => {
                   <button 
                     onClick={handleStart} 
                     disabled={appState === 'animating_win'} 
- className="flex-1 sm:flex-none h-10 px-6 bg-financial hover:bg-financial/90 text-black font-semibold text-white font-medium text-sm rounded-lg flex items-center justify-center gap-2 transition-colors disabled:opacity-50 cursor-pointer shadow-sm"
+                    className="flex-1 sm:flex-none h-10 px-6 bg-financial hover:bg-financial/90 text-black font-semibold text-sm rounded-lg flex items-center justify-center gap-2 transition-colors disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none cursor-pointer shadow-sm"
                   >
                     <Play size={14} className="fill-current" /> {isVi ? 'Tiếp Tục' : 'Resume'}
                   </button>
@@ -953,10 +953,10 @@ export const PowLesson: React.FC = () => {
                 {(appState === 'mining' || appState === 'paused') && (
                   <button 
                     onClick={handleReset} 
-                    className="h-10 px-4 bg-transparent hover:bg-slate-800 text-slate-400 hover:text-slate-200 border border-slate-700 hover:border-slate-600 rounded-lg flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                    className="inline-flex items-center justify-center gap-2 px-4 py-2 h-10 rounded-lg text-xs font-mono text-cyan-400 bg-cyan-500/10 border border-cyan-500/30 hover:bg-cyan-500/20 transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none cursor-pointer"
                     title={isVi ? 'Đặt lại' : 'Reset'}
                   >
-                    <RotateCcw size={14} /> <span className="hidden sm:inline text-sm font-medium">{isVi ? 'Đặt lại' : 'Reset'}</span>
+                    <RotateCcw className="w-3.5 h-3.5 text-cyan-400" /> <span className="hidden sm:inline text-xs font-mono">{isVi ? 'Đặt lại' : 'Reset'}</span>
                   </button>
                 )}
               </div>
@@ -991,7 +991,7 @@ export const PowLesson: React.FC = () => {
               <p className="mb-3 text-sm">{isVi ? 'Không có thợ đào nào.' : 'No miners available.'}</p>
               <button 
                 onClick={handleQuickAddMiner} 
- className="px-4 py-2 bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-bold text-xs rounded-lg flex items-center gap-2 cursor-pointer"
+                className="px-4 py-2 bg-white/[0.08] hover:bg-white/[0.12] border border-white/[0.1] text-white font-medium text-xs rounded-lg flex items-center gap-2 cursor-pointer transition-all"
               >
                 {isVi ? 'Thêm Thợ Đào' : 'Add Miner'}
               </button>
@@ -1134,9 +1134,9 @@ export const PowLesson: React.FC = () => {
 
               <button 
                 onClick={handleReset} 
- className="px-4 py-2 bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-display font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer shrink-0 shadow-sm"
+                className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-xs font-medium font-mono text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 shadow-[0_0_15px_rgba(0,210,255,0.3)] transition-all active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none cursor-pointer shrink-0"
               >
-                <RotateCcw size={14} /> {isVi ? 'Chạy Lại' : 'Run Again'}
+                <RotateCcw className="w-3.5 h-3.5 text-white" /> {isVi ? 'Chạy Lại' : 'Run Again'}
               </button>
             </div>
 
@@ -1236,15 +1236,16 @@ export const PowLesson: React.FC = () => {
               focusedBlockIndex={focusedBlockIndex}
               navigateTimeline={navigateTimeline}
               scrollToLatestBlock={scrollToLatestBlock}
+              onSelectBlock={setSelectedBlock}
             />
           ) : (
             
             <div className="p-4 sm:p-5 rounded-2xl bg-[#0A0D12] border border-slate-800 space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-1 px-1 gap-2">
                 <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                  <span className="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(0,210,255,0.6)] animate-pulse" />
                   <h3 className="text-xs sm:text-sm font-display font-bold text-slate-300 tracking-wider">
-                    {isVi ? 'Chuỗi khối' : 'Blockchain'}
+                    {isVi ? 'Chuỗi Khối Tuyến Tính' : 'Linear Blockchain'}
                   </h3>
                 </div>
 
@@ -1267,45 +1268,100 @@ export const PowLesson: React.FC = () => {
               <div 
                 ref={timelineScrollRef}
                 onScroll={handleTimelineScroll}
-                className="flex overflow-x-auto py-3 pb-4 gap-3 items-center custom-scrollbar px-2 max-w-full"
+                className="flex overflow-x-auto py-4 pb-6 gap-0 items-center custom-scrollbar px-4 max-w-full bg-[#070A12]/90 rounded-xl border border-white/[0.08] backdrop-blur-md relative"
               >
-                {blockchain.map((block, idx) => {
-                  const isLatestTip = idx === blockchain.length - 1 && blockchain.length > 1;
-                  const theme = getMinerTheme(block.minerName, block.index);
-                  const isGenesis = block.index === 0;
+                {/* Subtle Grid Background */}
+                <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
 
-                  return (
-                    <React.Fragment key={`${block.index}-${block.hash}`}>
-                      <div 
-                        id={`timeline-block-${block.index}`}
-                        onClick={() => setSelectedBlock(block)}
-                        className={`relative py-3 px-4 rounded-xl transition-all duration-200 flex flex-col items-center justify-center min-w-[100px] shrink-0 cursor-pointer select-none border box-border ${
-                          isLatestTip 
-                            ? 'border-border-primary bg-white/[0.06]' 
-                            : `${theme.border} ${theme.bg} hover:border-slate-400 hover:bg-[#0E131A]`
-                        } ${idx === focusedBlockIndex ? 'ring-2 ring-emerald-500/50 shadow-[0_0_15px_rgba(16,185,129,0.15)]' : ''}`}
-                      >
-                        <div className={`text-2xl font-mono font-bold tracking-wider ${isGenesis ? 'text-slate-300' : theme.text} mb-1`}>
+                <div className="flex items-center gap-10 min-w-max py-8 px-4 relative z-10">
+                  {blockchain.map((block, idx) => {
+                    const isLatestTip = idx === blockchain.length - 1 && blockchain.length > 1;
+                    const isGenesis = block.index === 0;
+                    const isAttacker = block.minerName?.includes('Attacker') || block.minerName?.includes('51%');
+                    const isFocused = idx === focusedBlockIndex;
+                    const shortHash = block.hash && block.hash.length >= 8 ? block.hash.substring(0, 8) : '00000000';
+
+                    return (
+                      <div key={`${block.index}-${block.hash}`} id={`timeline-block-${block.index}`} className="relative flex flex-col items-center group shrink-0">
+                        {/* Block Height Label */}
+                        <div className="absolute -top-7 font-mono text-xs text-slate-400 font-semibold tracking-wider select-none">
                           #{block.index}
                         </div>
-                        <div className="text-center w-full">
-                          {isGenesis ? (
-                            <span className="font-sans font-medium text-slate-400 text-xs truncate block w-full">Genesis</span>
-                          ) : (
-                            <span className={`font-sans font-medium text-xs truncate block w-full ${theme.text}`}>
+
+                        {/* Connection Line */}
+                        {idx < blockchain.length - 1 && (
+                          <div className="absolute left-[100%] top-1/2 -translate-y-1/2 w-10 flex items-center z-0">
+                            <div className="h-[2px] w-full bg-gradient-to-r from-cyan-500/30 via-cyan-400 to-cyan-500/30 shadow-[0_0_8px_rgba(0,210,255,0.35)] relative">
+                              <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 border-t-2 border-r-2 border-cyan-400 rotate-45 shadow-[0_0_6px_rgba(0,210,255,0.5)]" />
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Block Card */}
+                        <div 
+                          onClick={() => setSelectedBlock(block)}
+                          className={`relative z-10 w-36 bg-[#0B101E]/75 backdrop-blur-md border rounded-xl p-3 transition-all duration-200 flex flex-col cursor-pointer select-none ${
+                            isLatestTip 
+                              ? 'border-cyan-400/60 shadow-[0_0_15px_rgba(0,210,255,0.25)] ring-1 ring-cyan-400/30' 
+                              : 'border-white/[0.08] hover:border-cyan-500/40 hover:shadow-[0_0_10px_rgba(0,210,255,0.15)]'
+                          } ${isFocused ? 'ring-2 ring-cyan-400/80 shadow-[0_0_15px_rgba(0,210,255,0.3)]' : ''}`}
+                        >
+                          {/* Top Bar: Status Dot & Short Hash */}
+                          <div className="flex items-center justify-between gap-1.5 mb-2.5">
+                            <div className="flex items-center gap-1.5 min-w-0">
+                              <div 
+                                className={`w-2 h-2 rounded-full shrink-0 ${
+                                  isAttacker 
+                                    ? 'bg-rose-500 shadow-[0_0_6px_rgba(244,63,94,0.6)]' 
+                                    : 'bg-cyan-400 shadow-[0_0_6px_rgba(0,210,255,0.6)]'
+                                } ${isLatestTip ? 'animate-pulse' : ''}`} 
+                              />
+                              <span className="font-mono text-[11px] text-slate-300 truncate">
+                                {shortHash}...
+                              </span>
+                            </div>
+                            {isLatestTip && (
+                              <span className="text-[9px] font-mono font-bold uppercase tracking-wider text-cyan-400 bg-cyan-500/15 border border-cyan-500/30 px-1 py-0.2 rounded shrink-0">
+                                Tip
+                              </span>
+                            )}
+                          </div>
+
+                          {/* Center Box Icon */}
+                          <div className="flex justify-center mb-2.5">
+                            {isGenesis ? (
+                              <div className="w-10 h-10 rounded-lg bg-success/10 flex items-center justify-center border border-success/30 text-success shadow-[0_0_10px_rgba(16,185,129,0.2)]">
+                                <span className="text-lg">🌱</span>
+                              </div>
+                            ) : (
+                              <div 
+                                className={`w-10 h-10 rounded-lg flex items-center justify-center border transition-all ${
+                                  isLatestTip
+                                    ? 'bg-cyan-500/15 border-cyan-400/40 text-cyan-300 shadow-[0_0_12px_rgba(0,210,255,0.3)]'
+                                    : 'bg-white/[0.04] border-white/[0.08] text-slate-400 group-hover:text-cyan-400 group-hover:border-cyan-500/30'
+                                }`}
+                              >
+                                <Box size={20} className={isLatestTip ? 'animate-pulse' : ''} />
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Bottom Miner Name */}
+                          <div className="text-center">
+                            <div className={`text-xs font-semibold truncate ${
+                              isAttacker ? 'text-rose-300/80' : 'text-slate-200'
+                            }`}>
                               {block.minerName}
-                            </span>
-                          )}
+                            </div>
+                            <div className="text-[10px] font-mono text-slate-400 mt-0.5 truncate">
+                              {isGenesis ? 'Genesis' : `Nonce: ${block.nonce ? block.nonce.toLocaleString() : '0'}`}
+                            </div>
+                          </div>
                         </div>
                       </div>
-                      {idx < blockchain.length - 1 && (
-                        <div className="w-4 h-px bg-slate-700 relative shrink-0">
-                          <div className="absolute right-0 top-1/2 -translate-y-1/2 border-y-[3px] border-y-transparent border-l-[5px] border-l-slate-500" />
-                        </div>
-                      )}
-                    </React.Fragment>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
             </div>
           )}
@@ -1331,32 +1387,77 @@ export const PowLesson: React.FC = () => {
 
           {showTelemetryDetails && (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-3 animate-in fade-in duration-200">
-              {/* Mining Event Log */}
-              <div className="p-4 rounded-xl border border-slate-800/90 bg-[#0C0F14]">
-                <h3 className="text-xs sm:text-sm font-display font-bold text-slate-300 mb-3 flex items-center gap-2">
-                  <Activity size={15} className="text-slate-400"/> 
+              {/* Mining Event Log (Terminal Style) */}
+              <div className="bg-[#050811]/90 backdrop-blur-md border border-white/[0.08] rounded-xl p-4 font-mono text-xs leading-relaxed max-h-[260px] flex flex-col">
+                <h3 className="text-xs sm:text-sm font-display font-bold text-slate-300 mb-3 flex items-center gap-2 shrink-0">
+                  <Activity size={15} className="text-cyan-400"/> 
                   {isVi ? 'Nhật Ký Sự Kiện Khai Thác' : 'Mining Event Log'}
                 </h3>
-                <div className="h-[180px] overflow-y-auto font-mono tabular-nums text-xs space-y-1.5 pr-2 custom-scrollbar">
-                  {logs.map(log => (
-                    <div key={log.id} className="flex gap-2.5 text-[#F5F5F5]">
-                      <span className="text-slate-400 shrink-0 font-normal">[{log.time}]</span>
-                      <span className="text-white font-normal leading-relaxed">
-                        {log.message}
-                      </span>
-                    </div>
-                  ))}
+                <div className="flex-1 overflow-y-auto space-y-1.5 pr-2 custom-scrollbar">
+                  {logs.map(log => {
+                    const isCompletion = log.message.includes('Hết thời gian. Mô phỏng hoàn tất.') || 
+                                         log.message.includes('Time expired. Simulation completed.') ||
+                                         log.message.includes('Mô phỏng hoàn tất') ||
+                                         log.message.includes('Simulation completed');
+                    
+                    const isReset = log.message.includes('Đã khởi tạo lại hệ thống') || 
+                                    log.message.includes('System reset') || 
+                                    log.message.includes('Scenario switched to');
+
+                    // Check for Block append message
+                    const blockMatch = log.message.match(/^(Block\s*#\d+)(.*)$/);
+                    // Check for miner solve message: "MinerName giải block thành công (Nonce: 123)"
+                    const solveMatch = log.message.match(/^(51%\s*Attacker\s*Pool|Bob|Alice|Charlie|Dave|Eve|Frank|Grace|Henry|Satoshi|Custom\s*Miner\s*\d+|[^()]+?)\s+(giải block thành công|solved block successfully)\s*(\(Nonce:\s*([\d.,\s]+)\))?$/);
+
+                    return (
+                      <div key={log.id} className="flex gap-1.5 items-baseline">
+                        <span className="text-success font-mono font-semibold tracking-wider select-none mr-2 shrink-0">[{log.time}]</span>
+                        <div className="leading-relaxed flex-1">
+                          {isCompletion ? (
+                            <span className="text-slate-300 italic">{log.message}</span>
+                          ) : isReset ? (
+                            <span className="text-slate-400 italic">{log.message}</span>
+                          ) : blockMatch ? (
+                            <span>
+                              <span className="text-cyan-400 font-semibold">{blockMatch[1]}</span>
+                              <span className="text-slate-300">{blockMatch[2]}</span>
+                            </span>
+                          ) : solveMatch ? (
+                            (() => {
+                              const minerName = solveMatch[1];
+                              const actionText = solveMatch[2];
+                              const nonceVal = solveMatch[4];
+                              const isAttacker = minerName.includes('Attacker') || minerName.includes('51%');
+                              return (
+                                <span>
+                                  <span className={isAttacker ? 'text-rose-400 font-medium' : 'text-slate-200 font-medium'}>
+                                    {minerName}
+                                  </span>
+                                  <span className="text-slate-300"> {actionText}</span>
+                                  {nonceVal && (
+                                    <span className="text-slate-400"> (Nonce: <span className="text-amber-400 font-mono font-semibold">{nonceVal.trim()}</span>)</span>
+                                  )}
+                                </span>
+                              );
+                            })()
+                          ) : (
+                            <span className="text-slate-300">{log.message}</span>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
                   {logs.length === 0 && <div className="text-slate-400 italic">{isVi ? 'Chưa có sự kiện nào.' : 'No events yet.'}</div>}
                 </div>
               </div>
               
               {/* Node Technical Telemetry */}
-              <div className="p-4 rounded-xl border border-slate-800/90 bg-[#0C0F14]">
-                <h3 className="text-xs sm:text-sm font-display font-bold text-slate-300 mb-3 flex items-center gap-2">
+              <div className="p-4 rounded-xl border border-white/[0.08] bg-[#050811]/90 backdrop-blur-md max-h-[260px] flex flex-col">
+                <h3 className="text-xs sm:text-sm font-display font-bold text-slate-300 mb-3 flex items-center gap-2 shrink-0">
                   <FileText size={15} className="text-amber-400"/> 
                   {isVi ? 'Chi Tiết Kỹ Thuật Nút Thợ Đào' : 'Node Technical Telemetry'}
                 </h3>
-                <div className="space-y-2 h-[180px] overflow-y-auto pr-2 custom-scrollbar">
+                <div className="space-y-2 flex-1 overflow-y-auto pr-2 custom-scrollbar">
                   {miners.map(m => (
                     <div key={m.id} className="text-xs font-mono tabular-nums bg-[#11161D] p-2.5 rounded-lg border border-slate-800/80">
                       <div className="flex justify-between text-slate-400 mb-1">

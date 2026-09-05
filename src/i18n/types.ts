@@ -658,6 +658,8 @@ export interface TranslationSchema {
     platformTitle: string;
     platformSubtitle: string;
     academicProjectLabel: string;
+    courseLabel: string;
+    courseName: string;
     studentLabel: string;
     studentName: string;
     studentId: string;

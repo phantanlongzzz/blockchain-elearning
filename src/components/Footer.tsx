@@ -43,32 +43,45 @@ export const Footer: React.FC = () => {
           >
             <div>
               <div className="flex items-center gap-2 mb-3.5">
-                <GraduationCap className="w-4 h-4 text-text-primary shrink-0" />
+                <GraduationCap className="w-4 h-4 text-cyan-400 shrink-0" />
                 <h4 className="text-sm font-bold text-text-primary font-sans">
                   {strings.footer.academicProjectLabel}
                 </h4>
               </div>
 
-              <div className="space-y-3">
+              <div className="space-y-2.5">
+                {/* Course Name */}
+                <div className="space-y-0.5">
+                  <span className="text-xs font-medium text-[#8E9AA8] block font-sans">
+                    {strings.footer.courseLabel}
+                  </span>
+                  <div className="text-[#F2F4F7] font-semibold text-sm font-sans">
+                    {strings.footer.courseName}
+                  </div>
+                </div>
+
+                {/* Divider */}
+                <div className="border-t border-[#1C2430]" />
+
                 {/* Instructor Info */}
                 <div className="space-y-0.5">
                   <span className="text-xs font-medium text-[#8E9AA8] block font-sans">
                     {strings.footer.instructorLabel}
                   </span>
-                  <div className="text-[#F2F4F7] font-semibold text-base font-sans">
+                  <div className="text-[#F2F4F7] font-semibold text-sm font-sans">
                     {strings.footer.instructorName}
                   </div>
                 </div>
 
                 {/* Divider */}
-                <div className="border-t border-[#1C2430] my-2.5" />
+                <div className="border-t border-[#1C2430]" />
 
                 {/* Student Info */}
                 <div className="space-y-0.5">
                   <span className="text-xs font-medium text-[#8E9AA8] block font-sans">
                     {strings.footer.studentLabel}
                   </span>
-                  <div className="text-[#F2F4F7] font-semibold text-base font-sans">
+                  <div className="text-[#F2F4F7] font-semibold text-sm font-sans">
                     {strings.footer.studentName}
                   </div>
                 </div>

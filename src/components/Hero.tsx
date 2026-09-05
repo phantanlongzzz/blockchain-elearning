@@ -280,23 +280,23 @@ export const Hero: React.FC = () => {
         </div>
 
         {/* ========================================================================= */}
-        {/* RESEARCHER IDENTITY FOOTER                                               */}
+        {/* RESEARCHER IDENTITY FOOTER / METADATA BAR                                */}
         {/* ========================================================================= */}
-        <div className="pt-6 border-t border-white/[0.06] flex flex-wrap items-center justify-between gap-3 text-xs font-sans text-slate-400">
-          <div className="flex items-center gap-2">
-            <GraduationCap className="w-4 h-4 text-cyan-400" />
-            <span className="text-slate-300 font-medium">Đồ án tốt nghiệp Công nghệ Thông tin</span>
-            <span className="text-slate-600">·</span>
-            <span>Sinh viên thực hiện: <strong className="text-white font-semibold">Phan Tấn Long</strong></span>
-            <span className="text-slate-600">·</span>
-            <span className="font-mono">MSSV: 2312679</span>
+        <div className="pt-6 border-t border-white/[0.06] flex flex-wrap items-center justify-between gap-3 text-xs font-mono text-slate-400">
+          <div className="flex items-center gap-2 text-xs font-mono text-slate-400 flex-wrap">
+            <GraduationCap className="w-4 h-4 text-cyan-400 shrink-0" />
+            <span>Đồ án môn học: <strong className="text-slate-200 font-semibold">Công nghệ Blockchain</strong></span>
+            <span className="text-white/20">·</span>
+            <span>Sinh viên: <strong className="text-slate-200 font-semibold">Phan Tấn Long</strong></span>
+            <span className="text-white/20">·</span>
+            <span>MSSV: <strong className="text-slate-200 font-semibold">2312679</strong></span>
           </div>
 
           <a
             href="https://github.com/phantanlongzzz/blockchain-elearning"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-slate-400 hover:text-cyan-300 transition-colors font-mono text-[11px] flex items-center gap-1.5 cursor-pointer"
+            className="text-slate-400 hover:text-cyan-300 transition-colors font-mono text-[11px] flex items-center gap-1.5 cursor-pointer ml-auto"
           >
             <Github className="w-3.5 h-3.5" />
             <span>github.com/phantanlongzzz/blockchain-elearning</span>

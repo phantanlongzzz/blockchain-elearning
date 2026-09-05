@@ -25,77 +25,76 @@ export const ModuleProgressRail: React.FC = () => {
   const isVi = language === 'vi';
 
   return (
-    <div className="bg-[#090A0F]/95 border-b border-[#1C2430] font-sans sticky top-16 sm:top-18 z-40 backdrop-blur-md">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-2.5 sm:gap-3">
-          {/* Module Identity & Breadcrumbs */}
-          <div className="flex items-center gap-2 overflow-hidden text-xs">
-            <span className="font-sans font-bold px-2 py-0.5 rounded-md bg-white/[0.04] text-text-primary border border-border-primary shrink-0 text-[11px] uppercase tracking-wider">
+    <div className="bg-[#070B14]/65 backdrop-blur-xl border-b border-white/[0.06] font-sans sticky top-14 sm:top-16 z-40">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
+        {/* ROW 2: Breadcrumb Path & Stats */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          {/* Breadcrumb Path */}
+          <div className="flex items-center gap-2 overflow-hidden text-xs font-mono text-slate-400">
+            <span className="text-cyan-400 font-semibold tracking-wide uppercase text-[11px] shrink-0">
               {isVi ? currentModule.titleVi : currentModule.titleEn}
             </span>
-            <ChevronRight className="w-3.5 h-3.5 text-[#717B8C] shrink-0" />
-            <h1 className="font-semibold text-[#F2F4F7] truncate text-xs sm:text-sm font-sans">
+            <ChevronRight className="w-3.5 h-3.5 text-slate-600 shrink-0" />
+            <span className="text-slate-300 font-medium truncate text-xs">
               {isVi ? currentLesson.titleVi : currentLesson.titleEn}
-            </h1>
+            </span>
           </div>
 
-          {/* Global Course Progress Indicator connected to progressStore */}
-          <div className="flex items-center gap-3.5 shrink-0 font-sans text-[11px] text-[#A5AFBF]">
-            <div className="flex items-center gap-1.5 font-mono">
-              <Clock className="w-3.5 h-3.5 text-text-primary" />
+          {/* Time & Global Progress Bar */}
+          <div className="flex items-center gap-3.5 shrink-0 text-xs font-mono text-slate-400">
+            <div className="flex items-center gap-1.5">
+              <Clock className="w-3.5 h-3.5 text-slate-400" />
               <span>
                 {currentLesson.estimatedMinutes} {isVi ? 'phút' : 'mins'}
               </span>
             </div>
 
-            <div className="hidden sm:flex items-center gap-2 font-mono">
-              <div className="w-20 bg-[#0C0F14] border border-[#1C2430] h-2 rounded-full overflow-hidden">
+            <div className="hidden sm:flex items-center gap-2">
+              <div className="w-20 bg-white/[0.08] h-[2px] rounded-full overflow-hidden">
                 <div
-                  className="bg-text-primary h-full rounded-full transition-all duration-300"
+                  className="bg-gradient-to-r from-cyan-400 to-blue-500 h-full rounded-full transition-all duration-300 shadow-[0_0_6px_rgba(0,210,255,0.6)]"
                   style={{ width: `${totalProgress.percentage}%` }}
                 />
               </div>
-              <span className="text-[#A5AFBF] text-[10px]">
+              <span className="text-slate-400 text-[11px]">
                 <AnimatedNumber value={totalProgress.completedCount} />/{totalProgress.totalCount} (<AnimatedNumber value={totalProgress.percentage} />%)
               </span>
             </div>
           </div>
         </div>
 
-        {/* Lesson Sub-Tabs for Current Module */}
+        {/* ROW 3: Segmented Glass Slider for Module Lessons */}
         {currentModule.lessons.length > 1 && (
-          <div className="mt-2.5 pt-2 border-t border-[#1C2430] flex items-center gap-2 overflow-x-auto no-scrollbar pb-0.5 font-sans">
-            {currentModule.lessons.map((lesson, idx) => {
-              const isSelected = lesson.id === currentLesson.id;
-              const lessonProg = progressMap[lesson.id];
-              const isDone = lessonProg?.status === 'completed';
+          <div className="mt-1.5 pt-1.5 border-t border-white/[0.04] overflow-x-auto no-scrollbar pb-0.5">
+            <div className="inline-flex items-center gap-1 p-1 bg-black/40 backdrop-blur-md border border-white/[0.06] rounded-xl">
+              {currentModule.lessons.map((lesson, idx) => {
+                const isSelected = lesson.id === currentLesson.id;
+                const lessonProg = progressMap[lesson.id];
+                const isDone = lessonProg?.status === 'completed';
+                const prefix = `${String(idx + 1).padStart(2, '0')}.`;
 
-              return (
-                <button
-                  key={lesson.id}
-                  id={`tab-lesson-${lesson.id}`}
-                  onClick={() => navigateTo(currentModule.id, lesson.id)}
-                  className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs whitespace-nowrap transition-all shrink-0 cursor-pointer ${
-                    isSelected
-                      ? 'bg-[#11161E] text-text-primary border border-border-primary shadow-sm font-semibold'
-                      : 'bg-[#0C0F14] text-[#A5AFBF] border border-[#1C2430] hover:text-[#F2F4F7] hover:bg-[#11161E]'
-                  }`}
-                >
-                  <span
-                    className={`w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-bold ${
-                      isDone
-                        ? 'bg-white/[0.08] text-text-primary border border-border-primary'
-                        : isSelected
-                        ? 'bg-text-primary text-[#090A0F]'
-                        : 'bg-[#11161E] text-[#A5AFBF]'
+                return (
+                  <button
+                    key={lesson.id}
+                    id={`tab-lesson-${lesson.id}`}
+                    onClick={() => navigateTo(currentModule.id, lesson.id)}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono transition-all shrink-0 cursor-pointer ${
+                      isSelected
+                        ? 'bg-gradient-to-r from-cyan-500/15 to-blue-500/15 border border-cyan-500/30 text-cyan-300 font-medium shadow-[0_0_12px_rgba(0,210,255,0.15)]'
+                        : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.03] border border-transparent'
                     }`}
                   >
-                    {isDone ? <CheckCircle2 className="w-3 h-3 text-text-primary" /> : idx + 1}
-                  </span>
-                  <span>{isVi ? lesson.shortTitleVi : lesson.shortTitleEn}</span>
-                </button>
-              );
-            })}
+                    <span className={isSelected ? 'text-cyan-400 font-semibold' : 'text-slate-500'}>
+                      {prefix}
+                    </span>
+                    <span>{isVi ? lesson.shortTitleVi : lesson.shortTitleEn}</span>
+                    {isDone && (
+                      <CheckCircle2 className="w-3.5 h-3.5 text-success shrink-0 ml-0.5" />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
           </div>
         )}
       </div>

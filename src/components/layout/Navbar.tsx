@@ -140,7 +140,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const displayName = user?.name || (isVi ? 'Phan Tấn Long' : 'Phan Tan Long');
 
   return (
-    <header className="sticky top-0 z-50 bg-[#090D12]/95 backdrop-blur-md border-b border-white/[0.08] font-sans">
+    <header className="sticky top-0 z-50 bg-[#070B14]/75 backdrop-blur-xl border-b border-white/[0.08] font-sans">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14 sm:h-16" ref={navRef}>
           {/* Left: Brand Logo & Institution / Faculty Title */}
@@ -151,7 +151,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               id="nav-brand-button"
               aria-label={`${brandName} - ${brandSubtitle}`}
             >
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-[#0C0F14] border border-white/[0.08] group-hover:border-border-primary transition-colors p-1 shrink-0 flex items-center justify-center">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-[#0C0F14]/80 border border-white/[0.08] group-hover:border-cyan-500/40 transition-colors p-1 shrink-0 flex items-center justify-center">
                 <img
                   src="/logo.png"
                   alt={brandName}
@@ -159,10 +159,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                 />
               </div>
               <div className="flex flex-col justify-center">
-                <span className="font-sans font-bold text-sm sm:text-base leading-tight text-[#F2F4F7] tracking-tight group-hover:text-white transition-colors">
+                <span className="font-sans font-bold text-sm sm:text-base leading-tight text-white tracking-tight group-hover:text-cyan-300 transition-colors">
                   {brandName}
                 </span>
-                <span className="font-sans font-normal sm:font-medium text-[11px] sm:text-xs leading-tight text-[#9AA5B5] group-hover:text-[#C8D0DB] transition-colors mt-0.5 whitespace-nowrap">
+                <span className="font-sans font-normal sm:font-medium text-[11px] sm:text-xs leading-tight text-slate-400 group-hover:text-slate-300 transition-colors mt-0.5 whitespace-nowrap">
                   {brandSubtitle}
                 </span>
               </div>
@@ -170,7 +170,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           {/* Center: Main Navigation Menu (Clean, Minimal, Text + Subtle Chevron) */}
-          <nav className="hidden lg:flex items-center gap-1 xl:gap-2 text-xs font-medium" aria-label="Primary navigation">
+          <nav className="hidden lg:flex items-center gap-1 xl:gap-2 text-xs font-medium h-full" aria-label="Primary navigation">
             {MODULES_REGISTRY.map((module) => {
               const isActiveModule = currentModuleId === module.id;
               const hasMultipleLessons = module.lessons.length > 1;
@@ -183,10 +183,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                     key={module.id}
                     id={`nav-tab-${module.id}`}
                     onClick={() => navigateTo(module.id, module.lessons[0].id)}
-                    className={`px-3 py-1.5 rounded-md transition-colors whitespace-nowrap cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/20 ${
+                    className={`px-3 py-2 rounded-md transition-all whitespace-nowrap cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/20 relative ${
                       isActiveModule
-                        ? 'text-text-primary bg-white/[0.06] font-semibold'
-                        : 'text-[#9AA5B5] hover:text-[#F2F4F7] hover:bg-white/[0.04]'
+                        ? "text-cyan-400 font-semibold after:content-[''] after:absolute after:-bottom-4 after:left-0 after:w-full after:h-[2px] after:bg-gradient-to-r after:from-cyan-400 after:to-blue-500 after:shadow-[0_0_8px_rgba(0,210,255,0.8)]"
+                        : "text-slate-400 hover:text-white hover:bg-white/[0.04]"
                     }`}
                   >
                     <span>{isVi ? module.titleVi : module.titleEn}</span>
@@ -197,7 +197,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               return (
                 <div
                   key={module.id}
-                  className="relative"
+                  className="relative h-full flex items-center"
                   onMouseEnter={() => handleMouseEnter(module.id)}
                   onMouseLeave={handleMouseLeave}
                 >
@@ -205,16 +205,16 @@ export const Navbar: React.FC<NavbarProps> = ({
                     id={`nav-tab-${module.id}`}
                     onClick={() => navigateTo(module.id, module.lessons[0].id)}
                     aria-expanded={isDropdownOpen}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition-colors whitespace-nowrap cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/20 ${
+                    className={`flex items-center gap-1.5 px-3 py-2 rounded-md transition-all whitespace-nowrap cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/20 relative ${
                       isActiveModule
-                        ? 'text-text-primary bg-white/[0.06] font-semibold'
-                        : 'text-[#9AA5B5] hover:text-[#F2F4F7] hover:bg-white/[0.04]'
+                        ? "text-cyan-400 font-semibold after:content-[''] after:absolute after:-bottom-4 after:left-0 after:w-full after:h-[2px] after:bg-gradient-to-r after:from-cyan-400 after:to-blue-500 after:shadow-[0_0_8px_rgba(0,210,255,0.8)]"
+                        : "text-slate-400 hover:text-white hover:bg-white/[0.04]"
                     }`}
                   >
                     <span>{isVi ? module.titleVi : module.titleEn}</span>
                     <ChevronDown
                       className={`w-3 h-3 transition-transform duration-150 ${
-                        isDropdownOpen ? 'rotate-180 text-text-primary' : 'text-[#717B8C]'
+                        isDropdownOpen ? 'rotate-180 text-cyan-400' : 'text-slate-500'
                       }`}
                     />
                   </button>
@@ -222,7 +222,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   {/* Dropdown Menu */}
                   {isDropdownOpen && (
                     <div
-                      className="absolute top-full left-0 mt-1 w-56 sm:w-60 bg-[#0C0F14] backdrop-blur-md border border-white/[0.08] rounded-xl shadow-2xl p-1 z-50 animate-in fade-in slide-in-from-top-1 duration-150 font-sans"
+                      className="absolute top-full left-0 mt-1 w-56 sm:w-60 bg-[#070B14]/90 backdrop-blur-xl border border-white/[0.08] rounded-xl shadow-[0_16px_40px_rgba(0,0,0,0.6)] p-1 z-50 animate-in fade-in slide-in-from-top-1 duration-150 font-sans"
                       role="menu"
                       aria-label={isVi ? module.titleVi : module.titleEn}
                     >
@@ -242,15 +242,15 @@ export const Navbar: React.FC<NavbarProps> = ({
                               }}
                               className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-left transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/20 ${
                                 isCurrentLesson
-                                  ? 'bg-[#11161E] text-text-primary font-semibold'
-                                  : 'text-[#A5AFBF] hover:text-[#F2F4F7] hover:bg-white/[0.04]'
+                                  ? 'bg-cyan-500/15 text-cyan-300 font-semibold border border-cyan-500/30'
+                                  : 'text-slate-300 hover:text-white hover:bg-white/[0.04]'
                               }`}
                             >
                               <span className="truncate">{label}</span>
                               {isDone ? (
                                 <CheckCircle2 className="w-3.5 h-3.5 text-success shrink-0 ml-2" />
                               ) : isCurrentLesson ? (
-                                <span className="w-1.5 h-1.5 rounded-full bg-white/[0.1] shrink-0 ml-2" />
+                                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shrink-0 ml-2" />
                               ) : null}
                             </button>
                           );
@@ -270,7 +270,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               href="https://github.com/phantanlongzzz/blockchain-elearning"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-8 h-8 flex items-center justify-center rounded-lg text-[#9AA5B5] hover:text-text-primary hover:bg-white/[0.04] transition-all cursor-pointer group/gh relative"
+              className="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:text-white hover:bg-white/[0.06] transition-all cursor-pointer group/gh relative border border-transparent hover:border-white/[0.08]"
               title="GitHub Repository"
               aria-label="GitHub Repository"
             >
@@ -293,10 +293,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                   window.dispatchEvent(new CustomEvent('toggle-command-palette'));
                 }
               }}
-              className={`w-8 h-8 flex items-center justify-center rounded-lg transition-colors cursor-pointer shrink-0 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/20 ${
+              className={`w-8 h-8 flex items-center justify-center rounded-lg transition-colors cursor-pointer shrink-0 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/20 border ${
                 isSearchOpen
-                  ? 'text-text-primary bg-white/[0.04]'
-                  : 'text-[#9AA5B5] hover:text-text-primary hover:bg-white/[0.04]'
+                  ? 'text-cyan-400 bg-cyan-500/10 border-cyan-500/30'
+                  : 'text-slate-400 hover:text-white hover:bg-white/[0.06] border-transparent hover:border-white/[0.08]'
               }`}
               title={isVi ? 'Tìm kiếm (Ctrl + K)' : 'Search (Ctrl + K)'}
               aria-label={isVi ? 'Tìm kiếm (Ctrl + K)' : 'Search (Ctrl + K)'}
@@ -310,20 +310,20 @@ export const Navbar: React.FC<NavbarProps> = ({
             <div className="relative" ref={userMenuRef}>
               <button
                 onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                className="flex items-center gap-2 pl-1.5 pr-2.5 py-1 rounded-lg hover:bg-white/[0.04] transition-colors text-xs font-sans cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/20"
+                className="flex items-center gap-2 bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] hover:border-cyan-500/30 px-3 py-1.5 rounded-lg text-xs transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/20"
                 id="user-profile-button"
                 aria-expanded={userDropdownOpen}
                 aria-label="Profile and settings menu"
               >
-                <div className="w-6 h-6 rounded-full bg-white/[0.1] flex items-center justify-center text-[#090A0F] font-bold text-[11px] shrink-0 shadow-sm">
+                <div className="w-5 h-5 rounded-full bg-cyan-500/20 text-cyan-300 font-bold text-[10px] flex items-center justify-center border border-cyan-500/30 shrink-0 shadow-sm">
                   {userInitial}
                 </div>
-                <span className="hidden sm:inline text-[#F2F4F7] max-w-[120px] truncate font-medium">
+                <span className="hidden sm:inline text-slate-200 max-w-[120px] truncate font-medium">
                   {displayName}
                 </span>
                 <ChevronDown
-                  className={`w-3 h-3 text-[#717B8C] transition-transform duration-150 ${
-                    userDropdownOpen ? 'rotate-180 text-text-primary' : ''
+                  className={`w-3 h-3 text-slate-400 transition-transform duration-150 ${
+                    userDropdownOpen ? 'rotate-180 text-cyan-400' : ''
                   }`}
                 />
               </button>

@@ -238,8 +238,8 @@ export const MempoolDashboard: React.FC = () => {
     
     newTrace.push({ activeStep: 0, lastVerifiedTx: null, mempool: [...baseMempool], rejected: [...baseRejected], seenSignatures: new Set(baseSeen), accounts: cloneAccounts(baseAccounts), baseDelay: 900 });
     newTrace.push({ activeStep: 1, lastVerifiedTx: null, mempool: [...baseMempool], rejected: [...baseRejected], seenSignatures: new Set(baseSeen), accounts: cloneAccounts(baseAccounts), focusId: 'pipeline-viz', baseDelay: 1400 });
-    newTrace.push({ activeStep: 2, lastVerifiedTx: null, mempool: [...baseMempool], rejected: [...baseRejected], seenSignatures: new Set(baseSeen), accounts: cloneAccounts(baseAccounts), baseDelay: 900 });
-    newTrace.push({ activeStep: 3, lastVerifiedTx: null, mempool: [...baseMempool], rejected: [...baseRejected], seenSignatures: new Set(baseSeen), accounts: cloneAccounts(baseAccounts), baseDelay: 1000 });
+    newTrace.push({ activeStep: 2, lastVerifiedTx: null, mempool: [...baseMempool], rejected: [...baseRejected], seenSignatures: new Set(baseSeen), accounts: cloneAccounts(baseAccounts), baseDelay: 1200 });
+    newTrace.push({ activeStep: 3, lastVerifiedTx: null, mempool: [...baseMempool], rejected: [...baseRejected], seenSignatures: new Set(baseSeen), accounts: cloneAccounts(baseAccounts), baseDelay: 1800 });
     
     const formatPass = Boolean(alice.address && bob.address && broadcastPayload.amount > 0 && broadcastPayload.timestamp);
     const publicKeyPass = Boolean(alice.publicKey && alice.publicKey.startsWith('04'));
@@ -402,61 +402,62 @@ export const MempoolDashboard: React.FC = () => {
   ];
 
   const steps = [
-    { step: 1, title: vStr.stepWallet || (isVi ? '1. Tạo TX' : '1. Create TX'), desc: vStr.stepWalletDesc || (isVi ? 'Khởi tạo dữ liệu' : 'Payload Creation'), active: activeStep === 1 },
-    { step: 2, title: vStr.stepSign || (isVi ? '2. Ký số' : '2. Sign'), desc: vStr.stepSignDesc, active: activeStep === 2 },
-    { step: 3, title: vStr.stepBroadcast || (isVi ? '3. Truyền phát' : '3. Broadcast'), desc: vStr.stepBroadcastDesc, active: activeStep === 3 },
-    { step: 4, title: vStr.stepAudit || (isVi ? '4. Kiểm định nút' : '4. Node audit'), desc: vStr.stepAuditDesc, active: activeStep === 4 },
-    { step: 5, title: activeStep === 6 ? (vStr.stepRejected || (isVi ? '5. Từ chối' : '5. Rejected')) : (vStr.stepMempool || (isVi ? '5. Mempool' : '5. Mempool')), desc: activeStep === 6 ? vStr.stepRejectedDesc : vStr.stepMempoolDesc, active: activeStep === 5 || activeStep === 6, failed: activeStep === 6 },
+    { step: 1, title: isVi ? '01. Tạo TX' : '01. Create TX', active: activeStep === 1 },
+    { step: 2, title: isVi ? '02. Ký số' : '02. Sign', active: activeStep === 2 },
+    { step: 3, title: isVi ? '03. Truyền phát' : '03. Broadcast', active: activeStep === 3 },
+    { step: 4, title: isVi ? '04. Kiểm định' : '04. Node Audit', active: activeStep === 4 },
+    { step: 5, title: activeStep === 6 ? (isVi ? '05. Từ chối' : '05. Rejected') : (isVi ? '05. Mempool' : '05. Mempool'), active: activeStep === 5 || activeStep === 6, failed: activeStep === 6 },
   ];
 
   return (
     <div id="mempool-lab" className="space-y-6">
       
-      {/* 0. Scenario Selection & Playback Controls */}
-      <div className="p-5 rounded-xl bg-[#0F1014] border border-white/[0.08] space-y-4">
+      {/* 0. Scenario Tabs & Playback Controls */}
+      <div className="p-4 sm:p-5 rounded-xl bg-bg-secondary border border-border-primary space-y-3.5">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-medium uppercase tracking-wider text-[#71717A]">
+          <span className="text-xs font-medium uppercase tracking-wider text-text-muted">
             {isVi ? 'Kịch bản kiểm thử' : 'Test Scenarios'}
           </span>
         </div>
         
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+        {/* Scenario Tabs (Segmented Control) */}
+        <div className="bg-bg-secondary p-1 rounded-lg border border-border-primary grid grid-cols-2 sm:grid-cols-4 gap-1 w-full">
           <button
             onClick={() => setSelectedScenario('VALID')}
-            className={`px-4 py-2.5 rounded-lg border text-xs font-medium transition-colors duration-150 ease-out text-center cursor-pointer ${
+            className={`py-2 px-3 rounded-md text-xs font-medium transition-all duration-150 text-center cursor-pointer ${
               selectedScenario === 'VALID'
-                ? 'bg-[#15161A] border-[#10B981] text-[#10B981]'
-                : 'bg-[#09090B] border-white/[0.08] text-[#A1A1AA] hover:bg-[#15161A] hover:border-[#10B981]/40 hover:text-[#10B981]'
+                ? 'bg-bg-elevated text-text-primary border border-border-primary/60 font-medium shadow-sm'
+                : 'text-text-muted hover:text-text-primary transition-colors'
             }`}
           >
             {vStr.attack1Title}
           </button>
           <button
             onClick={() => setSelectedScenario('TAMPERED')}
-            className={`px-4 py-2.5 rounded-lg border text-xs font-medium transition-colors duration-150 ease-out text-center cursor-pointer ${
+            className={`py-2 px-3 rounded-md text-xs font-medium transition-all duration-150 text-center cursor-pointer ${
               selectedScenario === 'TAMPERED'
-                ? 'bg-[#15161A] border-rose-500 text-rose-400'
-                : 'bg-[#09090B] border-white/[0.08] text-[#A1A1AA] hover:bg-[#15161A] hover:border-rose-500/40 hover:text-rose-400'
+                ? 'bg-bg-elevated text-text-primary border border-border-primary/60 font-medium shadow-sm'
+                : 'text-text-muted hover:text-text-primary transition-colors'
             }`}
           >
             {vStr.attack2Title}
           </button>
           <button
             onClick={() => setSelectedScenario('INSUFFICIENT')}
-            className={`px-4 py-2.5 rounded-lg border text-xs font-medium transition-colors duration-150 ease-out text-center cursor-pointer ${
+            className={`py-2 px-3 rounded-md text-xs font-medium transition-all duration-150 text-center cursor-pointer ${
               selectedScenario === 'INSUFFICIENT'
-                ? 'bg-[#15161A] border-amber-500 text-amber-400'
-                : 'bg-[#09090B] border-white/[0.08] text-[#A1A1AA] hover:bg-[#15161A] hover:border-amber-500/40 hover:text-amber-400'
+                ? 'bg-bg-elevated text-text-primary border border-border-primary/60 font-medium shadow-sm'
+                : 'text-text-muted hover:text-text-primary transition-colors'
             }`}
           >
             {vStr.attack3Title}
           </button>
           <button
             onClick={() => setSelectedScenario('REPLAY')}
-            className={`px-4 py-2.5 rounded-lg border text-xs font-medium transition-colors duration-150 ease-out text-center cursor-pointer ${
+            className={`py-2 px-3 rounded-md text-xs font-medium transition-all duration-150 text-center cursor-pointer ${
               selectedScenario === 'REPLAY'
-                ? 'bg-[#15161A] border-purple-500 text-purple-400'
-                : 'bg-[#09090B] border-white/[0.08] text-[#A1A1AA] hover:bg-[#15161A] hover:border-purple-500/40 hover:text-purple-400'
+                ? 'bg-bg-elevated text-text-primary border border-border-primary/60 font-medium shadow-sm'
+                : 'text-text-muted hover:text-text-primary transition-colors'
             }`}
           >
             {vStr.attack4Title}
@@ -464,71 +465,77 @@ export const MempoolDashboard: React.FC = () => {
         </div>
 
         {selectedScenario && (
-          <div className="flex flex-wrap items-center gap-3 p-3 mt-4 rounded-lg bg-[#09090B] border border-white/[0.08]">
+          <div className="flex flex-wrap items-center justify-between gap-3 p-2 rounded-lg bg-bg-secondary border border-border-primary">
             {!trace.length ? (
               <button
                 onClick={handleStartSimulation}
                 disabled={isGenerating}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#10B981]/10 text-[#10B981] border border-[#10B981]/30 hover:bg-[#10B981]/20 transition-colors duration-150 text-sm font-medium cursor-pointer"
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-md bg-bg-elevated hover:bg-bg-hover text-text-primary border border-border-primary font-medium transition-colors cursor-pointer"
               >
-                <Play className="w-4 h-4" />
+                <Play className="w-3.5 h-3.5" />
                 {isVi ? 'Bắt đầu mô phỏng' : 'Start Simulation'}
               </button>
             ) : (
               <>
-                <button
-                  onClick={() => setIsPlaying(!isPlaying)}
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#15161A] text-[#F4F4F5] border border-white/10 hover:border-white/20 transition-colors duration-150 text-sm font-medium cursor-pointer"
-                >
-                  {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-                  {isPlaying ? (isVi ? 'Tạm dừng' : 'Pause') : (isVi ? 'Tiếp tục' : 'Resume')}
-                </button>
-                <button
-                  onClick={handleReset}
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#15161A] text-[#A1A1AA] border border-white/10 hover:border-rose-500/40 hover:text-rose-400 transition-colors duration-150 text-sm font-medium cursor-pointer"
-                >
-                  <RotateCcw className="w-4 h-4" />
-                  {isVi ? 'Đặt lại' : 'Reset'}
-                </button>
-
-                <div className="flex-1 min-w-[20px]" />
-
-                <div className="flex items-center gap-2 border border-white/10 rounded-lg p-1 bg-[#09090B]">
+                <div className="flex items-center gap-2 flex-wrap">
                   <button
-                    onClick={() => setStepIndex(Math.max(0, stepIndex - 1))}
-                    disabled={stepIndex === 0}
-                    className="p-1.5 rounded hover:bg-[#15161A] text-[#71717A] hover:text-[#F4F4F5] disabled:opacity-30 transition-colors cursor-pointer"
+                    onClick={() => setIsPlaying(!isPlaying)}
+                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-md bg-bg-elevated hover:bg-bg-hover text-text-primary border border-border-primary font-medium transition-colors cursor-pointer"
                   >
-                    <SkipBack className="w-4 h-4" />
+                    {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
+                    {isPlaying ? (isVi ? 'Tạm dừng' : 'Pause') : (isVi ? 'Tiếp tục' : 'Resume')}
                   </button>
-                  <span className="text-xs text-[#A1A1AA] font-mono min-w-[60px] text-center">
-                    {isVi ? 'Bước' : 'Step'} {Math.max(1, Math.min(5, activeStep))} / 5
-                  </span>
                   <button
-                    onClick={() => setStepIndex(Math.min(trace.length - 1, stepIndex + 1))}
-                    disabled={stepIndex === trace.length - 1}
-                    className="p-1.5 rounded hover:bg-[#15161A] text-[#71717A] hover:text-[#F4F4F5] disabled:opacity-30 transition-colors cursor-pointer"
+                    onClick={handleReset}
+                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-md bg-bg-elevated hover:bg-bg-hover text-text-primary border border-border-primary font-medium transition-colors cursor-pointer"
                   >
-                    <SkipForward className="w-4 h-4" />
+                    <RotateCcw className="w-3.5 h-3.5 text-text-muted" />
+                    {isVi ? 'Đặt lại' : 'Reset'}
                   </button>
                 </div>
 
-                <div className="flex items-center gap-1 pl-3 sm:pl-4 border-l border-white/10">
-                  <span className="text-xs text-[#71717A] mr-1 hidden sm:inline">Speed:</span>
-                  <div className="flex items-center bg-[#09090B] border border-white/10 rounded overflow-hidden">
-                    {[0.5, 1, 2].map((speed) => (
-                      <button
-                        key={speed}
-                        onClick={() => setPlaybackSpeed(speed)}
-                        className={`px-2.5 py-1 text-xs font-mono transition-colors duration-150 cursor-pointer ${
-                          playbackSpeed === speed
-                            ? 'bg-[#15161A] text-[#F4F4F5] border-b-2 border-[#10B981]'
-                            : 'bg-transparent text-[#71717A] hover:bg-[#15161A]/50 hover:text-[#A1A1AA] border-b-2 border-transparent'
-                        }`}
-                      >
-                        {speed}×
-                      </button>
-                    ))}
+                <div className="flex items-center gap-3 flex-wrap ml-auto">
+                  {/* Stepper controls */}
+                  <div className="flex items-center gap-1 bg-bg-primary border border-border-secondary p-0.5 rounded-md">
+                    <button
+                      onClick={() => setStepIndex(Math.max(0, stepIndex - 1))}
+                      disabled={stepIndex === 0}
+                      className="p-1 rounded hover:bg-bg-hover text-text-muted hover:text-text-primary disabled:opacity-30 transition-colors cursor-pointer"
+                      title={isVi ? 'Bước trước' : 'Previous step'}
+                    >
+                      <SkipBack className="w-3.5 h-3.5" />
+                    </button>
+                    <span className="text-xs text-text-muted font-mono min-w-[36px] text-center">
+                      {Math.max(1, Math.min(5, activeStep))}/5
+                    </span>
+                    <button
+                      onClick={() => setStepIndex(Math.min(trace.length - 1, stepIndex + 1))}
+                      disabled={stepIndex === trace.length - 1}
+                      className="p-1 rounded hover:bg-bg-hover text-text-muted hover:text-text-primary disabled:opacity-30 transition-colors cursor-pointer"
+                      title={isVi ? 'Bước tiếp' : 'Next step'}
+                    >
+                      <SkipForward className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+
+                  {/* Speed selector */}
+                  <div className="flex items-center gap-1.5 pl-2 border-l border-border-primary">
+                    <span className="text-xs text-text-muted font-mono hidden sm:inline">Speed:</span>
+                    <div className="bg-bg-primary border border-border-secondary p-0.5 rounded text-[11px] font-mono flex items-center gap-0.5">
+                      {[0.5, 1, 2].map((speed) => (
+                        <button
+                          key={speed}
+                          onClick={() => setPlaybackSpeed(speed)}
+                          className={`px-2 py-0.5 rounded text-[11px] font-mono transition-colors cursor-pointer ${
+                            playbackSpeed === speed
+                              ? 'bg-bg-elevated text-text-primary font-semibold shadow-xs'
+                              : 'text-text-muted hover:text-text-primary'
+                          }`}
+                        >
+                          {speed}×
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </>
@@ -539,197 +546,121 @@ export const MempoolDashboard: React.FC = () => {
 
       {/* 1. Lifecycle Pipeline & Statistics Container */}
       <div id="pipeline-viz" className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Pipeline Visualization */}
-        <div className="lg:col-span-2 p-5 rounded-xl bg-[#0F1014] border border-white/[0.08] flex flex-col justify-center pb-8">
-          <div className="flex flex-wrap sm:flex-nowrap items-center justify-between gap-2 sm:gap-4">
-            {steps.map((s, idx) => (
-              <React.Fragment key={s.step}>
+        {/* Segmented Pipeline Bar */}
+        <div className="lg:col-span-2 p-4 sm:p-5 rounded-xl bg-bg-secondary border border-border-primary flex flex-col justify-center space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-medium uppercase tracking-wider text-text-muted">
+              {isVi ? 'Tiến trình xác thực' : 'Validation Pipeline'}
+            </span>
+            <span className="text-xs font-mono text-text-muted">
+              {activeStep > 0 ? `${Math.max(1, Math.min(5, activeStep))}/5` : '0/5'}
+            </span>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-1.5 p-1 bg-bg-primary rounded-lg border border-border-secondary w-full">
+            {steps.map((s) => {
+              const isPast = activeStep > s.step;
+              const isCurrent = activeStep === s.step || (s.step === 5 && activeStep === 6);
+              const isFailed = s.failed;
+
+              return (
                 <div
-                  className={`flex flex-col items-center gap-2 relative ${
-                    s.active ? 'opacity-100 z-10' : 'opacity-50'
-                  } transition-all duration-200`}
+                  key={s.step}
+                  className={`flex items-center justify-center gap-1.5 py-2 px-2 rounded-md text-[11px] font-mono transition-all duration-150 text-center ${
+                    isCurrent
+                      ? isFailed
+                        ? 'bg-error/10 text-error border border-error/30 font-medium shadow-xs'
+                        : 'bg-bg-elevated text-text-primary border border-border-primary font-medium shadow-xs'
+                      : isPast
+                      ? 'bg-bg-elevated/30 text-text-secondary border border-transparent'
+                      : 'bg-bg-elevated/15 text-text-muted border border-transparent'
+                  }`}
                 >
-                  <div
-                    className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center border font-mono text-sm sm:text-base font-bold transition-colors duration-150
-                    ${
-                      s.active
-                        ? s.failed
-                          ? 'bg-rose-500/15 border-rose-500 text-rose-400'
-                          : 'bg-[#10B981]/15 border-[#10B981] text-[#10B981]'
-                        : 'bg-[#09090B] border-white/10 text-[#71717A]'
-                    }
-                  `}
-                  >
-                    {s.step}
-                  </div>
-                  <div className="text-center absolute top-14 w-24">
-                    <div
-                      className={`text-xs font-medium ${
-                        s.active
-                          ? s.failed
-                            ? 'text-rose-400 font-semibold'
-                            : 'text-[#10B981] font-semibold'
-                          : 'text-[#71717A]'
-                      }`}
-                    >
-                      {s.title}
-                    </div>
-                  </div>
+                  {isPast ? (
+                    <PassIcon className="w-3 h-3 text-success shrink-0" />
+                  ) : isCurrent ? (
+                    isFailed ? (
+                      <DenyIcon className="w-3 h-3 text-error shrink-0" />
+                    ) : (
+                      <span className="w-1.5 h-1.5 rounded-full bg-teach-1 animate-pulse shrink-0" />
+                    )
+                  ) : (
+                    <span className="w-1.5 h-1.5 rounded-full bg-white/10 shrink-0" />
+                  )}
+                  <span className="truncate">{s.title}</span>
                 </div>
-                {idx < steps.length - 1 && (
-                  <div className="flex-1 h-0.5 bg-white/[0.06] hidden sm:block relative mb-8">
-                    {activeStep > s.step && (
-                      <div className="absolute inset-0 bg-[#10B981]/60" />
-                    )}
-                  </div>
-                )}
-              </React.Fragment>
-            ))}
+              );
+            })}
           </div>
         </div>
 
-
-        {/* Current Transaction Simulation Context */}
-        {activeStep >= 1 && (
-          <div id="step-create" className="lg:col-span-3 p-5 rounded-xl bg-[#09090B] border border-white/[0.08] space-y-4">
-            <div className="flex items-center justify-between pb-2 border-b border-white/[0.06]">
-              <span className="text-sm font-semibold text-[#F4F4F5]">
-                {isVi ? 'Giao dịch đang mô phỏng' : 'Current Simulation Context'}
-              </span>
-              <span className="text-xs text-[#10B981] font-mono">
-                {activeStep === 1 && (isVi ? 'Đang tạo...' : 'Creating...')}
-                {activeStep === 2 && (isVi ? 'Đang ký...' : 'Signing...')}
-                {activeStep === 3 && (isVi ? 'Truyền P2P...' : 'Broadcasting...')}
-                {activeStep === 4 && (isVi ? 'Đang xác thực...' : 'Validating...')}
-                {activeStep === 5 && (isVi ? 'Đã chấp nhận' : 'Accepted')}
-                {activeStep === 6 && (isVi ? 'Bị từ chối' : 'Rejected')}
-              </span>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-               {/* Payload block */}
-               <div className="p-3.5 rounded-lg bg-[#0F1014] border border-white/[0.06] flex flex-col gap-1.5">
-                 <div className="text-xs text-[#71717A]">{isVi ? 'Người gửi' : 'Sender'}</div>
-                 <div className="text-sm font-semibold text-[#F4F4F5]">Alice</div>
-                 <div className="text-xs text-[#71717A] mt-1">{isVi ? 'Người nhận' : 'Receiver'}</div>
-                 <div className="text-sm font-semibold text-[#F4F4F5]">Bob</div>
-                 <div className="text-xs text-[#71717A] mt-1">{isVi ? 'Số tiền' : 'Amount'}</div>
-                 <div className="text-sm font-mono font-semibold text-financial">
-                   {selectedScenario === 'TAMPERED' && activeStep >= 3 ? (
-                      <span className="text-financial">100.0 BTC <span className="text-rose-400 text-xs font-sans">(Bị sửa đổi!)</span></span>
-                   ) : selectedScenario === 'INSUFFICIENT' ? (
-                      <span className="text-financial">100.0 BTC</span>
-                   ) : (
-                      <span>10.0 BTC</span>
-                   )}
-                 </div>
-               </div>
-
-               {/* Signing block */}
-               {activeStep >= 2 && (
-                 <div id="step-sign" className="p-3.5 rounded-lg bg-[#0F1014] border border-white/[0.06] flex flex-col gap-2 col-span-1 sm:col-span-2 lg:col-span-3">
-                   <div className="text-xs text-[#71717A]">{isVi ? 'Quá trình ký (Mô phỏng)' : 'Signing Process (Simulated)'}</div>
-                   <div className="grid grid-cols-1 md:grid-cols-3 gap-3 items-center">
-                     <div className="p-3 bg-[#09090B] rounded border border-white/[0.06] text-[11px] font-mono text-sky-400 break-all leading-relaxed">
-                       <span className="block text-[#71717A] mb-1">{isVi ? "Mã băm giao dịch (SHA-256)" : "Transaction Digest (SHA-256)"}</span>
-                       a94f82c1...
-                     </div>
-                     <div className="hidden md:flex justify-center text-[#71717A]">
-                        <span className="text-xs font-mono">+ {isVi ? "Khóa riêng" : "Private Key"} (Alice)</span>
-                     </div>
-                     <div className="p-3 bg-[#09090B] rounded border border-[#10B981]/30 text-[11px] font-mono text-[#10B981] break-all leading-relaxed">
-                       <span className="block text-[#10B981]/70 mb-1">{isVi ? "Chữ ký số (ECDSA)" : "Digital Signature (ECDSA)"}</span>
-                       30450221008f...9e21
-                     </div>
-                   </div>
-                 </div>
-               )}
-            </div>
-
-            {/* P2P Broadcast animation block */}
-            {activeStep === 3 && (
-               <div id="step-broadcast" className="p-4 rounded-lg bg-[#0F1014] border border-white/[0.06] flex items-center justify-center h-24">
-                  <div className="flex items-center gap-6 animate-pulse">
-                     <div className="text-xs font-semibold text-[#F4F4F5]">Alice</div>
-                     <div className="text-[#10B981] text-xs">───► (P2P Network) ───►</div>
-                     <div className="flex gap-4 text-xs font-mono text-[#71717A]">
-                       <span>Node A</span>
-                       <span>Node B</span>
-                       <span>Node C</span>
-                     </div>
-                  </div>
-               </div>
-            )}
-          </div>
-        )}
-
         {/* Global Network Stats */}
-        <div className="p-5 rounded-xl bg-[#0F1014] border border-white/[0.08] space-y-4">
+        <div className="p-4 sm:p-5 rounded-xl bg-bg-secondary border border-border-primary space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-medium uppercase tracking-wider text-[#71717A]">
+            <span className="text-xs font-medium uppercase tracking-wider text-text-muted">
               {vStr.matrixTitle}
             </span>
           </div>
-          <div className="grid grid-cols-2 gap-3">
-            <div className="p-3 rounded-lg bg-[#09090B] border border-white/[0.06]">
-              <div className="text-xs text-[#71717A] mb-1">{vStr.statTotal}</div>
-              <div className="text-xl font-mono tracking-tight text-[#F4F4F5]">
+          <div className="grid grid-cols-2 gap-2.5">
+            <div className="p-2.5 rounded-lg bg-bg-primary border border-border-secondary">
+              <div className="text-xs text-text-muted mb-0.5">{vStr.statTotal}</div>
+              <div className="text-lg font-mono tracking-tight text-text-primary">
                 {totalSubmitted}
               </div>
             </div>
-            <div className="p-3 rounded-lg bg-[#09090B] border border-white/[0.06]">
-              <div className="text-xs text-[#71717A] mb-1">{vStr.successRate}</div>
+            <div className="p-2.5 rounded-lg bg-bg-primary border border-border-secondary">
+              <div className="text-xs text-text-muted mb-0.5">{vStr.successRate}</div>
               <div
-                className={`text-xl font-mono tracking-tight ${
+                className={`text-lg font-mono tracking-tight ${
                   totalSubmitted > 0 && validCount > 0
-                    ? 'text-[#10B981]'
+                    ? 'text-success'
                     : totalSubmitted > 0
-                    ? 'text-rose-400'
-                    : 'text-[#71717A]'
+                    ? 'text-error'
+                    : 'text-text-muted'
                 }`}
               >
                 {totalSubmitted > 0 ? `${successRateValue}%` : '--'}
               </div>
             </div>
             <div
-              className={`p-3 rounded-lg transition-colors duration-150 ${
+              className={`p-2.5 rounded-lg transition-colors duration-150 ${
                 validCount > 0
-                  ? 'bg-[#10B981]/5 border border-[#10B981]/30'
-                  : 'bg-[#09090B] border border-white/[0.06]'
+                  ? 'bg-success/5 border border-success/30'
+                  : 'bg-bg-primary border border-border-secondary'
               }`}
             >
               <div
-                className={`text-xs mb-1 ${
-                  validCount > 0 ? 'text-[#10B981]/80' : 'text-[#71717A]'
+                className={`text-xs mb-0.5 ${
+                  validCount > 0 ? 'text-success/80' : 'text-text-muted'
                 }`}
               >
                 {vStr.statValid}
               </div>
               <div
-                className={`text-xl font-mono tracking-tight ${
-                  validCount > 0 ? 'text-[#10B981]' : 'text-[#71717A]'
+                className={`text-lg font-mono tracking-tight ${
+                  validCount > 0 ? 'text-success' : 'text-text-muted'
                 }`}
               >
                 {validCount}
               </div>
             </div>
             <div
-              className={`p-3 rounded-lg transition-colors duration-150 ${
+              className={`p-2.5 rounded-lg transition-colors duration-150 ${
                 rejectedCount > 0
-                  ? 'bg-rose-950/20 border border-rose-500/30'
-                  : 'bg-[#09090B] border border-white/[0.06]'
+                  ? 'bg-error/10 border border-error/30'
+                  : 'bg-bg-primary border border-border-secondary'
               }`}
             >
               <div
-                className={`text-xs mb-1 ${
-                  rejectedCount > 0 ? 'text-rose-400/80' : 'text-[#71717A]'
+                className={`text-xs mb-0.5 ${
+                  rejectedCount > 0 ? 'text-error/80' : 'text-text-muted'
                 }`}
               >
                 {vStr.statInvalid}
               </div>
               <div
-                className={`text-xl font-mono tracking-tight ${
-                  rejectedCount > 0 ? 'text-rose-400' : 'text-[#71717A]'
+                className={`text-lg font-mono tracking-tight ${
+                  rejectedCount > 0 ? 'text-error' : 'text-text-muted'
                 }`}
               >
                 {rejectedCount}
@@ -737,6 +668,231 @@ export const MempoolDashboard: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {/* Current Transaction Simulation Context & Cryptographic Pipeline */}
+        {activeStep >= 1 && (
+          <div id="step-create" className="lg:col-span-3 p-5 rounded-xl bg-bg-secondary border border-border-primary space-y-4">
+            {/* Header & Status Badge */}
+            <div className="flex items-center justify-between pb-3 border-b border-border-primary">
+              <span className="text-sm font-semibold text-text-primary">
+                {isVi ? 'Giao dịch đang mô phỏng' : 'Current Simulation Context'}
+              </span>
+              <div>
+                {activeStep === 1 && (
+                  <span className="inline-flex items-center gap-1.5 text-xs font-mono text-text-muted bg-bg-primary border border-border-secondary px-2.5 py-0.5 rounded-full">
+                    <span className="w-1.5 h-1.5 rounded-full bg-text-muted animate-pulse" />
+                    {isVi ? 'Đang tạo...' : 'Creating...'}
+                  </span>
+                )}
+                {activeStep === 2 && (
+                  <span className="inline-flex items-center gap-1.5 text-xs font-mono text-teach-1 bg-teach-1/10 border border-teach-1/20 px-2.5 py-0.5 rounded-full">
+                    <span className="w-1.5 h-1.5 rounded-full bg-teach-1 animate-pulse" />
+                    {isVi ? 'Đang ký số...' : 'Signing...'}
+                  </span>
+                )}
+                {activeStep === 3 && (
+                  <span className="inline-flex items-center gap-1.5 text-xs font-mono text-teach-2 bg-teach-2/10 border border-teach-2/20 px-2.5 py-0.5 rounded-full">
+                    <span className="w-1.5 h-1.5 rounded-full bg-teach-2 animate-pulse" />
+                    {isVi ? 'Truyền P2P...' : 'Broadcasting...'}
+                  </span>
+                )}
+                {activeStep === 4 && (
+                  <span className="inline-flex items-center gap-1.5 text-xs font-mono text-color-info bg-color-info/10 border border-color-info/20 px-2.5 py-0.5 rounded-full">
+                    <span className="w-1.5 h-1.5 rounded-full bg-color-info animate-pulse" />
+                    {isVi ? 'Đang xác thực...' : 'Validating...'}
+                  </span>
+                )}
+                {activeStep === 5 && (
+                  <span className="inline-flex items-center gap-1 text-xs font-mono text-success bg-success/10 border border-success/20 px-2.5 py-0.5 rounded-full">
+                    <Check className="w-3.5 h-3.5" />
+                    <span>{isVi ? 'Đã chấp nhận' : 'Accepted'}</span>
+                  </span>
+                )}
+                {activeStep === 6 && (
+                  <span className="inline-flex items-center gap-1 text-xs font-mono text-error bg-error/10 border border-error/20 px-2.5 py-0.5 rounded-full">
+                    <X className="w-3.5 h-3.5" />
+                    <span>{isVi ? 'Bị từ chối' : 'Rejected'}</span>
+                  </span>
+                )}
+              </div>
+            </div>
+
+            {/* 2 Balanced Columns: TX Parameters + Cryptographic Pipeline */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+              {/* Cột 1: Thông số TX (col-span-1 lg:col-span-5) */}
+              <div className="lg:col-span-5 p-4 rounded-lg bg-bg-primary border border-border-secondary flex flex-col justify-between space-y-3">
+                <div className="text-xs font-medium uppercase tracking-wider text-text-muted">
+                  {isVi ? 'Thông số giao dịch' : 'Transaction Payload'}
+                </div>
+                <div className="space-y-2.5 text-xs">
+                  <div className="flex items-center justify-between pb-2 border-b border-border-secondary">
+                    <span className="text-text-muted">{isVi ? 'Người gửi' : 'Sender'}</span>
+                    <span className="text-text-primary font-mono font-medium">Alice <span className="text-text-muted text-[11px]">(0xAlice7...)</span></span>
+                  </div>
+                  <div className="flex items-center justify-between pb-2 border-b border-border-secondary">
+                    <span className="text-text-muted">{isVi ? 'Người nhận' : 'Receiver'}</span>
+                    <span className="text-text-primary font-mono font-medium">Bob <span className="text-text-muted text-[11px]">(0xBob839...)</span></span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-text-muted">{isVi ? 'Số tiền' : 'Amount'}</span>
+                    <div className="text-right">
+                      {selectedScenario === 'TAMPERED' && activeStep >= 3 ? (
+                        <div className="space-y-0.5">
+                          <span className="text-financial font-mono font-bold text-sm sm:text-base">100.00 BTC</span>
+                          <span className="text-error text-[11px] font-mono block">({isVi ? 'Bị sửa đổi trái phép!' : 'Tampered Payload!'})</span>
+                        </div>
+                      ) : selectedScenario === 'INSUFFICIENT' ? (
+                        <div className="space-y-0.5">
+                          <span className="text-financial font-mono font-bold text-sm sm:text-base">100.00 BTC</span>
+                          <span className="text-text-muted text-[11px] font-mono block">({isVi ? 'Số dư không đủ' : 'Insufficient funds'})</span>
+                        </div>
+                      ) : (
+                        <span className="text-financial font-mono font-bold text-sm sm:text-base">10.00 BTC</span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Cột 2: Quy trình ký ECDSA (col-span-1 lg:col-span-7) */}
+              <div id="step-sign" className="lg:col-span-7 p-4 rounded-lg bg-bg-primary border border-border-secondary flex flex-col justify-between space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-medium uppercase tracking-wider text-text-muted">
+                    {isVi ? 'Quy trình ký số ECDSA' : 'ECDSA Cryptographic Pipeline'}
+                  </span>
+                  <span className="text-[11px] font-mono text-text-muted">SECP256k1</span>
+                </div>
+
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-2 justify-between">
+                  {/* Box Hash */}
+                  <div className="flex-1 bg-bg-secondary border border-border-secondary p-2.5 rounded font-mono text-xs space-y-1 min-w-0">
+                    <span className="text-[10px] uppercase font-semibold tracking-wider text-text-muted block">
+                      DIGEST (SHA-256)
+                    </span>
+                    <span className="text-teach-1 font-mono text-xs break-all block truncate" title="a94f82c16e789d34b2210871">
+                      a94f82c1...e871
+                    </span>
+                  </div>
+
+                  {/* Connector */}
+                  <div className="flex flex-row sm:flex-col items-center justify-center shrink-0 px-1 py-0.5 text-center gap-1 sm:gap-0.5">
+                    <div className="flex items-center gap-1 text-text-muted">
+                      <ArrowRight className="w-3.5 h-3.5 text-text-muted hidden sm:block" />
+                      <span className="text-xs font-mono text-text-muted sm:hidden">+</span>
+                    </div>
+                    <span className="text-[10px] font-mono text-text-muted whitespace-nowrap">
+                      {isVi ? '+ Khóa riêng (Alice)' : '+ Private Key (Alice)'}
+                    </span>
+                  </div>
+
+                  {/* Box Chữ ký ECDSA */}
+                  <div className="flex-1 bg-bg-secondary border border-border-secondary p-2.5 rounded font-mono text-xs space-y-1 min-w-0">
+                    <span className="text-[10px] uppercase font-semibold tracking-wider text-text-muted block">
+                      {isVi ? 'CHỮ KÝ ECDSA (r, s)' : 'ECDSA SIGNATURE (r, s)'}
+                    </span>
+                    <span className="text-teach-2 font-mono text-xs break-all block truncate" title="30450221008f39...9e21">
+                      30450221008f...9e21
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* P2P Broadcast Network Flow Animation block */}
+            {activeStep === 3 && (
+              <div id="step-broadcast" className="p-4 sm:p-5 rounded-lg bg-bg-primary border border-border-secondary space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-medium uppercase tracking-wider text-text-muted">
+                    {isVi ? 'Mạng ngang hàng P2P (Gossip Protocol)' : 'P2P Gossip Network Propagation'}
+                  </span>
+                  <span className="text-[11px] font-mono text-teach-1 bg-teach-1/10 border border-teach-1/20 px-2 py-0.5 rounded-full flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-teach-1 animate-pulse" />
+                    {isVi ? 'Đang lan truyền gói tin...' : 'Broadcasting payload...'}
+                  </span>
+                </div>
+
+                {/* Top Flow: Alice Wallet -> Gossip Network */}
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 py-2">
+                  {/* Alice Wallet */}
+                  <div className="px-3.5 py-2 rounded-md bg-bg-secondary border border-border-primary flex items-center gap-2 text-xs font-mono">
+                    <span className="w-2 h-2 rounded-full bg-teach-1" />
+                    <span className="font-semibold text-text-primary">Alice (Wallet)</span>
+                  </div>
+
+                  {/* Packet Connector */}
+                  <div className="flex items-center gap-1.5 text-text-muted text-xs font-mono">
+                    <span className="hidden sm:inline">──</span>
+                    <span className="px-2 py-0.5 rounded bg-bg-elevated border border-border-secondary text-[10px] text-teach-1 font-mono">
+                      TX Packet: 224B
+                    </span>
+                    <span>──►</span>
+                  </div>
+
+                  {/* P2P Gossip Network Gateway */}
+                  <div className="px-3.5 py-2 rounded-md bg-bg-secondary border border-teach-1/30 text-teach-1 flex items-center gap-2 text-xs font-mono font-medium shadow-xs">
+                    <Layers className="w-3.5 h-3.5 text-teach-1" />
+                    <span>P2P Gossip Protocol</span>
+                  </div>
+                </div>
+
+                {/* Fan-out Connector visual */}
+                <div className="hidden sm:flex flex-col items-center justify-center -my-1">
+                  <div className="w-0.5 h-3 bg-border-primary" />
+                  <div className="w-2/3 h-0.5 bg-border-primary relative">
+                    <div className="absolute left-0 top-0.5 w-0.5 h-2.5 bg-border-primary" />
+                    <div className="absolute left-1/2 -translate-x-1/2 top-0.5 w-0.5 h-2.5 bg-border-primary" />
+                    <div className="absolute right-0 top-0.5 w-0.5 h-2.5 bg-border-primary" />
+                  </div>
+                </div>
+
+                {/* Peer Nodes Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+                  {/* Node A (Peer) */}
+                  <div className="p-3 rounded-md bg-bg-elevated border border-border-primary transition-all duration-300 space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-mono font-medium text-text-primary">Node A (Peer)</span>
+                      <span className="text-[10px] font-mono text-teach-1 bg-teach-1/10 px-1.5 py-0.5 rounded">
+                        {isVi ? 'Đã nhận gói tin' : 'Packet Received'}
+                      </span>
+                    </div>
+                    <div className="text-[11px] font-mono text-text-muted flex items-center justify-between">
+                      <span>IP: 198.51.100.24</span>
+                      <span className="text-success font-medium">✓ Ingested</span>
+                    </div>
+                  </div>
+
+                  {/* Node B (Miner) */}
+                  <div className="p-3 rounded-md bg-bg-elevated border border-border-primary transition-all duration-300 space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-mono font-medium text-text-primary">Node B (Miner)</span>
+                      <span className="text-[10px] font-mono text-teach-1 bg-teach-1/10 px-1.5 py-0.5 rounded">
+                        {isVi ? 'Đã nhận gói tin' : 'Packet Received'}
+                      </span>
+                    </div>
+                    <div className="text-[11px] font-mono text-text-muted flex items-center justify-between">
+                      <span>IP: 203.0.113.88</span>
+                      <span className="text-success font-medium">✓ Queued</span>
+                    </div>
+                  </div>
+
+                  {/* Node C (Full Node) */}
+                  <div className="p-3 rounded-md bg-bg-elevated border border-border-primary transition-all duration-300 space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-mono font-medium text-text-primary">Node C (Full Node)</span>
+                      <span className="text-[10px] font-mono text-teach-1 bg-teach-1/10 px-1.5 py-0.5 rounded">
+                        {isVi ? 'Đã nhận gói tin' : 'Packet Received'}
+                      </span>
+                    </div>
+                    <div className="text-[11px] font-mono text-text-muted flex items-center justify-between">
+                      <span>IP: 192.0.2.147</span>
+                      <span className="text-success font-medium">✓ Verifying</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       {/* 2. Educational Ledger & Account States */}
@@ -851,7 +1007,6 @@ export const MempoolDashboard: React.FC = () => {
             <span className="text-xs font-medium uppercase tracking-wider text-[#71717A]">
               {vStr.auditEngineTitle}
             </span>
-            <span className="text-xs text-[#71717A]">{vStr.auditRules}</span>
           </div>
 
           <div id="result-panel">
@@ -924,13 +1079,10 @@ export const MempoolDashboard: React.FC = () => {
                       </span>
                     )
                   ) : (
-                    <span className="inline-flex items-center gap-1.5 text-xs text-text-muted">
-                      <span
-                        title={isVi ? 'Chờ kiểm tra' : 'Pending'}
-                        className="w-1.5 h-1.5 rounded-full bg-white/20 inline-block"
-                      />
-                      <span>{isVi ? 'Chờ kiểm tra' : 'Pending'}</span>
-                    </span>
+                    <span
+                      title={isVi ? 'Chờ kiểm tra' : 'Pending'}
+                      className="w-1.5 h-1.5 rounded-full bg-white/20 inline-block"
+                    />
                   )}
                 </div>
               </div>
@@ -950,7 +1102,6 @@ export const MempoolDashboard: React.FC = () => {
                 {vStr.activeMempool} ({mempool.length})
               </span>
             </div>
-            <span className="text-[#71717A] font-mono text-[11px]">{vStr.readyForBlock}</span>
           </div>
 
           <div className="space-y-3.5 text-xs max-h-[520px] overflow-y-auto pr-1">
@@ -1094,7 +1245,6 @@ export const MempoolDashboard: React.FC = () => {
                 {vStr.rejectedTransactions} ({rejected.length})
               </span>
             </div>
-            <span className="text-[#71717A] font-mono text-[11px]">{vStr.droppedFromConsensus}</span>
           </div>
 
           <div className="space-y-3.5 text-xs max-h-[520px] overflow-y-auto pr-1">

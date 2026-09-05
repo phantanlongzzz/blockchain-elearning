@@ -123,6 +123,7 @@ export const MempoolDashboard: React.FC = () => {
   const [expandedAccount, setExpandedAccount] = useState<string | null>(null);
   const [revealedKeyAccount, setRevealedKeyAccount] = useState<string | null>(null);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
+  const [isP2pExpanded, setIsP2pExpanded] = useState<boolean>(true);
 
   // Derived state from current step
   const currentTrace = trace[stepIndex] || {
@@ -798,99 +799,207 @@ export const MempoolDashboard: React.FC = () => {
               </div>
             </div>
 
-            {/* P2P Broadcast Network Flow Animation block */}
-            {activeStep === 3 && (
-              <div id="step-broadcast" className="p-4 sm:p-5 rounded-lg bg-bg-primary border border-border-secondary space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-medium uppercase tracking-wider text-text-muted">
-                    {isVi ? 'Mạng ngang hàng P2P (Gossip Protocol)' : 'P2P Gossip Network Propagation'}
-                  </span>
-                  <span className="text-[11px] font-mono text-teach-1 bg-teach-1/10 border border-teach-1/20 px-2 py-0.5 rounded-full flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-teach-1 animate-pulse" />
-                    {isVi ? 'Đang lan truyền gói tin...' : 'Broadcasting payload...'}
-                  </span>
-                </div>
+            {/* P2P Broadcast Network Flow Animation block (Persistent & Collapsible) */}
+            {(() => {
+              const isP2pPending = activeStep < 3;
+              const isP2pActive = activeStep === 3;
+              const isP2pCompleted = activeStep >= 4;
 
-                {/* Top Flow: Alice Wallet -> Gossip Network */}
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 py-2">
-                  {/* Alice Wallet */}
-                  <div className="px-3.5 py-2 rounded-md bg-bg-secondary border border-border-primary flex items-center gap-2 text-xs font-mono">
-                    <span className="w-2 h-2 rounded-full bg-teach-1" />
-                    <span className="font-semibold text-text-primary">Alice (Wallet)</span>
-                  </div>
-
-                  {/* Packet Connector */}
-                  <div className="flex items-center gap-1.5 text-text-muted text-xs font-mono">
-                    <span className="hidden sm:inline">──</span>
-                    <span className="px-2 py-0.5 rounded bg-bg-elevated border border-border-secondary text-[10px] text-teach-1 font-mono">
-                      TX Packet: 224B
-                    </span>
-                    <span>──►</span>
-                  </div>
-
-                  {/* P2P Gossip Network Gateway */}
-                  <div className="px-3.5 py-2 rounded-md bg-bg-secondary border border-teach-1/30 text-teach-1 flex items-center gap-2 text-xs font-mono font-medium shadow-xs">
-                    <Layers className="w-3.5 h-3.5 text-teach-1" />
-                    <span>P2P Gossip Protocol</span>
-                  </div>
-                </div>
-
-                {/* Fan-out Connector visual */}
-                <div className="hidden sm:flex flex-col items-center justify-center -my-1">
-                  <div className="w-0.5 h-3 bg-border-primary" />
-                  <div className="w-2/3 h-0.5 bg-border-primary relative">
-                    <div className="absolute left-0 top-0.5 w-0.5 h-2.5 bg-border-primary" />
-                    <div className="absolute left-1/2 -translate-x-1/2 top-0.5 w-0.5 h-2.5 bg-border-primary" />
-                    <div className="absolute right-0 top-0.5 w-0.5 h-2.5 bg-border-primary" />
-                  </div>
-                </div>
-
-                {/* Peer Nodes Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
-                  {/* Node A (Peer) */}
-                  <div className="p-3 rounded-md bg-bg-elevated border border-border-primary transition-all duration-300 space-y-1.5">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-mono font-medium text-text-primary">Node A (Peer)</span>
-                      <span className="text-[10px] font-mono text-teach-1 bg-teach-1/10 px-1.5 py-0.5 rounded">
-                        {isVi ? 'Đã nhận gói tin' : 'Packet Received'}
+              return (
+                <div id="step-broadcast" className="p-4 sm:p-5 rounded-lg bg-bg-primary border border-border-secondary space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-medium uppercase tracking-wider text-text-muted">
+                        {isVi ? 'Mạng ngang hàng P2P (Gossip Protocol)' : 'P2P Gossip Network Propagation'}
                       </span>
+                      {!isP2pExpanded && (
+                        <span className={`text-[11px] font-mono px-2 py-0.5 rounded-full flex items-center gap-1 ${
+                          isP2pPending 
+                            ? 'text-text-muted bg-bg-elevated border border-border-secondary'
+                            : isP2pActive 
+                            ? 'text-teach-1 bg-teach-1/10 border border-teach-1/20'
+                            : 'text-success bg-success/10 border border-success/20'
+                        }`}>
+                          {isP2pPending ? (
+                            <span>{isVi ? '0/3 Nodes (Chờ phát sóng)' : '0/3 Nodes (Awaiting)'}</span>
+                          ) : isP2pActive ? (
+                            <>
+                              <span className="w-1.5 h-1.5 rounded-full bg-teach-1 animate-pulse" />
+                              <span>{isVi ? 'Đang lan truyền...' : 'Broadcasting...'}</span>
+                            </>
+                          ) : (
+                            <>
+                              <Check className="w-3 h-3 text-success" />
+                              <span>{isVi ? '3/3 Nodes đã đồng bộ' : '3/3 Nodes Synced'}</span>
+                            </>
+                          )}
+                        </span>
+                      )}
                     </div>
-                    <div className="text-[11px] font-mono text-text-muted flex items-center justify-between">
-                      <span>IP: 198.51.100.24</span>
-                      <span className="text-success font-medium">✓ Ingested</span>
+
+                    <div className="flex items-center gap-2">
+                      {isP2pExpanded && (
+                        <>
+                          {isP2pPending && (
+                            <span className="text-[11px] font-mono text-text-muted bg-bg-elevated border border-border-secondary px-2 py-0.5 rounded-full flex items-center gap-1.5">
+                              <span className="w-1.5 h-1.5 rounded-full bg-text-muted/50" />
+                              {isVi ? 'Chờ phát sóng...' : 'Awaiting broadcast...'}
+                            </span>
+                          )}
+                          {isP2pActive && (
+                            <span className="text-[11px] font-mono text-teach-1 bg-teach-1/10 border border-teach-1/20 px-2 py-0.5 rounded-full flex items-center gap-1.5">
+                              <span className="w-1.5 h-1.5 rounded-full bg-teach-1 animate-pulse" />
+                              {isVi ? 'Đang lan truyền gói tin...' : 'Broadcasting payload...'}
+                            </span>
+                          )}
+                          {isP2pCompleted && (
+                            <span className="text-[11px] font-mono text-success bg-success/10 border border-success/20 px-2 py-0.5 rounded-full flex items-center gap-1.5">
+                              <Check className="w-3 h-3 text-success" />
+                              {isVi ? '3/3 Nodes đã nhận gói tin' : '3/3 Nodes Synced'}
+                            </span>
+                          )}
+                        </>
+                      )}
+
+                      <button
+                        type="button"
+                        onClick={() => setIsP2pExpanded(!isP2pExpanded)}
+                        className="flex items-center gap-1 px-2 py-1 rounded text-xs text-text-muted hover:text-text-primary hover:bg-bg-elevated transition-colors cursor-pointer"
+                        title={isP2pExpanded ? (isVi ? 'Thu gọn' : 'Collapse') : (isVi ? 'Mở rộng' : 'Expand')}
+                      >
+                        <span className="text-[11px]">{isP2pExpanded ? (isVi ? 'Thu gọn' : 'Collapse') : (isVi ? 'Mở rộng' : 'Expand')}</span>
+                        {isP2pExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+                      </button>
                     </div>
                   </div>
 
-                  {/* Node B (Miner) */}
-                  <div className="p-3 rounded-md bg-bg-elevated border border-border-primary transition-all duration-300 space-y-1.5">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-mono font-medium text-text-primary">Node B (Miner)</span>
-                      <span className="text-[10px] font-mono text-teach-1 bg-teach-1/10 px-1.5 py-0.5 rounded">
-                        {isVi ? 'Đã nhận gói tin' : 'Packet Received'}
-                      </span>
-                    </div>
-                    <div className="text-[11px] font-mono text-text-muted flex items-center justify-between">
-                      <span>IP: 203.0.113.88</span>
-                      <span className="text-success font-medium">✓ Queued</span>
-                    </div>
-                  </div>
+                  {isP2pExpanded && (
+                    <div className="space-y-4 pt-1">
+                      {/* Top Flow: Alice Wallet -> Gossip Network */}
+                      <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 py-2">
+                        {/* Alice Wallet */}
+                        <div className={`px-3.5 py-2 rounded-md bg-bg-secondary border flex items-center gap-2 text-xs font-mono transition-colors duration-200 ${
+                          isP2pPending 
+                            ? 'border-border-primary opacity-60 text-text-muted' 
+                            : isP2pActive 
+                            ? 'border-teach-1/40 text-text-primary shadow-xs' 
+                            : 'border-border-primary text-text-primary'
+                        }`}>
+                          <span className={`w-2 h-2 rounded-full ${isP2pPending ? 'bg-text-muted/40' : 'bg-teach-1'}`} />
+                          <span className="font-semibold">Alice (Wallet)</span>
+                        </div>
 
-                  {/* Node C (Full Node) */}
-                  <div className="p-3 rounded-md bg-bg-elevated border border-border-primary transition-all duration-300 space-y-1.5">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-mono font-medium text-text-primary">Node C (Full Node)</span>
-                      <span className="text-[10px] font-mono text-teach-1 bg-teach-1/10 px-1.5 py-0.5 rounded">
-                        {isVi ? 'Đã nhận gói tin' : 'Packet Received'}
-                      </span>
+                        {/* Packet Connector */}
+                        <div className="flex items-center gap-1.5 text-text-muted text-xs font-mono">
+                          <span className="hidden sm:inline">──</span>
+                          <span className={`px-2 py-0.5 rounded bg-bg-elevated border text-[10px] font-mono transition-colors duration-200 ${
+                            isP2pPending 
+                              ? 'border-border-secondary text-text-muted opacity-50' 
+                              : isP2pActive 
+                              ? 'border-teach-1/30 text-teach-1 shadow-xs animate-pulse' 
+                              : 'border-border-secondary text-text-muted'
+                          }`}>
+                            TX Packet: 224B
+                          </span>
+                          <span>──►</span>
+                        </div>
+
+                        {/* P2P Gossip Network Gateway */}
+                        <div className={`px-3.5 py-2 rounded-md bg-bg-secondary border flex items-center gap-2 text-xs font-mono font-medium transition-colors duration-200 ${
+                          isP2pPending 
+                            ? 'border-border-primary text-text-muted opacity-60' 
+                            : isP2pActive 
+                            ? 'border-teach-1/30 text-teach-1 shadow-xs' 
+                            : 'border-border-primary text-text-primary'
+                        }`}>
+                          <Layers className={`w-3.5 h-3.5 ${isP2pPending ? 'text-text-muted' : isP2pActive ? 'text-teach-1' : 'text-text-secondary'}`} />
+                          <span>P2P Gossip Protocol</span>
+                        </div>
+                      </div>
+
+                      {/* Fan-out Connector visual */}
+                      <div className="hidden sm:flex flex-col items-center justify-center -my-1">
+                        <div className={`w-0.5 h-3 ${isP2pPending ? 'bg-border-secondary/40' : 'bg-border-primary'}`} />
+                        <div className={`w-2/3 h-0.5 relative ${isP2pPending ? 'bg-border-secondary/40' : 'bg-border-primary'}`}>
+                          <div className={`absolute left-0 top-0.5 w-0.5 h-2.5 ${isP2pPending ? 'bg-border-secondary/40' : 'bg-border-primary'}`} />
+                          <div className={`absolute left-1/2 -translate-x-1/2 top-0.5 w-0.5 h-2.5 ${isP2pPending ? 'bg-border-secondary/40' : 'bg-border-primary'}`} />
+                          <div className={`absolute right-0 top-0.5 w-0.5 h-2.5 ${isP2pPending ? 'bg-border-secondary/40' : 'bg-border-primary'}`} />
+                        </div>
+                      </div>
+
+                      {/* Peer Nodes Grid */}
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+                        {/* Node A (Peer) */}
+                        <div className={`p-3 rounded-md bg-bg-elevated border transition-all duration-300 space-y-1.5 ${
+                          isP2pPending ? 'border-border-secondary/50 opacity-60' : 'border-border-primary'
+                        }`}>
+                          <div className="flex items-center justify-between">
+                            <span className={`text-xs font-mono font-medium ${isP2pPending ? 'text-text-muted' : 'text-text-primary'}`}>Node A (Peer)</span>
+                            <span className={`text-[10px] font-mono px-1.5 py-0.5 rounded ${
+                              isP2pPending 
+                                ? 'text-text-muted bg-bg-primary border border-border-secondary/50' 
+                                : 'text-teach-1 bg-teach-1/10'
+                            }`}>
+                              {isP2pPending ? (isVi ? 'Chờ gói tin' : 'Awaiting Packet') : (isVi ? 'Đã nhận gói tin' : 'Packet Received')}
+                            </span>
+                          </div>
+                          <div className="text-[11px] font-mono text-text-muted flex items-center justify-between">
+                            <span>IP: 198.51.100.24</span>
+                            <span className={isP2pPending ? 'text-text-muted' : 'text-success font-medium'}>
+                              {isP2pPending ? 'Pending' : '✓ Ingested'}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Node B (Miner) */}
+                        <div className={`p-3 rounded-md bg-bg-elevated border transition-all duration-300 space-y-1.5 ${
+                          isP2pPending ? 'border-border-secondary/50 opacity-60' : 'border-border-primary'
+                        }`}>
+                          <div className="flex items-center justify-between">
+                            <span className={`text-xs font-mono font-medium ${isP2pPending ? 'text-text-muted' : 'text-text-primary'}`}>Node B (Miner)</span>
+                            <span className={`text-[10px] font-mono px-1.5 py-0.5 rounded ${
+                              isP2pPending 
+                                ? 'text-text-muted bg-bg-primary border border-border-secondary/50' 
+                                : 'text-teach-1 bg-teach-1/10'
+                            }`}>
+                              {isP2pPending ? (isVi ? 'Chờ gói tin' : 'Awaiting Packet') : (isVi ? 'Đã nhận gói tin' : 'Packet Received')}
+                            </span>
+                          </div>
+                          <div className="text-[11px] font-mono text-text-muted flex items-center justify-between">
+                            <span>IP: 203.0.113.88</span>
+                            <span className={isP2pPending ? 'text-text-muted' : 'text-success font-medium'}>
+                              {isP2pPending ? 'Pending' : '✓ Queued'}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Node C (Full Node) */}
+                        <div className={`p-3 rounded-md bg-bg-elevated border transition-all duration-300 space-y-1.5 ${
+                          isP2pPending ? 'border-border-secondary/50 opacity-60' : 'border-border-primary'
+                        }`}>
+                          <div className="flex items-center justify-between">
+                            <span className={`text-xs font-mono font-medium ${isP2pPending ? 'text-text-muted' : 'text-text-primary'}`}>Node C (Full Node)</span>
+                            <span className={`text-[10px] font-mono px-1.5 py-0.5 rounded ${
+                              isP2pPending 
+                                ? 'text-text-muted bg-bg-primary border border-border-secondary/50' 
+                                : 'text-teach-1 bg-teach-1/10'
+                            }`}>
+                              {isP2pPending ? (isVi ? 'Chờ gói tin' : 'Awaiting Packet') : (isVi ? 'Đã nhận gói tin' : 'Packet Received')}
+                            </span>
+                          </div>
+                          <div className="text-[11px] font-mono text-text-muted flex items-center justify-between">
+                            <span>IP: 192.0.2.147</span>
+                            <span className={isP2pPending ? 'text-text-muted' : 'text-success font-medium'}>
+                              {isP2pPending ? 'Pending' : '✓ Verifying'}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div className="text-[11px] font-mono text-text-muted flex items-center justify-between">
-                      <span>IP: 192.0.2.147</span>
-                      <span className="text-success font-medium">✓ Verifying</span>
-                    </div>
-                  </div>
+                  )}
                 </div>
-              </div>
-            )}
+              );
+            })()}
           </div>
         )}
       </div>

@@ -193,7 +193,7 @@ export const ConsensusFinalChallenge: React.FC<ConsensusFinalChallengeProps> = (
               <div
                 className={`flex items-center gap-1.5 whitespace-nowrap transition-colors ${
                   isActive
-                    ? 'text-emerald-400 font-medium'
+                    ? 'text-text-primary font-medium'
                     : isPassed
                     ? 'text-slate-300'
                     : 'text-slate-600'
@@ -260,7 +260,7 @@ export const ConsensusFinalChallenge: React.FC<ConsensusFinalChallengeProps> = (
                     <div className="flex items-center gap-4 sm:gap-8">
                       <span
                         className={`font-mono text-xs font-medium ${
-                          isSelected ? 'text-emerald-400' : 'text-slate-400'
+                          isSelected ? 'text-text-primary font-semibold' : 'text-slate-400'
                         }`}
                       >
                         {tx.txCode}
@@ -587,7 +587,7 @@ export const ConsensusFinalChallenge: React.FC<ConsensusFinalChallengeProps> = (
                           </span>
                         </span>
                       ) : (
-                        <span className="text-emerald-400 flex items-center gap-1.5 font-medium">
+                        <span className="text-text-primary flex items-center gap-1.5 font-medium">
                           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                           <span>{isVi ? 'Hợp lệ' : 'Valid'}</span>
                           <span className="text-slate-500 font-normal">

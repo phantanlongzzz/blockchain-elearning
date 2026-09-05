@@ -1,7 +1,7 @@
 // Consensus & Longest Chain Resolution Engine
 // Implements Nakamoto Heaviest Chain (Cumulative Proof-of-Work: Σ 16^difficulty) rule
 
-import { E2EBlock, E2ETransaction, E2EMiner } from '../components/EndToEndConsensus/types';
+import { E2EBlock, E2ETransaction } from '../components/EndToEndConsensus/types';
 import { fastSha256Hex } from './sha256';
 import { buildMerkleTree } from './merkle';
 

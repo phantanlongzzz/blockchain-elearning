@@ -1,6 +1,6 @@
 import { MerkleTransaction, MerkleNode, MerkleProofStep, MerkleTreeResult } from '../types';
 import { sha256Sync } from './sha256';
-import { stringToUtf8Bytes, bytesToHex, hexToBytes } from './binary';
+import { stringToUtf8Bytes, bytesToHex } from './binary';
 
 /**
  * Computes canonical SHA-256 hash for a Merkle Transaction

@@ -1,15 +1,5 @@
 import React, { useState } from 'react';
-import {
-  CheckCircle2,
-  XCircle,
-  Copy,
-  Check,
-  Edit3,
-  RotateCcw,
-  Maximize2,
-  ArrowRight,
-  Boxes,
-} from 'lucide-react';
+import { Edit3, RotateCcw, Maximize2, ArrowRight, Boxes } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { TransactionItem } from '../../types';
 

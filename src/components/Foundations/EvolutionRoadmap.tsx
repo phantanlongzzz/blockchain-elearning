@@ -1,15 +1,5 @@
 import React, { useState } from 'react';
-import {
-  ListTree,
-  Layers,
-  ArrowRight,
-  ShieldCheck,
-  Cpu,
-  Boxes,
-  Lock,
-  GitCommit,
-  Sparkles,
-} from 'lucide-react';
+import { ListTree, Layers, Cpu, Boxes, Lock, GitCommit, Sparkles } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 
 export const EvolutionRoadmap: React.FC = () => {
@@ -124,7 +114,7 @@ export const EvolutionRoadmap: React.FC = () => {
                 </p>
               </div>
 
-              <div className="pt-2 border-t border-slate-800/80 font-mono text-[11px] text-emerald-300/80 truncate">
+              <div className="pt-2 border-t border-slate-800/80 font-mono text-[11px] text-text-secondary truncate">
                 <code>{step.code}</code>
               </div>
             </div>
@@ -148,7 +138,7 @@ export const EvolutionRoadmap: React.FC = () => {
           {steps[activeStep].desc}
         </p>
 
-        <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800/80 font-mono text-xs text-emerald-300 flex items-center justify-between">
+        <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800/80 font-mono text-xs text-text-secondary flex items-center justify-between">
           <span className="text-slate-500 text-[11px]">Core Architecture:</span>
           <code>{steps[activeStep].code}</code>
         </div>

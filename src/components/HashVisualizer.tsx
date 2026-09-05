@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Copy, Check, Eye, Binary, Grid, Hash, Info } from 'lucide-react';
+import { Copy, Check, Binary, Grid, Hash, Info } from 'lucide-react';
 import { formatHexWords, formatHexBytes, hexToBinary } from '../utils/binary';
 import { useLanguage } from '../i18n/LanguageContext';
 

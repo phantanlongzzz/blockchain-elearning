@@ -163,7 +163,7 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
       {/* Top Banner Guide */}
       <div className="p-5 sm:p-6 rounded-xl bg-[#0B0E12] border border-[#1C2430] flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="space-y-1 max-w-2xl">
-          <div className="inline-flex items-center gap-2 text-xs font-semibold text-emerald-400">
+          <div className="inline-flex items-center gap-2 text-xs font-semibold text-text-primary">
             <GraduationCap className="w-4 h-4" />
             <span>
               {isVi
@@ -433,7 +433,7 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
         {onOpenHandsOnLab && (
           <div className="p-4 rounded-lg bg-[#10151D] border border-[#1C2430] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="space-y-1">
-              <div className="text-xs font-semibold text-emerald-400 flex items-center gap-1.5">
+              <div className="text-xs font-semibold text-text-primary flex items-center gap-1.5">
                 <FlaskConical className="w-4 h-4" />
                 <span>{isVi ? 'Sẵn sàng tự tay thực hành?' : 'Ready for Hands-On Lab?'}</span>
               </div>
@@ -462,7 +462,7 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
             onClick={() => handleScrollTo('foundations')}
             className="p-3.5 rounded-lg bg-[#10151D] hover:bg-[#161D27] border border-[#1C2430] text-left space-y-1 transition-colors cursor-pointer group"
           >
-            <span className="text-emerald-400 font-semibold flex items-center justify-between">
+            <span className="text-text-primary font-semibold flex items-center justify-between">
               <span>← Buổi 1: Nền Tảng</span>
               <ArrowLeft className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
             </span>
@@ -478,7 +478,7 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
           >
             <span className="text-slate-200 font-semibold flex items-center justify-between">
               <span>Proof of Work</span>
-              <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity text-emerald-400" />
+              <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity text-text-primary" />
             </span>
             <span className="text-[11px] text-[#A5AFBF] block">
               Cuộc Đua Khai Thác Nonce
@@ -492,7 +492,7 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
           >
             <span className="text-slate-200 font-semibold flex items-center justify-between">
               <span>Proof of Stake</span>
-              <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity text-emerald-400" />
+              <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity text-text-primary" />
             </span>
             <span className="text-[11px] text-[#A5AFBF] block">
               Cơ Chế Đặt Cọc Validator

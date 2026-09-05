@@ -111,7 +111,7 @@ export const CopyableHash: React.FC<CopyableHashProps> = ({
           type="button"
           onClick={handleCopy}
           aria-label={copied ? 'Đã sao chép mã băm' : `Sao chép mã băm: ${hash}`}
-          className="p-1 rounded-[var(--radius-xs)] hover:bg-slate-800 text-slate-400 hover:text-emerald-400 focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:outline-none transition-colors cursor-pointer shrink-0"
+          className="p-1 rounded-[var(--radius-xs)] hover:bg-slate-800 text-slate-400 hover:text-text-primary focus-visible:ring-2 focus-visible:ring-white/20 focus-visible:outline-none transition-colors cursor-pointer shrink-0"
           title="Sao chép mã băm (Copy hash)"
         >
           {copied ? (

@@ -1,13 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Send,
-  Plus,
-  Copy,
-  Check,
-  ShieldCheck,
-  Coins,
-  ChevronDown,
-} from 'lucide-react';
+import { Plus, Copy, Check, ShieldCheck, ChevronDown } from 'lucide-react';
 import { E2ETransaction } from './types';
 import { calculateTxHash } from '../../utils/merkle';
 
@@ -216,7 +208,7 @@ export const TransactionCreateStep: React.FC<TransactionCreateStepProps> = ({
         {lastCreatedTx && (
           <div className="pt-4 border-t border-zinc-800/80 space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-emerald-400 flex items-center gap-1.5">
+              <span className="text-xs font-medium text-success flex items-center gap-1.5">
                 <ShieldCheck className="w-3.5 h-3.5" />
                 {language === 'vi' ? 'Giao dịch đã ký thành công & phát hành vào Mempool' : 'Transaction signed & broadcast to Mempool'}
               </span>

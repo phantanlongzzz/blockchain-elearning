@@ -1,9 +1,9 @@
 import React, { useState, useMemo } from 'react';
-import { Layers, Play, Pause, SkipForward, RotateCcw, ArrowRight, Cpu, FileText, Binary } from 'lucide-react';
+import { Play, Pause, SkipForward, RotateCcw } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 import { computeDetailedSha256 } from '../utils/sha256';
 import { uint32ToHex } from '../utils/binary';
-import { InlineMath, BlockMath } from './MathView';
+import { InlineMath } from './MathView';
 
 export const InternalPipelineVisualizer: React.FC = () => {
   const { strings, language } = useLanguage();

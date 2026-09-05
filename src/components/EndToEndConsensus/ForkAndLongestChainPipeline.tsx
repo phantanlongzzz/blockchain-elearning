@@ -1,17 +1,5 @@
 import React, { useState } from 'react';
-import {
-  GitFork,
-  AlertTriangle,
-  Trophy,
-  RotateCcw,
-  Sparkles,
-  CheckCircle2,
-  Zap,
-  Flame,
-  Info,
-  Layers,
-  ArrowRight,
-} from 'lucide-react';
+import { AlertTriangle, RotateCcw, CheckCircle2, Zap, Flame } from 'lucide-react';
 import { E2EBlock } from './types';
 
 interface ForkAndLongestChainPipelineProps {
@@ -145,7 +133,7 @@ export const ForkAndLongestChainPipeline: React.FC<ForkAndLongestChainPipelinePr
             type="button"
             onClick={() => onMineNextOnBranch('branchA')}
             disabled={isMining}
-            className="px-3 py-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-emerald-400 text-xs font-medium transition-colors disabled:opacity-50 cursor-pointer flex items-center gap-1.5"
+            className="px-3 py-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-text-primary text-xs font-medium transition-colors disabled:opacity-50 cursor-pointer flex items-center gap-1.5"
           >
             <Flame className="w-3.5 h-3.5" />
             <span>+ {language === 'vi' ? 'Đào trên Nhánh A' : 'Mine on Branch A'}</span>
@@ -188,7 +176,7 @@ export const ForkAndLongestChainPipeline: React.FC<ForkAndLongestChainPipelinePr
         {/* Cumulative Work Comparison Bar */}
         <div className="space-y-2">
           <div className="flex items-center justify-between text-xs font-mono">
-            <span className="text-emerald-400 font-medium">
+            <span className="text-text-primary font-medium">
               Nhánh A (Alice): {cumulativeWorkA.toLocaleString()} PoW ({percentA}%)
             </span>
             <span className="text-amber-400 font-medium">
@@ -239,7 +227,7 @@ export const ForkAndLongestChainPipeline: React.FC<ForkAndLongestChainPipelinePr
               </div>
               <div className="flex items-center justify-between text-zinc-400">
                 <span>PoW tích lũy:</span>
-                <span className="font-mono text-emerald-400 font-semibold">{cumulativeWorkA.toLocaleString()} work</span>
+                <span className="font-mono text-financial font-semibold">{cumulativeWorkA.toLocaleString()} work</span>
               </div>
 
               <div className="pt-2 border-t border-zinc-800/80 space-y-1.5">

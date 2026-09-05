@@ -1,22 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Coins,
-  ArrowRight,
-  ShieldAlert,
-  CheckCircle2,
-  XCircle,
-  AlertTriangle,
-  Sparkles,
-  Layers,
-  Scale,
-  Zap,
-  HelpCircle,
-  Building,
-  CreditCard,
-  History,
-  TrendingUp,
-  Cpu,
-} from 'lucide-react';
+import { Coins, ArrowRight, ShieldAlert, CheckCircle2, XCircle, AlertTriangle, Sparkles, Scale, Zap, Building, CreditCard, History, Cpu } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { MoneyEra } from './types';
 
@@ -369,7 +352,7 @@ export const MoneyEvolutionSection: React.FC<MoneyEvolutionSectionProps> = ({
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-zinc-800">
           <div className="space-y-1">
             <div className="flex items-center gap-2 text-xs font-mono text-zinc-400">
-              <span className="text-emerald-400">Phần 01</span>
+              <span className="text-text-primary">Phần 01</span>
               <span className="text-zinc-600">·</span>
               <span>{language === 'vi' ? 'Sự Tiến Hóa Tiền Tệ' : 'Money Evolution'}</span>
             </div>
@@ -415,7 +398,7 @@ export const MoneyEvolutionSection: React.FC<MoneyEvolutionSectionProps> = ({
                   <span
                     className={`font-mono text-[11px] px-1.5 py-0.5 rounded transition-colors ${
                       isSelected
-                        ? 'bg-emerald-500/20 text-emerald-400 font-bold'
+                        ? 'bg-white/[0.08] text-text-primary font-bold'
                         : 'bg-zinc-900 text-zinc-500 group-hover:text-zinc-400'
                     }`}
                   >
@@ -446,7 +429,7 @@ export const MoneyEvolutionSection: React.FC<MoneyEvolutionSectionProps> = ({
           <div className="lg:col-span-7 space-y-4">
             <div className="flex items-center justify-between pb-2 border-b border-zinc-800/80">
               <div className="flex items-center gap-2">
-                <span className="px-1.5 py-0.5 rounded bg-zinc-900 text-emerald-400 font-mono text-xs font-semibold">
+                <span className="px-1.5 py-0.5 rounded bg-zinc-900 text-text-primary font-mono text-xs font-semibold">
                   0{selectedEraIndex + 1}
                 </span>
                 <h4 className="text-sm sm:text-base font-semibold text-zinc-100">
@@ -468,7 +451,7 @@ export const MoneyEvolutionSection: React.FC<MoneyEvolutionSectionProps> = ({
 
               {/* 2. Improvement */}
               <div className="p-3.5 rounded-lg bg-zinc-900/60 border border-border-primary space-y-1">
-                <div className="flex items-center gap-1.5 text-emerald-400 text-xs font-medium">
+                <div className="flex items-center gap-1.5 text-text-primary text-xs font-medium">
                   <Sparkles className="w-3.5 h-3.5" />
                   <span>{language === 'vi' ? 'Cải tiến đạt được' : 'What Improved'}</span>
                 </div>
@@ -543,7 +526,7 @@ export const MoneyEvolutionSection: React.FC<MoneyEvolutionSectionProps> = ({
                     onClick={() => handleSelectAsset(tab.id)}
                     className={`px-2.5 py-1.5 rounded-md text-xs font-medium transition-colors cursor-pointer text-center whitespace-nowrap ${
                       testedAsset === tab.id
-                        ? 'bg-zinc-800 text-emerald-400 font-semibold shadow-sm border border-zinc-700/60'
+                        ? 'bg-zinc-800 text-text-primary font-semibold shadow-sm border border-zinc-700/60'
                         : 'bg-zinc-900/80 text-zinc-400 hover:text-zinc-200 border border-transparent'
                     }`}
                   >

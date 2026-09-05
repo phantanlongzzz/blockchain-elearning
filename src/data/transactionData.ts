@@ -1,12 +1,6 @@
 import * as secp256k1 from '@noble/secp256k1';
 import { WalletAccount, TransactionItem } from '../types';
-import {
-  bytesToHex,
-  computeTransactionDigest,
-  signTransactionDigest,
-  verifyTransactionSignature,
-  initSecp256k1Hashes,
-} from '../utils/crypto';
+import { bytesToHex, computeTransactionDigest, signTransactionDigest, initSecp256k1Hashes } from '../utils/crypto';
 
 // Initialize noble-secp256k1 hashes
 initSecp256k1Hashes();

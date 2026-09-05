@@ -104,7 +104,7 @@ export const Stage1Wallet: React.FC<Props> = ({ utxos, selectedUtxoIds, setSelec
             <span className="text-sm text-financial font-mono mb-1">/ 10 BTC</span>
           </div>
           {canProceed && (
-            <div className="flex items-center gap-1 text-emerald-400 text-xs font-medium mt-1">
+            <div className="flex items-center gap-1 text-success text-xs font-medium mt-1">
               <Check className="w-3.5 h-3.5" />
               {isVi ? 'Đủ để tạo giao dịch' : 'Sufficient to build transaction'}
             </div>
@@ -116,7 +116,7 @@ export const Stage1Wallet: React.FC<Props> = ({ utxos, selectedUtxoIds, setSelec
           onClick={onNext}
           className={`px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all ${
             canProceed
-              ? 'bg-emerald-500 hover:bg-emerald-400 text-emerald-950 shadow-[0_0_20px_rgba(16,185,129,0.3)]'
+              ? 'bg-success hover:bg-success/90 text-slate-950 font-bold'
               : 'bg-slate-800 text-slate-500 cursor-not-allowed'
           }`}
         >

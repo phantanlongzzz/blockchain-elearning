@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { ArrowRight, Sparkles, Check, Lock, Loader2 } from 'lucide-react';
+import { ArrowRight, Check, Lock, Loader2 } from 'lucide-react';
 import { StepState } from '../../guidance/types';
 import { useLanguage } from '../../i18n/LanguageContext';
 
@@ -95,7 +95,7 @@ export const GuidedNextAction: React.FC<GuidedNextActionProps> = ({
 
       {isInProgress && <Loader2 className="w-4 h-4 animate-spin text-current" />}
       {isLocked && !isInProgress && <Lock className="w-3.5 h-3.5 opacity-60" />}
-      {isCompleted && <Check className="w-4 h-4 text-emerald-400" />}
+      {isCompleted && <Check className="w-4 h-4 text-success" />}
 
       {icon && !isInProgress && !isLocked && !isCompleted && icon}
 

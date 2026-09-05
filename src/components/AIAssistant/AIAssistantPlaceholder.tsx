@@ -9,12 +9,12 @@ export const AIAssistantPlaceholder: React.FC = () => {
   return (
     <div className="w-full min-h-[60vh] flex flex-col items-center justify-center py-16 px-4 bg-[#090A0F] font-sans relative overflow-hidden">
       {/* Background Glows */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40vw] h-[40vw] max-w-[600px] max-h-[600px] bg-[#00C98D]/10 rounded-full blur-[100px] opacity-50 pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40vw] h-[40vw] max-w-[600px] max-h-[600px] bg-white/[0.08]/10 rounded-full blur-[100px] opacity-50 pointer-events-none" />
       
       <div className="relative z-10 flex flex-col items-center max-w-2xl text-center space-y-6">
         <div className="relative flex items-center justify-center w-20 h-20 rounded-2xl bg-[#0F131A] border border-[#1C2430] shadow-2xl mb-4">
-          <div className="absolute inset-0 bg-gradient-to-tr from-[#00C98D]/20 to-transparent rounded-2xl opacity-50" />
-          <Bot className="w-10 h-10 text-[#00C98D]" />
+          <div className="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent rounded-2xl opacity-50" />
+          <Bot className="w-10 h-10 text-text-primary" />
           <Sparkles className="absolute -top-2 -right-2 w-5 h-5 text-amber-400 animate-pulse" />
         </div>
 

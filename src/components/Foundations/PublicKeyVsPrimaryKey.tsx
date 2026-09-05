@@ -49,7 +49,7 @@ export const PublicKeyVsPrimaryKey: React.FC = () => {
             <span className="text-zinc-500 block text-[10px] uppercase font-sans">
               {isVi ? 'Ví dụ định dạng:' : 'Sample format:'}
             </span>
-            <span className="text-emerald-400/90 truncate block">
+            <span className="text-text-secondary truncate block">
               0x048b2a19cf73... (ECDSA Secp256k1)
             </span>
           </div>

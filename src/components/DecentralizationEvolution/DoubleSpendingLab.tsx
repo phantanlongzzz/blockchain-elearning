@@ -1,21 +1,5 @@
 import React, { useState } from 'react';
-import {
-  AlertTriangle,
-  RotateCcw,
-  CheckCircle2,
-  XCircle,
-  ArrowRight,
-  Server,
-  Users,
-  Coins,
-  Send,
-  Sparkles,
-  HelpCircle,
-  Flame,
-  ShieldCheck,
-  Copy,
-  Layers,
-} from 'lucide-react';
+import { AlertTriangle, RotateCcw, CheckCircle2, XCircle, ArrowRight, Server, Send, Sparkles, Flame, ShieldCheck } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 
 interface DoubleSpendingLabProps {
@@ -236,7 +220,7 @@ export const DoubleSpendingLab: React.FC<DoubleSpendingLabProps> = ({
               <div className="flex items-center justify-between gap-3">
                 <div className="space-y-1">
                   <div className="text-xs font-mono font-bold text-white flex items-center gap-1.5">
-                    <span className="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300">TX A</span>
+                    <span className="px-1.5 py-0.5 rounded bg-white/[0.08] text-text-primary">TX A</span>
                     <span>Alice → Bob: 10 COIN</span>
                   </div>
                   <div className="text-[11px] text-slate-400">
@@ -255,7 +239,7 @@ export const DoubleSpendingLab: React.FC<DoubleSpendingLabProps> = ({
                       <span>{language === 'vi' ? 'GỬI TX A' : 'SUBMIT A'}</span>
                     </button>
                   ) : txAStatus === 'accepted' ? (
-                    <span className="px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 text-xs font-mono font-bold flex items-center gap-1">
+                    <span className="px-2 py-1 rounded bg-white/[0.08] text-text-primary text-xs font-mono font-bold flex items-center gap-1">
                       <CheckCircle2 className="w-3.5 h-3.5" />
                       <span>{language === 'vi' ? 'ĐƯỢC CHẤP NHẬN' : 'ACCEPTED'}</span>
                     </span>
@@ -299,7 +283,7 @@ export const DoubleSpendingLab: React.FC<DoubleSpendingLabProps> = ({
                       <span>{language === 'vi' ? 'GỬI TX B' : 'SUBMIT B'}</span>
                     </button>
                   ) : txBStatus === 'accepted' ? (
-                    <span className="px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 text-xs font-mono font-bold flex items-center gap-1">
+                    <span className="px-2 py-1 rounded bg-white/[0.08] text-text-primary text-xs font-mono font-bold flex items-center gap-1">
                       <CheckCircle2 className="w-3.5 h-3.5" />
                       <span>{language === 'vi' ? 'ĐƯỢC CHẤP NHẬN' : 'ACCEPTED'}</span>
                     </span>
@@ -317,7 +301,7 @@ export const DoubleSpendingLab: React.FC<DoubleSpendingLabProps> = ({
           {/* Recipients Result Grid */}
           <div className="grid grid-cols-2 gap-3 pt-2">
             <div className="p-3 rounded-xl bg-[#05070c] border border-slate-800">
-              <div className="text-xs font-mono font-bold text-emerald-400">Bob (Merchant A)</div>
+              <div className="text-xs font-mono font-bold text-text-primary">Bob (Merchant A)</div>
               <div className="text-sm font-bold font-mono text-white mt-1">
                 <span className="text-financial font-mono"><span className="text-financial font-mono">{bobBalance} COIN</span></span> {bobBalance > 0 && '(Giao hàng ✓)'}
               </div>
@@ -348,7 +332,7 @@ export const DoubleSpendingLab: React.FC<DoubleSpendingLabProps> = ({
         {/* Right Column: Problem Analysis & "Try to Solve" Discovery */}
         <div className="lg:col-span-5 p-6 rounded-2xl bg-[#090d16] border border-slate-800 shadow-xl flex flex-col justify-between space-y-5">
           <div className="space-y-4">
-            <div className="flex items-center gap-2 text-xs font-mono font-bold text-emerald-400 uppercase">
+            <div className="flex items-center gap-2 text-xs font-mono font-bold text-text-primary uppercase">
               <Sparkles className="w-4 h-4" />
               <span>{language === 'vi' ? 'BẢN CHẤT VẤN ĐỀ' : 'CORE INSIGHT'}</span>
             </div>
@@ -395,11 +379,11 @@ export const DoubleSpendingLab: React.FC<DoubleSpendingLabProps> = ({
                   </button>
                 ) : (
                   <div className="p-4 rounded-xl bg-[#10151D] border border-border-primary space-y-2 animate-fadeIn">
-                    <div className="text-xs font-mono font-bold text-emerald-400 flex items-center gap-1.5">
+                    <div className="text-xs font-mono font-bold text-text-primary flex items-center gap-1.5">
                       <ShieldCheck className="w-4 h-4" />
                       <span>{language === 'vi' ? 'LỜI GIẢI: PHÁT MINH BLOCKCHAIN' : 'THE BLOCKCHAIN BREAKTHROUGH'}</span>
                     </div>
-                    <p className="text-[11px] text-emerald-200 leading-relaxed">
+                    <p className="text-[11px] text-text-secondary leading-relaxed">
                       {language === 'vi'
                         ? 'Để giải quyết tiêu đúp mà KHÔNG CẦN máy chủ trung tâm, chúng ta cần gom các giao dịch vào từng KHỐI (BLOCK), liên kết các khối lại theo thứ tự thời gian bằng HÀM BĂM MẬT MÃ (PREVIOUS HASH), và sử dụng THUẬT TOÁN ĐỒNG THUẬN để toàn mạng cùng thống nhất một cuốn Sổ Cái duy nhất!'
                         : 'To prevent double spending without a central referee, we package transactions into BLOCKS, link them chronologically via CRYPTOGRAPHIC HASHES (Previous Hash), and use CONSENSUS RULES to agree on a single history!'}

@@ -123,13 +123,13 @@ export const StakeDistributionBar: React.FC<StakeDistributionBarProps> = ({
             disabled={isSelecting || totalActiveStake <= 0}
             className={`px-4 py-2 rounded-lg font-bold text-xs sm:text-sm flex items-center gap-2 transition-colors cursor-pointer shadow-sm shrink-0 ${
               isSelecting
-                ? 'bg-[#00C98D]/15 text-[#00C98D] border border-[#00C98D]/40 cursor-wait'
-                : 'bg-[#00C98D] hover:bg-[#00B982] text-[#090A0F]'
+                ? 'bg-white/[0.06] text-text-primary border border-border-primary/40 cursor-wait'
+                : 'bg-white/[0.1] hover:bg-white/[0.15] text-text-primary'
             }`}
           >
             {isSelecting ? (
               <>
-                <RefreshCw className="w-4 h-4 animate-spin text-[#00C98D]" />
+                <RefreshCw className="w-4 h-4 animate-spin text-text-primary" />
                 <span>{isVi ? 'Đang chọn người giải khối...' : 'Selecting Solver...'}</span>
               </>
             ) : selectedProposerId ? (
@@ -215,8 +215,8 @@ export const StakeDistributionBar: React.FC<StakeDistributionBarProps> = ({
             <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none text-center px-4">
               {isSelecting ? (
                 <div className="flex flex-col items-center">
-                  <RefreshCw className="w-5 h-5 text-[#00C98D] animate-spin mb-1" />
-                  <span className="text-[11px] font-mono font-medium text-[#00C98D]">
+                  <RefreshCw className="w-5 h-5 text-text-primary animate-spin mb-1" />
+                  <span className="text-[11px] font-mono font-medium text-text-primary">
                     {isVi ? 'ĐANG CHỌN...' : 'SELECTING...'}
                   </span>
                 </div>
@@ -308,7 +308,7 @@ export const StakeDistributionBar: React.FC<StakeDistributionBarProps> = ({
                   key={val.id}
                   className={`p-2.5 rounded-xl border text-left transition-all ${
                     isSelected
-                      ? 'bg-[#0C0F14] border-[#00C98D] ring-1 ring-[#00C98D]/40 text-white shadow-sm'
+                      ? 'bg-[#0C0F14] border-border-primary ring-1 ring-white/20 text-white shadow-sm'
                       : isZeroStake
                       ? 'bg-[#0C0F14]/40 border-white/[0.03] opacity-40'
                       : 'bg-[#0C0F14] border-white/[0.08] hover:border-white/[0.16]'

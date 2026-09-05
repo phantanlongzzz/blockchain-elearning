@@ -30,7 +30,7 @@ export const ModuleProgressRail: React.FC = () => {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-2.5 sm:gap-3">
           {/* Module Identity & Breadcrumbs */}
           <div className="flex items-center gap-2 overflow-hidden text-xs">
-            <span className="font-sans font-bold px-2 py-0.5 rounded-md bg-[#00C98D]/10 text-[#00C98D] border border-[#00C98D]/30 shrink-0 text-[11px] uppercase tracking-wider">
+            <span className="font-sans font-bold px-2 py-0.5 rounded-md bg-white/[0.04] text-text-primary border border-border-primary shrink-0 text-[11px] uppercase tracking-wider">
               {isVi ? currentModule.titleVi : currentModule.titleEn}
             </span>
             <ChevronRight className="w-3.5 h-3.5 text-[#717B8C] shrink-0" />
@@ -42,7 +42,7 @@ export const ModuleProgressRail: React.FC = () => {
           {/* Global Course Progress Indicator connected to progressStore */}
           <div className="flex items-center gap-3.5 shrink-0 font-sans text-[11px] text-[#A5AFBF]">
             <div className="flex items-center gap-1.5 font-mono">
-              <Clock className="w-3.5 h-3.5 text-[#00C98D]" />
+              <Clock className="w-3.5 h-3.5 text-text-primary" />
               <span>
                 {currentLesson.estimatedMinutes} {isVi ? 'phút' : 'mins'}
               </span>
@@ -51,7 +51,7 @@ export const ModuleProgressRail: React.FC = () => {
             <div className="hidden sm:flex items-center gap-2 font-mono">
               <div className="w-20 bg-[#0C0F14] border border-[#1C2430] h-2 rounded-full overflow-hidden">
                 <div
-                  className="bg-[#00C98D] h-full rounded-full transition-all duration-300"
+                  className="bg-text-primary h-full rounded-full transition-all duration-300"
                   style={{ width: `${totalProgress.percentage}%` }}
                 />
               </div>
@@ -77,20 +77,20 @@ export const ModuleProgressRail: React.FC = () => {
                   onClick={() => navigateTo(currentModule.id, lesson.id)}
                   className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs whitespace-nowrap transition-all shrink-0 cursor-pointer ${
                     isSelected
-                      ? 'bg-[#11161E] text-[#00C98D] border border-[#00C98D]/40 shadow-sm font-semibold'
+                      ? 'bg-[#11161E] text-text-primary border border-border-primary shadow-sm font-semibold'
                       : 'bg-[#0C0F14] text-[#A5AFBF] border border-[#1C2430] hover:text-[#F2F4F7] hover:bg-[#11161E]'
                   }`}
                 >
                   <span
                     className={`w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-bold ${
                       isDone
-                        ? 'bg-[#00C98D]/20 text-[#00C98D] border border-[#00C98D]/40'
+                        ? 'bg-white/[0.08] text-text-primary border border-border-primary'
                         : isSelected
-                        ? 'bg-[#00C98D] text-[#090A0F]'
+                        ? 'bg-text-primary text-[#090A0F]'
                         : 'bg-[#11161E] text-[#A5AFBF]'
                     }`}
                   >
-                    {isDone ? <CheckCircle2 className="w-3 h-3 text-[#00C98D]" /> : idx + 1}
+                    {isDone ? <CheckCircle2 className="w-3 h-3 text-text-primary" /> : idx + 1}
                   </span>
                   <span>{isVi ? lesson.shortTitleVi : lesson.shortTitleEn}</span>
                 </button>

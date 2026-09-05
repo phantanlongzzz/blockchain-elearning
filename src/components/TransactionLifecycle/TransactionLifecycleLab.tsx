@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '../../i18n/LanguageContext';
-import { Wallet, PenTool, Database, Pickaxe, CheckCircle2, AlertCircle, ArrowRight } from 'lucide-react';
-import { UTXO, Transaction, Block, VerificationResult } from './types';
+import { Wallet, PenTool, Database, Pickaxe, CheckCircle2 } from 'lucide-react';
+import { UTXO, Transaction, Block } from './types';
 import { INITIAL_UTXOS, INITIAL_MEMPOOL, INITIAL_BLOCKCHAIN } from './constants';
 import { Stage1Wallet } from './Stage1Wallet';
 import { Stage2BuildTx } from './Stage2BuildTx';

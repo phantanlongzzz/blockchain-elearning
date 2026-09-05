@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Copy, Check, Terminal, Code2, Cpu, CheckCircle2, Play, Sparkles, BookOpen } from 'lucide-react';
+import { X, Check, Code2, Cpu, BookOpen } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { CodeViewer } from '../common/CodeViewer';
 
@@ -223,7 +223,7 @@ export const SimulationCodeModal: React.FC<SimulationCodeModalProps> = ({
         {/* Modal Header */}
         <div className="p-5 sm:p-6 border-b border-[#1C2430] flex items-center justify-between gap-4 bg-[#090A0F]">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-[#0F131A] border border-[#1C2430] flex items-center justify-center text-[#00C98D]">
+            <div className="w-10 h-10 rounded-lg bg-[#0F131A] border border-[#1C2430] flex items-center justify-center text-text-primary">
               <Code2 className="w-5 h-5" />
             </div>
             <div>
@@ -231,7 +231,7 @@ export const SimulationCodeModal: React.FC<SimulationCodeModalProps> = ({
                 <h3 className="text-base sm:text-lg font-bold text-[#F2F4F7] uppercase tracking-wider font-display">
                   {language === 'vi' ? 'MÃ NGUỒN MÔ PHỎNG MINING POW' : 'SIMULATION CODE'}
                 </h3>
-                <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-[rgba(0,201,141,0.1)] text-[#00C98D] border border-[rgba(0,201,141,0.35)]">
+                <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-[rgba(0,201,141,0.1)] text-text-primary border border-border-primary">
                   SECTION 6 · VERIFIED ALGORITHM
                 </span>
               </div>
@@ -261,7 +261,7 @@ export const SimulationCodeModal: React.FC<SimulationCodeModalProps> = ({
                 onClick={() => setSelectedLang('python')}
                 className={`px-3 py-1.5 rounded-md text-xs font-semibold font-display transition-all cursor-pointer ${
                   selectedLang === 'python'
-                    ? 'bg-[rgba(0,201,141,0.1)] text-[#00C98D] border border-[rgba(0,201,141,0.35)]'
+                    ? 'bg-[rgba(0,201,141,0.1)] text-text-primary border border-border-primary'
                     : 'text-[#A5AFBF] hover:text-[#F2F4F7]'
                 }`}
               >
@@ -271,7 +271,7 @@ export const SimulationCodeModal: React.FC<SimulationCodeModalProps> = ({
                 onClick={() => setSelectedLang('typescript')}
                 className={`px-3 py-1.5 rounded-md text-xs font-semibold font-display transition-all cursor-pointer ${
                   selectedLang === 'typescript'
-                    ? 'bg-[rgba(0,201,141,0.1)] text-[#00C98D] border border-[rgba(0,201,141,0.35)]'
+                    ? 'bg-[rgba(0,201,141,0.1)] text-text-primary border border-border-primary'
                     : 'text-[#A5AFBF] hover:text-[#F2F4F7]'
                 }`}
               >
@@ -287,8 +287,8 @@ export const SimulationCodeModal: React.FC<SimulationCodeModalProps> = ({
                     activeExecutionState === 'mining'
                       ? 'bg-[#F59E0B] animate-ping'
                       : activeExecutionState === 'winner'
-                      ? 'bg-[#00C98D]'
-                      : 'bg-[#00C98D]'
+                      ? 'bg-white/[0.2]'
+                      : 'bg-white/[0.2]'
                   }`}
                 />
                 <span className="text-[#A5AFBF]">
@@ -327,7 +327,7 @@ export const SimulationCodeModal: React.FC<SimulationCodeModalProps> = ({
 
           {/* "HOW IT WORKS" Explanation Section */}
           <div className="p-5 sm:p-6 rounded-lg bg-[#090A0F] border border-[#1C2430] space-y-4 font-sans">
-            <div className="flex items-center gap-2 text-[#00C98D] font-display font-bold uppercase tracking-wider text-sm">
+            <div className="flex items-center gap-2 text-text-primary font-display font-bold uppercase tracking-wider text-sm">
               <BookOpen className="w-4 h-4" />
               <span>{language === 'vi' ? 'NGUYÊN LÝ HOẠT ĐỘNG (8 BƯỚC)' : 'HOW IT WORKS (8 STEPS)'}</span>
             </div>
@@ -336,11 +336,11 @@ export const SimulationCodeModal: React.FC<SimulationCodeModalProps> = ({
               {stepsList.map((item) => (
                 <div
                   key={item.step}
-                  className="p-3.5 rounded-lg bg-[#0F131A] border border-[#1C2430] flex flex-col justify-between hover:border-[rgba(0,201,141,0.35)] transition-all group"
+                  className="p-3.5 rounded-lg bg-[#0F131A] border border-[#1C2430] flex flex-col justify-between hover:border-border-primary transition-all group"
                 >
                   <div>
                     <div className="flex items-center gap-2 mb-1.5">
-                      <span className="w-5 h-5 rounded-md bg-[#090A0F] border border-[rgba(0,201,141,0.35)] text-[#00C98D] text-[10px] font-mono font-bold flex items-center justify-center group-hover:bg-[#00C98D] group-hover:text-[#090A0F] transition-all">
+                      <span className="w-5 h-5 rounded-md bg-[#090A0F] border border-border-primary text-text-primary text-[10px] font-mono font-bold flex items-center justify-center group-hover:bg-white/[0.2] group-hover:text-[#090A0F] transition-all">
                         {item.step}
                       </span>
                       <span className="font-display text-xs font-bold text-[#F2F4F7] uppercase">
@@ -360,7 +360,7 @@ export const SimulationCodeModal: React.FC<SimulationCodeModalProps> = ({
         {/* Footer */}
         <div className="p-4 border-t border-[#1C2430] bg-[#090A0F] flex items-center justify-between text-xs text-[#A5AFBF] font-sans">
           <div className="flex items-center gap-2">
-            <Cpu className="w-3.5 h-3.5 text-[#00C98D]" />
+            <Cpu className="w-3.5 h-3.5 text-text-primary" />
             <span>NIST FIPS 180-4 Standard Compliance · Blockchain Elearning</span>
           </div>
           <button

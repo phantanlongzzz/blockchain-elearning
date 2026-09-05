@@ -123,7 +123,7 @@ export const SignedMessagesSimulation: React.FC<SignedMessagesSimulationProps> =
                 <div className="flex items-center justify-between">
                   <span
                     className={`font-mono text-sm font-semibold ${
-                      messageData === 'ATTACK' ? 'text-rose-400' : 'text-emerald-400'
+                      messageData === 'ATTACK' ? 'text-rose-400' : 'text-success'
                     }`}
                   >
                     {messageData === 'ATTACK'
@@ -227,7 +227,7 @@ export const SignedMessagesSimulation: React.FC<SignedMessagesSimulationProps> =
             </div>
 
             <div className="p-3 rounded-lg bg-[#080C10] border border-border-secondary text-slate-400 text-xs leading-relaxed">
-              <span className="font-medium text-emerald-400">
+              <span className="font-medium text-text-secondary">
                 {isVi ? 'Đột phá của Nakamoto: ' : 'Nakamoto’s breakthrough: '}
               </span>
               {isVi

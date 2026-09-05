@@ -1,13 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Plus,
-  Trash2,
-  Edit3,
-  RotateCcw,
-  Zap,
-  Copy,
-  Check,
-} from 'lucide-react';
+import { Plus, Trash2, Copy, Check } from 'lucide-react';
 import { MerkleTransaction } from '../../types';
 import { PRESET_MERKLE_TRANSACTIONS } from '../../data/merkleSeedData';
 

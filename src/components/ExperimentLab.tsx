@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Copy, Check, RefreshCw } from 'lucide-react';
+import { Copy, Check } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 import { hashSha256, sha256Sync } from '../utils/sha256';
 import {

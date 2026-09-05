@@ -38,14 +38,14 @@ export const ChatMessageItem: React.FC<ChatMessageItemProps> = ({
           // Header line
           if (trimmed.startsWith('### ')) {
             return (
-              <h4 key={lineIdx} className="font-bold text-emerald-300 text-xs sm:text-sm mt-2 mb-1">
+              <h4 key={lineIdx} className="font-bold text-text-primary text-xs sm:text-sm mt-2 mb-1">
                 {trimmed.replace('### ', '')}
               </h4>
             );
           }
           if (trimmed.startsWith('## ')) {
             return (
-              <h3 key={lineIdx} className="font-bold text-emerald-200 text-sm mt-2.5 mb-1">
+              <h3 key={lineIdx} className="font-bold text-text-primary text-sm mt-2.5 mb-1">
                 {trimmed.replace('## ', '')}
               </h3>
             );
@@ -72,7 +72,7 @@ export const ChatMessageItem: React.FC<ChatMessageItemProps> = ({
               parts.push(
                 <code
                   key={segIdx}
-                  className="px-1.5 py-0.5 rounded bg-slate-900 border border-slate-700/60 font-mono text-[11px] text-emerald-300"
+                  className="px-1.5 py-0.5 rounded bg-slate-900 border border-slate-700/60 font-mono text-[11px] text-text-primary"
                 >
                   {seg.slice(1, -1)}
                 </code>
@@ -85,7 +85,7 @@ export const ChatMessageItem: React.FC<ChatMessageItemProps> = ({
           if (isBullet) {
             return (
               <div key={lineIdx} className="flex items-start gap-2 pl-1">
-                <span className="text-emerald-400 font-bold shrink-0 mt-0.5">•</span>
+                <span className="text-text-secondary font-bold shrink-0 mt-0.5">•</span>
                 <span className="flex-1">{parts}</span>
               </div>
             );
@@ -139,7 +139,7 @@ export const ChatMessageItem: React.FC<ChatMessageItemProps> = ({
         <div
           className={`flex items-center justify-between gap-2 mt-2 pt-1 border-t text-[10px] ${
             isUser
-              ? 'border-white/10 text-emerald-100/70'
+              ? 'border-white/10 text-text-secondary'
               : message.isError
               ? 'border-rose-900/40 text-rose-400/80'
               : 'border-slate-800 text-slate-400'

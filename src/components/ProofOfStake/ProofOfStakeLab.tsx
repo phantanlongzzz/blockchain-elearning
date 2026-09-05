@@ -6,7 +6,7 @@ import { ValidatorDashboard } from './ValidatorDashboard';
 import { StakeDistributionBar } from './StakeDistributionBar';
 import { ConsensusAttestationArena } from './ConsensusAttestationArena';
 import { SimulationTimeline } from './SimulationTimeline';
-import { PoSTerminologyBar } from './PoSTerminologyBar';
+
 import { PoSHelpModal } from './PoSHelpModal';
 import { PoSWhyAccordion } from './PoSWhyAccordion';
 import { PoWVsPoSComparison } from './PoWVsPoSComparison';
@@ -116,9 +116,9 @@ export const ProofOfStakeLab: React.FC = () => {
           id,
           name,
           defaultStake,
-          color: '#00C98D',
+          color: '#10B981',
           glow: 'rgba(0, 201, 141, 0.3)',
-          textClass: 'text-emerald-400',
+          textClass: 'text-text-primary',
         };
       }
 
@@ -323,7 +323,7 @@ export const ProofOfStakeLab: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-white/[0.08]">
         <div>
           <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#F2F4F7] flex items-center gap-2.5">
-            <Layers className="w-5 h-5 text-[#00C98D] shrink-0" />
+            <Layers className="w-5 h-5 text-text-primary shrink-0" />
             <span>Proof of Stake</span>
           </h2>
         </div>
@@ -338,7 +338,7 @@ export const ProofOfStakeLab: React.FC = () => {
               onClick={() => setGuideMode('guided')}
               className={`px-3 py-1.5 rounded-md text-xs font-mono font-medium transition-colors cursor-pointer ${
                 guideMode === 'guided'
-                  ? 'bg-[#00C98D] text-[#090A0F] font-bold shadow-sm'
+                  ? 'bg-white/[0.1] text-[#090A0F] font-bold shadow-sm'
                   : 'text-[#9AA5B5] hover:text-[#F2F4F7]'
               }`}
               title={isVi ? 'Chế độ có hướng dẫn từng bước' : 'Step-by-step guided mode'}
@@ -352,7 +352,7 @@ export const ProofOfStakeLab: React.FC = () => {
               onClick={() => setGuideMode('free')}
               className={`px-3 py-1.5 rounded-md text-xs font-mono font-medium transition-colors cursor-pointer ${
                 guideMode === 'free'
-                  ? 'bg-[#00C98D] text-[#090A0F] font-bold shadow-sm'
+                  ? 'bg-white/[0.1] text-[#090A0F] font-bold shadow-sm'
                   : 'text-[#9AA5B5] hover:text-[#F2F4F7]'
               }`}
               title={isVi ? 'Chế độ tự do khám phá' : 'Free exploration mode'}
@@ -391,7 +391,7 @@ export const ProofOfStakeLab: React.FC = () => {
                   }}
                   className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-[#A5AFBF] hover:text-[#F2F4F7] hover:bg-white/[0.04] text-left transition-colors cursor-pointer"
                 >
-                  <HelpCircle className="w-3.5 h-3.5 text-[#00C98D]" />
+                  <HelpCircle className="w-3.5 h-3.5 text-text-primary" />
                   <span>{isVi ? 'Trợ giúp' : 'Help'}</span>
                 </button>
 
@@ -406,7 +406,7 @@ export const ProofOfStakeLab: React.FC = () => {
                   }}
                   className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-[#A5AFBF] hover:text-[#F2F4F7] hover:bg-white/[0.04] text-left transition-colors cursor-pointer"
                 >
-                  <Maximize2 className="w-3.5 h-3.5 text-[#00C98D]" />
+                  <Maximize2 className="w-3.5 h-3.5 text-text-primary" />
                   <span>{isVi ? 'Toàn màn hình' : 'Fullscreen'}</span>
                 </button>
 
@@ -421,7 +421,7 @@ export const ProofOfStakeLab: React.FC = () => {
                   }}
                   className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-[#A5AFBF] hover:text-[#F2F4F7] hover:bg-white/[0.04] text-left transition-colors cursor-pointer"
                 >
-                  <Code className="w-3.5 h-3.5 text-[#00C98D]" />
+                  <Code className="w-3.5 h-3.5 text-text-primary" />
                   <span>{strings.proofOfStake.viewCodeBtn}</span>
                 </button>
 
@@ -459,10 +459,10 @@ export const ProofOfStakeLab: React.FC = () => {
       {guideMode === 'guided' && (
         <div
           id="pos-guided-banner"
-          className="border-l-2 border-[#00C98D] pl-3.5 py-1 bg-white/[0.015] rounded-r-lg animate-in fade-in duration-200"
+          className="border-l-2 border-border-primary pl-3.5 py-1 bg-white/[0.015] rounded-r-lg animate-in fade-in duration-200"
         >
           <div className="flex items-center gap-2">
-            <span className="text-[10px] font-mono font-bold text-[#00C98D] uppercase tracking-wider">
+            <span className="text-[10px] font-mono font-bold text-text-primary uppercase tracking-wider">
               {isVi ? `BƯỚC ${activeStep} / 3` : `STEP ${activeStep} / 3`}
             </span>
             <span className="text-[#1C2430]">·</span>
@@ -537,7 +537,7 @@ export const ProofOfStakeLab: React.FC = () => {
           {/* Fullscreen Header */}
           <div className="sticky top-0 z-40 bg-[#090A0F]/95 backdrop-blur-xl pb-4 border-b border-white/[0.08] flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-[#00C98D]/10 border border-[#00C98D]/30 flex items-center justify-center text-[#00C98D]">
+              <div className="w-10 h-10 rounded-2xl bg-white/[0.04] border border-border-primary flex items-center justify-center text-text-primary">
                 <Sparkles className="w-5 h-5" />
               </div>
               <div>
@@ -545,7 +545,7 @@ export const ProofOfStakeLab: React.FC = () => {
                   <h3 className="text-base sm:text-lg font-bold text-[#F2F4F7]">
                     {isVi ? 'CHẾ ĐỘ MÔ PHỎNG PROOF OF STAKE' : 'PROOF OF STAKE SIMULATION MODE'}
                   </h3>
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#00C98D]/15 text-[#00C98D] border border-[#00C98D]/30">
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/[0.1]/15 text-text-primary border border-border-primary">
                     FULLSCREEN LAB
                   </span>
                 </div>
@@ -562,7 +562,7 @@ export const ProofOfStakeLab: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsHelpModalOpen(true)}
-                className="px-3 py-2 rounded-lg bg-[#0C0F14] hover:bg-white/[0.04] text-[#00C98D] border border-white/[0.08] text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
+                className="px-3 py-2 rounded-lg bg-[#0C0F14] hover:bg-white/[0.04] text-text-primary border border-white/[0.08] text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
               >
                 <HelpCircle className="w-3.5 h-3.5" />
                 <span>{isVi ? 'Trợ giúp' : 'Help'}</span>
@@ -573,7 +573,7 @@ export const ProofOfStakeLab: React.FC = () => {
                 onClick={() => setIsCodeModalOpen(true)}
                 className="px-3.5 py-2 rounded-lg bg-[#0C0F14] hover:bg-white/[0.04] text-[#F2F4F7] border border-white/[0.08] text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
               >
-                <Code className="w-3.5 h-3.5 text-[#00C98D]" />
+                <Code className="w-3.5 h-3.5 text-text-primary" />
                 <span>{strings.proofOfStake.viewCodeBtn}</span>
               </button>
 

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { CopyX, Search, Sparkles, AlertCircle, Play, CheckCircle, RefreshCw } from 'lucide-react';
+import { CopyX, Play, CheckCircle, RefreshCw } from 'lucide-react';
 import { fastSha256Hex } from '../utils/sha256';
 import { truncateHashToBits } from '../utils/binary';
 import { InlineMath } from './MathView';

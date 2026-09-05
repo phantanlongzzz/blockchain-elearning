@@ -4,19 +4,7 @@
  */
 
 import React, { useState } from 'react';
-import {
-  HelpCircle,
-  Sparkles,
-  CheckCircle2,
-  ChevronRight,
-  Lightbulb,
-  Compass,
-  Sliders,
-  Info,
-  ChevronDown,
-  ChevronUp,
-  Check,
-} from 'lucide-react';
+import { HelpCircle, Sparkles, Compass, Sliders, ChevronDown, ChevronUp, Check } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 
 export interface GuideStep {
@@ -204,7 +192,7 @@ export const SimulationGuidePanel: React.FC<SimulationGuidePanelProps> = ({
                 {isVi ? currentStep.instructionVi : currentStep.instructionEn}
               </p>
 
-              <div className="text-xs font-mono text-emerald-400 flex items-center gap-1.5 pt-0.5">
+              <div className="text-xs font-mono text-text-secondary flex items-center gap-1.5 pt-0.5">
                 <span className="text-amber-300 font-bold">👉 {isVi ? 'THAO TÁC:' : 'ACTION:'}</span>
                 <span className="text-slate-200 font-semibold">
                   {isVi ? currentStep.targetActionVi : currentStep.targetActionEn}
@@ -246,7 +234,7 @@ export const SimulationGuidePanel: React.FC<SimulationGuidePanelProps> = ({
                 <button
                   type="button"
                   onClick={onResetGuide}
-                  className="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-slate-700 text-xs font-mono font-bold cursor-pointer transition-all"
+                  className="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-text-primary border border-border-primary text-xs font-mono font-bold cursor-pointer transition-all"
                 >
                   {isVi ? 'Lặp Lại Hướng Dẫn' : 'Restart Guide'}
                 </button>

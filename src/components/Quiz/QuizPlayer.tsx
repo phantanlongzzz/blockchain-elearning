@@ -1,15 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import {
-  HelpCircle,
-  ChevronLeft,
-  ChevronRight,
-  CheckCircle2,
-  Clock,
-  AlertCircle,
-  X,
-  List,
-  Sparkles,
-} from 'lucide-react';
+import { ChevronLeft, ChevronRight, CheckCircle2, Clock, AlertCircle, X, List, Sparkles } from 'lucide-react';
 import { QuizModule, QuizAttempt, QuizAnswerRecord, QuizQuestion } from '../../types';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { useAuth } from '../../context/AuthContext';
@@ -156,7 +146,7 @@ export const QuizPlayer: React.FC<QuizPlayerProps> = ({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#1C2430]">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-mono px-2 py-0.5 rounded bg-[#00C98D]/10 text-[#00C98D] border border-[#00C98D]/30">
+            <span className="text-xs font-mono px-2 py-0.5 rounded bg-success/10 text-success border border-success/30">
               v{module.version}
             </span>
             <h3 className="text-lg font-bold text-[#F2F4F7] tracking-tight">
@@ -171,7 +161,7 @@ export const QuizPlayer: React.FC<QuizPlayerProps> = ({
 
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1.5 px-3 py-1.5 bg-[#11161E] rounded-xl border border-[#1C2430] text-xs font-mono text-[#F2F4F7]">
-            <Clock className="w-3.5 h-3.5 text-[#00C98D]" />
+            <Clock className="w-3.5 h-3.5 text-success" />
             <span>{formatTime(elapsedSeconds)}</span>
           </div>
 
@@ -179,7 +169,7 @@ export const QuizPlayer: React.FC<QuizPlayerProps> = ({
             onClick={() => setShowNavigator(!showNavigator)}
             className="flex items-center gap-1.5 px-3 py-1.5 bg-[#11161E] hover:bg-[#161D26] text-[#A5AFBF] hover:text-[#F2F4F7] rounded-xl border border-[#1C2430] text-xs font-medium transition-colors cursor-pointer"
           >
-            <List className="w-3.5 h-3.5 text-[#00C98D]" />
+            <List className="w-3.5 h-3.5 text-success" />
             <span>{strings.quiz.jumpToQuestion}</span>
           </button>
 
@@ -196,7 +186,7 @@ export const QuizPlayer: React.FC<QuizPlayerProps> = ({
       {/* Progress Bar */}
       <div className="w-full bg-[#11161E] h-1.5 rounded-full overflow-hidden my-4">
         <div
-          className="bg-[#00C98D] h-full transition-all duration-300"
+          className="bg-success h-full transition-all duration-300"
           style={{ width: `${progressPercent}%` }}
         ></div>
       </div>
@@ -221,11 +211,11 @@ export const QuizPlayer: React.FC<QuizPlayerProps> = ({
                 'bg-[#11161E] border-[#1C2430] text-[#717B8C] hover:text-[#F2F4F7]';
               if (isAnswered) {
                 btnClass =
-                  'bg-[#00C98D]/15 border-[#00C98D]/30 text-[#00C98D] font-bold';
+                  'bg-success/15 border-success/30 text-success font-bold';
               }
               if (isCurrent) {
                 btnClass =
-                  'bg-[#00C98D] border-[#00C98D] text-slate-950 font-bold shadow-md';
+                  'bg-success border-success text-slate-950 font-bold shadow-md';
               }
 
               return (
@@ -285,7 +275,7 @@ export const QuizPlayer: React.FC<QuizPlayerProps> = ({
                 onClick={() => handleSelectOption(opt.id)}
                 className={`w-full p-4 rounded-xl border text-left text-xs sm:text-sm transition-all flex items-center justify-between gap-4 cursor-pointer active:scale-[0.99] ${
                   isSelected
-                    ? 'bg-[#00C98D]/10 border-[#00C98D] text-[#00C98D] font-semibold'
+                    ? 'bg-success/10 border-success text-success font-semibold'
                     : 'bg-[#11161E]/70 hover:bg-[#11161E] border-[#1C2430] text-[#A5AFBF] hover:border-[#1C2430] hover:text-[#F2F4F7]'
                 }`}
               >
@@ -293,7 +283,7 @@ export const QuizPlayer: React.FC<QuizPlayerProps> = ({
                   <span
                     className={`w-6 h-6 rounded-lg flex items-center justify-center font-mono text-xs flex-shrink-0 transition-colors ${
                       isSelected
-                        ? 'bg-[#00C98D] text-slate-950 font-bold'
+                        ? 'bg-success text-slate-950 font-bold'
                         : 'bg-[#1C2430] text-[#A5AFBF]'
                     }`}
                   >
@@ -354,7 +344,7 @@ export const QuizPlayer: React.FC<QuizPlayerProps> = ({
             id="confirm-submit-modal-container"
             className="w-full max-w-md bg-[#0C0F14] border border-[#1C2430] rounded-2xl shadow-2xl p-6 text-center space-y-4"
           >
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#00C98D]/10 border border-[#00C98D]/30 text-[#00C98D] mx-auto">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-success/10 border border-success/30 text-success mx-auto">
               <AlertCircle className="w-6 h-6" />
             </div>
 

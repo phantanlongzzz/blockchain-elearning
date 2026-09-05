@@ -1,16 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import {
-  ShieldCheck,
-  FlaskConical,
-  RotateCcw,
-  ArrowRight,
-  ArrowLeft,
-  Bug,
-  Activity,
-  Radio,
-  Sliders,
-  Terminal,
-} from 'lucide-react';
+import { ShieldCheck, FlaskConical, RotateCcw, ArrowRight, ArrowLeft } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import {
   E2ETransaction,
@@ -1292,7 +1281,7 @@ export const EndToEndConsensusLab: React.FC = () => {
               onClick={() => setIsAuditModalOpen(true)}
               className="px-3 py-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 hover:text-zinc-100 text-xs font-medium transition-colors flex items-center gap-1.5 cursor-pointer"
             >
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+              <ShieldCheck className="w-3.5 h-3.5 text-success" />
               <span>{language === 'vi' ? 'Kiểm tra hệ thống' : 'Consensus Audit'}</span>
             </button>
 
@@ -1600,7 +1589,7 @@ export const EndToEndConsensusLab: React.FC = () => {
           <div className="flex items-center gap-2 text-xs font-mono text-zinc-400">
             <span>{language === 'vi' ? `Bước ${guidedStep} / 8` : `Step ${guidedStep} of 8`}</span>
             <span className="text-zinc-600">•</span>
-            <span className="text-emerald-400 font-semibold uppercase text-[10px]">
+            <span className="text-text-secondary font-semibold uppercase text-[10px]">
               {simulationMode} mode
             </span>
           </div>
@@ -1647,7 +1636,7 @@ export const EndToEndConsensusLab: React.FC = () => {
               type="button"
               id="btn-nav-complete-loop"
               onClick={() => setGuidedStep(1)}
-              className="px-4 py-2 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-emerald-400 text-xs font-medium transition-colors flex items-center gap-2 cursor-pointer"
+              className="px-4 py-2 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-text-primary text-xs font-medium transition-colors flex items-center gap-2 cursor-pointer"
             >
               <span>{language === 'vi' ? 'Xem lại từ đầu ↺' : 'Restart Tour ↺'}</span>
             </button>

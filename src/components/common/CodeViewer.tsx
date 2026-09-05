@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Copy, Check, Terminal, FileCode2 } from 'lucide-react';
+import { Copy, Check, FileCode2 } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 
 export interface CodeViewerProps {

@@ -1,17 +1,5 @@
 import React from 'react';
-import {
-  X,
-  Radio,
-  ShieldCheck,
-  CheckCircle2,
-  XCircle,
-  HelpCircle,
-  Cpu,
-  MapPin,
-  Layers,
-  Clock,
-  Sparkles,
-} from 'lucide-react';
+import { X, Radio, CheckCircle2, XCircle, MapPin, Sparkles } from 'lucide-react';
 import { E2ENetworkNode, E2EBlock } from './types';
 
 interface NodeInspectorModalProps {
@@ -102,7 +90,7 @@ export const NodeInspectorModal: React.FC<NodeInspectorModalProps> = ({
                     {language === 'vi' ? 'Ngoại tuyến' : 'Offline'}
                   </span>
                 ) : (
-                  <span className="text-emerald-400 font-semibold flex items-center gap-1">
+                  <span className="text-text-primary font-semibold flex items-center gap-1">
                     <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                     {language === 'vi' ? 'Trực tuyến' : 'Online'}
                   </span>
@@ -136,7 +124,7 @@ export const NodeInspectorModal: React.FC<NodeInspectorModalProps> = ({
               <div className="p-2.5 rounded-lg bg-[#080c16] border border-zinc-800 flex items-center justify-between">
                 <span className="text-zinc-300">1. Mã băm khối trước = Đỉnh chuỗi</span>
                 {node.validationState.prevHash === true ? (
-                  <span className="text-emerald-400 flex items-center gap-1 text-xs">
+                  <span className="text-text-secondary flex items-center gap-1 text-xs">
                     <CheckCircle2 className="w-3.5 h-3.5" /> Khớp (Matched)
                   </span>
                 ) : node.validationState.prevHash === false ? (
@@ -152,7 +140,7 @@ export const NodeInspectorModal: React.FC<NodeInspectorModalProps> = ({
               <div className="p-2.5 rounded-lg bg-[#080c16] border border-zinc-800 flex items-center justify-between">
                 <span className="text-zinc-300">2. Merkle Root Integrity</span>
                 {node.validationState.merkleRoot === true ? (
-                  <span className="text-emerald-400 flex items-center gap-1 text-xs">
+                  <span className="text-text-secondary flex items-center gap-1 text-xs">
                     <CheckCircle2 className="w-3.5 h-3.5" /> Hợp lệ (Valid)
                   </span>
                 ) : node.validationState.merkleRoot === false ? (
@@ -168,7 +156,7 @@ export const NodeInspectorModal: React.FC<NodeInspectorModalProps> = ({
               <div className="p-2.5 rounded-lg bg-[#080c16] border border-zinc-800 flex items-center justify-between">
                 <span className="text-zinc-300">3. Transaction Signatures</span>
                 {node.validationState.txValid === true ? (
-                  <span className="text-emerald-400 flex items-center gap-1 text-xs">
+                  <span className="text-text-secondary flex items-center gap-1 text-xs">
                     <CheckCircle2 className="w-3.5 h-3.5" /> Hợp lệ (Valid)
                   </span>
                 ) : node.validationState.txValid === false ? (
@@ -184,7 +172,7 @@ export const NodeInspectorModal: React.FC<NodeInspectorModalProps> = ({
               <div className="p-2.5 rounded-lg bg-[#080c16] border border-zinc-800 flex items-center justify-between">
                 <span className="text-zinc-300">4. PoW Target Difficulty</span>
                 {node.validationState.powValid === true ? (
-                  <span className="text-emerald-400 flex items-center gap-1 text-xs">
+                  <span className="text-text-secondary flex items-center gap-1 text-xs">
                     <CheckCircle2 className="w-3.5 h-3.5" /> Đạt yêu cầu (Target met)
                   </span>
                 ) : node.validationState.powValid === false ? (

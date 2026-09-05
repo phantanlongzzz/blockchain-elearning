@@ -1,21 +1,5 @@
 import React, { useState } from 'react';
-import {
-  X,
-  CheckCircle2,
-  XCircle,
-  Copy,
-  Check,
-  ShieldCheck,
-  ShieldAlert,
-  Boxes,
-  Key,
-  Hash,
-  FileText,
-  Clock,
-  Layers,
-  Edit3,
-  RotateCcw,
-} from 'lucide-react';
+import { X, Copy, Check, ShieldCheck, ShieldAlert, Boxes, Key, Hash, Edit3, RotateCcw } from 'lucide-react';
 import { TransactionItem } from '../../types';
 import { SignatureFlowVisualizer } from './SignatureFlowVisualizer';
 import { useLanguage } from '../../i18n/LanguageContext';
@@ -156,7 +140,7 @@ export const TransactionDetailModal: React.FC<TransactionDetailModalProps> = ({
             <span className="text-[#68717D] block mb-1 uppercase text-[10px] font-semibold">
               {isVi ? 'Đường cong Elliptic' : 'Elliptic Curve'}
             </span>
-            <strong className="text-emerald-300 text-xs sm:text-sm font-mono">{transaction.ellipticCurve}</strong>
+            <strong className="text-text-primary text-xs sm:text-sm font-mono">{transaction.ellipticCurve}</strong>
           </div>
           <div className="p-3 rounded-xl bg-[#090C10] border border-[#1B2027]">
             <span className="text-[#68717D] block mb-1 uppercase text-[10px] font-semibold">

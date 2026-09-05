@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { GitCompare, Sparkles, RefreshCw, Zap, Binary, CheckCircle, AlertTriangle } from 'lucide-react';
+import { CheckCircle } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 import { hashSha256 } from '../utils/sha256';
 import { calculateHammingDifference, calculateInputBitDifference } from '../utils/binary';

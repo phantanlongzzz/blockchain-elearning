@@ -1,24 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Cpu,
-  Wallet,
-  Layers,
-  FileCode2,
-  HardDrive,
-  Radio,
-  Server,
-  Zap,
-  CheckCircle2,
-  XCircle,
-  Sparkles,
-  ArrowRight,
-  Send,
-  RotateCcw,
-  Pickaxe,
-  Boxes,
-  Database,
-  Flame,
-} from 'lucide-react';
+import { Cpu, Wallet, Layers, Radio, Server, Zap, CheckCircle2, Sparkles, ArrowRight, RotateCcw, Pickaxe, Boxes, Database } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { EcosystemComponent } from './types';
 
@@ -410,7 +391,7 @@ export const BitcoinEcosystemLab: React.FC<BitcoinEcosystemLabProps> = ({
                     />
                     <span
                       className={`text-[10px] font-mono px-1.5 py-0.5 rounded ${
-                        node.isOnline ? 'bg-emerald-500/20 text-emerald-300' : 'bg-rose-500/20 text-rose-300'
+                        node.isOnline ? 'bg-success/20 text-success' : 'bg-rose-500/20 text-rose-300'
                       }`}
                     >
                       {node.isOnline ? 'ONLINE' : 'OFFLINE'}

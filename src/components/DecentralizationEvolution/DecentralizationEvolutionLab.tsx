@@ -1,18 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Coins,
-  ShieldAlert,
-  Globe,
-  AlertTriangle,
-  Boxes,
-  Cpu,
-  Award,
-  GraduationCap,
-  FlaskConical,
-  CheckCircle2,
-  Sparkles,
-  Layers,
-} from 'lucide-react';
+import { Coins, ShieldAlert, Globe, AlertTriangle, Boxes, Cpu, Award, CheckCircle2 } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { useAuth } from '../../context/AuthContext';
 import { Lesson3Stage } from './types';
@@ -106,7 +93,7 @@ export const DecentralizationEvolutionLab: React.FC = () => {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-2">
             <div className="flex items-center gap-2 text-xs font-mono text-zinc-400">
-              <span className="text-emerald-400">Buổi 3</span>
+              <span className="text-text-primary">Buổi 3</span>
               <span className="text-zinc-600">·</span>
               <span>{language === 'vi' ? 'Giáo trình Blockchain' : 'Blockchain Curriculum'}</span>
             </div>
@@ -138,7 +125,7 @@ export const DecentralizationEvolutionLab: React.FC = () => {
               onClick={() => setLabMode('guided')}
               className={`px-3.5 py-1.5 rounded-md text-xs font-medium transition-colors cursor-pointer ${
                 labMode === 'guided'
-                  ? 'bg-zinc-800 text-emerald-400 font-semibold shadow-sm'
+                  ? 'bg-zinc-800 text-text-primary font-semibold shadow-sm'
                   : 'text-zinc-400 hover:text-zinc-200'
               }`}
             >
@@ -149,7 +136,7 @@ export const DecentralizationEvolutionLab: React.FC = () => {
               onClick={() => setLabMode('hands-on')}
               className={`px-3.5 py-1.5 rounded-md text-xs font-medium transition-colors cursor-pointer ${
                 labMode === 'hands-on'
-                  ? 'bg-zinc-800 text-emerald-400 font-semibold shadow-sm'
+                  ? 'bg-zinc-800 text-text-primary font-semibold shadow-sm'
                   : 'text-zinc-400 hover:text-zinc-200'
               }`}
             >
@@ -189,9 +176,9 @@ export const DecentralizationEvolutionLab: React.FC = () => {
                   <span
                     className={`font-mono text-[11px] px-1.5 py-0.5 rounded transition-colors ${
                       isCurrent
-                        ? 'bg-emerald-500/20 text-emerald-400 font-bold'
+                        ? 'bg-white/[0.08] text-text-primary font-bold'
                         : isDone
-                        ? 'bg-zinc-800 text-emerald-400/80'
+                        ? 'bg-zinc-800 text-text-secondary'
                         : 'bg-zinc-900 text-zinc-500 group-hover:text-zinc-400'
                     }`}
                   >

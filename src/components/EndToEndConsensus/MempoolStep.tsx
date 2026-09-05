@@ -90,7 +90,7 @@ export const MempoolStep: React.FC<MempoolStepProps> = ({
           </div>
           <div className="text-zinc-600">·</div>
           <div className="text-zinc-400">
-            <span className="font-semibold text-emerald-400">{selectedCount} / {mempool.length}</span> {language === 'vi' ? 'TXs đã chọn' : 'TXs selected'}
+            <span className="font-semibold text-text-primary font-mono">{selectedCount} / {mempool.length}</span> {language === 'vi' ? 'TXs đã chọn' : 'TXs selected'}
           </div>
           <div className="text-zinc-600">·</div>
           <div className="text-zinc-400">
@@ -183,7 +183,7 @@ export const MempoolStep: React.FC<MempoolStepProps> = ({
                         <button
                           type="button"
                           aria-label="Chọn giao dịch"
-                          className={`text-xs ${isSelected ? 'text-emerald-400' : 'text-zinc-600'}`}
+                          className={`text-xs ${isSelected ? 'text-text-primary' : 'text-zinc-600'}`}
                         >
                           {isSelected ? (
                             <CheckSquare className="w-4 h-4" />

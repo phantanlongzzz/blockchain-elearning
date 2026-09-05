@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLanguage } from '../i18n/LanguageContext';
-import { Globe } from 'lucide-react';
+
 
 interface LanguageToggleProps {
   className?: string;
@@ -28,7 +28,7 @@ export const LanguageToggle: React.FC<LanguageToggleProps> = ({
           aria-pressed={language === 'en'}
           className={`px-2 py-1 rounded-md transition-colors duration-150 cursor-pointer flex items-center justify-center ${
             language === 'en'
-              ? 'bg-zinc-800 text-emerald-400 font-semibold'
+              ? 'bg-zinc-800 text-text-primary font-semibold'
               : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40'
           }`}
           title="Switch to English"
@@ -45,7 +45,7 @@ export const LanguageToggle: React.FC<LanguageToggleProps> = ({
           aria-pressed={language === 'vi'}
           className={`px-2 py-1 rounded-md transition-colors duration-150 cursor-pointer flex items-center justify-center ${
             language === 'vi'
-              ? 'bg-zinc-800 text-emerald-400 font-semibold'
+              ? 'bg-zinc-800 text-text-primary font-semibold'
               : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40'
           }`}
           title="Chuyển sang Tiếng Việt"

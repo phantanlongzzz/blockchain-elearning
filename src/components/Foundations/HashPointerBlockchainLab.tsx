@@ -1,19 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  ShieldAlert,
-  ShieldCheck,
-  RefreshCw,
-  Edit3,
-  AlertTriangle,
-  ArrowRight,
-  Sparkles,
-  Layers,
-  Wrench,
-  CheckCircle2,
-  XCircle,
-  HelpCircle,
-  Lock,
-} from 'lucide-react';
+import { ShieldAlert, RefreshCw, Edit3, ArrowRight, Wrench } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { HashPointerBlockItem } from '../../types';
 import { fastSha256Hex } from '../../utils/sha256';
@@ -281,7 +267,7 @@ export const HashPointerBlockchainLab: React.FC<HashPointerBlockchainLabProps> =
                       className={`px-1.5 py-0.5 rounded text-[10px] font-mono font-medium border ${
                         isCorrupted
                           ? 'bg-rose-500/10 text-rose-300 border-rose-500/30'
-                          : 'bg-zinc-800 text-emerald-400 border-zinc-700'
+                          : 'bg-zinc-800 text-text-primary border-border-primary'
                       }`}
                     >
                       {status.isValid ? 'VALID ✓' : 'BROKEN ✗'}

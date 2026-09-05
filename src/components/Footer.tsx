@@ -19,7 +19,7 @@ export const Footer: React.FC = () => {
           >
             <div className="space-y-3">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-[#0F131A] border border-[#1C2430] flex items-center justify-center text-[#00C98D] shrink-0">
+                <div className="w-9 h-9 rounded-xl bg-[#0F131A] border border-[#1C2430] flex items-center justify-center text-text-primary shrink-0">
                   <ShieldCheck className="w-5 h-5" />
                 </div>
                 <h3 className="text-[#F2F4F7] font-bold text-lg tracking-tight font-sans">
@@ -31,7 +31,7 @@ export const Footer: React.FC = () => {
               </p>
             </div>
             <div className="pt-4 mt-4 border-t border-[#1C2430] flex items-center gap-2 text-xs font-mono text-[#8E9AA8]">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#00C98D]" />
+              <span className="w-1.5 h-1.5 rounded-full bg-success" />
               <span>SHA-256 · FIPS 180-4 · ECDSA</span>
             </div>
           </div>
@@ -43,8 +43,8 @@ export const Footer: React.FC = () => {
           >
             <div>
               <div className="flex items-center gap-2 mb-3.5">
-                <GraduationCap className="w-4 h-4 text-[#00C98D] shrink-0" />
-                <h4 className="text-sm font-bold text-[#00C98D] font-sans">
+                <GraduationCap className="w-4 h-4 text-text-primary shrink-0" />
+                <h4 className="text-sm font-bold text-text-primary font-sans">
                   {strings.footer.academicProjectLabel}
                 </h4>
               </div>
@@ -83,8 +83,8 @@ export const Footer: React.FC = () => {
           >
             <div>
               <div className="flex items-center gap-2 mb-3.5">
-                <Cpu className="w-4 h-4 text-[#00C98D] shrink-0" />
-                <h4 className="text-sm font-bold text-[#00C98D] font-sans">
+                <Cpu className="w-4 h-4 text-text-primary shrink-0" />
+                <h4 className="text-sm font-bold text-text-primary font-sans">
                   {strings.footer.techStandardLabel}
                 </h4>
               </div>
@@ -97,8 +97,8 @@ export const Footer: React.FC = () => {
 
                 {/* Standard Badge */}
                 <div>
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/[0.03] border border-white/[0.08] text-[#00C98D] text-xs font-medium font-sans">
-                    <ShieldCheck className="w-3.5 h-3.5 text-[#00C98D] shrink-0" />
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/[0.03] border border-white/[0.08] text-text-primary text-xs font-medium font-sans">
+                    <ShieldCheck className="w-3.5 h-3.5 text-text-primary shrink-0" />
                     <span>{strings.footer.techStandardName}</span>
                   </span>
                 </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../../i18n/LanguageContext';
-import { UTXO, Transaction, VerificationResult, TransactionInput, TransactionOutput } from './types';
+import { UTXO, Transaction, VerificationResult } from './types';
 import { ArrowRight, CheckCircle2, AlertCircle, Send, Play } from 'lucide-react';
 
 interface Props {
@@ -231,8 +231,8 @@ export const Stage2BuildTx: React.FC<Props> = ({ utxos, selectedUtxoIds, current
             {verificationSteps.map((step, idx) => (
               <div key={idx} className="animate-in fade-in slide-in-from-bottom-2 duration-300">
                 <div className="flex items-center gap-2 mb-1">
-                  {step.valid ? <CheckCircle2 className="w-4 h-4 text-emerald-500" /> : <AlertCircle className="w-4 h-4 text-rose-500" />}
-                  <span className={`text-sm font-bold ${step.valid ? 'text-emerald-400' : 'text-rose-400'}`}>{step.step}</span>
+                  {step.valid ? <CheckCircle2 className="w-4 h-4 text-success" /> : <AlertCircle className="w-4 h-4 text-rose-500" />}
+                  <span className={`text-sm font-bold ${step.valid ? 'text-success' : 'text-rose-400'}`}>{step.step}</span>
                 </div>
                 <p className="text-xs text-slate-400 pl-6">{step.message}</p>
               </div>
@@ -253,7 +253,7 @@ export const Stage2BuildTx: React.FC<Props> = ({ utxos, selectedUtxoIds, current
               <button
                 id="send-mempool-btn"
                 onClick={handleSendToMempool}
-                className="w-full py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-emerald-950 text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer animate-in fade-in duration-500"
+                className="w-full py-2.5 rounded-xl bg-success hover:bg-success/90 text-slate-950 text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer animate-in fade-in duration-500"
               >
                 <span>{isVi ? 'Gửi vào Mempool' : 'Send to Mempool'}</span>
                 <Send className="w-4 h-4" />

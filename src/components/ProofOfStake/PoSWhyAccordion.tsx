@@ -27,7 +27,7 @@ export const PoSWhyAccordion: React.FC = () => {
       descVi: 'Khóa tài sản (ETH) vào hợp đồng tạo ra "vũ khí kinh tế" (Skin in the game). Nếu làm đúng sẽ nhận phần thưởng, nhưng nếu tấn công mạng lưới sẽ mất tiền cọc — chi phí gian lận luôn lớn hơn lợi ích thu được.',
       descEn: 'Locking collateral establishes economic "skin in the game". Honest validators earn rewards, while attackers face immediate confiscation — making attacks economically irrational.',
       icon: ShieldCheck,
-      color: 'text-[#00C98D] border-[rgba(0,201,141,0.3)] bg-[rgba(0,201,141,0.05)]',
+      color: 'text-text-primary border-[rgba(0,201,141,0.3)] bg-[rgba(0,201,141,0.05)]',
     },
     {
       num: '02',
@@ -45,7 +45,7 @@ export const PoSWhyAccordion: React.FC = () => {
       descVi: 'Một mình người tạo khối không thể tự quyết định. Hội đồng các Validator khác phải cùng kiểm tra lại tính hợp lệ của mọi giao dịch và ký số xác nhận (ít nhất 2/3 tổng cọc đồng thuận) trước khi khối được hoàn tất.',
       descEn: 'A single block proposer cannot unilaterally dictate state. A committee of peer validators must verify transactions and sign attestations (requiring a 2/3 supermajority) before finality.',
       icon: Scale,
-      color: 'text-[#00C98D] border-[rgba(0,201,141,0.3)] bg-[rgba(0,201,141,0.05)]',
+      color: 'text-text-primary border-[rgba(0,201,141,0.3)] bg-[rgba(0,201,141,0.05)]',
     },
     {
       num: '04',
@@ -77,7 +77,7 @@ export const PoSWhyAccordion: React.FC = () => {
         className="w-full p-4 sm:p-5 flex items-center justify-between text-left hover:bg-white/[0.02] transition-colors cursor-pointer group"
       >
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-[#00C98D] shrink-0">
+          <div className="w-9 h-9 rounded-xl bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-text-primary shrink-0">
             <Lightbulb className="w-5 h-5" />
           </div>
           <h3 className="text-sm sm:text-base font-bold text-[#F2F4F7] font-display">
@@ -101,7 +101,7 @@ export const PoSWhyAccordion: React.FC = () => {
           {/* 4 Fundamental "Why" Principles Cards */}
           <div>
             <h4 className="text-xs font-mono uppercase tracking-wider text-[#A5AFBF] font-bold mb-3 flex items-center gap-2">
-              <Sparkles className="w-3.5 h-3.5 text-[#00C98D]" />
+              <Sparkles className="w-3.5 h-3.5 text-text-primary" />
               <span>{isVi ? '4 NGUYÊN TẮC BẢO MẬT KINH TẾ CỐT LÕI' : '4 CORE ECONOMIC SECURITY PILLARS'}</span>
             </h4>
 
@@ -136,7 +136,7 @@ export const PoSWhyAccordion: React.FC = () => {
           {/* Deep-dive Q&A Accordion */}
           <div className="space-y-3 pt-2">
             <h4 className="text-xs font-mono uppercase tracking-wider text-[#A5AFBF] font-bold flex items-center gap-2">
-              <HelpCircle className="w-3.5 h-3.5 text-[#00C98D]" />
+              <HelpCircle className="w-3.5 h-3.5 text-text-primary" />
               <span>{isVi ? 'CÂU HỎI THƯỜNG GẶP VỀ CƠ CHẾ POS' : 'FREQUENTLY ASKED POS QUESTIONS'}</span>
             </h4>
 
@@ -155,7 +155,7 @@ export const PoSWhyAccordion: React.FC = () => {
                       className="w-full px-4 py-3 text-left flex items-center justify-between gap-3 hover:bg-[#11161E] transition-colors cursor-pointer"
                     >
                       <div className="flex items-center gap-2.5">
-                        <span className="w-5 h-5 rounded-md bg-[#090A0F] border border-[#1C2430] flex items-center justify-center text-[11px] font-mono font-bold text-[#00C98D] shrink-0">
+                        <span className="w-5 h-5 rounded-md bg-[#090A0F] border border-[#1C2430] flex items-center justify-center text-[11px] font-mono font-bold text-text-primary shrink-0">
                           Q{item.id}
                         </span>
                         <span className="text-xs sm:text-sm font-semibold text-[#F2F4F7] font-sans">
@@ -163,7 +163,7 @@ export const PoSWhyAccordion: React.FC = () => {
                         </span>
                       </div>
                       {isOpen ? (
-                        <ChevronUp className="w-4 h-4 text-[#00C98D] shrink-0" />
+                        <ChevronUp className="w-4 h-4 text-text-primary shrink-0" />
                       ) : (
                         <ChevronDown className="w-4 h-4 text-[#717B8C] shrink-0" />
                       )}

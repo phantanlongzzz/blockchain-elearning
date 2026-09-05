@@ -1,22 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import {
-  KeyRound,
-  Binary,
-  Cpu,
-  ShieldCheck,
-  Sparkles,
-  ArrowRight,
-  ExternalLink,
-  Lock,
-  Unlock,
-  CheckCircle2,
-  FileCheck2,
-  HelpCircle,
-  Layers,
-  Key,
-  Database,
-  Search,
-} from 'lucide-react';
+import { Binary, Cpu, Sparkles, ArrowRight, ExternalLink, Lock, Unlock, CheckCircle2, FileCheck2, Layers, Key } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { fastSha256Hex } from '../../utils/sha256';
 import { PublicKeyVsPrimaryKey } from './PublicKeyVsPrimaryKey';
@@ -350,15 +333,15 @@ export const CryptographyFoundations: React.FC<CryptographyFoundationsProps> = (
               >
                 <div className="flex items-center justify-between text-[10px] font-medium text-zinc-500">
                   <span>3. PUBLIC KEY XÁC MINH</span>
-                  <span className={isSigValid ? 'text-emerald-400' : 'text-rose-400'}>
+                  <span className={isSigValid ? 'text-success' : 'text-rose-400'}>
                     {isSigValid ? 'VALID ✓' : 'REJECTED ✗'}
                   </span>
                 </div>
                 <div className="p-2 rounded bg-zinc-900 text-xs font-medium flex items-center gap-1.5">
                   {isSigValid ? (
                     <>
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                      <span className="text-emerald-400">Hợp lệ: Đúng chữ ký của Alice</span>
+                      <CheckCircle2 className="w-4 h-4 text-success shrink-0" />
+                      <span className="text-success font-medium">Hợp lệ: Đúng chữ ký của Alice</span>
                     </>
                   ) : (
                     <>

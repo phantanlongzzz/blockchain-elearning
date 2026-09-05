@@ -28,7 +28,7 @@ const TERMINOLOGY_ITEMS: TerminologyItem[] = [
     whyVi: 'Thay thế việc đốt điện năng bằng cam kết tài chính (kinh tế học hành vi).',
     whyEn: 'Replaces raw energy consumption with financial commitment.',
     icon: ShieldCheck,
-    colorClass: 'text-[#00C98D] border-[rgba(0,201,141,0.35)] bg-[rgba(0,201,141,0.08)]',
+    colorClass: 'text-text-primary border-[rgba(0,201,141,0.35)] bg-[rgba(0,201,141,0.08)]',
   },
   {
     id: 'validator',
@@ -54,7 +54,7 @@ const TERMINOLOGY_ITEMS: TerminologyItem[] = [
     whyVi: 'Đặt cọc càng nhiều → Cơ hội được chọn giải khối nhận thưởng càng cao.',
     whyEn: 'Higher stake → higher probability of being chosen for block rewards.',
     icon: Coins,
-    colorClass: 'text-[#00C98D] border-[rgba(0,201,141,0.35)] bg-[rgba(0,201,141,0.08)]',
+    colorClass: 'text-text-primary border-[rgba(0,201,141,0.35)] bg-[rgba(0,201,141,0.08)]',
   },
   {
     id: 'slashing',
@@ -81,7 +81,7 @@ export const PoSTerminologyBar: React.FC = () => {
       {/* Compact Terminology Bar */}
       <div className="flex flex-wrap items-center gap-2 text-xs font-mono">
         <span className="text-[#A5AFBF] text-[11px] uppercase flex items-center gap-1.5 font-bold shrink-0">
-          <BookOpen className="w-3.5 h-3.5 text-[#00C98D]" />
+          <BookOpen className="w-3.5 h-3.5 text-text-primary" />
           <span>{isVi ? 'Thuật ngữ cốt lõi:' : 'Core Terminology:'}</span>
         </span>
 
@@ -98,7 +98,7 @@ export const PoSTerminologyBar: React.FC = () => {
                 onClick={() => setSelectedTerm(isSelected ? null : item)}
                 className={`px-2.5 py-1 rounded-lg border text-xs font-mono font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
                   isSelected
-                    ? 'bg-[#00C98D] text-[#090A0F] border-[#00C98D] font-bold shadow-sm'
+                    ? 'bg-white/[0.12] text-text-primary border-border-primary font-bold shadow-sm'
                     : 'bg-[#0F131A] hover:bg-[#11161E] text-[#A5AFBF] hover:text-[#F2F4F7] border-[#1C2430]'
                 }`}
                 title={isVi ? `Bấm để xem giải thích thuật ngữ ${item.termVi}` : `Click to view definition for ${item.termEn}`}
@@ -141,8 +141,8 @@ export const PoSTerminologyBar: React.FC = () => {
             {isVi ? selectedTerm.defVi : selectedTerm.defEn}
           </p>
 
-          <div className="flex items-start gap-1.5 text-[11px] font-sans text-[#00C98D] bg-[rgba(0,201,141,0.08)] p-2 rounded-lg border border-[rgba(0,201,141,0.2)]">
-            <Sparkles className="w-3.5 h-3.5 text-[#00C98D] shrink-0 mt-0.5" />
+          <div className="flex items-start gap-1.5 text-[11px] font-sans text-text-primary bg-[rgba(0,201,141,0.08)] p-2 rounded-lg border border-[rgba(0,201,141,0.2)]">
+            <Sparkles className="w-3.5 h-3.5 text-text-primary shrink-0 mt-0.5" />
             <span>
               <strong>{isVi ? 'Ý nghĩa trong PoS: ' : 'Role in PoS: '}</strong>
               {isVi ? selectedTerm.whyVi : selectedTerm.whyEn}

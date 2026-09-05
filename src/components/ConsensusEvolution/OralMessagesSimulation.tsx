@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Play,
-  RotateCcw,
-  ArrowRight,
-  ShieldAlert,
-} from 'lucide-react';
+import { Play, RotateCcw, ArrowRight } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 
 interface OralMessagesSimulationProps {
@@ -107,7 +102,7 @@ export const OralMessagesSimulation: React.FC<OralMessagesSimulationProps> = ({
             {/* Commander */}
             <div className="flex justify-center">
               <div className="p-3 rounded-lg bg-[#080C10] border border-border-secondary text-center min-w-[180px]">
-                <div className="text-[10px] text-emerald-400 font-medium">
+                <div className="text-[10px] text-text-secondary font-medium">
                   {isVi ? 'Chỉ huy' : 'Commander'}
                 </div>
                 <div className="text-xs font-semibold text-slate-200 mt-0.5">
@@ -160,7 +155,7 @@ export const OralMessagesSimulation: React.FC<OralMessagesSimulationProps> = ({
                 <div className="text-xs font-medium text-slate-200">Bob</div>
                 <div className="text-xs mt-1.5 font-mono">
                   {lieutenantBobOrder ? (
-                    <span className="text-emerald-400 font-medium">
+                    <span className="text-text-secondary font-medium">
                       {isVi ? 'Nhận: Rút lui' : 'Got: Retreat'}
                     </span>
                   ) : (
@@ -223,7 +218,7 @@ export const OralMessagesSimulation: React.FC<OralMessagesSimulationProps> = ({
             </div>
 
             <div className="p-3 rounded-lg bg-[#080C10] border border-border-secondary text-slate-400 text-xs leading-relaxed">
-              <span className="font-medium text-emerald-400">
+              <span className="font-medium text-text-secondary">
                 {isVi ? 'Giải pháp: ' : 'Solution: '}
               </span>
               {isVi

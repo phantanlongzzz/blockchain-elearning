@@ -1,5 +1,5 @@
 import React from 'react';
-import { UserCheck, GraduationCap, IdCard, School, Award, Sparkles } from 'lucide-react';
+import { UserCheck, GraduationCap, IdCard, Sparkles } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 import { UniversityLogo } from './UniversityLogo';
 import { RESEARCH_METADATA } from '../data/researchData';

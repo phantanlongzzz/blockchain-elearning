@@ -1,20 +1,6 @@
 import React, { useState } from 'react';
-import {
-  X,
-  Zap,
-  ShieldCheck,
-  ShieldAlert,
-  ArrowRight,
-  Sparkles,
-  Layers,
-  CheckCircle2,
-  XCircle,
-  Copy,
-  Check,
-  Play,
-  RotateCcw,
-} from 'lucide-react';
-import { MerkleTransaction, MerkleProofStep } from '../../types';
+import { X, Zap, Sparkles, Layers, CheckCircle2, XCircle } from 'lucide-react';
+import { MerkleTransaction } from '../../types';
 import { generateMerkleProof, verifyMerkleProof } from '../../utils/merkle';
 
 interface MerkleProofModalProps {

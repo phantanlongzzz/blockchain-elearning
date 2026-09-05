@@ -95,8 +95,8 @@ export const EducationalInsightBanner: React.FC<EducationalInsightBannerProps> =
         <Lightbulb className="w-4 h-4" />
       </div>
       <div className="flex-1 min-w-0">
-        <h5 className="font-semibold text-emerald-300 text-xs flex items-center gap-1.5">
-          <Sparkles className="w-3 h-3 text-emerald-400" />
+        <h5 className="font-semibold text-text-primary text-xs flex items-center gap-1.5">
+          <Sparkles className="w-3 h-3 text-text-muted" />
           <span>{language === 'vi' ? insight.titleVi : insight.titleEn}</span>
         </h5>
         <p className="text-zinc-300 text-xs mt-0.5 leading-relaxed">

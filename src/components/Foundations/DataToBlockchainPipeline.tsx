@@ -1,34 +1,5 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
-import {
-  Boxes,
-  ArrowRight,
-  ArrowDown,
-  Sparkles,
-  RefreshCw,
-  ShieldCheck,
-  ShieldAlert,
-  CheckCircle2,
-  XCircle,
-  SkipForward,
-  SkipBack,
-  Lock,
-  Layers,
-  FileText,
-  Binary,
-  GraduationCap,
-  ExternalLink,
-  Code2,
-  Zap,
-  ChevronDown,
-  ChevronUp,
-  Link2,
-  Info,
-  Sliders,
-  Plus,
-  RotateCcw,
-  Check,
-  AlertTriangle,
-} from 'lucide-react';
+import { Boxes, ArrowRight, ArrowDown, RefreshCw, ShieldCheck, ShieldAlert, CheckCircle2, XCircle, SkipForward, SkipBack, Layers, FileText, Binary, GraduationCap, ExternalLink, Code2, Zap, ChevronDown, ChevronUp, Link2, Info, Sliders, Plus, RotateCcw, Check, AlertTriangle } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { fastSha256Hex } from '../../utils/sha256';
 import { calculateHammingDifference } from '../../utils/binary';

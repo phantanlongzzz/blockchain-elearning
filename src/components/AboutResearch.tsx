@@ -1,5 +1,5 @@
 import React from 'react';
-import { BookOpen, GraduationCap, ShieldCheck, Cpu, Code2, Award, FileText } from 'lucide-react';
+import { BookOpen, ShieldCheck, Cpu, Code2, Award, FileText } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 import { RESEARCH_METADATA } from '../data/researchData';
 

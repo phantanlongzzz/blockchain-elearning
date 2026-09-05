@@ -1,16 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import {
-  Cpu,
-  ArrowDown,
-  Copy,
-  Check,
-  Trash2,
-  UploadCloud,
-  FileCode,
-  Sparkles,
-  RefreshCw,
-  Sliders,
-} from 'lucide-react';
+import { Copy, Check, Trash2, UploadCloud, FileCode, RefreshCw } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 import { hashSha256 } from '../utils/sha256';
 import { HashResult } from '../types';

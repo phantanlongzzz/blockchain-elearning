@@ -52,7 +52,7 @@ export const SimulationTimeline: React.FC<SimulationTimelineProps> = ({
               {idx < steps.length - 1 && (
                 <div className="absolute top-4 left-1/2 w-full h-[2px] bg-white/[0.08] z-0">
                   <div
-                    className={`h-full bg-[#00C98D] transition-all duration-300 ${
+                    className={`h-full bg-white/[0.2] transition-all duration-300 ${
                       activeStep > step.id ? 'w-full' : 'w-0'
                     }`}
                   />
@@ -70,9 +70,9 @@ export const SimulationTimeline: React.FC<SimulationTimelineProps> = ({
                 <div
                   className={`w-8 h-8 rounded-full flex items-center justify-center font-mono font-bold text-xs transition-all duration-200 ${
                     isActive
-                      ? 'bg-[#00C98D] text-[#090A0F] shadow-[0_0_12px_rgba(0,201,141,0.25)] ring-4 ring-[#00C98D]/20'
+                      ? 'bg-white/[0.2] text-text-primary ring-2 ring-white/20'
                       : isCompleted
-                      ? 'bg-[#0C0F14] text-[#00C98D] border border-[#00C98D]/60 ring-2 ring-[#00C98D]/15 group-hover:border-[#00C98D]'
+                      ? 'bg-[#0C0F14] text-text-primary border border-border-primary ring-2 ring-white/10 group-hover:border-border-primary'
                       : 'bg-[#0C0F14] text-[#717B8C] border border-white/[0.12] group-hover:border-white/[0.2] group-hover:text-[#A5AFBF]'
                   }`}
                 >

@@ -137,7 +137,7 @@ export const DigitalSignatureMiniLab: React.FC<DigitalSignatureMiniLabProps> = (
               2. SHA-256
             </div>
             <div className="font-mono text-xs break-all text-slate-300">
-              <span className={isTampered ? 'text-rose-400 font-semibold' : 'text-emerald-400'}>
+              <span className={isTampered ? 'text-rose-400 font-semibold' : 'text-success'}>
                 {currentDigest.slice(0, 12)}...
               </span>
             </div>
@@ -175,7 +175,7 @@ export const DigitalSignatureMiniLab: React.FC<DigitalSignatureMiniLabProps> = (
               5. {isVi ? 'Xác minh' : 'Verify'}
             </div>
             <div className="font-mono text-xs font-semibold">
-              <span className={verificationResult ? 'text-emerald-400' : 'text-rose-400'}>
+              <span className={verificationResult ? 'text-success' : 'text-rose-400'}>
                 {verificationResult
                   ? isVi ? 'Hợp lệ ✓' : 'Valid ✓'
                   : isVi ? 'Không hợp lệ ✕' : 'Invalid ✕'}

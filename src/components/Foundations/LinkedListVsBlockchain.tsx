@@ -1,19 +1,5 @@
 import React, { useState } from 'react';
-import {
-  GitCompare,
-  ArrowRight,
-  ShieldCheck,
-  Cpu,
-  Layers,
-  Sparkles,
-  RefreshCw,
-  Boxes,
-  Lock,
-  Binary,
-  HelpCircle,
-  Play,
-  RotateCcw,
-} from 'lucide-react';
+import { ArrowRight, Layers, RotateCcw } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { COMPARISON_ITEMS } from '../../data/foundationsData';
 
@@ -177,7 +163,7 @@ export const LinkedListVsBlockchain: React.FC<LinkedListVsBlockchainProps> = ({
                 <span
                   className={`px-2 py-0.5 rounded text-[10px] font-mono mb-1 border transition-colors ${
                     morphStep === 2
-                      ? 'bg-zinc-800 text-emerald-400 border-zinc-700'
+                      ? 'bg-zinc-800 text-text-primary border-border-primary'
                       : morphStep === 1
                       ? 'bg-zinc-800 text-amber-400 border-zinc-700'
                       : 'bg-zinc-900 text-zinc-500 border-zinc-800'
@@ -188,7 +174,7 @@ export const LinkedListVsBlockchain: React.FC<LinkedListVsBlockchainProps> = ({
                 <ArrowRight
                   className={`w-5 h-5 transition-colors ${
                     morphStep === 2
-                      ? 'text-emerald-400'
+                      ? 'text-text-primary'
                       : morphStep === 1
                       ? 'text-amber-400'
                       : 'text-zinc-600'
@@ -273,7 +259,7 @@ export const LinkedListVsBlockchain: React.FC<LinkedListVsBlockchainProps> = ({
                   <th className="py-2.5 px-3 uppercase font-medium text-zinc-300">
                     Linked List Truyền Thống
                   </th>
-                  <th className="py-2.5 px-3 uppercase font-medium text-emerald-400">
+                  <th className="py-2.5 px-3 uppercase font-medium text-text-primary">
                     Blockchain Mật Mã Học
                   </th>
                 </tr>
@@ -290,8 +276,8 @@ export const LinkedListVsBlockchain: React.FC<LinkedListVsBlockchainProps> = ({
                         {item.linkedList.desc[language]}
                       </div>
                     </td>
-                    <td className="py-2.5 px-3 text-emerald-300">
-                      <div className="text-emerald-400 font-medium">{item.blockchain[language]}</div>
+                    <td className="py-2.5 px-3 text-text-secondary">
+                      <div className="text-text-primary font-medium">{item.blockchain[language]}</div>
                       <div className="text-[11px] text-zinc-400 mt-0.5">
                         {item.blockchain.desc[language]}
                       </div>

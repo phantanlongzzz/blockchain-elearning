@@ -1,18 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import {
-  Plus,
-  Search,
-  RotateCcw,
-  ArrowRight,
-  Sparkles,
-  Layers,
-  Code2,
-  ListTree,
-  Utensils,
-  Lightbulb,
-  CheckCircle2,
-  Trash2,
-} from 'lucide-react';
+import { Search, RotateCcw, ArrowRight, Utensils, Trash2 } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { LinkedListNodeItem } from '../../types';
 import {
@@ -310,7 +297,7 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
           {searchResult.searched && (
             <div className="p-3 rounded-lg bg-zinc-900/60 border border-zinc-800 text-xs font-mono flex items-center gap-2">
               <span className={`w-1.5 h-1.5 rounded-full ${searchResult.found ? 'bg-emerald-400' : 'bg-rose-400'}`}></span>
-              <span className={searchResult.found ? 'text-emerald-400' : 'text-rose-400'}>
+              <span className={searchResult.found ? 'text-success' : 'text-rose-400'}>
                 {searchResult.found
                   ? language === 'vi'
                     ? `Tìm thấy "${searchTarget}" tại Nút #${searchResult.index}`
@@ -353,7 +340,7 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
                         <div className="flex items-center gap-1.5 text-[10px] font-mono text-zinc-500 mb-1">
                           <span>#{idx}</span>
                           {isHead && <span className="text-zinc-400">· HEAD</span>}
-                          {isTail && <span className="text-emerald-400">· TAIL</span>}
+                          {isTail && <span className="text-text-secondary">· TAIL</span>}
                         </div>
 
                         {/* Node Cell: Data & Next */}

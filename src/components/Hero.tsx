@@ -4,25 +4,7 @@
  */
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import {
-  Terminal,
-  ArrowDown,
-  Sparkles,
-  Copy,
-  Check,
-  Cpu,
-  ShieldAlert,
-  ArrowRight,
-  ListTree,
-  FlaskConical,
-  Boxes,
-  Layers,
-  BookOpen,
-  CheckCircle2,
-  PlayCircle,
-  RotateCcw,
-  Github,
-} from 'lucide-react';
+import { Copy, Check, Cpu, ArrowRight, ListTree, FlaskConical, Boxes, CheckCircle2, PlayCircle } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 import { useNavigation, MODULES_REGISTRY, ModuleId, LessonId } from '../context/NavigationContext';
 import { useProgressStore } from '../stores/progressStore';

@@ -1,11 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import {
-  Boxes,
-  Copy,
-  Check,
-  GitFork,
-  Coins,
-} from 'lucide-react';
+import { Copy, Check } from 'lucide-react';
 import { E2ETransaction } from './types';
 import { buildMerkleTree } from '../../utils/merkle';
 
@@ -110,7 +104,7 @@ export const BlockConstructionPanel: React.FC<BlockConstructionPanelProps> = ({
             <span className="text-zinc-400 block text-[11px] mb-0.5">
               {language === 'vi' ? 'Khối số' : 'Block height'}
             </span>
-            <span className="font-semibold font-mono text-emerald-400 text-sm">
+            <span className="font-semibold font-mono text-text-primary text-sm">
               #{blockHeight}
             </span>
           </div>
@@ -172,7 +166,7 @@ export const BlockConstructionPanel: React.FC<BlockConstructionPanelProps> = ({
               {language === 'vi' ? 'Mã băm Merkle Root' : 'Merkle Root'}
             </label>
             <div className="bg-[#080c16] border border-zinc-800 rounded-lg p-3 flex items-center justify-between gap-2">
-              <span className="font-mono text-xs text-emerald-400 break-all">
+              <span className="font-mono text-xs text-text-secondary break-all">
                 {merkleResult.rootHash}
               </span>
               <button
@@ -206,7 +200,7 @@ export const BlockConstructionPanel: React.FC<BlockConstructionPanelProps> = ({
             <span className="text-zinc-400">
               {language === 'vi' ? 'Trạng thái:' : 'Status:'}
             </span>
-            <span className="text-emerald-400 font-medium">
+            <span className="text-text-primary font-medium">
               ● {language === 'vi' ? 'Sẵn sàng khai thác' : 'Ready to mine'}
             </span>
           </div>

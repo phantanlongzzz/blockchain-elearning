@@ -7,7 +7,7 @@ import React from 'react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { useNavigation } from '../../context/NavigationContext';
 import { useProgressStore } from '../../stores/progressStore';
-import { ArrowLeft, ArrowRight, CheckCircle2, RotateCcw, Sparkles } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCircle2 } from 'lucide-react';
 
 export const LessonFooter: React.FC = () => {
   const { language } = useLanguage();
@@ -37,17 +37,17 @@ export const LessonFooter: React.FC = () => {
           {canGoPrev && prevLessonMeta ? (
             <button
               onClick={prevLesson}
-              className="w-full sm:w-auto flex items-center gap-3 px-5 py-3.5 rounded-xl bg-[#0C0F14] border border-[#1C2430] hover:border-[#00C98D]/40 hover:bg-[#11161E] text-left transition-all group shadow-md cursor-pointer"
+              className="w-full sm:w-auto flex items-center gap-3 px-5 py-3.5 rounded-xl bg-[#0C0F14] border border-[#1C2430] hover:border-border-primary hover:bg-[#11161E] text-left transition-all group shadow-md cursor-pointer"
               id="btn-prev-lesson"
             >
-              <div className="w-8 h-8 rounded-lg bg-[#0F131A] border border-[#1C2430] flex items-center justify-center text-[#A5AFBF] group-hover:text-[#00C98D] group-hover:border-[#00C98D]/30 transition-colors shrink-0">
+              <div className="w-8 h-8 rounded-lg bg-[#0F131A] border border-[#1C2430] flex items-center justify-center text-[#A5AFBF] group-hover:text-text-primary group-hover:border-border-primary transition-colors shrink-0">
                 <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-0.5" />
               </div>
               <div className="min-w-0">
                 <div className="text-[10px] font-mono text-[#717B8C] uppercase tracking-wider">
                   {isVi ? '← Bài trước' : '← Previous Lesson'}
                 </div>
-                <div className="text-xs sm:text-sm font-semibold text-[#F2F4F7] group-hover:text-[#00C98D] truncate max-w-[200px] sm:max-w-[260px]">
+                <div className="text-xs sm:text-sm font-semibold text-[#F2F4F7] group-hover:text-text-primary truncate max-w-[200px] sm:max-w-[260px]">
                   {isVi ? prevLessonMeta.shortTitleVi : prevLessonMeta.shortTitleEn}
                 </div>
               </div>
@@ -62,7 +62,7 @@ export const LessonFooter: React.FC = () => {
               {isVi ? 'Bài' : 'Lesson'} {currentLessonIndex + 1} / {totalLessons}
             </span>
             {isLessonCompleted && (
-              <span className="inline-flex items-center gap-1 text-[10px] text-[#00C98D] bg-[#00C98D]/10 px-2 py-0.5 rounded-md border border-[#00C98D]/30">
+              <span className="inline-flex items-center gap-1 text-[10px] text-text-primary bg-white/[0.04] px-2 py-0.5 rounded-md border border-border-primary">
                 <CheckCircle2 className="w-3 h-3" />
                 <span>{isVi ? 'Đã hoàn thành' : 'Completed'}</span>
               </span>
@@ -76,7 +76,7 @@ export const LessonFooter: React.FC = () => {
               className={`w-full sm:w-auto flex items-center justify-between sm:justify-end gap-3 px-5 py-3.5 rounded-xl transition-all group cursor-pointer ${
                 isLessonCompleted
                   ? 'guidance-amber-pulse bg-[#0C0F14] border-[#F59E0B] text-[#F2F4F7] hover:border-[#F59E0B]'
-                  : 'bg-[#0C0F14] border border-[#1C2430] hover:border-[#00C98D]/50 hover:bg-[#11161E] text-right'
+                  : 'bg-[#0C0F14] border border-[#1C2430] hover:border-border-primary hover:bg-[#11161E] text-right'
               }`}
               id="btn-next-lesson"
             >
@@ -87,7 +87,7 @@ export const LessonFooter: React.FC = () => {
                   )}
                   <span
                     className={`text-[10px] font-mono uppercase tracking-wider font-semibold ${
-                      isLessonCompleted ? 'text-[#F59E0B] font-bold' : 'text-[#00C98D]'
+                      isLessonCompleted ? 'text-[#F59E0B] font-bold' : 'text-text-primary'
                     }`}
                   >
                     {isLessonCompleted
@@ -103,7 +103,7 @@ export const LessonFooter: React.FC = () => {
                   className={`text-xs sm:text-sm font-semibold truncate max-w-[200px] sm:max-w-[260px] ${
                     isLessonCompleted
                       ? 'text-[#F2F4F7] group-hover:text-[#F59E0B]'
-                      : 'text-[#F2F4F7] group-hover:text-[#00C98D]'
+                      : 'text-[#F2F4F7] group-hover:text-text-primary'
                   }`}
                 >
                   {isVi ? nextLessonMeta.shortTitleVi : nextLessonMeta.shortTitleEn}
@@ -113,14 +113,14 @@ export const LessonFooter: React.FC = () => {
                 className={`w-8 h-8 rounded-lg border flex items-center justify-center transition-colors shrink-0 ${
                   isLessonCompleted
                     ? 'bg-[#F59E0B] text-[#090A0F] border-[#F59E0B] group-hover:bg-[#F59E0B]/90 shadow-sm'
-                    : 'bg-[#0F131A] border border-[#1C2430] text-[#00C98D] group-hover:bg-[#11161E] group-hover:border-[#00C98D]/40'
+                    : 'bg-[#0F131A] border border-[#1C2430] text-text-primary group-hover:bg-[#11161E] group-hover:border-border-primary'
                 }`}
               >
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
               </div>
             </button>
           ) : (
-            <div className="w-full sm:w-auto flex items-center gap-2 px-5 py-3 rounded-xl bg-[#0C0F14] border border-[#00C98D]/40 text-[#00C98D] font-mono text-xs">
+            <div className="w-full sm:w-auto flex items-center gap-2 px-5 py-3 rounded-xl bg-[#0C0F14] border border-border-primary text-text-primary font-mono text-xs">
               <CheckCircle2 className="w-4 h-4" />
               <span>{isVi ? 'Đã hoàn thành toàn bộ khóa học!' : 'Curriculum Completed!'}</span>
             </div>

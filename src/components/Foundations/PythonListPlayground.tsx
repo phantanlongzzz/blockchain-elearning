@@ -1,20 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Plus,
-  Trash2,
-  Edit3,
-  AlertTriangle,
-  Code2,
-  Sparkles,
-  RefreshCw,
-  Check,
-  ArrowRight,
-  Database,
-  Layers,
-  HelpCircle,
-  CheckCircle2,
-  Lightbulb,
-} from 'lucide-react';
+import { Plus, Trash2, Edit3, RefreshCw, ArrowRight } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { PythonListItem } from '../../types';
 import { INITIAL_PYTHON_LIST_ITEMS } from '../../data/foundationsData';
@@ -332,7 +317,7 @@ export const PythonListPlayground: React.FC<PythonListPlaygroundProps> = ({
           <div className="p-3.5 rounded-lg bg-zinc-900/60 border border-zinc-800 text-xs leading-relaxed space-y-1">
             <div className="flex items-center gap-2 font-mono font-medium text-xs">
               <span className={`w-1.5 h-1.5 rounded-full ${challengeCompleted ? 'bg-emerald-400' : 'bg-amber-400'}`}></span>
-              <span className={challengeCompleted ? 'text-emerald-400' : 'text-amber-400'}>
+              <span className={challengeCompleted ? 'text-success' : 'text-amber-400'}>
                 {challengeCompleted
                   ? language === 'vi'
                     ? 'Đã quan sát: Phần tử bị thay đổi trực tiếp trong RAM'

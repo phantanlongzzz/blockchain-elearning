@@ -51,7 +51,7 @@ export const SimulationNavigation: React.FC<SimulationNavigationProps> = ({
       <div className={latestBtnClass}>
         <button
           onClick={onLatest}
-          className="px-2 py-1 rounded bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 transition-all font-mono text-[10px] uppercase font-bold flex items-center gap-1 whitespace-nowrap"
+          className="px-2 py-1 rounded bg-white/[0.06] text-text-primary hover:bg-white/[0.1] transition-all font-mono text-[10px] uppercase font-bold flex items-center gap-1 whitespace-nowrap"
         >
           {isVi ? 'Đến mới nhất' : 'Latest'} <ArrowRight size={10} />
         </button>

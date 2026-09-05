@@ -1,16 +1,5 @@
 import React, { useState } from 'react';
-import {
-  HelpCircle,
-  ChevronDown,
-  ChevronUp,
-  BookOpen,
-  Hash,
-  Boxes,
-  Key,
-  Layers,
-  Network,
-  Search,
-} from 'lucide-react';
+import { ChevronDown, ChevronUp, BookOpen, Search } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 
 export const AcademicQuestions: React.FC = () => {

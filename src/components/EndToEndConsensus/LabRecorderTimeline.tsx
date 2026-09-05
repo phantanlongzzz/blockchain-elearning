@@ -1,16 +1,5 @@
 import React, { useState } from 'react';
-import {
-  ListRestart,
-  Copy,
-  Check,
-  Trash2,
-  ChevronDown,
-  ChevronUp,
-  CircleDot,
-  Radio,
-  Clock,
-  ShieldAlert,
-} from 'lucide-react';
+import { Copy, Check, Trash2, ChevronDown, ChevronUp } from 'lucide-react';
 import { E2EEventLog } from './types';
 
 interface LabRecorderTimelineProps {

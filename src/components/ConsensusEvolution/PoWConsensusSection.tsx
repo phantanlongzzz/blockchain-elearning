@@ -1,36 +1,12 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import {
-  Code,
-  ArrowRight,
-  Flame,
-  Play,
-  Square,
-  RotateCcw,
-  Trophy,
-  CheckCircle2,
-  Cpu,
-  ShieldCheck,
-  Zap,
-  Activity,
-  Layers,
-  Clock,
-  Radio,
-  Sparkles,
-  Lock,
-  Copy,
-  Check,
-  Terminal,
-  Share2,
-  GitFork,
-  BookOpen,
-} from 'lucide-react';
+import { Code, ArrowRight, Flame, Play, Square, RotateCcw, Trophy, CheckCircle2, ShieldCheck, Layers, Copy, Check, Terminal, Share2 } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { useSimulation } from '../../context/SimulationContext';
 import { useSimulationStore, SimMinedBlock } from '../../stores/simulationStore';
 import { useSandboxStore } from '../../stores/sandboxStore';
 import { useProgressStore } from '../../stores/progressStore';
 import { createMiningWorkerBlob, MinerWorkerOutgoingMessage } from '../../utils/miningWorker';
-import { fastSha256Hex } from '../../utils/sha256';
+
 
 interface PoWConsensusSectionProps {
   isHandsOn?: boolean;
@@ -666,7 +642,7 @@ export const PoWConsensusSection: React.FC<PoWConsensusSectionProps> = ({
             className="p-3.5 rounded-lg bg-[#0c101c] border border-slate-800 space-y-1.5"
           >
             <div className="flex items-center gap-2 text-xs font-semibold text-slate-200">
-              <span className="text-emerald-400 font-mono">{p.num}.</span>
+              <span className="text-text-primary font-mono">{p.num}.</span>
               <span>{p.title}</span>
             </div>
             <p className="text-xs text-slate-400 leading-relaxed">{p.desc}</p>
@@ -700,7 +676,7 @@ export const PoWConsensusSection: React.FC<PoWConsensusSectionProps> = ({
           <div className="flex flex-wrap items-center gap-3 text-xs font-mono">
             <div className="px-3 py-1.5 rounded-lg bg-[#080c14] border border-slate-800 text-slate-300">
               <span className="text-slate-500 mr-1">{isVi ? 'Tổng Hashrate:' : 'Hashrate:'}</span>
-              <span className="text-emerald-400 font-bold">
+              <span className="text-text-primary font-bold">
                 {totalCurrentHashrate.toLocaleString()} kH/s
               </span>
             </div>
@@ -944,7 +920,7 @@ export const PoWConsensusSection: React.FC<PoWConsensusSectionProps> = ({
                       <span className="text-[10px] font-mono text-slate-500 uppercase block">
                         HashRate
                       </span>
-                      <span className="text-xs font-mono font-bold text-emerald-400">
+                      <span className="text-xs font-mono font-bold text-text-primary">
                         {miner.hashrateKHz.toLocaleString()} kH/s
                       </span>
                     </div>
@@ -971,7 +947,7 @@ export const PoWConsensusSection: React.FC<PoWConsensusSectionProps> = ({
                     <span className="text-slate-500 block text-[9px] uppercase tracking-wider mb-1 font-sans">
                       {isVi ? 'Mã băm SHA-256 thời gian thực:' : 'Live SHA-256 Hash Calculation:'}
                     </span>
-                    <span className="text-emerald-400 font-bold">
+                    <span className="text-text-primary font-bold">
                       {miner.currentHash.slice(0, selectedDifficulty)}
                     </span>
                     <span className="text-slate-400">
@@ -993,7 +969,7 @@ export const PoWConsensusSection: React.FC<PoWConsensusSectionProps> = ({
                   <Trophy className="w-5 h-5" />
                 </div>
                 <div>
-                  <span className="px-2 py-0.5 rounded text-[9px] font-mono font-bold bg-emerald-500/20 text-emerald-300 uppercase">
+                  <span className="px-2 py-0.5 rounded text-[9px] font-mono font-bold bg-white/[0.08] text-text-secondary uppercase">
                     {isVi ? 'ĐỒNG THUẬN HOÀN TẤT' : 'CONSENSUS REACHED'}
                   </span>
                   <h4 className="text-sm sm:text-base font-bold text-slate-100">
@@ -1007,7 +983,7 @@ export const PoWConsensusSection: React.FC<PoWConsensusSectionProps> = ({
               <div className="flex items-center gap-2 text-xs font-mono">
                 <span className="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-slate-300">
                   {isVi ? 'Thời gian:' : 'Time:'}{' '}
-                  <strong className="text-emerald-400">{winnerBlock.elapsedSec}s</strong>
+                  <strong className="text-text-primary">{winnerBlock.elapsedSec}s</strong>
                 </span>
                 <span className="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-slate-300">
                   {isVi ? 'Tổng lượt băm:' : 'Attempts:'}{' '}
@@ -1029,14 +1005,14 @@ export const PoWConsensusSection: React.FC<PoWConsensusSectionProps> = ({
 
               <div className="p-2.5 rounded-lg bg-[#060a12] border border-slate-800/80">
                 <span className="text-slate-500 text-[10px] block mb-0.5">WINNING NONCE</span>
-                <span className="text-emerald-400 font-bold">
+                <span className="text-text-primary font-bold">
                   #{winnerBlock.nonce.toLocaleString()}
                 </span>
               </div>
 
               <div className="p-2.5 rounded-lg bg-[#060a12] border border-slate-800/80">
                 <span className="text-slate-500 text-[10px] block mb-0.5">VALID BLOCK HASH</span>
-                <span className="text-emerald-400 font-bold truncate block" title={winnerBlock.hash}>
+                <span className="text-text-primary font-bold truncate block" title={winnerBlock.hash}>
                   {winnerBlock.hash.slice(0, selectedDifficulty)}
                   <span className="text-slate-300 font-normal">
                     {winnerBlock.hash.slice(selectedDifficulty, 12)}...
@@ -1047,12 +1023,12 @@ export const PoWConsensusSection: React.FC<PoWConsensusSectionProps> = ({
               <div className="p-2.5 rounded-lg bg-[#060a12] border border-slate-800/80 flex items-center justify-between">
                 <div>
                   <span className="text-slate-500 text-[10px] block mb-0.5">XÁC MINH NHANH</span>
-                  <span className="text-emerald-400 font-semibold flex items-center gap-1">
+                  <span className="text-text-primary font-semibold flex items-center gap-1">
                     <CheckCircle2 className="w-3.5 h-3.5" />
                     <span>O(1) Hợp lệ</span>
                   </span>
                 </div>
-                <ShieldCheck className="w-5 h-5 text-emerald-400 opacity-60" />
+                <ShieldCheck className="w-5 h-5 text-text-primary opacity-60" />
               </div>
             </div>
           </div>
@@ -1080,7 +1056,7 @@ export const PoWConsensusSection: React.FC<PoWConsensusSectionProps> = ({
                     <span className="font-bold text-slate-100">
                       {b.height === 0 ? 'Genesis Block' : `Block #${b.height}`}
                     </span>
-                    <span className="text-[10px] text-emerald-400 font-bold">
+                    <span className="text-[10px] text-text-primary font-bold">
                       Diff {b.difficulty}
                     </span>
                   </div>
@@ -1088,7 +1064,7 @@ export const PoWConsensusSection: React.FC<PoWConsensusSectionProps> = ({
                   <div className="text-[10px] text-slate-500 truncate">
                     Nonce: #{b.nonce.toLocaleString()}
                   </div>
-                  <div className="text-[10px] text-emerald-300 font-bold truncate" title={b.hash}>
+                  <div className="text-[10px] text-text-secondary font-bold truncate" title={b.hash}>
                     {b.hash.slice(0, 8)}...{b.hash.slice(-4)}
                   </div>
                 </div>
@@ -1114,7 +1090,7 @@ export const PoWConsensusSection: React.FC<PoWConsensusSectionProps> = ({
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 text-xs">
             <div className="p-2 rounded bg-slate-900/60 border border-slate-800 text-slate-300">
-              <span className="text-emerald-400 font-semibold block mb-0.5">
+              <span className="text-text-primary font-semibold block mb-0.5">
                 05. Lan truyền P2P
               </span>
               <p className="text-[11px] text-slate-400">
@@ -1125,7 +1101,7 @@ export const PoWConsensusSection: React.FC<PoWConsensusSectionProps> = ({
             </div>
 
             <div className="p-2 rounded bg-slate-900/60 border border-slate-800 text-slate-300">
-              <span className="text-emerald-400 font-semibold block mb-0.5">
+              <span className="text-text-primary font-semibold block mb-0.5">
                 06. Phân nhánh & LCR
               </span>
               <p className="text-[11px] text-slate-400">
@@ -1136,7 +1112,7 @@ export const PoWConsensusSection: React.FC<PoWConsensusSectionProps> = ({
             </div>
 
             <div className="p-2 rounded bg-slate-900/60 border border-slate-800 text-slate-300">
-              <span className="text-emerald-400 font-semibold block mb-0.5">07. Sổ cái chính</span>
+              <span className="text-text-primary font-semibold block mb-0.5">07. Sổ cái chính</span>
               <p className="text-[11px] text-slate-400">
                 {isVi
                   ? 'Đồng bộ trực tiếp vào Blockchain Visualizer & Sandbox.'
@@ -1145,7 +1121,7 @@ export const PoWConsensusSection: React.FC<PoWConsensusSectionProps> = ({
             </div>
 
             <div className="p-2 rounded bg-slate-900/60 border border-slate-800 text-slate-300">
-              <span className="text-emerald-400 font-semibold block mb-0.5">08. Nhật ký sự kiện</span>
+              <span className="text-text-primary font-semibold block mb-0.5">08. Nhật ký sự kiện</span>
               <p className="text-[11px] text-slate-400">
                 {isVi
                   ? 'Ghi nhận hash, nonce và miner vào audit event logs.'
@@ -1192,9 +1168,9 @@ export const PoWConsensusSection: React.FC<PoWConsensusSectionProps> = ({
                   key={log.id}
                   className={`leading-relaxed ${
                     log.type === 'start'
-                      ? 'text-emerald-400 font-semibold'
+                      ? 'text-text-primary font-semibold'
                       : log.type === 'valid'
-                      ? 'text-emerald-300 font-bold'
+                      ? 'text-text-secondary font-bold'
                       : log.type === 'end'
                       ? 'text-amber-300 font-semibold'
                       : 'text-slate-400'

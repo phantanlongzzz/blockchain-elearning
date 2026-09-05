@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { Transaction, Block } from './types';
-import { Pickaxe, Box, Link, Cpu, GitBranch, ShieldAlert, ArrowRight } from 'lucide-react';
+import { Pickaxe, Link, Cpu, GitBranch, ShieldAlert, ArrowRight } from 'lucide-react';
 import { MerkleTreeVisualizer } from './MerkleTreeVisualizer';
 
 interface Props {

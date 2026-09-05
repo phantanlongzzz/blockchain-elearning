@@ -255,7 +255,7 @@ export const ForkAndLongestChainLab: React.FC<{onInteracted?: () => void}> = ({ 
               </div>
               <div className="flex justify-between items-center">
                 <span>Status</span>
-                <span className={isFinished ? 'text-emerald-400' : currentEvent.isFork ? 'text-amber-400' : 'text-emerald-400'}>
+                <span className={isFinished ? 'text-success' : currentEvent.isFork ? 'text-amber-400' : 'text-text-primary'}>
                   {isFinished ? 'Resolved' : currentEvent.isFork ? 'Competing' : 'Stable'}
                 </span>
               </div>
@@ -272,7 +272,7 @@ export const ForkAndLongestChainLab: React.FC<{onInteracted?: () => void}> = ({ 
               {logs.map((log, idx) => (
                 <div key={idx} className="font-mono text-[10px] flex gap-2 items-start leading-relaxed opacity-90 hover:opacity-100 transition-opacity">
                   <span className="text-zinc-600 shrink-0">{log.time}</span>
-                  <span className={`shrink-0 ${log.level === 'WARN' ? 'text-amber-500' : log.level === 'DONE' ? 'text-emerald-400' : 'text-emerald-500'}`}>
+                  <span className={`shrink-0 ${log.level === 'WARN' ? 'text-amber-500' : log.level === 'DONE' ? 'text-success' : 'text-text-secondary'}`}>
                     {log.level.padEnd(4)}
                   </span>
                   <span className="text-zinc-300">{log.msg}</span>
@@ -307,7 +307,7 @@ export const ForkAndLongestChainLab: React.FC<{onInteracted?: () => void}> = ({ 
               {isVi ? 'Kiểm tra' : 'Check'}
             </button>
             {quizResult && (
-              <div className={`text-xs ${quizResult === 'correct' ? 'text-emerald-400' : 'text-amber-400'}`}>
+              <div className={`text-xs ${quizResult === 'correct' ? 'text-success' : 'text-amber-400'}`}>
                 {quizResult === 'correct' ? (isVi ? 'Chính xác! Nhánh dài hơn được chọn.' : 'Correct! The longer branch is selected.') : (isVi ? 'Chưa đúng. Hãy xem lại cơ chế chuỗi dài nhất.' : 'Incorrect. Remember the longest chain rule.')}
               </div>
             )}

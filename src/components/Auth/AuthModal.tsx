@@ -1,14 +1,5 @@
 import React, { useState } from 'react';
-import {
-  X,
-  ShieldCheck,
-  User,
-  GraduationCap,
-  Sparkles,
-  ArrowRight,
-  LogIn,
-  CheckCircle2,
-} from 'lucide-react';
+import { X, ShieldCheck, ArrowRight } from 'lucide-react';
 import { useAuth, DEMO_USER_PROFILE } from '../../context/AuthContext';
 import { useLanguage } from '../../i18n/LanguageContext';
 

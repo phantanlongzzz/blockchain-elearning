@@ -355,7 +355,7 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
                   <div className="font-semibold text-success">✓ ĐÃ KÝ SỐ</div>
                 </div>
               </div>
-              <div className="p-3 rounded-md bg-[#0B0E12] border border-[#1C2430] text-center font-mono text-xs text-emerald-400 truncate">
+              <div className="p-3 rounded-md bg-[#0B0E12] border border-[#1C2430] text-center font-mono text-xs text-text-primary truncate">
                 Digital Signature: 3045022100e4a78c1b9f42d591837c9f8034b...5910220268a73bc
               </div>
             </div>
@@ -459,7 +459,7 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px]">
                   <div className="p-2 rounded bg-[#10151D] border border-[#1C2430]">
                     <span className="text-[#717B8C] block text-[10px] font-sans">Prev Hash</span>
-                    <span className="text-emerald-300 truncate block">{playPrevHash.slice(0, 8)}...</span>
+                    <span className="text-text-secondary truncate block">{playPrevHash.slice(0, 8)}...</span>
                   </div>
                   <div className="p-2 rounded bg-[#10151D] border border-[#1C2430]">
                     <span className="text-[#717B8C] block text-[10px] font-sans">Timestamp</span>
@@ -467,7 +467,7 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
                   </div>
                   <div className="p-2 rounded bg-[#10151D] border border-[#1C2430]">
                     <span className="text-[#717B8C] block text-[10px] font-sans">Merkle Root</span>
-                    <span className="text-emerald-300 truncate block">{liveMerkleRoot.slice(0, 8)}...</span>
+                    <span className="text-text-secondary truncate block">{liveMerkleRoot.slice(0, 8)}...</span>
                   </div>
                   <div className="p-2 rounded bg-[#10151D] border border-[#1C2430]">
                     <span className="text-[#717B8C] block text-[10px] font-sans">Nonce</span>
@@ -608,7 +608,7 @@ export const FullBlockLifecycleSimulation: React.FC<FullBlockLifecycleSimulation
         <div className="p-5 rounded-xl bg-[#10151D] border border-[#1C2430] space-y-3">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="space-y-1">
-              <div className="inline-flex items-center gap-2 text-xs font-semibold text-emerald-400 font-sans">
+              <div className="inline-flex items-center gap-2 text-xs font-semibold text-text-primary font-sans">
                 <FlaskConical className="w-4 h-4" />
                 <span>{isVi ? 'Thực hành nâng cao · Hands-on Lab' : 'Advanced Practice · Hands-on Lab'}</span>
               </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { GitFork, CheckCircle2, XCircle, AlertTriangle, ShieldCheck, Zap, ArrowRight, ArrowDown } from 'lucide-react';
+import { GitFork, CheckCircle2, XCircle, AlertTriangle, ShieldCheck, Zap } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { Miner } from './ProofOfWorkLab';
 

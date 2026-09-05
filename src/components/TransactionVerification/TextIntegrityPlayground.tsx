@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { hashSha256 } from '../../utils/sha256';
-import { RotateCcw, AlertTriangle, CheckCircle2, Type, Hash, IterationCcw } from 'lucide-react';
+import { RotateCcw, AlertTriangle, CheckCircle2, Type, Hash } from 'lucide-react';
 
 export const TextIntegrityPlayground: React.FC = () => {
   const defaultText = 'Blockchain is secure';
@@ -78,21 +78,21 @@ export const TextIntegrityPlayground: React.FC = () => {
         </button>
         <button
           onClick={handleExperiment1}
-          className="px-3.5 py-2 rounded-xl bg-[#0B0E12] hover:bg-[#1A2028] text-[#00D084] hover:text-emerald-300 border border-[#00D084]/30 text-xs font-sans flex items-center gap-1.5 transition-all cursor-pointer"
+          className="px-3.5 py-2 rounded-xl bg-[#0B0E12] hover:bg-[#1A2028] text-text-primary hover:text-white border border-border-primary text-xs font-sans flex items-center gap-1.5 transition-all cursor-pointer"
         >
           <Type className="w-3.5 h-3.5" />
           <span>Sửa 1 ký tự (s → S)</span>
         </button>
         <button
           onClick={handleExperiment2}
-          className="px-3.5 py-2 rounded-xl bg-[#0B0E12] hover:bg-[#1A2028] text-[#00D084] hover:text-emerald-300 border border-[#00D084]/30 text-xs font-sans flex items-center gap-1.5 transition-all cursor-pointer"
+          className="px-3.5 py-2 rounded-xl bg-[#0B0E12] hover:bg-[#1A2028] text-text-primary hover:text-white border border-border-primary text-xs font-sans flex items-center gap-1.5 transition-all cursor-pointer"
         >
           <Type className="w-3.5 h-3.5" />
           <span>Thêm khoảng trắng</span>
         </button>
         <button
           onClick={handleExperiment3}
-          className="px-3.5 py-2 rounded-xl bg-[#0B0E12] hover:bg-[#1A2028] text-[#00D084] hover:text-emerald-300 border border-[#00D084]/30 text-xs font-sans flex items-center gap-1.5 transition-all cursor-pointer"
+          className="px-3.5 py-2 rounded-xl bg-[#0B0E12] hover:bg-[#1A2028] text-text-primary hover:text-white border border-border-primary text-xs font-sans flex items-center gap-1.5 transition-all cursor-pointer"
         >
           <Type className="w-3.5 h-3.5" />
           <span>Thay đổi 1 từ</span>

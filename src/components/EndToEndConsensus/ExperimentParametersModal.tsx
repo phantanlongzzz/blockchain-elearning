@@ -1,16 +1,5 @@
 import React from 'react';
-import {
-  FlaskConical,
-  X,
-  Sliders,
-  Play,
-  RotateCcw,
-  Zap,
-  ShieldAlert,
-  Clock,
-  Coins,
-  Cpu,
-} from 'lucide-react';
+import { FlaskConical, X, RotateCcw } from 'lucide-react';
 import { E2EExperimentConfig } from './types';
 
 interface ExperimentParametersModalProps {
@@ -74,7 +63,7 @@ export const ExperimentParametersModal: React.FC<ExperimentParametersModalProps>
           <div>
             <div className="flex items-center justify-between mb-1 text-[#94A3B8]">
               <span>{language === 'vi' ? 'SỐ LƯỢNG THỢ ĐÀO' : 'NUMBER OF MINERS'}:</span>
-              <span className="font-bold text-emerald-400">{config.minerCount} miners</span>
+              <span className="font-bold text-text-primary font-mono">{config.minerCount} miners</span>
             </div>
             <input
               type="range"
@@ -123,7 +112,7 @@ export const ExperimentParametersModal: React.FC<ExperimentParametersModalProps>
         {/* Last Experiment Summary if any */}
         {lastExperimentSummary && (
           <div className="p-3.5 rounded-xl bg-[#111827] border border-border-primary text-xs font-mono space-y-1.5">
-            <span className="text-[10px] uppercase text-emerald-400 font-bold block">
+            <span className="text-[10px] uppercase text-text-secondary font-bold block">
               {language === 'vi' ? 'KẾT QUẢ THÍ NGHIỆM GẦN NHẤT:' : 'LATEST EXPERIMENT RESULT:'}
             </span>
             <div className="grid grid-cols-2 gap-2 text-[11px] text-[#94A3B8]">
@@ -131,7 +120,7 @@ export const ExperimentParametersModal: React.FC<ExperimentParametersModalProps>
               <div>Time: <span className="font-bold text-amber-400">{lastExperimentSummary.miningTimeSec.toFixed(2)}s</span></div>
               <div>Attempts: <span className="font-bold text-[#E5E7EB]">{lastExperimentSummary.totalAttempts.toLocaleString()}</span></div>
               <div>Fork Occurred: <span className="font-bold text-purple-300">{lastExperimentSummary.forkOccurred ? 'Yes' : 'No'}</span></div>
-              <div>Main Chain: <span className="font-bold text-emerald-400">{lastExperimentSummary.mainBranch}</span></div>
+              <div>Main Chain: <span className="font-bold text-text-primary">{lastExperimentSummary.mainBranch}</span></div>
               <div>Orphaned Blocks: <span className="font-bold text-rose-400">{lastExperimentSummary.orphanedCount}</span></div>
             </div>
           </div>

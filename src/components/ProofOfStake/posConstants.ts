@@ -10,7 +10,7 @@ export interface ParticipantPreset {
 }
 
 export const PARTICIPANT_PRESETS: ParticipantPreset[] = [
-  { id: 'alice', name: 'Alice', defaultStake: 100, color: '#10B981', glow: 'rgba(16, 185, 129, 0.2)', textClass: 'text-emerald-400' },
+  { id: 'alice', name: 'Alice', defaultStake: 100, color: '#10B981', glow: 'rgba(16, 185, 129, 0.2)', textClass: 'text-text-primary' },
   { id: 'bob', name: 'Bob', defaultStake: 500, color: '#F59E0B', glow: 'rgba(245, 158, 11, 0.2)', textClass: 'text-amber-400' },
   { id: 'charlie', name: 'Charlie', defaultStake: 50, color: '#A855F7', glow: 'rgba(168, 85, 247, 0.2)', textClass: 'text-purple-400' },
   { id: 'dave', name: 'Dave', defaultStake: 0, color: '#64748B', glow: 'rgba(100, 116, 139, 0.1)', textClass: 'text-[#717B8C]' },
@@ -88,6 +88,6 @@ export const getValidatorPreset = (id: string, fallbackName?: string): Participa
     defaultStake: 100,
     color: '#10B981',
     glow: 'rgba(16, 185, 129, 0.2)',
-    textClass: 'text-emerald-400',
+    textClass: 'text-text-primary',
   };
 };

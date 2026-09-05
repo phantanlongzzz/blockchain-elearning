@@ -1,15 +1,5 @@
 import React from 'react';
-import {
-  X,
-  Award,
-  ShieldCheck,
-  Lock,
-  Sparkles,
-  Info,
-  Layers,
-  Database,
-  CheckCircle2,
-} from 'lucide-react';
+import { X, Award, Sparkles, Info, Database, CheckCircle2 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useLanguage } from '../../i18n/LanguageContext';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLanguage } from '../../i18n/LanguageContext';
-import { HelpCircle, X, Sparkles, Layers, MousePointerClick, Activity, ShieldAlert } from 'lucide-react';
+import { HelpCircle, X, Layers, MousePointerClick, Activity, ShieldAlert } from 'lucide-react';
 import { SimulationQuestions } from '../common/SimulationGuidePanel';
 
 interface PoSHelpModalProps {
@@ -28,7 +28,7 @@ export const PoSHelpModal: React.FC<PoSHelpModalProps> = ({
       descVi: questions.whatAmILookingAtVi,
       descEn: questions.whatAmILookingAtEn,
       icon: Layers,
-      color: 'text-[#00C98D] border-[rgba(0,201,141,0.35)] bg-[rgba(0,201,141,0.06)]',
+      color: 'text-text-primary border-[rgba(0,201,141,0.35)] bg-[rgba(0,201,141,0.06)]',
     },
     {
       id: 2,
@@ -38,7 +38,7 @@ export const PoSHelpModal: React.FC<PoSHelpModalProps> = ({
       descVi: questions.whatShouldIClickVi,
       descEn: questions.whatShouldIClickEn,
       icon: MousePointerClick,
-      color: 'text-[#00C98D] border-[rgba(0,201,141,0.35)] bg-[rgba(0,201,141,0.06)]',
+      color: 'text-text-primary border-[rgba(0,201,141,0.35)] bg-[rgba(0,201,141,0.06)]',
     },
     {
       id: 3,
@@ -58,7 +58,7 @@ export const PoSHelpModal: React.FC<PoSHelpModalProps> = ({
       descVi: questions.whyDidItHappenVi,
       descEn: questions.whyDidItHappenEn,
       icon: ShieldAlert,
-      color: 'text-[#00C98D] border-[rgba(0,201,141,0.35)] bg-[rgba(0,201,141,0.06)]',
+      color: 'text-text-primary border-[rgba(0,201,141,0.35)] bg-[rgba(0,201,141,0.06)]',
     },
   ];
 
@@ -75,7 +75,7 @@ export const PoSHelpModal: React.FC<PoSHelpModalProps> = ({
         {/* Modal Header */}
         <div className="flex items-center justify-between p-5 border-b border-[#1C2430] bg-[#0F131A]">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-[rgba(0,201,141,0.08)] border border-[rgba(0,201,141,0.35)] flex items-center justify-center text-[#00C98D] shrink-0">
+            <div className="w-9 h-9 rounded-xl bg-[rgba(0,201,141,0.08)] border border-[rgba(0,201,141,0.35)] flex items-center justify-center text-text-primary shrink-0">
               <HelpCircle className="w-5 h-5" />
             </div>
             <div>

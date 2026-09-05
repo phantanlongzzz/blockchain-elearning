@@ -1,17 +1,5 @@
 import React, { useState } from 'react';
-import {
-  GraduationCap,
-  Sparkles,
-  BookOpen,
-  Award,
-  History,
-  CheckCircle2,
-  Clock,
-  ArrowRight,
-  ShieldCheck,
-  Zap,
-  HelpCircle,
-} from 'lucide-react';
+import { GraduationCap, Award, History, CheckCircle2, Clock, ArrowRight, ShieldCheck } from 'lucide-react';
 import { QUIZ_MODULES } from '../../data/quizData';
 import { QuizModule, QuizAttempt } from '../../types';
 import { useLanguage } from '../../i18n/LanguageContext';
@@ -80,10 +68,10 @@ export const QuizSection: React.FC = () => {
     >
       {/* Section Header */}
       <div className="text-center max-w-3xl mx-auto mb-12">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#00C98D]/10 border border-[#00C98D]/30 text-[#00C98D] text-xs font-semibold uppercase tracking-wider mb-4 shadow-sm">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.04] border border-border-primary text-text-primary text-xs font-semibold uppercase tracking-wider mb-4 shadow-sm">
           <GraduationCap className="w-3.5 h-3.5" />
           <span>{strings.quiz.badge}</span>
-          <span className="w-1 h-1 rounded-full bg-[#00C98D]"></span>
+          <span className="w-1 h-1 rounded-full bg-white/[0.1]"></span>
           <span className="font-mono">v1.0</span>
         </div>
 
@@ -99,7 +87,7 @@ export const QuizSection: React.FC = () => {
         <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
           {isAuthenticated ? (
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-[#0C0F14] border border-[#1C2430] text-xs text-[#A5AFBF]">
-              <span className="w-2 h-2 rounded-full bg-[#00C98D]"></span>
+              <span className="w-2 h-2 rounded-full bg-white/[0.1]"></span>
               <span>
                 {strings.auth.welcomeBack}{' '}
                 <strong className="text-[#F2F4F7]">{user?.name}</strong> (
@@ -109,7 +97,7 @@ export const QuizSection: React.FC = () => {
           ) : (
             <button
               onClick={() => setAuthModalOpen(true)}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#00C98D]/10 hover:bg-[#00C98D]/20 border border-[#00C98D]/30 text-xs text-[#00C98D] font-semibold transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-border-primary text-xs text-text-primary font-semibold transition-colors cursor-pointer"
             >
               <ShieldCheck className="w-3.5 h-3.5" />
               <span>{strings.auth.signIn}</span>
@@ -120,7 +108,7 @@ export const QuizSection: React.FC = () => {
             onClick={() => setQuizHistoryModalOpen(true)}
             className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#11161E] hover:bg-[#161D26] text-[#F2F4F7] text-xs font-medium border border-[#1C2430] transition-colors cursor-pointer"
           >
-            <History className="w-3.5 h-3.5 text-[#00C98D]" />
+            <History className="w-3.5 h-3.5 text-text-primary" />
             <span>
               {strings.quizHistory.title} ({pastAttempts.length})
             </span>
@@ -130,7 +118,7 @@ export const QuizSection: React.FC = () => {
             onClick={() => setCertificatesModalOpen(true)}
             className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#11161E] hover:bg-[#161D26] text-[#F2F4F7] text-xs font-medium border border-[#1C2430] transition-colors cursor-pointer"
           >
-            <Award className="w-3.5 h-3.5 text-[#00C98D]" />
+            <Award className="w-3.5 h-3.5 text-text-primary" />
             <span>{strings.certificates.title}</span>
           </button>
         </div>
@@ -159,11 +147,11 @@ export const QuizSection: React.FC = () => {
             <div
               key={mod.quizId}
               id={`quiz-card-${mod.quizId}`}
-              className="relative p-6 sm:p-8 bg-[#0C0F14] border border-[#00C98D]/40 hover:border-[#00C98D]/80 rounded-2xl shadow-xl transition-all flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 overflow-hidden group"
+              className="relative p-6 sm:p-8 bg-[#0C0F14] border border-border-primary hover:border-border-primary/80 rounded-2xl shadow-xl transition-all flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 overflow-hidden group"
             >
               <div className="space-y-3 flex-1 relative z-10">
                 <div className="flex items-center gap-2">
-                  <span className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#00C98D]/15 text-[#00C98D] border border-[#00C98D]/30">
+                  <span className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-white/[0.1]/15 text-text-primary border border-border-primary">
                     ★ {language === 'vi' ? 'Đề Đánh Giá Tổng Hợp' : 'Comprehensive Certification'}
                   </span>
                   <span className="text-xs font-mono px-2 py-0.5 rounded bg-[#11161E] text-[#A5AFBF] border border-[#1C2430]">
@@ -174,7 +162,7 @@ export const QuizSection: React.FC = () => {
                   </span>
                 </div>
 
-                <h3 className="text-xl sm:text-2xl font-bold text-[#F2F4F7] group-hover:text-[#00C98D] transition-colors">
+                <h3 className="text-xl sm:text-2xl font-bold text-[#F2F4F7] group-hover:text-text-primary transition-colors">
                   {language === 'vi' ? mod.title.vi : mod.title.en}
                 </h3>
 
@@ -184,11 +172,11 @@ export const QuizSection: React.FC = () => {
 
                 <div className="flex flex-wrap items-center gap-4 text-xs text-[#717B8C] font-mono pt-1">
                   <span className="flex items-center gap-1.5">
-                    <Clock className="w-3.5 h-3.5 text-[#00C98D]" />
+                    <Clock className="w-3.5 h-3.5 text-text-primary" />
                     <span>{strings.quiz.timeEstimate}</span>
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-[#00C98D]" />
+                    <CheckCircle2 className="w-3.5 h-3.5 text-text-primary" />
                     <span>
                       {strings.quiz.passingScoreReq}: ≥ {mod.passingScore}%
                     </span>
@@ -200,7 +188,7 @@ export const QuizSection: React.FC = () => {
                 <button
                   id={`btn-start-${mod.quizId}`}
                   onClick={() => handleStartQuiz(mod)}
-                  className="px-6 py-3.5 bg-[#00C98D] hover:bg-[#00C98D]/90 text-slate-950 font-bold text-sm rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer active:scale-95"
+                  className="px-6 py-3.5 bg-white/[0.1] hover:bg-white/[0.1]/90 text-slate-950 font-bold text-sm rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer active:scale-95"
                 >
                   <span>{strings.quiz.startQuiz}</span>
                   <ArrowRight className="w-4 h-4" />
@@ -215,11 +203,11 @@ export const QuizSection: React.FC = () => {
               <div
                 key={mod.quizId}
                 id={`quiz-card-${mod.quizId}`}
-                className="p-5 bg-[#0C0F14] hover:bg-[#11161E] border border-[#1C2430] hover:border-[#00C98D]/40 rounded-2xl transition-all flex flex-col justify-between space-y-4 group"
+                className="p-5 bg-[#0C0F14] hover:bg-[#11161E] border border-[#1C2430] hover:border-border-primary rounded-2xl transition-all flex flex-col justify-between space-y-4 group"
               >
                 <div className="space-y-2">
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-[#11161E] text-[#00C98D] border border-[#1C2430]">
+                    <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-[#11161E] text-text-primary border border-[#1C2430]">
                       v{mod.version}
                     </span>
                     <span className="text-xs text-[#717B8C] font-mono">
@@ -227,7 +215,7 @@ export const QuizSection: React.FC = () => {
                     </span>
                   </div>
 
-                  <h4 className="text-base font-bold text-[#F2F4F7] group-hover:text-[#00C98D] transition-colors">
+                  <h4 className="text-base font-bold text-[#F2F4F7] group-hover:text-text-primary transition-colors">
                     {language === 'vi' ? mod.title.vi : mod.title.en}
                   </h4>
 
@@ -246,7 +234,7 @@ export const QuizSection: React.FC = () => {
                   <button
                     id={`btn-start-${mod.quizId}`}
                     onClick={() => handleStartQuiz(mod)}
-                    className="px-4 py-2 bg-[#11161E] hover:bg-[#00C98D] hover:text-slate-950 text-[#F2F4F7] text-xs font-semibold rounded-xl border border-[#1C2430] transition-all flex items-center gap-1.5 cursor-pointer"
+                    className="px-4 py-2 bg-[#11161E] hover:bg-white/[0.1] hover:text-slate-950 text-[#F2F4F7] text-xs font-semibold rounded-xl border border-[#1C2430] transition-all flex items-center gap-1.5 cursor-pointer"
                   >
                     <span>{strings.quiz.startQuiz}</span>
                     <ArrowRight className="w-3.5 h-3.5" />

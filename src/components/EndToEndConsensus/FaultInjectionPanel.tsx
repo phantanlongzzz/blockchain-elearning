@@ -1,17 +1,5 @@
 import React, { useState } from 'react';
-import {
-  AlertTriangle,
-  Flame,
-  Radio,
-  Clock,
-  Key,
-  Database,
-  ArrowRight,
-  RotateCcw,
-  CheckCircle2,
-  XCircle,
-  HelpCircle,
-} from 'lucide-react';
+import { AlertTriangle, Flame, Radio, Database, RotateCcw, CheckCircle2, XCircle } from 'lucide-react';
 import { CausalityStep, FaultScenarioType, E2EBlock, E2ENetworkNode } from './types';
 
 interface FaultInjectionPanelProps {
@@ -122,7 +110,7 @@ export const FaultInjectionPanel: React.FC<FaultInjectionPanelProps> = ({
             onClick={onResetFaults}
             className="px-2.5 py-1 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-zinc-200 text-xs flex items-center gap-1.5 transition-colors cursor-pointer self-start sm:self-auto"
           >
-            <RotateCcw className="w-3 h-3 text-emerald-400" />
+            <RotateCcw className="w-3 h-3 text-text-muted" />
             <span>{language === 'vi' ? 'Khôi phục tính toàn vẹn' : 'Restore Integrity'}</span>
           </button>
         )}

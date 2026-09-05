@@ -25,7 +25,7 @@ export const MINER_COLORS: Record<string, MinerColorToken> = {
     name: 'Alice',
     primary: '#22c55e',
     border: 'border-border-primary',
-    text: 'text-emerald-400',
+    text: 'text-text-primary',
     bg: 'bg-emerald-500/10',
     badge: 'bg-white/[0.04] text-text-primary border-border-primary',
     progressBar: 'bg-emerald-500',

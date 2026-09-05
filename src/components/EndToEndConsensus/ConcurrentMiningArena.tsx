@@ -59,7 +59,7 @@ export const ConcurrentMiningArena: React.FC<ConcurrentMiningArenaProps> = ({
         {/* Inline Telemetry */}
         <div className="flex items-center gap-4 text-xs font-mono">
           <div className="text-zinc-400">
-            <span className="font-semibold text-emerald-400">{totalHashRate.toLocaleString()}</span> KH/s
+            <span className="font-semibold text-financial font-mono">{totalHashRate.toLocaleString()}</span> KH/s
           </div>
           <div className="text-zinc-600">·</div>
           <div className="text-zinc-400">
@@ -134,7 +134,7 @@ export const ConcurrentMiningArena: React.FC<ConcurrentMiningArenaProps> = ({
               <Trophy className="w-4 h-4 text-amber-400 shrink-0" />
               <span className="text-zinc-200 font-medium">
                 {language === 'vi' ? 'Thợ đào chiến thắng:' : 'Winning Miner:'}{' '}
-                <strong className="text-emerald-400 font-semibold">{winnerBlock.minerName}</strong> ·{' '}
+                <strong className="text-text-primary font-semibold">{winnerBlock.minerName}</strong> ·{' '}
                 {language === 'vi' ? 'Khối' : 'Block'} #{winnerBlock.height} · Nonce: {winnerBlock.nonce.toLocaleString()}
               </span>
             </div>
@@ -199,11 +199,11 @@ export const ConcurrentMiningArena: React.FC<ConcurrentMiningArenaProps> = ({
                       <div className="flex items-center gap-2">
                         <div
                           className="w-2.5 h-2.5 rounded-full"
-                          style={{ backgroundColor: miner.avatarColor || '#10b981' }}
+                          style={{ backgroundColor: miner.avatarColor || '#3b82f6' }}
                         />
                         <span>{miner.name}</span>
                         {isWinner && (
-                          <span className="px-1.5 py-0.5 rounded text-[10px] bg-emerald-900/60 text-emerald-300 font-medium">
+                          <span className="px-1.5 py-0.5 rounded text-[10px] bg-white/[0.08] text-text-secondary font-medium">
                             {language === 'vi' ? 'Tìm thấy khối' : 'Winner'}
                           </span>
                         )}
@@ -233,7 +233,7 @@ export const ConcurrentMiningArena: React.FC<ConcurrentMiningArenaProps> = ({
                         </span>
                       ) : isWinner ? (
                         <div className="flex items-center gap-2">
-                          <span className="text-emerald-400 truncate max-w-xs font-mono text-[11px]">
+                          <span className="text-text-secondary truncate max-w-xs font-mono text-[11px]">
                             {miner.currentHash?.substring(0, 18) || '...'}
                           </span>
                           <span className="text-success font-sans text-[11px]">✓ Hợp lệ</span>

@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { CheckCircle2, ArrowRight, Sparkles } from 'lucide-react';
+import { CheckCircle2, ArrowRight } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 
 export interface StepCompletionFeedbackProps {

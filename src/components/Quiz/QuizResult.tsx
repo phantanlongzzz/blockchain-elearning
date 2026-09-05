@@ -1,16 +1,5 @@
 import React from 'react';
-import {
-  Award,
-  CheckCircle2,
-  XCircle,
-  Clock,
-  RotateCcw,
-  BookOpen,
-  ArrowRight,
-  Sparkles,
-  ShieldCheck,
-  LayoutGrid,
-} from 'lucide-react';
+import { Award, RotateCcw, BookOpen, ShieldCheck, LayoutGrid } from 'lucide-react';
 import { QuizAttempt, QuizModule } from '../../types';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { useAuth } from '../../context/AuthContext';
@@ -64,7 +53,7 @@ export const QuizResult: React.FC<QuizResultProps> = ({
         <div
           className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl border mx-auto shadow-sm ${
             isPassed
-              ? 'bg-[#00C98D]/10 border-[#00C98D]/30 text-[#00C98D]'
+              ? 'bg-success/10 border-success/30 text-success'
               : 'bg-rose-500/10 border-rose-500/30 text-rose-400'
           }`}
         >
@@ -93,7 +82,7 @@ export const QuizResult: React.FC<QuizResultProps> = ({
           </span>
           <span
             className={`text-2xl sm:text-3xl font-black font-mono mt-0.5 block ${
-              isPassed ? 'text-[#00C98D]' : 'text-rose-400'
+              isPassed ? 'text-success' : 'text-rose-400'
             }`}
           >
             {attempt.score}%
@@ -101,7 +90,7 @@ export const QuizResult: React.FC<QuizResultProps> = ({
           <span
             className={`inline-block text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full mt-1.5 ${
               isPassed
-                ? 'bg-[#00C98D]/15 text-[#00C98D] border border-[#00C98D]/30'
+                ? 'bg-success/15 text-success border border-success/30'
                 : 'bg-rose-500/10 text-rose-400 border border-rose-500/20'
             }`}
           >
@@ -140,7 +129,7 @@ export const QuizResult: React.FC<QuizResultProps> = ({
           <span className="block text-[11px] uppercase tracking-wider text-[#A5AFBF] font-medium">
             {strings.quiz.timeTaken}
           </span>
-          <span className="text-2xl sm:text-3xl font-bold text-[#00C98D] font-mono mt-0.5 block">
+          <span className="text-2xl sm:text-3xl font-bold text-success font-mono mt-0.5 block">
             {formatDuration(attempt.durationSeconds || 0)}
           </span>
           <span className="text-[10px] text-[#717B8C] mt-1 block">
@@ -151,13 +140,13 @@ export const QuizResult: React.FC<QuizResultProps> = ({
 
       {/* Certificate Unlocked Banner if qualified */}
       {isEligibleForCert && (
-        <div className="p-4 bg-[#080C10] border border-[#00C98D]/40 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="p-4 bg-[#080C10] border border-success/40 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3 text-left">
-            <div className="p-2.5 rounded-xl bg-[#00C98D]/15 text-[#00C98D] border border-[#00C98D]/30">
+            <div className="p-2.5 rounded-xl bg-success/15 text-success border border-success/30">
               <Award className="w-6 h-6" />
             </div>
             <div>
-              <h4 className="text-sm font-bold text-[#00C98D]">
+              <h4 className="text-sm font-bold text-success">
                 {strings.quiz.eligibleForCert}
               </h4>
               <p className="text-xs text-[#A5AFBF] mt-0.5">
@@ -170,7 +159,7 @@ export const QuizResult: React.FC<QuizResultProps> = ({
 
           <button
             onClick={() => setCertificatesModalOpen(true)}
-            className="px-4 py-2 bg-[#00C98D] hover:bg-[#00C98D]/90 text-slate-950 font-bold text-xs rounded-xl shadow-sm transition-colors flex items-center gap-1.5 flex-shrink-0 cursor-pointer"
+            className="px-4 py-2 bg-success hover:bg-success/90 text-slate-950 font-bold text-xs rounded-xl shadow-sm transition-colors flex items-center gap-1.5 flex-shrink-0 cursor-pointer"
           >
             <ShieldCheck className="w-4 h-4" />
             <span>{strings.certificates.title}</span>
@@ -182,7 +171,7 @@ export const QuizResult: React.FC<QuizResultProps> = ({
       {attempt.topicBreakdown && Object.keys(attempt.topicBreakdown).length > 0 && (
         <div className="space-y-3 pt-2">
           <h4 className="text-xs font-bold text-[#A5AFBF] uppercase tracking-wider flex items-center gap-2">
-            <LayoutGrid className="w-3.5 h-3.5 text-[#00C98D]" />
+            <LayoutGrid className="w-3.5 h-3.5 text-success" />
             <span>
               {language === 'vi'
                 ? 'Kết Quả Theo Từng Chuyên Đề'
@@ -215,7 +204,7 @@ export const QuizResult: React.FC<QuizResultProps> = ({
                   <div className="text-right">
                     <span
                       className={`font-mono font-bold ${
-                        isTopicPassed ? 'text-[#00C98D]' : 'text-rose-400'
+                        isTopicPassed ? 'text-success' : 'text-rose-400'
                       }`}
                     >
                       {percent}%
@@ -242,13 +231,13 @@ export const QuizResult: React.FC<QuizResultProps> = ({
             onClick={onRetake}
             className="flex items-center gap-1.5 px-4 py-2.5 bg-[#11161E] hover:bg-[#161D26] text-[#F2F4F7] text-xs font-semibold rounded-xl border border-[#1C2430] transition-colors cursor-pointer"
           >
-            <RotateCcw className="w-3.5 h-3.5 text-[#00C98D]" />
+            <RotateCcw className="w-3.5 h-3.5 text-success" />
             <span>{strings.quiz.retakeQuiz}</span>
           </button>
 
           <button
             onClick={onReview}
-            className="flex items-center gap-2 px-5 py-2.5 bg-[#00C98D] hover:bg-[#00C98D]/90 text-slate-950 text-xs font-bold rounded-xl shadow-md transition-all cursor-pointer"
+            className="flex items-center gap-2 px-5 py-2.5 bg-success hover:bg-success/90 text-slate-950 text-xs font-bold rounded-xl shadow-md transition-all cursor-pointer"
           >
             <BookOpen className="w-4 h-4" />
             <span>{strings.quiz.reviewAnswers}</span>

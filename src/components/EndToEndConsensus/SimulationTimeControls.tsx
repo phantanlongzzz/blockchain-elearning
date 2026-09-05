@@ -170,7 +170,7 @@ export const SimulationTimeControls: React.FC<SimulationTimeControlsProps> = ({
               onClick={() => onChangeSpeed(s)}
               className={`px-2 py-0.5 rounded text-[11px] font-medium transition-colors cursor-pointer ${
                 speed === s
-                  ? 'bg-zinc-800 text-emerald-400 font-bold border border-zinc-700'
+                  ? 'bg-zinc-800 text-text-primary font-bold border border-border-primary'
                   : 'text-zinc-400 hover:text-zinc-200'
               }`}
             >

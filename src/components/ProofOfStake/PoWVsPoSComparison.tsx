@@ -1,18 +1,6 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../../i18n/LanguageContext';
-import {
-  Cpu,
-  Layers,
-  ShieldCheck,
-  Zap,
-  HelpCircle,
-  ChevronDown,
-  ChevronUp,
-  Flame,
-  Scale,
-  Award,
-  Sparkles,
-} from 'lucide-react';
+import { Cpu, ShieldCheck, Zap, HelpCircle, ChevronDown, ChevronUp, Flame, Scale } from 'lucide-react';
 
 export const PoWVsPoSComparison: React.FC = () => {
   const { strings, language } = useLanguage();
@@ -26,7 +14,7 @@ export const PoWVsPoSComparison: React.FC = () => {
       title: strings.proofOfStake.conceptCards.card1Title,
       desc: strings.proofOfStake.conceptCards.card1Desc,
       icon: ShieldCheck,
-      color: 'text-[#00C98D] border-[rgba(0,201,141,0.3)] bg-[rgba(0,201,141,0.05)]',
+      color: 'text-text-primary border-[rgba(0,201,141,0.3)] bg-[rgba(0,201,141,0.05)]',
     },
     {
       num: '02',
@@ -40,7 +28,7 @@ export const PoWVsPoSComparison: React.FC = () => {
       title: strings.proofOfStake.conceptCards.card3Title,
       desc: strings.proofOfStake.conceptCards.card3Desc,
       icon: Scale,
-      color: 'text-[#00C98D] border-[rgba(0,201,141,0.3)] bg-[rgba(0,201,141,0.05)]',
+      color: 'text-text-primary border-[rgba(0,201,141,0.3)] bg-[rgba(0,201,141,0.05)]',
     },
     {
       num: '04',
@@ -70,7 +58,7 @@ export const PoWVsPoSComparison: React.FC = () => {
         className="w-full p-4 sm:p-5 flex items-center justify-between text-left hover:bg-white/[0.02] transition-colors cursor-pointer group"
       >
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-[#00C98D] shrink-0">
+          <div className="w-9 h-9 rounded-xl bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-text-primary shrink-0">
             <Scale className="w-5 h-5" />
           </div>
           <h3 className="text-sm sm:text-base font-bold text-[#F2F4F7] font-display">
@@ -124,7 +112,7 @@ export const PoWVsPoSComparison: React.FC = () => {
           {/* Side-by-Side Architectural Comparison: PoW vs PoS */}
           <div className="bg-[#0C0F14] border border-[#1C2430] rounded-xl p-5 shadow-sm">
             <div className="flex items-center gap-2.5 mb-4 pb-3 border-b border-[#1C2430]">
-              <div className="w-8 h-8 rounded-lg bg-[rgba(0,201,141,0.08)] border border-[rgba(0,201,141,0.35)] flex items-center justify-center text-[#00C98D]">
+              <div className="w-8 h-8 rounded-lg bg-[rgba(0,201,141,0.08)] border border-[rgba(0,201,141,0.35)] flex items-center justify-center text-text-primary">
                 <Scale className="w-4 h-4" />
               </div>
               <div>
@@ -175,12 +163,12 @@ export const PoWVsPoSComparison: React.FC = () => {
                 <div>
                   <div className="flex items-center justify-between pb-2 mb-3 border-b border-[#1C2430]">
                     <div className="flex items-center gap-2">
-                      <ShieldCheck className="w-4 h-4 text-[#00C98D]" />
-                      <span className="text-xs font-bold font-display uppercase tracking-wider text-[#00C98D]">
+                      <ShieldCheck className="w-4 h-4 text-text-primary" />
+                      <span className="text-xs font-bold font-display uppercase tracking-wider text-text-primary">
                         {strings.proofOfStake.posLabel}
                       </span>
                     </div>
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[rgba(0,201,141,0.12)] border border-[rgba(0,201,141,0.35)] text-[#00C98D]">
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[rgba(0,201,141,0.12)] border border-[rgba(0,201,141,0.35)] text-text-primary">
                       ECONOMIC COLLATERAL
                     </span>
                   </div>
@@ -188,7 +176,7 @@ export const PoWVsPoSComparison: React.FC = () => {
                   <ul className="space-y-2 text-xs font-mono text-[#A5AFBF]">
                     {strings.proofOfStake.posFlow.map((step, idx) => (
                       <li key={idx} className="flex items-center gap-2">
-                        <span className="w-5 h-5 rounded-full bg-[#090A0F] border border-[rgba(0,201,141,0.35)] flex items-center justify-center text-[10px] text-[#00C98D] font-bold shrink-0">
+                        <span className="w-5 h-5 rounded-full bg-[#090A0F] border border-[rgba(0,201,141,0.35)] flex items-center justify-center text-[10px] text-text-primary font-bold shrink-0">
                           {idx + 1}
                         </span>
                         <span className="leading-snug text-[#F2F4F7]">{step}</span>
@@ -207,7 +195,7 @@ export const PoWVsPoSComparison: React.FC = () => {
           {/* Expandable "Think About It" Section */}
           <div className="bg-[#0C0F14] border border-[#1C2430] rounded-xl p-5 shadow-sm">
             <div className="flex items-center gap-2.5 mb-4 pb-3 border-b border-[#1C2430]">
-              <div className="w-8 h-8 rounded-lg bg-[rgba(0,201,141,0.08)] border border-[rgba(0,201,141,0.35)] flex items-center justify-center text-[#00C98D]">
+              <div className="w-8 h-8 rounded-lg bg-[rgba(0,201,141,0.08)] border border-[rgba(0,201,141,0.35)] flex items-center justify-center text-text-primary">
                 <HelpCircle className="w-4 h-4" />
               </div>
               <div>
@@ -234,7 +222,7 @@ export const PoWVsPoSComparison: React.FC = () => {
                       className="w-full px-4 py-3 text-left flex items-center justify-between gap-3 hover:bg-[#11161E] transition-colors cursor-pointer"
                     >
                       <div className="flex items-center gap-3">
-                        <span className="w-6 h-6 rounded-md bg-[#090A0F] border border-[#1C2430] flex items-center justify-center text-xs font-mono font-bold text-[#00C98D] shrink-0">
+                        <span className="w-6 h-6 rounded-md bg-[#090A0F] border border-[#1C2430] flex items-center justify-center text-xs font-mono font-bold text-text-primary shrink-0">
                           Q{item.id}
                         </span>
                         <span className="text-xs sm:text-sm font-semibold text-[#F2F4F7] font-sans">
@@ -242,7 +230,7 @@ export const PoWVsPoSComparison: React.FC = () => {
                         </span>
                       </div>
                       {isOpenQAItem ? (
-                        <ChevronUp className="w-4 h-4 text-[#00C98D] shrink-0" />
+                        <ChevronUp className="w-4 h-4 text-text-primary shrink-0" />
                       ) : (
                         <ChevronDown className="w-4 h-4 text-[#717B8C] shrink-0" />
                       )}

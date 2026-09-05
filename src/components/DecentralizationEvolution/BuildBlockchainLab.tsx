@@ -1,25 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Boxes,
-  Lock,
-  Unlock,
-  AlertTriangle,
-  CheckCircle2,
-  XCircle,
-  Plus,
-  RotateCcw,
-  Sparkles,
-  ArrowRight,
-  ShieldAlert,
-  Flame,
-  Globe,
-  Building,
-  Users,
-  Layers,
-  ArrowDown,
-} from 'lucide-react';
+import { Boxes, Lock, Unlock, CheckCircle2, XCircle, RotateCcw, Sparkles, ArrowRight, Flame, Layers } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
-import { fastSha256Hex } from '../../utils/sha256';
+
 import { SimBlock, BlockchainTypeEnum, BlockchainTypeInfo } from './types';
 
 interface BuildBlockchainLabProps {
@@ -316,7 +298,7 @@ export const BuildBlockchainLab: React.FC<BuildBlockchainLabProps> = ({
                       block.index === 0
                         ? 'bg-amber-500 text-black'
                         : block.isValid
-                        ? 'bg-emerald-500/20 text-emerald-300'
+                        ? 'bg-white/[0.08] text-text-primary'
                         : 'bg-rose-500 text-white'
                     }`}
                   >
@@ -326,7 +308,7 @@ export const BuildBlockchainLab: React.FC<BuildBlockchainLabProps> = ({
 
                 <div>
                   {block.isValid ? (
-                    <span className="text-[10px] font-mono text-emerald-400 flex items-center gap-1 font-bold">
+                    <span className="text-[10px] font-mono text-text-secondary flex items-center gap-1 font-bold">
                       <Lock className="w-3 h-3" />
                       <span>VALID</span>
                     </span>
@@ -414,7 +396,7 @@ export const BuildBlockchainLab: React.FC<BuildBlockchainLabProps> = ({
       <div className="p-6 rounded-2xl bg-[#090d16] border border-slate-800 shadow-xl space-y-5">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800">
           <div>
-            <div className="text-xs font-mono font-bold text-emerald-400 uppercase flex items-center gap-1.5">
+            <div className="text-xs font-mono font-bold text-text-secondary uppercase flex items-center gap-1.5">
               <Layers className="w-4 h-4" />
               <span>{language === 'vi' ? 'PHÂN LOẠI 4 LOẠI HÌNH BLOCKCHAIN PHỔ BIẾN' : '4 MAJOR BLOCKCHAIN ARCHITECTURES'}</span>
             </div>
@@ -450,7 +432,7 @@ export const BuildBlockchainLab: React.FC<BuildBlockchainLabProps> = ({
           <div className="lg:col-span-8 space-y-3">
             <div className="flex items-center gap-2">
               <h5 className="text-sm font-bold text-white">{activeTypeInfo.name[language]}</h5>
-              <span className="px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-[11px] font-mono text-emerald-400">
+              <span className="px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-[11px] font-mono text-text-secondary">
                 Ví dụ: {activeTypeInfo.example}
               </span>
             </div>
@@ -459,7 +441,7 @@ export const BuildBlockchainLab: React.FC<BuildBlockchainLabProps> = ({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
               <div className="p-3 rounded-xl bg-[#05070c] border border-slate-800 space-y-1">
                 <div className="text-[10px] font-mono text-slate-500">QUYỀN TRUY CẬP (ACCESS):</div>
-                <div className="text-xs font-mono font-bold text-emerald-300">{activeTypeInfo.access[language]}</div>
+                <div className="text-xs font-mono font-bold text-text-primary">{activeTypeInfo.access[language]}</div>
               </div>
               <div className="p-3 rounded-xl bg-[#05070c] border border-slate-800 space-y-1">
                 <div className="text-[10px] font-mono text-slate-500">KIỂM SOÁT & ĐỒNG THUẬN:</div>

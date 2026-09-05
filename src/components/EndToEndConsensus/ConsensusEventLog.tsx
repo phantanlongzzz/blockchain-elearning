@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Terminal,
-  Copy,
-  Check,
-  Trash2,
-} from 'lucide-react';
+import { Copy, Check, Trash2 } from 'lucide-react';
 import { E2EEventLog } from './types';
 
 interface ConsensusEventLogProps {

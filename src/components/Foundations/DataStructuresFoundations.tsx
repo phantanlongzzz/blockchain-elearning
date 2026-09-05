@@ -112,7 +112,7 @@ export const DataStructuresFoundations: React.FC = () => {
               ({currentStageIndex + 1}/{STAGES.length})
             </span>
             {learningProgress?.foundations && (
-              <span className="inline-flex items-center gap-1 text-emerald-400">
+              <span className="inline-flex items-center gap-1 text-text-primary">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
                 {language === 'vi' ? 'Đã lưu tương tác' : 'Saved'}
               </span>
@@ -152,7 +152,7 @@ export const DataStructuresFoundations: React.FC = () => {
                   <span
                     className={`text-[11px] font-mono shrink-0 font-medium ${
                       isActive
-                        ? 'text-emerald-400'
+                        ? 'text-text-primary'
                         : isDone
                         ? 'text-zinc-500'
                         : 'text-zinc-600'

@@ -146,11 +146,11 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div className="flex items-center shrink-0">
             <button
               onClick={() => navigateTo('home', 'overview')}
-              className="flex items-center gap-3 text-left rounded-lg group cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#00C98D]"
+              className="flex items-center gap-3 text-left rounded-lg group cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/20"
               id="nav-brand-button"
               aria-label={`${brandName} - ${brandSubtitle}`}
             >
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-[#0C0F14] border border-white/[0.08] group-hover:border-[#00C98D]/40 transition-colors p-1 shrink-0 flex items-center justify-center">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-[#0C0F14] border border-white/[0.08] group-hover:border-border-primary transition-colors p-1 shrink-0 flex items-center justify-center">
                 <img
                   src="/logo.png"
                   alt={brandName}
@@ -182,9 +182,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                     key={module.id}
                     id={`nav-tab-${module.id}`}
                     onClick={() => navigateTo(module.id, module.lessons[0].id)}
-                    className={`px-3 py-1.5 rounded-md transition-colors whitespace-nowrap cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#00C98D] ${
+                    className={`px-3 py-1.5 rounded-md transition-colors whitespace-nowrap cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/20 ${
                       isActiveModule
-                        ? 'text-[#00C98D] bg-[#00C98D]/10 font-semibold'
+                        ? 'text-text-primary bg-white/[0.06] font-semibold'
                         : 'text-[#9AA5B5] hover:text-[#F2F4F7] hover:bg-white/[0.04]'
                     }`}
                   >
@@ -204,16 +204,16 @@ export const Navbar: React.FC<NavbarProps> = ({
                     id={`nav-tab-${module.id}`}
                     onClick={() => navigateTo(module.id, module.lessons[0].id)}
                     aria-expanded={isDropdownOpen}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition-colors whitespace-nowrap cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#00C98D] ${
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition-colors whitespace-nowrap cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/20 ${
                       isActiveModule
-                        ? 'text-[#00C98D] bg-[#00C98D]/10 font-semibold'
+                        ? 'text-text-primary bg-white/[0.06] font-semibold'
                         : 'text-[#9AA5B5] hover:text-[#F2F4F7] hover:bg-white/[0.04]'
                     }`}
                   >
                     <span>{isVi ? module.titleVi : module.titleEn}</span>
                     <ChevronDown
                       className={`w-3 h-3 transition-transform duration-150 ${
-                        isDropdownOpen ? 'rotate-180 text-[#00C98D]' : 'text-[#717B8C]'
+                        isDropdownOpen ? 'rotate-180 text-text-primary' : 'text-[#717B8C]'
                       }`}
                     />
                   </button>
@@ -239,17 +239,17 @@ export const Navbar: React.FC<NavbarProps> = ({
                                 navigateTo(module.id, lesson.id);
                                 setOpenDropdown(null);
                               }}
-                              className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-left transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#00C98D] ${
+                              className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-left transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/20 ${
                                 isCurrentLesson
-                                  ? 'bg-[#11161E] text-[#00C98D] font-semibold'
+                                  ? 'bg-[#11161E] text-text-primary font-semibold'
                                   : 'text-[#A5AFBF] hover:text-[#F2F4F7] hover:bg-white/[0.04]'
                               }`}
                             >
                               <span className="truncate">{label}</span>
                               {isDone ? (
-                                <CheckCircle2 className="w-3.5 h-3.5 text-[#00C98D] shrink-0 ml-2" />
+                                <CheckCircle2 className="w-3.5 h-3.5 text-success shrink-0 ml-2" />
                               ) : isCurrentLesson ? (
-                                <span className="w-1.5 h-1.5 rounded-full bg-[#00C98D] shrink-0 ml-2" />
+                                <span className="w-1.5 h-1.5 rounded-full bg-white/[0.1] shrink-0 ml-2" />
                               ) : null}
                             </button>
                           );
@@ -269,7 +269,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               href="https://github.com/phantanlongzzz/blockchain-elearning"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-8 h-8 flex items-center justify-center rounded-lg text-[#9AA5B5] hover:text-[#00C98D] hover:bg-white/[0.04] transition-all cursor-pointer group/gh relative"
+              className="w-8 h-8 flex items-center justify-center rounded-lg text-[#9AA5B5] hover:text-text-primary hover:bg-white/[0.04] transition-all cursor-pointer group/gh relative"
               title="GitHub Repository"
               aria-label="GitHub Repository"
             >
@@ -292,10 +292,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                   window.dispatchEvent(new CustomEvent('toggle-command-palette'));
                 }
               }}
-              className={`w-8 h-8 flex items-center justify-center rounded-lg transition-colors cursor-pointer shrink-0 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#00C98D] ${
+              className={`w-8 h-8 flex items-center justify-center rounded-lg transition-colors cursor-pointer shrink-0 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/20 ${
                 isSearchOpen
-                  ? 'text-[#00C98D] bg-white/[0.04]'
-                  : 'text-[#9AA5B5] hover:text-[#00C98D] hover:bg-white/[0.04]'
+                  ? 'text-text-primary bg-white/[0.04]'
+                  : 'text-[#9AA5B5] hover:text-text-primary hover:bg-white/[0.04]'
               }`}
               title={isVi ? 'Tìm kiếm (Ctrl + K)' : 'Search (Ctrl + K)'}
               aria-label={isVi ? 'Tìm kiếm (Ctrl + K)' : 'Search (Ctrl + K)'}
@@ -309,12 +309,12 @@ export const Navbar: React.FC<NavbarProps> = ({
             <div className="relative" ref={userMenuRef}>
               <button
                 onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                className="flex items-center gap-2 pl-1.5 pr-2.5 py-1 rounded-lg hover:bg-white/[0.04] transition-colors text-xs font-sans cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#00C98D]"
+                className="flex items-center gap-2 pl-1.5 pr-2.5 py-1 rounded-lg hover:bg-white/[0.04] transition-colors text-xs font-sans cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/20"
                 id="user-profile-button"
                 aria-expanded={userDropdownOpen}
                 aria-label="Profile and settings menu"
               >
-                <div className="w-6 h-6 rounded-full bg-[#00C98D] flex items-center justify-center text-[#090A0F] font-bold text-[11px] shrink-0 shadow-sm">
+                <div className="w-6 h-6 rounded-full bg-white/[0.1] flex items-center justify-center text-[#090A0F] font-bold text-[11px] shrink-0 shadow-sm">
                   {userInitial}
                 </div>
                 <span className="hidden sm:inline text-[#F2F4F7] max-w-[120px] truncate font-medium">
@@ -322,7 +322,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </span>
                 <ChevronDown
                   className={`w-3 h-3 text-[#717B8C] transition-transform duration-150 ${
-                    userDropdownOpen ? 'rotate-180 text-[#00C98D]' : ''
+                    userDropdownOpen ? 'rotate-180 text-text-primary' : ''
                   }`}
                 />
               </button>
@@ -357,7 +357,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                         }}
                         className="w-full flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[#A5AFBF] hover:text-[#F2F4F7] hover:bg-white/[0.04] text-left transition-colors cursor-pointer"
                       >
-                        <User className="w-3.5 h-3.5 text-[#00C98D]" />
+                        <User className="w-3.5 h-3.5 text-text-muted" />
                         <span>{isVi ? 'Hồ sơ cá nhân' : 'Profile'}</span>
                       </button>
 
@@ -369,7 +369,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                         }}
                         className="w-full flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[#A5AFBF] hover:text-[#F2F4F7] hover:bg-white/[0.04] text-left transition-colors cursor-pointer"
                       >
-                        <History className="w-3.5 h-3.5 text-[#00C98D]" />
+                        <History className="w-3.5 h-3.5 text-text-muted" />
                         <span>{isVi ? 'Lịch sử làm bài' : 'Quiz History'}</span>
                       </button>
 
@@ -395,7 +395,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                           setAuthModalOpen(true);
                           setUserDropdownOpen(false);
                         }}
-                        className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-[#00C98D] hover:bg-[#00B982] text-[#090A0F] font-bold text-xs transition-colors cursor-pointer shadow-sm"
+                        className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-white/[0.1] hover:bg-white/[0.15] text-[#090A0F] font-bold text-xs transition-colors cursor-pointer shadow-sm"
                       >
                         <LogIn className="w-3.5 h-3.5" />
                         <span>{isVi ? 'Đăng nhập lưu tiến độ' : 'Sign In'}</span>
@@ -414,7 +414,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                         onClick={() => setLanguage('en')}
                         className={`py-1 rounded text-center text-xs font-mono font-medium transition-colors cursor-pointer ${
                           language === 'en'
-                            ? 'bg-[#00C98D] text-[#090A0F] font-bold shadow-sm'
+                            ? 'bg-white/[0.1] text-[#090A0F] font-bold shadow-sm'
                             : 'text-[#A5AFBF] hover:text-[#F2F4F7] hover:bg-white/[0.04]'
                         }`}
                       >
@@ -425,7 +425,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                         onClick={() => setLanguage('vi')}
                         className={`py-1 rounded text-center text-xs font-mono font-medium transition-colors cursor-pointer ${
                           language === 'vi'
-                            ? 'bg-[#00C98D] text-[#090A0F] font-bold shadow-sm'
+                            ? 'bg-white/[0.1] text-[#090A0F] font-bold shadow-sm'
                             : 'text-[#A5AFBF] hover:text-[#F2F4F7] hover:bg-white/[0.04]'
                         }`}
                       >
@@ -448,7 +448,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                       href="https://github.com/phantanlongzzz/blockchain-elearning"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full flex items-center justify-between px-3 py-1.5 rounded-lg text-[#A5AFBF] hover:text-[#00C98D] hover:bg-white/[0.04] text-left transition-colors cursor-pointer"
+                      className="w-full flex items-center justify-between px-3 py-1.5 rounded-lg text-[#A5AFBF] hover:text-text-primary hover:bg-white/[0.04] text-left transition-colors cursor-pointer"
                     >
                       <span className="flex items-center gap-2">
                         <img
@@ -515,17 +515,17 @@ export const Navbar: React.FC<NavbarProps> = ({
                     }
                   }}
                   className={`w-full flex items-center justify-between px-3.5 py-2.5 text-left font-medium text-xs transition-colors ${
-                    isActiveModule ? 'text-[#00C98D] bg-[#00C98D]/10' : 'text-[#A5AFBF] hover:bg-[#11161E]'
+                    isActiveModule ? 'text-text-primary bg-white/[0.06]' : 'text-[#A5AFBF] hover:bg-[#11161E]'
                   }`}
                 >
                   <div className="flex items-center gap-2">
-                    <ModIcon className="w-4 h-4 text-[#00C98D] shrink-0" />
+                    <ModIcon className="w-4 h-4 text-text-muted shrink-0" />
                     <span>{isVi ? module.titleVi : module.titleEn}</span>
                   </div>
                   {module.lessons.length > 1 && (
                     <ChevronDown
                       className={`w-4 h-4 transition-transform duration-150 ${
-                        isExpanded ? 'rotate-180 text-[#00C98D]' : 'text-[#717B8C]'
+                        isExpanded ? 'rotate-180 text-text-primary' : 'text-[#717B8C]'
                       }`}
                     />
                   )}
@@ -547,15 +547,15 @@ export const Navbar: React.FC<NavbarProps> = ({
                           }}
                           className={`w-full flex items-center justify-between px-3 py-2 rounded-md text-left transition-colors ${
                             isCurrentLesson
-                              ? 'bg-[#11161E] text-[#00C98D] font-semibold'
+                              ? 'bg-[#11161E] text-text-primary font-semibold'
                               : 'text-[#A5AFBF] hover:text-[#F2F4F7] hover:bg-[#0F131A]'
                           }`}
                         >
                           <span className="truncate">{label}</span>
                           {isDone ? (
-                            <CheckCircle2 className="w-3.5 h-3.5 text-[#00C98D] shrink-0 ml-2" />
+                            <CheckCircle2 className="w-3.5 h-3.5 text-success shrink-0 ml-2" />
                           ) : isCurrentLesson ? (
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#00C98D] shrink-0 ml-2" />
+                            <span className="w-1.5 h-1.5 rounded-full bg-white/[0.1] shrink-0 ml-2" />
                           ) : null}
                         </button>
                       );
@@ -577,7 +577,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onClick={() => setLanguage('en')}
                 className={`py-1.5 rounded text-center text-xs font-mono font-medium transition-colors ${
                   language === 'en'
-                    ? 'bg-[#00C98D] text-[#090A0F] font-bold'
+                    ? 'bg-white/[0.1] text-[#090A0F] font-bold'
                     : 'bg-[#090D12] text-[#A5AFBF] border border-white/[0.04]'
                 }`}
               >
@@ -588,7 +588,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onClick={() => setLanguage('vi')}
                 className={`py-1.5 rounded text-center text-xs font-mono font-medium transition-colors ${
                   language === 'vi'
-                    ? 'bg-[#00C98D] text-[#090A0F] font-bold'
+                    ? 'bg-white/[0.1] text-[#090A0F] font-bold'
                     : 'bg-[#090D12] text-[#A5AFBF] border border-white/[0.04]'
                 }`}
               >
@@ -611,7 +611,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               href="https://github.com/phantanlongzzz/blockchain-elearning"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full flex items-center justify-between px-3.5 py-2.5 text-left font-medium text-xs transition-colors text-[#A5AFBF] hover:text-[#00C98D] hover:bg-[#11161E] cursor-pointer"
+              className="w-full flex items-center justify-between px-3.5 py-2.5 text-left font-medium text-xs transition-colors text-[#A5AFBF] hover:text-text-primary hover:bg-[#11161E] cursor-pointer"
             >
               <div className="flex items-center gap-2">
                 <img

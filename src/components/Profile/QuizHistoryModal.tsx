@@ -1,15 +1,5 @@
 import React from 'react';
-import {
-  X,
-  History,
-  CheckCircle2,
-  XCircle,
-  Clock,
-  Award,
-  ChevronRight,
-  Sparkles,
-  Calendar,
-} from 'lucide-react';
+import { X, History, Clock, ChevronRight, Calendar } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useLanguage } from '../../i18n/LanguageContext';
 

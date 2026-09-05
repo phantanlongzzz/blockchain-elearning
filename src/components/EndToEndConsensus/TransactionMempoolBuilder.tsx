@@ -1,19 +1,5 @@
 import React, { useState } from 'react';
-import {
-  ArrowRight,
-  Plus,
-  Trash2,
-  CheckSquare,
-  Square,
-  Clock,
-  Layers,
-  Sparkles,
-  Zap,
-  CheckCircle2,
-  RefreshCw,
-  Coins,
-  Send,
-} from 'lucide-react';
+import { Plus, Trash2, CheckSquare, Square, Clock, Coins, Send } from 'lucide-react';
 import { E2ETransaction } from './types';
 import { calculateTxHash } from '../../utils/merkle';
 
@@ -249,7 +235,7 @@ export const TransactionMempoolBuilder: React.FC<TransactionMempoolBuilderProps>
                 <span className="text-[11px] font-sans text-slate-400 block mb-0.5">
                   {language === 'vi' ? 'Đã chọn đóng gói' : 'Selected for block'}
                 </span>
-                <span className="text-sm font-semibold font-mono text-emerald-400">
+                <span className="text-sm font-semibold font-mono text-financial">
                   {selectedCount} / {mempool.length} TXs
                 </span>
               </div>
@@ -334,7 +320,7 @@ export const TransactionMempoolBuilder: React.FC<TransactionMempoolBuilderProps>
                       <button
                         type="button"
                         aria-label="Toggle select tx"
-                        className={`text-xs ${isSelected ? 'text-emerald-400' : 'text-slate-500'}`}
+                        className={`text-xs ${isSelected ? 'text-text-primary font-semibold' : 'text-slate-500'}`}
                       >
                         {isSelected ? <CheckSquare className="w-3.5 h-3.5" /> : <Square className="w-3.5 h-3.5" />}
                       </button>

@@ -1,25 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import {
-  ShieldCheck,
-  ShieldAlert,
-  Plus,
-  RotateCcw,
-  CheckCircle2,
-  XCircle,
-  Search,
-  Key,
-  Boxes,
-  Lock,
-  Activity,
-  Cpu,
-  Layers,
-  Sparkles,
-  AlertTriangle,
-} from 'lucide-react';
+import { ShieldCheck, Boxes, Layers } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { TransactionItem } from '../../types';
 import { createInitialTransactions } from '../../data/transactionData';
-import { TransactionCard } from './TransactionCard';
+
 import { TransactionDetailModal } from './TransactionDetailModal';
 import { TamperModal } from './TamperModal';
 import { NewTransactionModal } from './NewTransactionModal';

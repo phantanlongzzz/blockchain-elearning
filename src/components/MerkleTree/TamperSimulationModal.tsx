@@ -1,14 +1,5 @@
 import React, { useState } from 'react';
-import {
-  X,
-  AlertTriangle,
-  Flame,
-  ArrowRight,
-  ShieldAlert,
-  Sparkles,
-  RotateCcw,
-  Check,
-} from 'lucide-react';
+import { X, AlertTriangle, Flame } from 'lucide-react';
 import { MerkleTransaction } from '../../types';
 import { calculateTxHash } from '../../utils/merkle';
 

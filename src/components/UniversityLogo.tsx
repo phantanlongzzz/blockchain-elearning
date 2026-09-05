@@ -58,7 +58,7 @@ export const UniversityLogo: React.FC<UniversityLogoProps> = ({
 
       {showSubtitle && (
         <div className="mt-2 text-center">
-          <p className="text-[10px] font-mono text-emerald-400/90 uppercase tracking-widest font-semibold">
+          <p className="text-[10px] font-mono text-text-secondary uppercase tracking-widest font-semibold">
             Academic Research
           </p>
           <p className="text-xs text-slate-400 font-medium">Faculty of IT</p>

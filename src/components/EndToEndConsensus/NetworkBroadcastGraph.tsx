@@ -591,7 +591,7 @@ export const NetworkBroadcastGraph: React.FC<NetworkBroadcastGraphProps> = ({
       <div className="p-2.5 bg-[#080c16] border border-zinc-800 rounded-xl flex flex-wrap items-center justify-between gap-2 text-xs">
         <div className="flex items-center gap-1.5 sm:gap-3 flex-wrap">
           {/* Step 1: Tạo khối */}
-          <div className="flex items-center gap-1.5 text-emerald-400 font-medium">
+          <div className="flex items-center gap-1.5 text-text-primary font-medium">
             <span className="w-4 h-4 rounded-full bg-white/[0.06] border border-border-primary flex items-center justify-center text-[10px] text-text-secondary">
               ✓
             </span>
@@ -604,9 +604,9 @@ export const NetworkBroadcastGraph: React.FC<NetworkBroadcastGraphProps> = ({
           <div
             className={`flex items-center gap-1.5 font-medium transition-colors ${
               timelineStage === 'broadcast'
-                ? 'text-emerald-400'
+                ? 'text-text-primary'
                 : isCompleted || timelineStage === 'receive' || timelineStage === 'validate' || timelineStage === 'sync'
-                ? 'text-emerald-400/80'
+                ? 'text-text-secondary'
                 : 'text-zinc-500'
             }`}
           >
@@ -634,7 +634,7 @@ export const NetworkBroadcastGraph: React.FC<NetworkBroadcastGraphProps> = ({
               timelineStage === 'receive'
                 ? 'text-purple-400'
                 : isCompleted || timelineStage === 'validate' || timelineStage === 'sync'
-                ? 'text-emerald-400/80'
+                ? 'text-text-secondary'
                 : 'text-zinc-500'
             }`}
           >
@@ -660,7 +660,7 @@ export const NetworkBroadcastGraph: React.FC<NetworkBroadcastGraphProps> = ({
               timelineStage === 'validate'
                 ? 'text-amber-400'
                 : isCompleted || timelineStage === 'sync'
-                ? 'text-emerald-400/80'
+                ? 'text-text-secondary'
                 : 'text-zinc-500'
             }`}
           >
@@ -683,7 +683,7 @@ export const NetworkBroadcastGraph: React.FC<NetworkBroadcastGraphProps> = ({
           {/* Step 5: Đồng bộ */}
           <div
             className={`flex items-center gap-1.5 font-medium transition-colors ${
-              isCompleted || timelineStage === 'sync' ? 'text-emerald-400 font-semibold' : 'text-zinc-500'
+              isCompleted || timelineStage === 'sync' ? 'text-text-primary font-semibold' : 'text-zinc-500'
             }`}
           >
             <span
@@ -702,7 +702,7 @@ export const NetworkBroadcastGraph: React.FC<NetworkBroadcastGraphProps> = ({
         {/* Block Telemetry Ribbon */}
         <div className="flex items-center gap-3 text-xs text-zinc-400">
           <div className="flex items-center gap-1.5">
-            <Layers className="w-3.5 h-3.5 text-emerald-400" />
+            <Layers className="w-3.5 h-3.5 text-text-muted" />
             <span>
               {language === 'vi' ? 'Khối đang phát tán:' : 'Broadcasting Block:'}{' '}
               <strong className="text-zinc-100">#{activeBlock.height}</strong>
@@ -853,7 +853,7 @@ export const NetworkBroadcastGraph: React.FC<NetworkBroadcastGraphProps> = ({
                     className={`p-1 rounded transition-colors cursor-pointer ${
                       isOffline
                         ? 'text-rose-400 hover:bg-rose-950/40'
-                        : 'text-zinc-400 hover:text-emerald-400 hover:bg-zinc-800'
+                        : 'text-zinc-400 hover:text-text-primary hover:bg-zinc-800'
                     }`}
                     title={
                       isOffline
@@ -879,12 +879,12 @@ export const NetworkBroadcastGraph: React.FC<NetworkBroadcastGraphProps> = ({
                       {language === 'vi' ? 'Mất kết nối' : 'Offline'}
                     </span>
                   ) : isOrigin ? (
-                    <span className="text-emerald-400 font-medium flex items-center gap-1 text-[11px]">
+                    <span className="text-text-secondary font-medium flex items-center gap-1 text-[11px]">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />
                       {language === 'vi' ? 'Đã tạo khối' : 'Block created'}
                     </span>
                   ) : runtime.status === 'valid' ? (
-                    <span className="text-emerald-400 font-medium flex items-center gap-1 text-[11px]">
+                    <span className="text-text-secondary font-medium flex items-center gap-1 text-[11px]">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />
                       {language === 'vi' ? 'Đã xác thực' : 'Validated'}
                     </span>
@@ -965,7 +965,7 @@ export const NetworkBroadcastGraph: React.FC<NetworkBroadcastGraphProps> = ({
                 <div className="p-3 rounded-lg bg-[#060911] border border-zinc-800/80 space-y-1.5">
                   <span className="text-zinc-400 font-medium text-[11px]">{language === 'vi' ? 'Mã băm khối trước' : 'Previous Hash'}</span>
                   <div className="space-y-0.5">
-                    <span className="text-emerald-400 font-medium block">
+                    <span className="text-text-primary font-medium block">
                       {language === 'vi' ? '✓ Khớp với đỉnh chuỗi hiện tại' : '✓ Matches Canonical Chain Tip'}
                     </span>
                     <span className="text-[10px] font-mono text-zinc-500 block truncate" title={activeBlock.previousHash}>
@@ -977,7 +977,7 @@ export const NetworkBroadcastGraph: React.FC<NetworkBroadcastGraphProps> = ({
                 <div className="p-3 rounded-lg bg-[#060911] border border-zinc-800/80 space-y-1.5">
                   <span className="text-zinc-400 font-medium text-[11px]">Merkle Root</span>
                   <div className="space-y-0.5">
-                    <span className="text-emerald-400 font-medium block">
+                    <span className="text-text-primary font-medium block">
                       {language === 'vi'
                         ? `✓ Cây băm (${activeBlock.transactions?.length || 0} giao dịch)`
                         : `✓ Merkle Root (${activeBlock.transactions?.length || 0} txs)`}
@@ -991,7 +991,7 @@ export const NetworkBroadcastGraph: React.FC<NetworkBroadcastGraphProps> = ({
                 <div className="p-3 rounded-lg bg-[#060911] border border-zinc-800/80 space-y-1.5">
                   <span className="text-zinc-400 font-medium text-[11px]">Proof of Work</span>
                   <div className="space-y-0.5">
-                    <span className="text-emerald-400 font-medium block">
+                    <span className="text-text-primary font-medium block">
                       {language === 'vi'
                         ? `✓ Nonce hợp lệ (${activeBlock.nonce.toLocaleString()})`
                         : `✓ Valid Nonce (${activeBlock.nonce.toLocaleString()})`}
@@ -1010,7 +1010,7 @@ export const NetworkBroadcastGraph: React.FC<NetworkBroadcastGraphProps> = ({
                   <div className="flex items-center justify-between">
                     <span className="text-zinc-400 font-medium text-[11px]">{language === 'vi' ? 'Mã băm khối trước' : 'Previous Hash'}</span>
                     {selectedRuntime.prevHash === true ? (
-                      <span className="text-[10px] text-emerald-400 font-mono">OK</span>
+                      <span className="text-[10px] text-success font-mono">OK</span>
                     ) : null}
                   </div>
                   {selectedRuntime.isOffline ? (
@@ -1019,7 +1019,7 @@ export const NetworkBroadcastGraph: React.FC<NetworkBroadcastGraphProps> = ({
                     </span>
                   ) : selectedRuntime.prevHash === true ? (
                     <div className="space-y-0.5">
-                      <span className="text-emerald-400 font-medium block">
+                      <span className="text-text-primary font-medium block">
                         {language === 'vi'
                           ? '✓ Khớp với hash của block trước'
                           : '✓ Matches hash of previous block'}
@@ -1048,7 +1048,7 @@ export const NetworkBroadcastGraph: React.FC<NetworkBroadcastGraphProps> = ({
                   <div className="flex items-center justify-between">
                     <span className="text-zinc-400 font-medium text-[11px]">Merkle Root</span>
                     {selectedRuntime.merkleRoot === true ? (
-                      <span className="text-[10px] text-emerald-400 font-mono">OK</span>
+                      <span className="text-[10px] text-success font-mono">OK</span>
                     ) : null}
                   </div>
                   {selectedRuntime.isOffline ? (
@@ -1057,7 +1057,7 @@ export const NetworkBroadcastGraph: React.FC<NetworkBroadcastGraphProps> = ({
                     </span>
                   ) : selectedRuntime.merkleRoot === true ? (
                     <div className="space-y-0.5">
-                      <span className="text-emerald-400 font-medium block">
+                      <span className="text-text-primary font-medium block">
                         {language === 'vi'
                           ? '✓ Khớp với dữ liệu giao dịch'
                           : '✓ Matches transaction data'}
@@ -1086,7 +1086,7 @@ export const NetworkBroadcastGraph: React.FC<NetworkBroadcastGraphProps> = ({
                   <div className="flex items-center justify-between">
                     <span className="text-zinc-400 font-medium text-[11px]">PoW Target</span>
                     {selectedRuntime.powValid === true ? (
-                      <span className="text-[10px] text-emerald-400 font-mono">OK</span>
+                      <span className="text-[10px] text-success font-mono">OK</span>
                     ) : null}
                   </div>
                   {selectedRuntime.isOffline ? (
@@ -1095,7 +1095,7 @@ export const NetworkBroadcastGraph: React.FC<NetworkBroadcastGraphProps> = ({
                     </span>
                   ) : selectedRuntime.powValid === true ? (
                     <div className="space-y-0.5">
-                      <span className="text-emerald-400 font-medium block">
+                      <span className="text-text-primary font-medium block">
                         {language === 'vi'
                           ? '✓ Hash block đạt mục tiêu'
                           : '✓ Block hash meets target'}

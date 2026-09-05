@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Copy, Check, Code, ShieldCheck, Zap, Award, Flame, AlertCircle, Sparkles } from 'lucide-react';
+import { X, Copy, Check, Code, Zap, Award, Flame, Sparkles } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { CodeViewer } from '../common/CodeViewer';
 
@@ -163,7 +163,7 @@ export const PoSCodeModal: React.FC<PoSCodeModalProps> = ({
         {/* Header */}
         <div className="flex items-center justify-between px-5 sm:px-6 py-3.5 sm:py-4 border-b border-[#1C2430] bg-[#0F131A]">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-[rgba(0,201,141,0.08)] border border-[rgba(0,201,141,0.35)] flex items-center justify-center text-[#00C98D] font-mono font-bold text-sm">
+            <div className="w-9 h-9 rounded-xl bg-[rgba(0,201,141,0.08)] border border-[rgba(0,201,141,0.35)] flex items-center justify-center text-text-primary font-mono font-bold text-sm">
               &lt;/&gt;
             </div>
             <div>
@@ -171,7 +171,7 @@ export const PoSCodeModal: React.FC<PoSCodeModalProps> = ({
                 <h2 className="text-base sm:text-lg font-bold text-[#F2F4F7] font-display">
                   Proof-of-Stake — Simplified Simulation
                 </h2>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[rgba(0,201,141,0.1)] border border-[rgba(0,201,141,0.35)] text-[#00C98D]">
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[rgba(0,201,141,0.1)] border border-[rgba(0,201,141,0.35)] text-text-primary">
                   {isVi ? 'Mô hình học thuật — Tinh gọn để thuyết trình' : 'Educational model — simplified for presentation'}
                 </span>
               </div>
@@ -192,8 +192,8 @@ export const PoSCodeModal: React.FC<PoSCodeModalProps> = ({
             >
               {copied ? (
                 <>
-                  <Check className="w-3.5 h-3.5 text-[#00C98D]" />
-                  <span className="text-[#00C98D] font-mono">{isVi ? 'Đã sao chép ✓' : 'Copied ✓'}</span>
+                  <Check className="w-3.5 h-3.5 text-text-primary" />
+                  <span className="text-text-primary font-mono">{isVi ? 'Đã sao chép ✓' : 'Copied ✓'}</span>
                 </>
               ) : (
                 <>
@@ -251,7 +251,7 @@ export const PoSCodeModal: React.FC<PoSCodeModalProps> = ({
         <div className="p-4 sm:p-5 bg-[#0C0F14] border-t border-[#1C2430] flex flex-col gap-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-[#00C98D]" />
+              <Sparkles className="w-4 h-4 text-text-primary" />
               <h3 className="text-xs sm:text-sm font-bold font-display uppercase tracking-wider text-[#F2F4F7]">
                 {isVi ? 'Ý TƯỞNG CỐT LÕI (CORE IDEA)' : 'CORE IDEA'}
               </h3>
@@ -265,16 +265,16 @@ export const PoSCodeModal: React.FC<PoSCodeModalProps> = ({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
             {/* Left: Key Mechanism Statements */}
             <div className="p-3 rounded-xl bg-[#0F131A] border border-[#1C2430] space-y-2 font-mono">
-              <div className="flex items-center gap-2 text-[#00C98D]">
-                <Zap className="w-3.5 h-3.5 shrink-0 text-[#00C98D]" />
+              <div className="flex items-center gap-2 text-text-primary">
+                <Zap className="w-3.5 h-3.5 shrink-0 text-text-primary" />
                 <span className="font-semibold">
                   {isVi
                     ? 'Càng nhiều cổ phần (Stake) → Xác suất được chọn giải khối càng cao'
                     : 'More stake → higher probability of becoming validator'}
                 </span>
               </div>
-              <div className="flex items-center gap-2 text-[#00C98D]">
-                <Award className="w-3.5 h-3.5 shrink-0 text-[#00C98D]" />
+              <div className="flex items-center gap-2 text-text-primary">
+                <Award className="w-3.5 h-3.5 shrink-0 text-text-primary" />
                 <span>
                   {isVi ? (
                     <>Người xác thực trung thực → <strong>Nhận thưởng (+5 ETH)</strong></>
@@ -299,21 +299,21 @@ export const PoSCodeModal: React.FC<PoSCodeModalProps> = ({
             <div className="p-3 rounded-xl bg-[#0F131A] border border-[#1C2430] flex flex-col justify-between">
               <div className="text-[11px] font-mono text-[#A5AFBF] mb-1.5 flex items-center justify-between">
                 <span>{isVi ? 'TỶ LỆ CHỌN BAN ĐẦU:' : 'INITIAL SELECTION ODDS:'}</span>
-                <span className="text-[#00C98D]">{isVi ? 'Tổng: 1,000 ETH' : 'Total: 1,000 ETH'}</span>
+                <span className="text-text-primary">{isVi ? 'Tổng: 1,000 ETH' : 'Total: 1,000 ETH'}</span>
               </div>
 
               {/* Progress bar breakdown */}
               <div className="w-full h-3 rounded bg-[#090A0F] flex overflow-hidden border border-[#1C2430] mb-2">
-                <div style={{ width: '50%' }} className="bg-[#00C98D] h-full" title="Alice: 50%" />
+                <div style={{ width: '50%' }} className="bg-success h-full" title="Alice: 50%" />
                 <div style={{ width: '30%' }} className="bg-[#F59E0B] h-full" title="Bob: 30%" />
                 <div style={{ width: '20%' }} className="bg-[#8B5CF6] h-full" title="Charlie: 20%" />
               </div>
 
               {/* Legend */}
               <div className="grid grid-cols-3 gap-1 text-[11px] font-mono text-center">
-                <div className="p-1 rounded bg-[rgba(0,201,141,0.08)] border border-[rgba(0,201,141,0.35)] text-[#00C98D]">
+                <div className="p-1 rounded bg-[rgba(0,201,141,0.08)] border border-[rgba(0,201,141,0.35)] text-text-primary">
                   <strong>Alice</strong>
-                  <div className="text-[10px] text-[#00C98D]">500 ETH · 50%</div>
+                  <div className="text-[10px] text-text-primary">500 ETH · 50%</div>
                 </div>
                 <div className="p-1 rounded bg-[rgba(245,158,11,0.08)] border border-[rgba(245,158,11,0.35)] text-[#F59E0B]">
                   <strong>Bob</strong>

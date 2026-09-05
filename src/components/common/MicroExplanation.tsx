@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from 'react';
-import { Lightbulb, Info } from 'lucide-react';
+import { Lightbulb } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 
 interface MicroExplanationProps {

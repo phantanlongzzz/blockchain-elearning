@@ -1,25 +1,5 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import {
-  RefreshCw,
-  Plus,
-  ChevronDown,
-  ChevronUp,
-  Check,
-  Copy,
-  AlertTriangle,
-  Unlink,
-  CheckCircle2,
-  Lock,
-  ArrowRight,
-  ArrowDown,
-  ShieldCheck,
-  Sparkles,
-  MoreHorizontal,
-  Edit3,
-  Eye,
-  Layers,
-  Lightbulb,
-} from 'lucide-react';
+import { RefreshCw, Plus, ChevronDown, ChevronUp, Check, Copy, AlertTriangle, Unlink, CheckCircle2, Lock, ArrowRight, ShieldCheck, MoreHorizontal, Edit3, Eye } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 import { hashSha256 } from '../utils/sha256';
 import { INITIAL_BLOCKCHAIN_DATA } from '../data/researchData';

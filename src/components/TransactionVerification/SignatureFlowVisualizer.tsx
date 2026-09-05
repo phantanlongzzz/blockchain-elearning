@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowDown, CheckCircle2, XCircle, ShieldCheck, Key, FileText, Cpu, Hash } from 'lucide-react';
+import { ArrowDown, CheckCircle2, XCircle, Key, FileText, Cpu, Hash } from 'lucide-react';
 import { TransactionItem } from '../../types';
 import { useLanguage } from '../../i18n/LanguageContext';
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { X, Key, ShieldCheck, ArrowRight, Sparkles, Send } from 'lucide-react';
-import { WalletAccount, TransactionItem } from '../../types';
+import { X, Key, Send } from 'lucide-react';
+import { TransactionItem } from '../../types';
 import { RESEARCH_WALLETS } from '../../data/transactionData';
 import {
   computeTransactionDigest,

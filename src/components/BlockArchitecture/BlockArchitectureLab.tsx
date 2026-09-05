@@ -221,7 +221,7 @@ export const BlockArchitectureLab: React.FC = () => {
                   {completedCount}/{STAGES.length} {isVi ? 'phần hoàn thành' : 'sections completed'}
                 </span>
               </span>
-              <span className="text-emerald-400 font-semibold">{progressPercent}%</span>
+              <span className="text-text-primary font-semibold font-mono">{progressPercent}%</span>
             </div>
             <div className="w-full h-1.5 rounded-full bg-[#080B10] overflow-hidden border border-[#1C2430]">
               <div

@@ -305,7 +305,7 @@ export const BruteForceSimulator: React.FC = () => {
             <span>{isVi ? 'Mã hash mục tiêu:' : 'Target hash:'}</span>
             <span className="text-slate-500">SHA-256("{customInput}")</span>
           </div>
-          <div className="text-emerald-300 break-all text-xs font-mono">
+          <div className="text-text-secondary break-all text-xs font-mono">
             {targetHash}
           </div>
         </div>
@@ -319,7 +319,7 @@ export const BruteForceSimulator: React.FC = () => {
 
           <div className="p-3 rounded-lg bg-[#080c16] border border-slate-800 space-y-1">
             <span className="text-[10px] text-slate-500 uppercase block">{isVi ? 'Thời gian' : 'Time'}</span>
-            <div className="text-base font-semibold text-emerald-400">{(elapsedMs / 1000).toFixed(2)}s</div>
+            <div className="text-base font-semibold text-financial font-mono">{(elapsedMs / 1000).toFixed(2)}s</div>
           </div>
 
           <div className="p-3 rounded-lg bg-[#080c16] border border-slate-800 space-y-1">
@@ -332,7 +332,7 @@ export const BruteForceSimulator: React.FC = () => {
             <div
               className={`text-xs font-semibold mt-0.5 truncate ${
                 foundResult
-                  ? 'text-emerald-400'
+                  ? 'text-text-primary'
                   : isRunning
                   ? 'text-amber-400 animate-pulse'
                   : 'text-slate-500'

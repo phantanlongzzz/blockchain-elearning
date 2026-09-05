@@ -206,7 +206,7 @@ export const ConsensusEvolutionLab: React.FC = () => {
             <div className="flex items-center justify-between text-xs font-mono">
               <span className="text-slate-400">
                 {language === 'vi' ? 'Tiến độ chuyên đề:' : 'Module Progress:'}{' '}
-                <span className="text-emerald-400 font-semibold">
+                <span className="text-text-primary font-semibold">
                   {completedCount}/{STAGES_CONFIG.length} {language === 'vi' ? 'phần hoàn thành' : 'sections completed'}
                 </span>
               </span>

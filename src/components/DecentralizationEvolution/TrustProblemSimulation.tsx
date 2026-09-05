@@ -1,21 +1,5 @@
 import React, { useState } from 'react';
-import {
-  ShieldAlert,
-  ArrowRight,
-  RotateCcw,
-  CheckCircle2,
-  AlertTriangle,
-  Play,
-  User,
-  Building,
-  Coins,
-  FileText,
-  Lock,
-  Flame,
-  ArrowDown,
-  Sparkles,
-  HelpCircle,
-} from 'lucide-react';
+import { ShieldAlert, ArrowRight, RotateCcw, CheckCircle2, AlertTriangle, Building, Coins, FileText, Flame, Sparkles } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 
 interface TrustProblemSimulationProps {
@@ -216,7 +200,7 @@ export const TrustProblemSimulation: React.FC<TrustProblemSimulationProps> = ({
                   <span>{language === 'vi' ? 'TỔNG CHỨNG CHỈ ĐÃ IN' : 'TOTAL CERTIFICATES'}</span>
                 </div>
                 <div className={`text-lg font-bold font-mono mt-1 ${
-                  isFractionalReserveExceeded ? 'text-rose-400 animate-pulse' : 'text-emerald-400'
+                  isFractionalReserveExceeded ? 'text-rose-400 animate-pulse' : 'text-success'
                 }`}>
                   {totalPaperClaims} CHỨNG CHỈ
                 </div>
@@ -227,7 +211,7 @@ export const TrustProblemSimulation: React.FC<TrustProblemSimulationProps> = ({
                   {language === 'vi' ? 'TỶ LỆ BẢO CHỨNG' : 'BACKING RATIO'}
                 </div>
                 <div className={`text-lg font-bold font-mono mt-1 ${
-                  totalPaperClaims > 0 ? (vaultGold / totalPaperClaims < 1 ? 'text-rose-400' : 'text-emerald-400') : 'text-slate-400'
+                  totalPaperClaims > 0 ? (vaultGold / totalPaperClaims < 1 ? 'text-rose-400' : 'text-success') : 'text-slate-400'
                 }`}>
                   {totalPaperClaims > 0 ? Math.round((vaultGold / totalPaperClaims) * 100) : 100}%
                 </div>
@@ -250,7 +234,7 @@ export const TrustProblemSimulation: React.FC<TrustProblemSimulationProps> = ({
               <div className="space-y-1 pt-1 text-xs font-mono">
                 <div className="text-slate-400 text-[11px]">{language === 'vi' ? 'Sở hữu ban đầu:' : 'Initial asset:'}</div>
                 <div className="text-slate-200">💰 0 Gold</div>
-                <div className="text-emerald-400 font-bold">📜 {aliceCert} Paper Cert</div>
+                <div className="text-text-primary font-bold">📜 {aliceCert} Paper Cert</div>
               </div>
             </div>
 
@@ -258,7 +242,7 @@ export const TrustProblemSimulation: React.FC<TrustProblemSimulationProps> = ({
             <div className="p-4 rounded-xl bg-[#05070c] border border-slate-800 space-y-2">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs">
+                  <div className="w-7 h-7 rounded-lg bg-white/[0.08] text-text-primary flex items-center justify-center font-bold text-xs">
                     B
                   </div>
                   <span className="font-mono font-bold text-xs text-white">Bob (Merchant)</span>
@@ -267,7 +251,7 @@ export const TrustProblemSimulation: React.FC<TrustProblemSimulationProps> = ({
               <div className="space-y-1 pt-1 text-xs font-mono">
                 <div className="text-slate-400 text-[11px]">{language === 'vi' ? 'Nhận từ Alice:' : 'Received from Alice:'}</div>
                 <div className="text-slate-200">💰 0 Gold</div>
-                <div className="text-emerald-400 font-bold">📜 {bobCert} Paper Cert</div>
+                <div className="text-text-primary font-bold">📜 {bobCert} Paper Cert</div>
               </div>
             </div>
 
@@ -329,7 +313,7 @@ export const TrustProblemSimulation: React.FC<TrustProblemSimulationProps> = ({
         {/* Right Column: Educational Breakdown Card */}
         <div className="lg:col-span-4 p-6 rounded-2xl bg-[#090d16] border border-slate-800 shadow-xl flex flex-col justify-between space-y-4">
           <div className="space-y-4">
-            <div className="flex items-center gap-2 text-xs font-mono font-bold text-emerald-400 uppercase">
+            <div className="flex items-center gap-2 text-xs font-mono font-bold text-text-primary uppercase">
               <Sparkles className="w-4 h-4" />
               <span>{language === 'vi' ? 'BÀI HỌC VỀ NIỀM TIN' : 'TRUST LESSON'}</span>
             </div>

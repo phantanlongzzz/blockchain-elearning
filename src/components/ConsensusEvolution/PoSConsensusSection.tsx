@@ -206,7 +206,7 @@ export const PoSConsensusSection: React.FC<PoSConsensusSectionProps> = ({
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs font-semibold text-slate-200">{val.name}</span>
                     {isWinner && (
-                      <span className="text-[10px] font-medium text-emerald-400">
+                      <span className="text-[10px] font-medium text-text-secondary">
                         {isVi ? 'Đề xuất khối ✓' : 'Proposer ✓'}
                       </span>
                     )}

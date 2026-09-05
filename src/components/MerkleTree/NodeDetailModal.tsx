@@ -1,20 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import {
-  X,
-  Layers,
-  Crown,
-  FileText,
-  Copy,
-  Check,
-  ShieldCheck,
-  ShieldAlert,
-  Binary,
-  Code,
-  ArrowDown,
-  Info,
-  ArrowLeft
-} from 'lucide-react';
+import { X, Layers, FileText, Copy, Check, Binary, Code, ArrowLeft } from 'lucide-react';
 import { MerkleNode } from '../../types';
 import { hexToBinary } from '../../utils/binary';
 

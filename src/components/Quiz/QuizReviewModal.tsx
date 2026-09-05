@@ -1,18 +1,9 @@
 import React, { useState, useMemo } from 'react';
-import {
-  X,
-  CheckCircle2,
-  XCircle,
-  HelpCircle,
-  BookOpen,
-  Filter,
-  ArrowRight,
-  Sparkles,
-} from 'lucide-react';
+import { X, CheckCircle2, XCircle, BookOpen, Filter } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { ALL_QUIZ_QUESTIONS } from '../../data/quizData';
-import { QuizQuestion } from '../../types';
+
 import { getReviewQuestions } from '../../utils/quizUtils';
 
 export const QuizReviewModal: React.FC = () => {
@@ -67,7 +58,7 @@ export const QuizReviewModal: React.FC = () => {
         <div className="pb-4 border-b border-[#1C2430] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-mono px-2 py-0.5 rounded bg-[#11161E] text-[#00C98D] border border-[#00C98D]/30">
+              <span className="text-xs font-mono px-2 py-0.5 rounded bg-[#11161E] text-success border border-success/30">
                 v{reviewAttempt.quizVersion}
               </span>
               <h3 className="text-lg font-bold text-[#F2F4F7] tracking-tight">
@@ -81,7 +72,7 @@ export const QuizReviewModal: React.FC = () => {
               <span
                 className={`font-mono font-bold ${
                   reviewAttempt.score >= 70
-                    ? 'text-[#00C98D]'
+                    ? 'text-success'
                     : 'text-rose-400'
                 }`}
               >
@@ -150,7 +141,7 @@ export const QuizReviewModal: React.FC = () => {
 
                   <div className="flex items-center gap-1.5 text-xs font-semibold">
                     {isCorrect ? (
-                      <span className="flex items-center gap-1 text-[#00C98D]">
+                      <span className="flex items-center gap-1 text-success">
                         <CheckCircle2 className="w-4 h-4" />
                         <span>{strings.quiz.passedBadge}</span>
                       </span>
@@ -179,7 +170,7 @@ export const QuizReviewModal: React.FC = () => {
                       'bg-[#080C10] border-[#1C2430] text-[#717B8C]';
                     if (isCorrectAnswer) {
                       optClass =
-                        'bg-[#00C98D]/10 border-[#00C98D]/50 text-[#00C98D] font-semibold';
+                        'bg-success/10 border-success/50 text-success font-semibold';
                     } else if (isUserSelected && !isCorrect) {
                       optClass =
                         'bg-rose-950/30 border-rose-500/50 text-rose-300 line-through';
@@ -199,7 +190,7 @@ export const QuizReviewModal: React.FC = () => {
 
                         <div className="flex-shrink-0 text-[10px] uppercase font-bold tracking-wider">
                           {isCorrectAnswer ? (
-                            <span className="text-[#00C98D] flex items-center gap-1">
+                            <span className="text-success flex items-center gap-1">
                               <CheckCircle2 className="w-3.5 h-3.5" />
                               <span>{strings.quiz.correctAnswerLabel}</span>
                             </span>
@@ -217,7 +208,7 @@ export const QuizReviewModal: React.FC = () => {
 
                 {/* Explanation Card */}
                 <div className="p-3.5 bg-[#080C10] border border-[#1C2430] rounded-xl text-xs space-y-1">
-                  <div className="flex items-center gap-1.5 text-[#00C98D] font-semibold">
+                  <div className="flex items-center gap-1.5 text-success font-semibold">
                     <BookOpen className="w-3.5 h-3.5" />
                     <span>{strings.quiz.explanationLabel}</span>
                   </div>

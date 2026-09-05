@@ -2,7 +2,7 @@ import React from 'react';
 import { PoSValidator } from '../../types';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { UserPlus, UserMinus, ArrowRight } from 'lucide-react';
-import { getValidatorPreset, PARTICIPANT_PRESETS } from './posConstants';
+import { getValidatorPreset } from './posConstants';
 
 interface ValidatorDashboardProps {
   validators: PoSValidator[];
@@ -147,7 +147,7 @@ export const ValidatorDashboard: React.FC<ValidatorDashboardProps> = ({
                       type="button"
                       id={`pos-plus-stake-btn-${validator.id}`}
                       onClick={() => onUpdateStake(validator.id, 10)}
-                      className="px-2.5 py-1.5 rounded-lg bg-[#00C98D]/10 hover:bg-[#00C98D]/20 border border-[#00C98D]/30 text-[#00C98D] text-xs font-mono font-semibold flex items-center justify-center transition-colors cursor-pointer active:scale-95"
+                      className="px-2.5 py-1.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] border border-border-primary text-text-primary text-xs font-mono font-semibold flex items-center justify-center transition-colors cursor-pointer active:scale-95"
                       title={isVi ? 'Tăng 10 ETH' : 'Increase 10 ETH'}
                     >
                       <span>+10 ETH</span>
@@ -159,7 +159,7 @@ export const ValidatorDashboard: React.FC<ValidatorDashboardProps> = ({
                 <div className="space-y-1">
                   <div className="h-1 rounded-full bg-white/[0.06] overflow-hidden">
                     <div
-                      className="h-full bg-[#00C98D] rounded-full transition-all duration-300"
+                      className="h-full bg-white/20 rounded-full transition-all duration-300"
                       style={{ width: `${Math.min(100, probability)}%` }}
                     />
                   </div>

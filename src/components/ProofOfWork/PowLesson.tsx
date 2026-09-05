@@ -3,10 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { 
-  Play, RotateCcw, CheckCircle2, Plus, X, Pause, Clock, Activity, 
-  FileText, Trophy, Trash2, Code2, Info, Check, ArrowRight, ExternalLink, ChevronLeft, ChevronRight
-} from 'lucide-react';
+import { Play, RotateCcw, X, Pause, Clock, Activity, FileText, Trophy, Trash2, Code2, Info, Check, ArrowRight } from 'lucide-react';
 import { createMiningWorkerBlob } from '../../utils/miningWorker';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { SimulationCodeModal } from './SimulationCodeModal';
@@ -736,7 +733,7 @@ export const PowLesson: React.FC = () => {
     }
     if (currentAppState === 'mining' || currentAppState === 'animating_win') {
       return (
-        <span className="text-emerald-400 font-medium text-xs font-mono">
+        <span className="text-text-secondary font-medium text-xs font-mono">
           {isVi ? 'Đang giải block...' : 'Solving block...'}
         </span>
       );
@@ -784,7 +781,7 @@ export const PowLesson: React.FC = () => {
 
             <button
               onClick={() => setShowCodeModal(true)}
-              className="p-2 bg-[#0C0F14] hover:bg-slate-800 text-slate-300 hover:text-emerald-400 border border-slate-800 rounded-xl flex items-center gap-1.5 text-xs font-semibold transition-all cursor-pointer shrink-0"
+              className="p-2 bg-[#0C0F14] hover:bg-slate-800 text-slate-300 hover:text-text-primary border border-border-primary rounded-xl flex items-center gap-1.5 text-xs font-semibold transition-all cursor-pointer shrink-0"
               title={isVi ? 'Xem mã nguồn thuật toán' : 'View algorithm code'}
             >
               <Code2 size={15} />
@@ -834,7 +831,7 @@ export const PowLesson: React.FC = () => {
                       onClick={() => setPlaySpeed(spd)}
                       className={`flex-1 sm:px-4 flex items-center justify-center rounded-md text-sm font-mono transition-colors ${
                         playSpeed === spd
-                          ? 'bg-emerald-500/15 text-emerald-400 font-semibold shadow-sm'
+                          ? 'bg-white/[0.08] text-text-primary font-semibold shadow-sm'
                           : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
                       } cursor-pointer`}
                     >
@@ -892,7 +889,7 @@ export const PowLesson: React.FC = () => {
                   {appState === 'mining' && (
                     <>
                       <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.4)]" />
-                      <span className="text-sm font-medium text-emerald-400">{isVi ? 'Đang khai thác' : 'Mining'}</span>
+                      <span className="text-sm font-medium text-text-primary">{isVi ? 'Đang khai thác' : 'Mining'}</span>
                     </>
                   )}
                   {(appState === 'completed' || appState === 'animating_win') && (
@@ -1070,7 +1067,7 @@ export const PowLesson: React.FC = () => {
                       <div className="text-[10px] text-slate-500 font-display font-bold uppercase tracking-wider">
                         {isVi ? 'Tốc độ' : 'Hashrate'}
                       </div>
-                      <div className="font-mono tabular-nums text-emerald-400 font-bold text-xs sm:text-sm">
+                      <div className="font-mono tabular-nums text-text-primary font-bold text-xs sm:text-sm">
                         {formatHashrate(m.hashrate)}
                       </div>
                     </div>
@@ -1090,7 +1087,7 @@ export const PowLesson: React.FC = () => {
                       <div className="text-[10px] text-slate-500 font-display font-bold uppercase tracking-wider">
                         {isVi ? 'Số khối' : 'Blocks'}
                       </div>
-                      <div className="font-mono tabular-nums text-emerald-400 font-bold text-xs sm:text-sm">
+                      <div className="font-mono tabular-nums text-text-primary font-bold text-xs sm:text-sm">
                         {m.blocksWon || 0}
                       </div>
                     </div>
@@ -1181,7 +1178,7 @@ export const PowLesson: React.FC = () => {
               {/* Core Learning Message */}
               <div className="p-3.5 bg-[#11161D] rounded-xl border border-slate-800 flex flex-col justify-between">
                 <div>
-                  <span className="text-[11px] font-display font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5 mb-1.5">
+                  <span className="text-[11px] font-display font-bold text-text-secondary uppercase tracking-wider flex items-center gap-1.5 mb-1.5">
                     <Info size={14} /> {isVi ? 'Bài Học Cốt Lõi' : 'Core Takeaway'}
                   </span>
                   <p className="text-xs text-slate-300 leading-relaxed font-sans">
@@ -1284,7 +1281,7 @@ export const PowLesson: React.FC = () => {
                         onClick={() => setSelectedBlock(block)}
                         className={`relative py-3 px-4 rounded-xl transition-all duration-200 flex flex-col items-center justify-center min-w-[100px] shrink-0 cursor-pointer select-none border box-border ${
                           isLatestTip 
-                            ? 'border-[#00C98D] bg-[#00C98D]/10' 
+                            ? 'border-border-primary bg-white/[0.06]' 
                             : `${theme.border} ${theme.bg} hover:border-slate-400 hover:bg-[#0E131A]`
                         } ${idx === focusedBlockIndex ? 'ring-2 ring-emerald-500/50 shadow-[0_0_15px_rgba(16,185,129,0.15)]' : ''}`}
                       >
@@ -1428,7 +1425,7 @@ export const PowLesson: React.FC = () => {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-500">{isVi ? 'Độ khó:' : 'Difficulty:'}</span>
-                    <span className="text-emerald-400 font-bold">{selectedBlock.difficulty}</span>
+                    <span className="text-text-primary font-bold">{selectedBlock.difficulty}</span>
                   </div>
                   {selectedBlock.nonce !== undefined && (
                     <div className="flex justify-between">
@@ -1442,7 +1439,7 @@ export const PowLesson: React.FC = () => {
                   <label className="text-[10px] text-slate-500 font-display font-bold uppercase tracking-wider block mb-1">
                     SHA-256 Hash
                   </label>
-                  <div className="bg-[#11161D] p-2.5 rounded-xl border border-slate-800 text-[11px] text-emerald-400 break-all select-all">
+                  <div className="bg-[#11161D] p-2.5 rounded-xl border border-slate-800 text-[11px] text-text-secondary break-all select-all">
                     {selectedBlock.hash}
                   </div>
                 </div>

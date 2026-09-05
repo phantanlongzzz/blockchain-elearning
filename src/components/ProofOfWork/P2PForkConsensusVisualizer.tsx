@@ -4,10 +4,10 @@
  */
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Network, Box } from 'lucide-react';
-import { Play, Pause, RotateCcw, Clock } from 'lucide-react';
+
 import { useLanguage } from '../../i18n/LanguageContext';
 import { SimulationNavigation } from './SimulationNavigation';
-import { getMinerColorTheme, GENESIS_THEME } from '../../utils/minerColors';
+
 
 export interface MempoolTx {
   id: string;
@@ -237,7 +237,7 @@ export const P2PForkConsensusVisualizer: React.FC<P2PForkConsensusVisualizerProp
                       </div>
 
                       <div className="text-center">
-                        <div className={`text-xs font-medium truncate ${blk.isLeading ? 'text-emerald-400' : 'text-slate-300'}`}>
+                        <div className={`text-xs font-medium truncate ${blk.isLeading ? 'text-text-primary font-semibold' : 'text-slate-300'}`}>
                           {blk.minerName}
                         </div>
                         {!isGenesis && (

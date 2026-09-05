@@ -1,26 +1,7 @@
 import React, { useState } from 'react';
-import {
-  ShieldCheck,
-  CheckCircle2,
-  XCircle,
-  Play,
-  RotateCcw,
-  FlaskConical,
-  X,
-  Layers,
-  ArrowRight,
-  Sparkles,
-  GitFork,
-  Cpu,
-  Trophy,
-} from 'lucide-react';
+import { ShieldCheck, CheckCircle2, XCircle, Play, RotateCcw, FlaskConical, X, Sparkles } from 'lucide-react';
 import { E2EBlock, E2ETransaction } from './types';
-import {
-  calculateBlockWork,
-  calculateChainWork,
-  mineBlockSynchronous,
-  resolveCanonicalChain,
-} from '../../utils/consensusEngine';
+import { mineBlockSynchronous, resolveCanonicalChain } from '../../utils/consensusEngine';
 import { fastSha256Hex } from '../../utils/sha256';
 
 interface AuditSelfTestModalProps {
@@ -391,7 +372,7 @@ export const AuditSelfTestModal: React.FC<AuditSelfTestModalProps> = ({
         <div className="flex-1 overflow-y-auto space-y-3 font-mono text-xs pr-1">
           {!testResults ? (
             <div className="p-6 rounded-xl bg-[#070A12] border border-[#1E293B] text-center space-y-3">
-              <FlaskConical className="w-10 h-10 text-emerald-400 mx-auto animate-bounce" />
+              <FlaskConical className="w-10 h-10 text-text-muted mx-auto animate-bounce" />
               <div className="text-sm font-bold text-white">
                 {language === 'vi' ? 'Sẵn Sàng Chạy Kiểm Toán Mẫu' : 'Ready to Run Deterministic Test Suite'}
               </div>
@@ -466,11 +447,11 @@ export const AuditSelfTestModal: React.FC<AuditSelfTestModalProps> = ({
                     <div className="grid grid-cols-2 gap-2 text-[10px] pt-1 border-t border-[#1E293B]/60">
                       <div>
                         <span className="text-[#64748B] block">Expected:</span>
-                        <span className="text-emerald-300 font-bold">{item.expected}</span>
+                        <span className="text-success font-bold font-mono">{item.expected}</span>
                       </div>
                       <div>
                         <span className="text-[#64748B] block">Actual:</span>
-                        <span className="text-emerald-300 font-bold">{item.actual}</span>
+                        <span className="text-success font-bold font-mono">{item.actual}</span>
                       </div>
                     </div>
                   </div>

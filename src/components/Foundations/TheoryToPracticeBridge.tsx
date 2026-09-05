@@ -86,7 +86,7 @@ export const TheoryToPracticeBridge: React.FC = () => {
       {/* Header */}
       <div className="p-5 rounded-2xl bg-[#0B0E12] border border-border-primary flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 text-emerald-400 text-xs font-mono font-bold uppercase tracking-wider mb-1">
+          <div className="flex items-center gap-2 text-text-secondary text-xs font-mono font-bold uppercase tracking-wider mb-1">
             <GraduationCap className="w-4 h-4" />
             <span>{strings.foundations.theoryToPractice.badge}</span>
           </div>
@@ -127,12 +127,12 @@ export const TheoryToPracticeBridge: React.FC = () => {
             >
               <div>
                 <div className="flex items-center justify-between text-xs font-mono text-slate-500 font-bold mb-2">
-                  <span className="text-emerald-400/80">STEP 0{step.step}</span>
+                  <span className="text-text-muted">STEP 0{step.step}</span>
                   <span className="text-[10px] text-slate-600 font-normal">
                     {step.tag}
                   </span>
                 </div>
-                <h5 className="text-sm font-bold text-slate-200 group-hover:text-emerald-300 transition-colors">
+                <h5 className="text-sm font-bold text-slate-200 group-hover:text-text-primary transition-colors">
                   {step.title[language]}
                 </h5>
                 <p className="text-xs text-slate-400 mt-1.5 leading-relaxed">
@@ -181,7 +181,7 @@ export const TheoryToPracticeBridge: React.FC = () => {
                 </div>
 
                 <div>
-                  <h5 className="text-sm sm:text-base font-bold text-slate-100 group-hover:text-emerald-300 transition-colors">
+                  <h5 className="text-sm sm:text-base font-bold text-slate-100 group-hover:text-text-primary transition-colors">
                     {lab.title}
                   </h5>
                   <p className="text-xs text-slate-400 mt-1.5 leading-relaxed">
@@ -192,7 +192,7 @@ export const TheoryToPracticeBridge: React.FC = () => {
 
               <div className="pt-4 mt-4 border-t border-slate-800/80 flex items-center justify-between text-xs font-mono">
                 <span className="text-slate-500 text-[11px]">{lab.difficulty}</span>
-                <span className="text-emerald-400 font-bold flex items-center gap-1 group-hover:underline">
+                <span className="text-text-primary font-bold flex items-center gap-1 group-hover:underline">
                   <span>{strings.foundations.theoryToPractice.openLab}</span>
                   <ExternalLink className="w-3.5 h-3.5" />
                 </span>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, ShieldAlert, ArrowRight, RotateCcw, AlertTriangle, Check, Sparkles } from 'lucide-react';
+import { X, ShieldAlert, AlertTriangle } from 'lucide-react';
 import { TransactionItem } from '../../types';
 import { computeTransactionDigest, verifyTransactionSignature } from '../../utils/crypto';
 

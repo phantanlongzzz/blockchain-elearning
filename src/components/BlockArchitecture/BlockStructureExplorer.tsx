@@ -79,7 +79,7 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
             </div>
             <div className="flex items-center gap-2">
               <span className="text-slate-500">Hash:</span>
-              <span className="text-slate-200 hover:text-emerald-400 transition-colors truncate max-w-[160px] sm:max-w-[220px]">
+              <span className="text-slate-200 hover:text-text-primary transition-colors truncate max-w-[160px] sm:max-w-[220px]">
                 {PREV_BLOCK_HASH.slice(0, 14)}...{PREV_BLOCK_HASH.slice(-8)}
               </span>
             </div>

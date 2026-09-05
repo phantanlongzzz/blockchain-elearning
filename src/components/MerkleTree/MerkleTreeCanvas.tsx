@@ -1,13 +1,5 @@
 import React, { useRef, useState, useEffect, useMemo, useCallback } from 'react';
-import {
-  ZoomIn,
-  ZoomOut,
-  RotateCcw,
-  AlertTriangle,
-  Maximize,
-  Minimize,
-  Focus,
-} from 'lucide-react';
+import { ZoomIn, ZoomOut, AlertTriangle, Maximize, Minimize, Focus } from 'lucide-react';
 import { MerkleNode, MerkleTreeResult } from '../../types';
 import { MerkleNodeCard } from './MerkleNodeCard';
 import { NodeDetailModal } from './NodeDetailModal';

@@ -1,16 +1,5 @@
 import React, { useState } from 'react';
-import {
-  GitFork,
-  Flame,
-  Zap,
-  RotateCcw,
-  Sliders,
-  Eye,
-  Copy,
-  Check,
-  Crown,
-  AlertTriangle,
-} from 'lucide-react';
+import { Flame, Zap, RotateCcw, Sliders, Eye, Check, AlertTriangle } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { MerkleTransaction, MerkleNode, MerkleTreeResult } from '../../types';
 import { INITIAL_MERKLE_TRANSACTIONS } from '../../data/merkleSeedData';

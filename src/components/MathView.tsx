@@ -22,7 +22,7 @@ export const MathView: React.FC<MathProps> = ({ math, className = '', block = fa
   if (block) {
     return (
       <div
-        className={`math-formula-container my-2 overflow-x-auto overflow-y-hidden py-1 text-emerald-300 whitespace-nowrap max-w-full ${className}`}
+        className={`math-formula-container my-2 overflow-x-auto overflow-y-hidden py-1 text-text-primary whitespace-nowrap max-w-full ${className}`}
         dangerouslySetInnerHTML={{ __html: html }}
       />
     );
@@ -30,7 +30,7 @@ export const MathView: React.FC<MathProps> = ({ math, className = '', block = fa
 
   return (
     <span
-      className={`math-formula inline-block text-emerald-300 whitespace-nowrap overflow-x-auto overflow-y-hidden align-middle max-w-full ${className}`}
+      className={`math-formula inline-block text-text-primary whitespace-nowrap overflow-x-auto overflow-y-hidden align-middle max-w-full ${className}`}
       dangerouslySetInnerHTML={{ __html: html }}
     />
   );

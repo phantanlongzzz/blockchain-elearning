@@ -1,19 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Award,
-  CheckCircle2,
-  XCircle,
-  RotateCcw,
-  Sparkles,
-  ArrowRight,
-  HelpCircle,
-  ShieldCheck,
-  Zap,
-  Boxes,
-  Cpu,
-  Layers,
-  Flame,
-} from 'lucide-react';
+import { Award, CheckCircle2, XCircle, RotateCcw, Sparkles } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 
 interface FinalChallengeSectionProps {
@@ -210,7 +196,7 @@ export const FinalChallengeSection: React.FC<FinalChallengeSectionProps> = ({
             <div className="text-xs font-mono text-slate-400">
               {isSubmitted && (
                 isAllCorrect ? (
-                  <span className="text-emerald-400 font-bold flex items-center gap-1">
+                  <span className="text-text-primary font-bold flex items-center gap-1">
                     <CheckCircle2 className="w-4 h-4" />
                     <span>{language === 'vi' ? 'XUẤT SẮC! BẠN ĐÃ SẮP XẾP CHÍNH XÁC 100%!' : 'PERFECT! 100% CORRECT SEQUENCE!'}</span>
                   </span>
@@ -237,7 +223,7 @@ export const FinalChallengeSection: React.FC<FinalChallengeSectionProps> = ({
         {/* Right Column: Educational Takeaways & Summary */}
         <div className="lg:col-span-4 p-6 rounded-2xl bg-[#090d16] border border-slate-800 shadow-xl flex flex-col justify-between space-y-5">
           <div className="space-y-4">
-            <div className="flex items-center gap-2 text-xs font-mono font-bold text-emerald-400 uppercase">
+            <div className="flex items-center gap-2 text-xs font-mono font-bold text-text-primary uppercase">
               <Sparkles className="w-4 h-4" />
               <span>{language === 'vi' ? 'TỔNG KẾT TOÀN DIỆN BUỔI 3' : 'LESSON 3 SUMMARY'}</span>
             </div>
@@ -253,7 +239,7 @@ export const FinalChallengeSection: React.FC<FinalChallengeSectionProps> = ({
               </p>
 
               <div className="p-3 rounded-xl bg-[#05070c] border border-slate-800 space-y-2 text-xs font-mono">
-                <div className="text-emerald-400 font-bold">CHUỖI TIẾN HÓA LOGIC:</div>
+                <div className="text-text-primary font-bold">CHUỖI TIẾN HÓA LOGIC:</div>
                 <div className="text-slate-300 text-[11px] leading-relaxed">
                   Tiền Tệ ➔ Niềm Tin ➔ Trung Gian Tập Trung ➔ Khủng Hoảng/Lạm Phát ➔ Bài Toán Tiêu Đúp ➔ Mạng Ngang Hàng (P2P) ➔ Blockchain ➔ Bitcoin.
                 </div>

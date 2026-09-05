@@ -34,14 +34,14 @@ export const LinkedListVsBlockchain: React.FC<LinkedListVsBlockchainProps> = ({
   return (
     <div className="space-y-6 animate-in fade-in duration-200">
       {/* Header */}
-      <div className="p-5 rounded-xl bg-[#0B101E]/80 backdrop-blur-md border border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-[0_4px_20px_rgba(0,0,0,0.3)]">
+      <div className="p-5 rounded-2xl bg-[#0B0F19]/70 backdrop-blur-xl border border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-[0_16px_40px_rgba(0,0,0,0.6)]">
         <div className="space-y-1">
-          <div className="text-xs font-sans font-semibold text-cyan-400 tracking-normal">
+          <div className="text-xs font-mono text-cyan-400 uppercase tracking-wider mb-1">
             {language === 'vi'
               ? 'Giai đoạn 03 · Chuyển đổi kiến trúc'
               : 'Stage 03 · Architectural Evolution'}
           </div>
-          <h3 className="text-base font-bold text-white tracking-normal font-sans">
+          <h3 className="text-base sm:text-lg font-bold text-white tracking-normal font-sans">
             {language === 'vi'
               ? 'Từ danh sách liên kết đến Blockchain'
               : 'Linked List to Blockchain Evolution'}
@@ -75,7 +75,7 @@ export const LinkedListVsBlockchain: React.FC<LinkedListVsBlockchainProps> = ({
 
       {/* Main Interactive Morph Canvas */}
       {activeView === 'animation' && (
-        <div className="p-6 rounded-xl bg-[#0B101E]/80 backdrop-blur-md border border-white/[0.08] space-y-6 shadow-[0_8px_32px_rgba(0,0,0,0.35)]">
+        <div className="p-6 rounded-2xl bg-[#0B0F19]/70 backdrop-blur-xl border border-white/[0.08] space-y-6 shadow-[0_16px_40px_rgba(0,0,0,0.6)]">
           {/* Step Stepper Header */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-white/[0.08]">
             <div className="space-y-1">
@@ -101,7 +101,7 @@ export const LinkedListVsBlockchain: React.FC<LinkedListVsBlockchainProps> = ({
                 className="p-2 rounded-lg text-slate-400 hover:text-white bg-white/[0.04] border border-white/[0.08] hover:border-cyan-500/30 transition-all cursor-pointer"
                 title={language === 'vi' ? 'Đặt lại hoạt họa' : 'Reset animation'}
               >
-                <RotateCcw className="w-3.5 h-3.5" />
+                <RotateCcw className="w-3.5 h-3.5 text-cyan-400" />
               </button>
               <button
                 type="button"
@@ -119,7 +119,7 @@ export const LinkedListVsBlockchain: React.FC<LinkedListVsBlockchainProps> = ({
           </div>
 
           {/* Morph Visualization Arena */}
-          <div className="p-6 rounded-xl bg-black/40 border border-white/[0.06] min-h-[200px] flex items-center overflow-x-auto justify-center">
+          <div className="p-6 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.05] min-h-[200px] flex items-center overflow-x-auto justify-center bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:16px_16px]">
             <div className="flex items-center gap-4 w-full justify-center pb-2">
               {/* Element 0 - Node A / Block #0 */}
               <div

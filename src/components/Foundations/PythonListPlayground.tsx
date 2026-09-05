@@ -112,10 +112,10 @@ export const PythonListPlayground: React.FC<PythonListPlaygroundProps> = ({
           <button
             type="button"
             onClick={() => setViewMode('visual')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-colors cursor-pointer ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-sans font-medium transition-colors cursor-pointer ${
               viewMode === 'visual'
-                ? 'bg-slate-800 text-cyan-400 border border-cyan-500/30 shadow-sm'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
+                ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/35 shadow-[0_0_12px_rgba(0,210,255,0.15)]'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04] border border-transparent'
             }`}
           >
             {language === 'vi' ? '1. Trình gỡ lỗi RAM' : '1. RAM Memory Inspector'}
@@ -124,10 +124,10 @@ export const PythonListPlayground: React.FC<PythonListPlaygroundProps> = ({
           <button
             type="button"
             onClick={() => setViewMode('example')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-colors cursor-pointer ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-sans font-medium transition-colors cursor-pointer ${
               viewMode === 'example'
-                ? 'bg-slate-800 text-cyan-400 border border-cyan-500/30 shadow-sm'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
+                ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/35 shadow-[0_0_12px_rgba(0,210,255,0.15)]'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04] border border-transparent'
             }`}
           >
             {language === 'vi' ? '2. So sánh sổ tay' : '2. Scratchpad Metaphor'}
@@ -136,10 +136,10 @@ export const PythonListPlayground: React.FC<PythonListPlaygroundProps> = ({
           <button
             type="button"
             onClick={() => setViewMode('code')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-colors cursor-pointer ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-sans font-medium transition-colors cursor-pointer ${
               viewMode === 'code'
-                ? 'bg-slate-800 text-cyan-400 border border-cyan-500/30 shadow-sm'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
+                ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/35 shadow-[0_0_12px_rgba(0,210,255,0.15)]'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04] border border-transparent'
             }`}
           >
             {language === 'vi' ? '3. Mã Python 3.12' : '3. Python Source'}
@@ -149,16 +149,16 @@ export const PythonListPlayground: React.FC<PythonListPlaygroundProps> = ({
         <button
           type="button"
           onClick={handleReset}
-          className="px-2.5 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white border border-white/10 text-xs font-mono flex items-center gap-1.5 transition-colors cursor-pointer"
+          className="px-2.5 py-1.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-white border border-white/[0.08] hover:border-cyan-500/30 text-xs font-sans flex items-center gap-1.5 transition-colors cursor-pointer"
         >
-          <RefreshCw className="w-3.5 h-3.5" />
+          <RefreshCw className="w-3.5 h-3.5 text-cyan-400" />
           <span>{language === 'vi' ? 'Đặt lại' : 'Reset'}</span>
         </button>
       </div>
 
       {/* Mode 1: Memory Debugger (Memory Inspector) */}
       {viewMode === 'visual' && (
-        <div className="p-6 rounded-2xl bg-[#0B0F19]/60 backdrop-blur-xl border border-white/[0.08] shadow-[0_12px_40px_rgba(0,0,0,0.5)] space-y-4">
+        <div className="p-6 rounded-2xl bg-[#0B0F19]/70 backdrop-blur-xl border border-white/[0.08] shadow-[0_16px_40px_rgba(0,0,0,0.6)] space-y-4">
           {/* Header / Sub-toolbar */}
           <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-white/[0.06]">
             <div className="flex items-center gap-2">
@@ -166,7 +166,7 @@ export const PythonListPlayground: React.FC<PythonListPlaygroundProps> = ({
               <span className="text-xs font-sans font-semibold text-slate-200 uppercase tracking-wide">
                 Memory Inspector · RAM Address Space
               </span>
-              <span className="text-[11px] font-mono text-slate-500">
+              <span className="text-[11px] font-mono text-slate-400">
                 ({items.length} slots · 0x0400..0x{((items.length) * 1024).toString(16).toUpperCase().padStart(4, '0')})
               </span>
             </div>
@@ -182,7 +182,7 @@ export const PythonListPlayground: React.FC<PythonListPlaygroundProps> = ({
           </div>
 
           {/* Layer 2: Memory Slots Grid (Interactive Canvas) */}
-          <div className="bg-black/35 backdrop-blur-md border border-white/[0.05] rounded-xl p-6 relative overflow-hidden bg-[radial-gradient(#ffffff0a_1px,transparent_1px)] [background-size:16px_16px]">
+          <div className="bg-black/40 backdrop-blur-md border border-white/[0.05] rounded-xl p-6 relative overflow-hidden bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:16px_16px]">
             {items.length === 0 ? (
               <div className="p-8 text-center text-xs font-mono text-slate-500 border border-dashed border-white/[0.08] rounded-lg">
                 [ ] Danh sách rỗng / Empty Buffer

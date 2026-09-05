@@ -164,8 +164,8 @@ export const MODULES_REGISTRY: ModuleMeta[] = [
       {
         id: 'data-structures',
         moduleId: 'theory',
-        titleVi: '2.1 Cấu trúc Dữ liệu Nền tảng (Array vs Linked List vs Blockchain)',
-        titleEn: '2.1 Foundational Data Structures (Array vs Linked List vs Blockchain)',
+        titleVi: '2.1 Cấu trúc Dữ liệu Nền tảng',
+        titleEn: '2.1 Foundational Data Structures',
         shortTitleVi: 'Cấu trúc Nền tảng',
         shortTitleEn: 'Data Structures',
         descriptionVi: 'So sánh con trỏ bộ nhớ (RAM Pointers) với con trỏ mật mã học (Hash Pointers).',

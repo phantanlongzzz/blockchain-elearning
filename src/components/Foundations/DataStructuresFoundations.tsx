@@ -125,7 +125,7 @@ export const DataStructuresFoundations: React.FC = () => {
       </div>
 
       {/* Modern Compact Stepper 6 Steps */}
-      <div className="bg-[#0B101E]/90 backdrop-blur-md p-1.5 rounded-xl border border-white/[0.08] shadow-[0_4px_20px_rgba(0,0,0,0.3)]">
+      <div className="bg-[#0B0F19]/70 backdrop-blur-xl p-1.5 rounded-2xl border border-white/[0.08] shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-1.5">
           {STAGES.map((stage) => {
             const isActive = activeStage === stage.id;
@@ -136,10 +136,10 @@ export const DataStructuresFoundations: React.FC = () => {
                 key={stage.id}
                 type="button"
                 onClick={() => handleStageChange(stage.id)}
-                className={`px-3 py-2 rounded-lg text-left transition-all duration-150 cursor-pointer flex items-center justify-between gap-2 ${
+                className={`px-3 py-2.5 rounded-xl text-left transition-all duration-200 cursor-pointer flex items-center justify-between gap-2 ${
                   isActive
-                    ? 'bg-slate-800/90 text-white border border-cyan-500/40 shadow-sm ring-1 ring-cyan-500/20'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04] border border-transparent'
+                    ? 'bg-gradient-to-r from-cyan-500/20 via-[#0B1220]/90 to-[#080D1A]/95 text-white border border-cyan-500/40 shadow-[0_0_20px_rgba(0,210,255,0.2)] ring-1 ring-cyan-500/30'
+                    : 'bg-[#0B101E]/50 text-slate-400 hover:text-slate-200 hover:bg-white/[0.04] border border-white/[0.06] hover:border-white/[0.15]'
                 }`}
               >
                 <div className="flex items-center gap-2 min-w-0">

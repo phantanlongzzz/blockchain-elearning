@@ -643,17 +643,17 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
   return (
     <div className="space-y-6 animate-in fade-in duration-200">
       {/* Header */}
-      <div className="p-5 rounded-xl bg-[#090a0f] border border-zinc-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="p-5 rounded-2xl bg-[#0B0F19]/70 backdrop-blur-xl border border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-[0_16px_40px_rgba(0,0,0,0.6)]">
         <div className="space-y-1">
-          <div className="text-xs font-mono text-zinc-500 font-medium">
+          <div className="text-xs font-mono text-cyan-400 uppercase tracking-wider mb-1">
             {language === 'vi'
               ? 'Giai đoạn 06 · Mô phỏng tương tác 8 bước'
               : 'Stage 06 · 8-Step Interactive Pipeline'}
           </div>
-          <h3 className="text-lg font-semibold text-zinc-100">
+          <h3 className="text-base sm:text-lg font-bold text-white font-sans">
             {language === 'vi' ? 'Từ Dữ Liệu Đến Blockchain' : 'From Data to Blockchain'}
           </h3>
-          <p className="text-xs text-zinc-400 max-w-2xl leading-relaxed">
+          <p className="text-xs font-sans text-slate-400 max-w-2xl leading-relaxed">
             {language === 'vi'
               ? 'Tự tay tạo giao dịch, tính mã băm SHA-256, đóng gói khối, nối con trỏ Previous Hash và thực nghiệm tấn công giả mạo.'
               : 'Create transactions, compute SHA-256 digests, package blocks, link hash pointers, and execute live tamper experiments.'}
@@ -664,35 +664,35 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
           <button
             type="button"
             onClick={() => setIsCodeModalOpen(true)}
-            className="px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white border border-zinc-700 text-xs font-mono font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
+            className="px-3 py-1.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-white border border-white/[0.08] hover:border-cyan-500/30 text-xs font-sans font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
             title={language === 'vi' ? 'Xem Code Python & TypeScript' : 'View Code'}
           >
-            <Code2 className="w-3.5 h-3.5 text-zinc-400" />
+            <Code2 className="w-3.5 h-3.5 text-cyan-400" />
             <span>{language === 'vi' ? 'Mã Nguồn' : 'Source Code'}</span>
           </button>
 
           <button
             type="button"
             onClick={handleResetAll}
-            className="px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white border border-zinc-700 text-xs font-mono font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
+            className="px-3 py-1.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-white border border-white/[0.08] hover:border-cyan-500/30 text-xs font-sans font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
             title={language === 'vi' ? 'Khởi động lại mô phỏng' : 'Reset simulation'}
           >
-            <RotateCcw className="w-3.5 h-3.5" />
+            <RotateCcw className="w-3.5 h-3.5 text-cyan-400" />
             <span>{language === 'vi' ? 'Đặt Lại' : 'Reset'}</span>
           </button>
         </div>
       </div>
 
       {/* Interactive 8-Step Stepper Bar */}
-      <div className="p-4 sm:p-5 rounded-xl bg-[#090a0f] border border-zinc-800 space-y-4">
-        <div className="flex items-center justify-between text-xs font-mono">
+      <div className="p-4 sm:p-5 rounded-2xl bg-[#0B0F19]/70 backdrop-blur-xl border border-white/[0.08] space-y-4 shadow-[0_16px_40px_rgba(0,0,0,0.6)]">
+        <div className="flex items-center justify-between text-xs font-sans">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-teach-1" />
-            <span className="text-zinc-300 font-medium">
+            <span className="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(0,210,255,0.8)]" />
+            <span className="text-slate-200 font-semibold">
               {language === 'vi' ? 'Lộ trình 8 bước thực nghiệm' : '8-Step Pipeline Workflow'}
             </span>
           </div>
-          <span className="text-zinc-400 font-mono text-xs px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800">
+          <span className="text-cyan-300 font-mono text-xs px-2.5 py-0.5 rounded-lg bg-cyan-500/10 border border-cyan-500/30">
             {language === 'vi' ? `Bước ${currentStep} / 8` : `Step ${currentStep} / 8`}
           </span>
         </div>
@@ -709,20 +709,20 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
                 key={s.step}
                 type="button"
                 onClick={() => handleStepSelect(s.step)}
-                className={`p-2 rounded-lg border text-center transition-colors cursor-pointer flex flex-col items-center justify-center ${
+                className={`p-2 rounded-xl border text-center transition-all cursor-pointer flex flex-col items-center justify-center ${
                   isCurrent
                     ? isTamper
-                      ? 'bg-rose-950/40 border-rose-500/60 text-rose-200'
-                      : 'bg-zinc-800 border-zinc-700 text-zinc-100'
+                      ? 'bg-rose-950/40 border-rose-500/60 text-rose-200 shadow-[0_0_15px_rgba(244,63,94,0.3)]'
+                      : 'bg-gradient-to-b from-cyan-500/20 via-[#0B1220]/90 to-[#080D1A]/95 text-white border-cyan-500/40 shadow-[0_0_15px_rgba(0,210,255,0.2)]'
                     : isUnlocked
-                    ? 'bg-zinc-900/60 hover:bg-zinc-900 border-zinc-800 text-zinc-400'
-                    : 'bg-transparent border-zinc-900 text-zinc-600'
+                    ? 'bg-[#0B101E]/60 hover:bg-[#0E1526] border-white/[0.06] text-slate-300 hover:text-white'
+                    : 'bg-transparent border-white/[0.03] text-slate-600'
                 }`}
               >
                 <span className="text-[11px] font-mono font-medium">
                   {language === 'vi' ? `BƯỚC ${s.step}` : `STEP ${s.step}`}
                 </span>
-                <span className="text-[9px] font-mono truncate max-w-full block mt-0.5 text-zinc-500">
+                <span className="text-[9px] font-sans truncate max-w-full block mt-0.5 text-slate-400">
                   {s.badge}
                 </span>
               </button>
@@ -731,18 +731,18 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
         </div>
 
         {/* Current Step Focus Box (Single Core Takeaway + Expandable Explanation) */}
-        <div className="p-3.5 rounded-lg bg-zinc-900/60 border border-zinc-800 space-y-2">
+        <div className="p-3.5 rounded-xl bg-[#0E1526]/70 backdrop-blur-md border border-white/[0.06] space-y-2">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div className="space-y-0.5">
               <div className="flex items-center gap-2">
-                <span className="text-[10px] font-mono px-1.5 py-0.5 rounded font-medium bg-zinc-800 text-zinc-300 border border-zinc-700 uppercase">
+                <span className="text-[10px] font-sans px-2 py-0.5 rounded font-medium bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 uppercase">
                   {currentStepDef.badge}
                 </span>
-                <h4 className="text-sm font-semibold text-zinc-200">
+                <h4 className="text-sm font-semibold text-white font-sans">
                   {currentStepDef.title}
                 </h4>
               </div>
-              <p className="text-xs text-zinc-300 font-medium">
+              <p className="text-xs text-slate-300 font-sans">
                 &ldquo;{currentStepDef.coreMessage}&rdquo;
               </p>
             </div>
@@ -751,9 +751,9 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
             <button
               type="button"
               onClick={() => setShowExplanation(!showExplanation)}
-              className="self-start sm:self-center px-2.5 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-400 hover:text-zinc-200 border border-zinc-700 text-[11px] font-mono flex items-center gap-1.5 transition-colors cursor-pointer shrink-0"
+              className="self-start sm:self-center px-2.5 py-1 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-white border border-white/[0.08] hover:border-cyan-500/30 text-[11px] font-sans flex items-center gap-1.5 transition-colors cursor-pointer shrink-0"
             >
-              <Info className="w-3 h-3 text-zinc-400" />
+              <Info className="w-3.5 h-3.5 text-cyan-400" />
               <span>
                 {showExplanation
                   ? language === 'vi'
@@ -764,15 +764,15 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
                   : 'Deep dive'}
               </span>
               {showExplanation ? (
-                <ChevronUp className="w-3 h-3" />
+                <ChevronUp className="w-3.5 h-3.5" />
               ) : (
-                <ChevronDown className="w-3 h-3" />
+                <ChevronDown className="w-3.5 h-3.5" />
               )}
             </button>
           </div>
 
           {showExplanation && (
-            <div className="p-3 rounded bg-black/40 border border-zinc-800 text-xs text-zinc-400 leading-relaxed font-sans animate-in fade-in">
+            <div className="p-3 rounded-lg bg-black/40 border border-white/[0.05] text-xs text-slate-300 leading-relaxed font-sans animate-in fade-in">
               {currentStepDef.explanation}
             </div>
           )}
@@ -782,7 +782,7 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
       {/* ==================================================== */}
       {/* ACTIVE STEP WORKBENCH (INTERACTIVE STAGES 1 - 8) */}
       {/* ==================================================== */}
-      <div className="p-6 rounded-xl bg-[#090a0f] border border-zinc-800 space-y-6">
+      <div className="p-6 rounded-2xl bg-[#0B0F19]/70 backdrop-blur-xl border border-white/[0.08] space-y-6 shadow-[0_16px_40px_rgba(0,0,0,0.6)]">
         {/* STEP 1: ENTER RAW TRANSACTION */}
         {currentStep === 1 && (
           <div className="space-y-6">

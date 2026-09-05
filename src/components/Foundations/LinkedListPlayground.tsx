@@ -164,14 +164,14 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
   return (
     <div className="space-y-4 animate-in fade-in duration-200">
       {/* Header Section */}
-      <div className="bg-[#0B101E]/60 backdrop-blur-md border border-white/[0.08] rounded-2xl p-5 mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-[0_4px_20px_rgba(0,0,0,0.3)]">
+      <div className="bg-[#0B0F19]/70 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-5 mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-[0_16px_40px_rgba(0,0,0,0.6)]">
         <div className="space-y-1">
           <div className="text-xs font-mono text-cyan-400 uppercase tracking-wider mb-1">
             {language === 'vi' ? 'Giai đoạn 02 · Cấu trúc danh sách' : 'Stage 02 · Linked Data Structure'}
           </div>
-          <h3 className="text-lg font-sans font-bold text-white">
+          <h3 className="text-base sm:text-lg font-sans font-bold text-white">
             {language === 'vi'
-              ? 'Danh sách liên kết (Linked List)'
+              ? 'Danh sách liên kết'
               : 'Linked List Data Structure'}
           </h3>
           <p className="text-xs font-sans text-slate-400 leading-relaxed max-w-2xl">
@@ -185,7 +185,7 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
           <button
             type="button"
             onClick={handleLoadSushiExample}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono text-slate-300 bg-white/[0.04] border border-white/[0.08] hover:border-cyan-500/30 hover:text-white transition-all cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-sans text-slate-300 bg-white/[0.04] border border-white/[0.08] hover:border-cyan-500/30 hover:text-white transition-all cursor-pointer"
           >
             <Play className="w-3.5 h-3.5 text-cyan-400" />
             <span>{language === 'vi' ? 'Chạy Quy Trình Mẫu' : 'Run Sample Pipeline'}</span>
@@ -193,23 +193,23 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
           <button
             type="button"
             onClick={handleReset}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono text-slate-400 bg-white/[0.02] border border-white/[0.06] hover:text-slate-200 transition-all cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-sans text-slate-300 bg-white/[0.04] border border-white/[0.08] hover:border-cyan-500/30 hover:text-white transition-all cursor-pointer"
           >
-            <RotateCcw className="w-3.5 h-3.5" />
+            <RotateCcw className="w-3.5 h-3.5 text-cyan-400" />
             <span>{language === 'vi' ? 'Đặt Lại' : 'Reset'}</span>
           </button>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-1 border-b border-white/[0.08] pb-2">
+      <div className="flex items-center gap-1.5 border-b border-white/[0.08] pb-2">
         <button
           type="button"
           onClick={() => setViewMode('visual')}
           className={`px-3 py-1.5 rounded-lg text-xs font-sans font-medium transition-colors cursor-pointer ${
             viewMode === 'visual'
-              ? 'bg-slate-800 text-cyan-400 border border-cyan-500/30 shadow-sm'
-              : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
+              ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/35 shadow-[0_0_12px_rgba(0,210,255,0.15)]'
+              : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04] border border-transparent'
           }`}
         >
           {language === 'vi' ? '1. Mô phỏng Node & Con trỏ' : '1. Node & Pointer Simulator'}
@@ -220,8 +220,8 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
           onClick={() => setViewMode('sushi')}
           className={`px-3 py-1.5 rounded-lg text-xs font-sans font-medium transition-colors cursor-pointer ${
             viewMode === 'sushi'
-              ? 'bg-slate-800 text-cyan-400 border border-cyan-500/30 shadow-sm'
-              : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
+              ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/35 shadow-[0_0_12px_rgba(0,210,255,0.15)]'
+              : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04] border border-transparent'
           }`}
         >
           {language === 'vi' ? '2. Quy trình mẫu' : '2. Sample Pipeline'}
@@ -232,8 +232,8 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
           onClick={() => setViewMode('code')}
           className={`px-3 py-1.5 rounded-lg text-xs font-sans font-medium transition-colors cursor-pointer ${
             viewMode === 'code'
-              ? 'bg-slate-800 text-cyan-400 border border-cyan-500/30 shadow-sm'
-              : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
+              ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/35 shadow-[0_0_12px_rgba(0,210,255,0.15)]'
+              : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04] border border-transparent'
           }`}
         >
           {language === 'vi' ? '3. Code Node Class' : '3. Node Class Code'}
@@ -242,7 +242,7 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
 
       {/* Mode 1: Visual Interactive Linked List (Outer Card Wrapper) */}
       {viewMode === 'visual' && (
-        <div className="p-6 rounded-2xl bg-[#0B0F19]/60 backdrop-blur-xl border border-white/[0.08] shadow-[0_12px_40px_rgba(0,0,0,0.5)] space-y-4">
+        <div className="p-6 rounded-2xl bg-[#0B0F19]/70 backdrop-blur-xl border border-white/[0.08] shadow-[0_16px_40px_rgba(0,0,0,0.6)] space-y-4">
           {/* Action Toolbar */}
           <div className="bg-[#070B14]/80 border border-white/[0.06] rounded-xl p-3 flex flex-wrap items-center justify-between gap-3 mb-4">
             {/* Insertion controls */}

@@ -89,70 +89,9 @@ export const Hero: React.FC = () => {
   return (
     <section
       id="hero"
-      className="relative min-h-[90vh] py-6 sm:py-10 flex flex-col justify-center overflow-hidden font-sans rounded-3xl bg-gradient-to-b from-[#090D16] to-[#050811] border border-white/[0.06]"
+      className="relative min-h-[85vh] py-8 sm:py-12 flex flex-col justify-center overflow-hidden font-sans rounded-3xl bg-gradient-to-b from-[#090D16]/80 via-[#060912]/90 to-[#04060B] border border-white/[0.07] shadow-[0_8px_30px_rgb(0,0,0,0.35)]"
     >
-      {/* ========================================================================= */}
-      {/* STRICT LIGHTING: ONLY ONE SOFT RADIAL CYAN/BLUE FOCAL GLOW BEHIND HERO   */}
-      {/* ========================================================================= */}
-      <div 
-        className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] h-[450px] bg-[radial-gradient(ellipse_60%_50%_at_50%_40%,rgba(0,210,255,0.08),rgba(0,114,255,0.03),transparent_75%)] pointer-events-none z-0" 
-        aria-hidden="true"
-      />
-
       <div className="relative z-10 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-        {/* ========================================================================= */}
-        {/* MINIMAL TOP HERO SUB-HEADER BAR                                          */}
-        {/* ========================================================================= */}
-        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/[0.06] pb-4">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border border-cyan-500/30 flex items-center justify-center text-cyan-400 font-mono font-bold text-sm">
-              ◈
-            </div>
-            <div>
-              <span className="font-display font-bold text-white tracking-tight text-base">
-                BlockLab
-              </span>
-              <span className="text-[11px] text-slate-400 block font-sans">
-                {isVi ? 'Nền tảng học tập trực quan về Blockchain & Mật mã' : 'Interactive Blockchain & Cryptography Education Platform'}
-              </span>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2 sm:gap-4 text-xs font-mono">
-            <button
-              onClick={() => navigateTo('theory', 'data-structures')}
-              className="text-slate-400 hover:text-cyan-300 transition-colors cursor-pointer hidden md:inline-flex"
-            >
-              {isVi ? 'Lý thuyết' : 'Theory'}
-            </button>
-            <button
-              onClick={() => navigateTo('simulation', 'transactions')}
-              className="text-slate-400 hover:text-cyan-300 transition-colors cursor-pointer hidden md:inline-flex"
-            >
-              {isVi ? 'Mô phỏng 3.1' : 'Simulation 3.1'}
-            </button>
-            <button
-              onClick={() => navigateTo('simulation', 'proof-of-work')}
-              className="text-slate-400 hover:text-cyan-300 transition-colors cursor-pointer hidden sm:inline-flex"
-            >
-              {isVi ? 'Đồng thuận' : 'Consensus'}
-            </button>
-            <button
-              onClick={() => navigateTo('hash', 'generator')}
-              className="text-slate-400 hover:text-cyan-300 transition-colors cursor-pointer hidden sm:inline-flex"
-            >
-              {isVi ? 'Tài liệu NIST' : 'NIST Standards'}
-            </button>
-            <button
-              onClick={() => navigateTo('hash', 'generator')}
-              className="px-3 py-1.5 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.1] text-slate-200 hover:text-white text-xs font-mono font-medium transition-all duration-150 ease-out cursor-pointer flex items-center gap-1.5"
-            >
-              <span>{isVi ? 'Khám phá bài Lab' : 'Explore Labs'}</span>
-              <ArrowRight className="w-3.5 h-3.5 text-cyan-400" />
-            </button>
-          </div>
-        </div>
-
         {/* ========================================================================= */}
         {/* TWO-COLUMN HERO GRID (16:9 AESTHETIC COMPOSITION)                        */}
         {/* ========================================================================= */}
@@ -160,7 +99,7 @@ export const Hero: React.FC = () => {
           {/* LEFT COLUMN: Core Value Proposition, Typography & CTAs */}
           <div className="lg:col-span-6 xl:col-span-6 space-y-6 text-left">
             {/* Tech Tags Pill */}
-            <div className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-white/[0.03] backdrop-blur-md border border-white/[0.08] text-xs font-mono text-slate-300 shadow-sm">
+            <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#0B0F19]/60 backdrop-blur-md border border-white/[0.08] text-xs font-mono text-slate-300 shadow-sm">
               <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_rgba(0,210,255,0.6)]" />
               <span className="font-semibold text-cyan-300">NIST FIPS 180-4</span>
               <span className="text-slate-500">•</span>
@@ -170,10 +109,10 @@ export const Hero: React.FC = () => {
             </div>
 
             {/* Main Headline */}
-            <div className="space-y-2">
+            <div className="space-y-3">
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight text-[#F8FAFC] font-display">
                 Demystifying Blockchain{' '}
-                <span className="block mt-1 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                <span className="block mt-2 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
                   From Zero to Consensus
                 </span>
               </h1>
@@ -187,11 +126,11 @@ export const Hero: React.FC = () => {
             </p>
 
             {/* CTA Group */}
-            <div className="flex flex-wrap items-center gap-3.5 pt-2">
+            <div className="flex flex-wrap items-center gap-4 pt-2">
               <button
                 id="hero-start-simulation-btn"
                 onClick={() => navigateTo('hash', 'generator')}
-                className="px-5 py-3 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-sm transition-all duration-150 ease-out shadow-sm hover:shadow-cyan-500/20 active:scale-95 flex items-center gap-2 cursor-pointer"
+                className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-medium text-sm transition-all duration-200 ease-out shadow-[0_0_20px_rgba(0,210,255,0.25)] hover:shadow-[0_0_30px_rgba(0,210,255,0.4)] active:scale-95 flex items-center gap-2 cursor-pointer"
               >
                 <Zap className="w-4 h-4 text-white" />
                 <span>{isVi ? 'Bắt đầu mô phỏng' : 'Start Simulation'}</span>
@@ -202,7 +141,7 @@ export const Hero: React.FC = () => {
                 href="https://github.com/phantanlongzzz/blockchain-elearning"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-5 py-3 rounded-lg bg-white/[0.03] hover:bg-white/[0.07] border border-white/[0.08] hover:border-white/[0.15] text-[#94A3B8] hover:text-[#F8FAFC] font-medium text-sm transition-all duration-150 ease-out flex items-center gap-2 cursor-pointer"
+                className="px-6 py-3.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.1] text-slate-300 hover:text-white font-medium text-sm transition-all duration-200 ease-out flex items-center gap-2 cursor-pointer"
               >
                 <Github className="w-4 h-4 text-slate-300" />
                 <span>{isVi ? 'Xem mã nguồn đồ án' : 'View Source Code'}</span>
@@ -210,7 +149,7 @@ export const Hero: React.FC = () => {
             </div>
 
             {/* Metrics & Progress Glass Card */}
-            <div className="p-4 rounded-xl bg-white/[0.02] backdrop-blur-md border border-white/[0.08] grid grid-cols-2 sm:grid-cols-3 gap-4 text-xs font-mono">
+            <div className="p-5 rounded-xl bg-[#0B0F19]/60 backdrop-blur-md border border-white/[0.07] hover:border-cyan-500/20 transition-all duration-200 shadow-[0_8px_30px_rgb(0,0,0,0.35)] grid grid-cols-2 sm:grid-cols-3 gap-4 text-xs font-mono">
               <div className="space-y-0.5">
                 <div className="text-lg font-bold text-[#F8FAFC] tracking-tight">19</div>
                 <div className="text-[11px] text-[#94A3B8] font-sans">
@@ -239,7 +178,7 @@ export const Hero: React.FC = () => {
 
             {/* Resume Learning Prompt if in progress */}
             {totalProgress.completedCount > 0 && (
-              <div className="p-3.5 rounded-lg bg-cyan-950/20 border border-cyan-500/20 flex items-center justify-between gap-3 text-xs">
+              <div className="p-4 rounded-xl bg-[#0B0F19]/70 backdrop-blur-md border border-cyan-500/30 flex items-center justify-between gap-3 text-xs shadow-md">
                 <div className="flex items-center gap-2.5 min-w-0">
                   <PlayCircle className="w-4 h-4 text-cyan-400 shrink-0" />
                   <span className="text-slate-300 truncate">
@@ -251,7 +190,7 @@ export const Hero: React.FC = () => {
                 </div>
                 <button
                   onClick={() => navigateTo(resumeInfo.moduleId as ModuleId, resumeInfo.lessonId as LessonId)}
-                  className="px-2.5 py-1 rounded bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 font-mono text-[11px] font-medium transition-colors shrink-0 cursor-pointer"
+                  className="px-3 py-1.5 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 font-mono text-[11px] font-medium transition-colors shrink-0 cursor-pointer border border-cyan-500/30"
                 >
                   {isVi ? 'Tiếp tục' : 'Resume'} →
                 </button>
@@ -271,12 +210,12 @@ export const Hero: React.FC = () => {
         <div className="pt-6 border-t border-white/[0.06] space-y-4 text-left">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-cyan-400" />
-              <h2 className="text-xs font-mono font-medium tracking-wide text-slate-400 uppercase">
+              <span className="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(0,210,255,0.6)]" />
+              <h2 className="text-xs font-mono font-medium tracking-wide text-slate-300 uppercase">
                 {isVi ? 'Cấu trúc Lộ trình Đào tạo' : 'Curriculum Architecture'} · 4 Phân hệ
               </h2>
             </div>
-            <span className="text-[11px] font-mono text-slate-500">NIST FIPS & BTC Core Spec</span>
+            <span className="text-[11px] font-mono text-slate-400">NIST FIPS & BTC Core Spec</span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -290,14 +229,14 @@ export const Hero: React.FC = () => {
                   key={area.id}
                   id={`hero-card-module-${area.id}`}
                   onClick={() => navigateTo(area.id as ModuleId)}
-                  className="group rounded-xl bg-white/[0.02] hover:bg-white/[0.05] border border-white/[0.08] hover:border-cyan-500/30 p-5 transition-all duration-150 ease-out flex flex-col justify-between relative text-left w-full cursor-pointer"
+                  className="group rounded-xl bg-[#0B0F19]/60 backdrop-blur-md border border-white/[0.07] hover:border-cyan-500/30 hover:bg-[#0B0F19]/80 p-5 transition-all duration-200 ease-out flex flex-col justify-between relative text-left w-full cursor-pointer shadow-[0_8px_30px_rgb(0,0,0,0.35)]"
                 >
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
                       <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/[0.08] group-hover:border-cyan-500/30 group-hover:bg-cyan-500/10 flex items-center justify-center text-slate-400 group-hover:text-cyan-300 transition-colors">
                         <Icon className="w-4 h-4" />
                       </div>
-                      <span className="text-[11px] font-mono text-slate-500 group-hover:text-cyan-400 transition-colors">
+                      <span className="text-[11px] font-mono text-slate-400 group-hover:text-cyan-400 transition-colors">
                         0{index + 1}
                       </span>
                     </div>

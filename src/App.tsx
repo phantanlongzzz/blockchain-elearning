@@ -17,6 +17,7 @@ import { LessonContentRenderer } from './components/layout/LessonContentRenderer
 import { LessonFooter } from './components/layout/LessonFooter';
 import { Footer } from './components/Footer';
 import { BackToTop } from './components/BackToTop';
+import { AIAssistantWidget } from './components/AIAssistant/AIAssistantWidget';
 import { CommandPalette } from './components/CommandPalette';
 import { CustomCursor } from './components/CustomCursor';
 
@@ -59,7 +60,10 @@ function AppContent() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#0A0D0F] text-[#F2F4F7] selection:bg-teach-1/30 selection:text-teach-1 relative overflow-x-hidden font-sans flex flex-col justify-between">
+    <div className="min-h-screen bg-[#06080F] bg-gradient-to-b from-[#080D1A] via-[#05070E] to-[#020408] text-text-primary selection:bg-teach-1/30 selection:text-teach-1 relative overflow-x-hidden font-sans flex flex-col justify-between">
+      {/* Single Global Focal Glow at the top of the page */}
+      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[800px] h-[350px] bg-[radial-gradient(ellipse_at_top,_rgba(0,210,255,0.08),_transparent_70%)] pointer-events-none z-0" />
+
       {/* Fixed Application Shell: Top Nav & Module Progress Rail */}
       <div className="relative z-30">
         <Navbar
@@ -92,6 +96,7 @@ function AppContent() {
 
       {/* Application Global Footer & Utilities */}
       <Footer />
+      <AIAssistantWidget />
       <BackToTop />
 
       {/* Global Modern Neon Cursor (Only mounted when enabled) */}

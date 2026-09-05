@@ -5,10 +5,10 @@
   /* ==========================================================================
      BACKGROUND TOKENS
      ========================================================================== */
-  --bg-primary: #09090B;
-  --bg-secondary: #0F1014;
-  --bg-elevated: #15161A;
-  --bg-hover: #1B1D22;
+  --bg-primary: #06080F;
+  --bg-secondary: #0B0F19;
+  --bg-elevated: #111726;
+  --bg-hover: #172033;
 
   /* ==========================================================================
      BORDER TOKENS
@@ -41,8 +41,8 @@
      Không dùng để biểu thị success/error/financial — các trạng thái đó dùng 
      nhóm Semantic ở trên.
      ========================================================================== */
-  --teach-1: #38BDF8;
-  --teach-2: #A78BFA;
+  --teach-1: #00D2FF;
+  --teach-2: #38BDF8;
   --teach-3: #2DD4BF;
   --teach-4: #FB7185;
   --teach-5: #CBD5E1;
@@ -50,26 +50,26 @@
 
   /* Legacy & Compatibility Tokens */
   --color-money: var(--color-financial);
-  --bg-surface: #121713;
-  --bg-input: #0B0F0D;
-  --border-default: #1C2430;
-  --border-subtle: #151C26;
-  --border-active: #24313D;
+  --bg-surface: #0B0F19;
+  --bg-input: #070A12;
+  --border-default: rgba(255, 255, 255, 0.08);
+  --border-subtle: rgba(255, 255, 255, 0.05);
+  --border-active: rgba(0, 210, 255, 0.3);
   
-  --accent-primary: #00C98D;
-  --accent-hover: #00B982;
-  --accent-bright: #19E6A7;
-  --accent-muted: #087F63;
-  --accent-subtle: rgba(0, 201, 141, 0.08);
-  --accent-active: rgba(0, 201, 141, 0.12);
-  --accent-border: rgba(0, 201, 141, 0.35);
+  --accent-primary: #00D2FF;
+  --accent-hover: #00B8E6;
+  --accent-bright: #33DBFF;
+  --accent-muted: #0088A8;
+  --accent-subtle: rgba(0, 210, 255, 0.08);
+  --accent-active: rgba(0, 210, 255, 0.15);
+  --accent-border: rgba(0, 210, 255, 0.35);
 
   --text-code: #C8D0DB;
 
   --success: var(--color-success);
   --warning: #F59E0B;
   --danger: var(--color-error);
-  --track: #18202A;
+  --track: #111726;
   
   --radius-3xl: 24px;
   --radius-2xl: 16px;
@@ -79,31 +79,31 @@
   --radius-sm: 6px;
 
   /* Aliases & Compatibility tokens */
-  --bg-base: #09090B;
-  --bg-canvas: #09090B;
-  --bg-card: #0F1014;
-  --border: #1C2430;
-  --border-strong: #24313D;
+  --bg-base: #06080F;
+  --bg-canvas: #06080F;
+  --bg-card: #0B0F19;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.15);
 
-  --brand-primary: #00C98D;
-  --brand-secondary: #00B982;
+  --brand-primary: #00D2FF;
+  --brand-secondary: #00B8E6;
   --state-success: #10B981;
   --state-warning: #F59E0B;
   --state-danger: #EF4444;
   --state-neutral: #717B8C;
 
-  --emerald: #00C98D;
-  --green: #00C98D;
-  --amber: #F59E0B;
+  --emerald: #10B981;
+  --green: #10B981;
+  --amber: #F6C453;
   --red: #EF4444;
 }
 
 @theme {
   /* BACKGROUND */
-  --color-bg-primary: #09090B;
-  --color-bg-secondary: #0F1014;
-  --color-bg-elevated: #15161A;
-  --color-bg-hover: #1B1D22;
+  --color-bg-primary: #06080F;
+  --color-bg-secondary: #0B0F19;
+  --color-bg-elevated: #111726;
+  --color-bg-hover: #172033;
 
   /* BORDER */
   --color-border-primary: rgba(255, 255, 255, 0.08);
@@ -130,33 +130,33 @@
      Không dùng để biểu thị success/error/financial — các trạng thái đó dùng 
      nhóm Semantic ở trên.
      ========================================================================== */
-  --color-teach-1: #38BDF8;
-  --color-teach-2: #A78BFA;
+  --color-teach-1: #00D2FF;
+  --color-teach-2: #38BDF8;
   --color-teach-3: #2DD4BF;
   --color-teach-4: #FB7185;
   --color-teach-5: #CBD5E1;
   --color-teach-6: #64748B;
 
   /* Legacy & Compatibility Mappings */
-  --color-bg-surface: #121713;
-  --color-bg-input: #0B0F0D;
-  --color-bg-base: #09090B;
-  --color-canvas: #09090B;
-  --color-card: #0F1014;
-  --color-surface: #121713;
+  --color-bg-surface: #0B0F19;
+  --color-bg-input: #070A12;
+  --color-bg-base: #06080F;
+  --color-canvas: #06080F;
+  --color-card: #0B0F19;
+  --color-surface: #0B0F19;
 
-  --color-border-default: #1C2430;
-  --color-border-subtle: #151C26;
-  --color-border-active: #24313D;
-  --color-border-strong: #24313D;
-  --color-card-border: #1C2430;
+  --color-border-default: rgba(255, 255, 255, 0.08);
+  --color-border-subtle: rgba(255, 255, 255, 0.05);
+  --color-border-active: rgba(0, 210, 255, 0.3);
+  --color-border-strong: rgba(255, 255, 255, 0.15);
+  --color-card-border: rgba(255, 255, 255, 0.08);
 
-  --color-accent-primary: #00C98D;
-  --color-accent-hover: #00B982;
-  --color-accent-bright: #19E6A7;
-  --color-accent-muted: #087F63;
-  --color-brand-primary: #00C98D;
-  --color-brand-secondary: #00B982;
+  --color-accent-primary: #00D2FF;
+  --color-accent-hover: #00B8E6;
+  --color-accent-bright: #33DBFF;
+  --color-accent-muted: #0088A8;
+  --color-brand-primary: #00D2FF;
+  --color-brand-secondary: #00B8E6;
   --color-state-success: #10B981;
   --color-state-warning: #F59E0B;
   --color-state-danger: #EF4444;
@@ -164,9 +164,9 @@
 
   --color-text-code: #C8D0DB;
 
-  --color-lab-emerald: #00C98D;
-  --color-lab-green: #00C98D;
-  --color-lab-amber: #F59E0B;
+  --color-lab-emerald: #10B981;
+  --color-lab-green: #10B981;
+  --color-lab-amber: #F6C453;
   --color-lab-red: #EF4444;
 
   --radius-3xl: 24px;
@@ -190,14 +190,14 @@
 @layer base {
   /* Default body typography - Clean sans-serif for human readability (Be Vietnam Pro) */
   body {
-    background-color: #0A0D0F;
-    color: #F2F4F7;
+    background-color: #06080F;
+    color: #F4F4F5;
     font-family: var(--font-sans);
     font-weight: 400;
   }
   
   h1, h2, h3, h4, h5, h6 {
-    color: #F2F4F7;
+    color: #F4F4F5;
     font-family: var(--font-sans);
     letter-spacing: -0.02em;
   }
@@ -237,16 +237,31 @@ html body,
 
 /* Premium Crypto / Blockchain Learning Lab Utility Containers */
 .lab-card {
-  background-color: #0C0F14;
-  border: 1px solid #1C2430;
-  border-radius: 1rem; /* rounded-2xl */
-  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
-  transition: border-color 200ms ease, box-shadow 200ms ease, transform 200ms ease;
+  background-color: rgba(11, 15, 25, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 0.75rem; /* rounded-xl */
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+  transition: all 200ms ease;
 }
 
 .lab-card:hover {
-  border-color: rgba(0, 201, 141, 0.35);
-  box-shadow: 0 0 25px rgba(0, 201, 141, 0.04);
+  border-color: rgba(0, 210, 255, 0.2);
+}
+
+.glass-card {
+  background-color: rgba(11, 15, 25, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 0.75rem;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+  transition: all 200ms ease;
+}
+
+.glass-card:hover {
+  border-color: rgba(0, 210, 255, 0.2);
 }
 
 .lab-card-inner {

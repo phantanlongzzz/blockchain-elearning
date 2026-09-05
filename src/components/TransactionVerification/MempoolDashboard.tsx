@@ -1005,7 +1005,7 @@ export const MempoolDashboard: React.FC = () => {
       </div>
 
       {/* 2. Educational Ledger & Account States */}
-      <div className="p-5 rounded-xl bg-[#0F1014] border border-white/[0.08] space-y-4">
+      <div className="p-5 rounded-xl bg-[#0B0F19]/60 backdrop-blur-md border border-white/[0.08] space-y-4 shadow-[0_8px_30px_rgb(0,0,0,0.35)]">
         <div className="flex items-center justify-between">
           <span className="text-xs font-medium uppercase tracking-wider text-[#71717A]">
             {vStr.ledgerTitle}
@@ -1021,7 +1021,7 @@ export const MempoolDashboard: React.FC = () => {
             return (
               <div
                 key={acc.name}
-                className="rounded-lg bg-[#09090B] border border-white/[0.06] overflow-hidden"
+                className="rounded-lg bg-[#070A12]/80 border border-white/[0.06] overflow-hidden"
               >
                 <div className="p-3.5 space-y-2.5">
                   <div className="flex items-center justify-between">
@@ -1061,7 +1061,7 @@ export const MempoolDashboard: React.FC = () => {
                         <span className="text-[#71717A] block font-sans text-[10px] mb-1">
                           {isVi ? 'Địa chỉ ví' : 'Wallet Address'}
                         </span>
-                        <div className="bg-[#0F1014] border border-white/[0.06] p-2 rounded text-[#F4F4F5] font-mono text-[11px] break-all leading-relaxed">
+                        <div className="bg-[#0B0F19] border border-white/[0.06] p-2 rounded text-[#F4F4F5] font-mono text-[11px] break-all leading-relaxed">
                           {acc.address}
                         </div>
                       </div>
@@ -1069,7 +1069,7 @@ export const MempoolDashboard: React.FC = () => {
                         <span className="text-[#71717A] block font-sans text-[10px] mb-1">
                           {isVi ? 'Khóa công khai' : 'Public Key'}
                         </span>
-                        <div className="bg-[#0F1014] border border-white/[0.06] p-2 rounded text-sky-400 font-mono text-[11px] break-all leading-relaxed">
+                        <div className="bg-[#0B0F19] border border-white/[0.06] p-2 rounded text-sky-400 font-mono text-[11px] break-all leading-relaxed">
                           {acc.publicKey.slice(0, 48)}...
                         </div>
                       </div>
@@ -1096,7 +1096,7 @@ export const MempoolDashboard: React.FC = () => {
                             )}
                           </button>
                         </div>
-                        <div className="bg-[#0F1014] border border-white/[0.06] p-2 rounded text-rose-400 font-mono text-[11px] break-all leading-relaxed">
+                        <div className="bg-[#0B0F19] border border-white/[0.06] p-2 rounded text-rose-400 font-mono text-[11px] break-all leading-relaxed">
                           {isKeyRevealed ? acc.privateKey : '••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••'}
                         </div>
                       </div>
@@ -1203,7 +1203,7 @@ export const MempoolDashboard: React.FC = () => {
       {/* 4. Live Mempool (Accepted) vs Rejected Transactions - Deep Inspector */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 w-full">
         {/* Active Mempool Column */}
-        <div className="p-5 sm:p-6 rounded-xl bg-[#0F1014] border border-white/[0.08] space-y-4">
+        <div className="p-5 sm:p-6 rounded-xl bg-[#0B0F19]/60 backdrop-blur-md border border-white/[0.08] space-y-4 shadow-[0_8px_30px_rgb(0,0,0,0.35)]">
           <div className="flex items-center justify-between pb-3 border-b border-white/[0.06] text-xs">
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-[#10B981] animate-pulse" />
@@ -1215,7 +1215,7 @@ export const MempoolDashboard: React.FC = () => {
 
           <div className="space-y-3.5 text-xs max-h-[520px] overflow-y-auto pr-1">
             {mempool.length === 0 ? (
-              <div className="p-8 rounded-lg bg-[#09090B] border border-white/[0.06] min-h-[160px] flex flex-col items-center justify-center text-center space-y-2 text-[#71717A] text-xs">
+              <div className="p-8 rounded-lg bg-[#070A12]/80 border border-white/[0.06] min-h-[160px] flex flex-col items-center justify-center text-center space-y-2 text-[#71717A] text-xs">
                 <Layers className="w-8 h-8 text-[#71717A]/40 mb-1" />
                 <div className="font-medium text-[#A1A1AA]">
                   {isVi ? 'Mempool hiện đang trống' : 'Mempool is currently empty'}
@@ -1230,7 +1230,7 @@ export const MempoolDashboard: React.FC = () => {
               mempool.map((tx) => (
                 <div
                   key={tx.id}
-                  className="p-4 sm:p-5 rounded-xl bg-[#15161A]/80 border border-white/[0.08] hover:border-white/20 hover:bg-[#15161A] transition-all duration-150 space-y-3.5"
+                  className="p-4 sm:p-5 rounded-xl bg-[#0B0F19]/80 border border-white/[0.08] hover:border-cyan-500/30 hover:bg-[#0B0F19] transition-all duration-150 space-y-3.5"
                 >
                   {/* TẦNG 1: HEADER & GIÁ TRỊ (Rộng & Rõ ràng) */}
                   <div className="flex items-start justify-between gap-3 flex-wrap sm:flex-nowrap">
@@ -1241,7 +1241,7 @@ export const MempoolDashboard: React.FC = () => {
                           className="w-2.5 h-2.5 rounded-full bg-[#10B981] animate-pulse shrink-0"
                           title={isVi ? 'Đang chờ đóng block' : 'Pending block inclusion'}
                         />
-                        <span className="font-mono text-xs px-2.5 py-1 rounded bg-[#09090B] text-[#F4F4F5] border border-white/10 font-semibold shrink-0">
+                        <span className="font-mono text-xs px-2.5 py-1 rounded bg-[#070A12] text-[#F4F4F5] border border-white/10 font-semibold shrink-0">
                           {tx.txNumber}
                         </span>
                         <span className="text-[11px] font-mono text-[#71717A] hidden sm:inline">
@@ -1280,7 +1280,7 @@ export const MempoolDashboard: React.FC = () => {
                   {/* TẦNG 2: THAM SỐ MẬT MÃ & KỸ THUẬT (DÀN HÀNG NGANG / GRID) */}
                   <div className="space-y-2 pt-2.5 border-t border-white/[0.06]">
                     {/* Signature Box */}
-                    <div className="bg-[#09090B] border border-white/[0.06] px-3 py-2 rounded-lg font-mono text-xs text-[#A1A1AA] flex items-center justify-between gap-2 overflow-hidden">
+                    <div className="bg-[#070A12] border border-white/[0.06] px-3 py-2 rounded-lg font-mono text-xs text-[#A1A1AA] flex items-center justify-between gap-2 overflow-hidden">
                       <div className="flex items-center gap-2 min-w-0">
                         <span className="text-[#71717A] font-semibold text-[11px] uppercase tracking-wider shrink-0">
                           SIG:
@@ -1310,15 +1310,15 @@ export const MempoolDashboard: React.FC = () => {
 
                     {/* Tech Parameters Grid */}
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 font-mono text-xs">
-                      <div className="bg-[#09090B] border border-white/[0.06] px-2.5 py-1.5 rounded flex items-center justify-between">
+                      <div className="bg-[#070A12] border border-white/[0.06] px-2.5 py-1.5 rounded flex items-center justify-between">
                         <span className="text-[#71717A] text-[11px]">nonce:</span>
                         <span className="text-[#F4F4F5] font-semibold">{tx.nonce}</span>
                       </div>
-                      <div className="bg-[#09090B] border border-white/[0.06] px-2.5 py-1.5 rounded flex items-center justify-between">
+                      <div className="bg-[#070A12] border border-white/[0.06] px-2.5 py-1.5 rounded flex items-center justify-between">
                         <span className="text-[#71717A] text-[11px]">size:</span>
                         <span className="text-[#F4F4F5]">224 Bytes</span>
                       </div>
-                      <div className="bg-[#09090B] border border-white/[0.06] px-2.5 py-1.5 rounded flex items-center justify-between col-span-2 sm:col-span-1">
+                      <div className="bg-[#070A12] border border-white/[0.06] px-2.5 py-1.5 rounded flex items-center justify-between col-span-2 sm:col-span-1">
                         <span className="text-[#71717A] text-[11px]">format:</span>
                         <span className="text-sky-400 text-[11px]">SECP256k1 / SHA-256</span>
                       </div>
@@ -1346,7 +1346,7 @@ export const MempoolDashboard: React.FC = () => {
         </div>
 
         {/* Rejected Transactions Column */}
-        <div className="p-5 sm:p-6 rounded-xl bg-[#0F1014] border border-white/[0.08] space-y-4">
+        <div className="p-5 sm:p-6 rounded-xl bg-[#0B0F19]/60 backdrop-blur-md border border-white/[0.08] space-y-4 shadow-[0_8px_30px_rgb(0,0,0,0.35)]">
           <div className="flex items-center justify-between pb-3 border-b border-white/[0.06] text-xs">
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-rose-500" />
@@ -1358,7 +1358,7 @@ export const MempoolDashboard: React.FC = () => {
 
           <div className="space-y-3.5 text-xs max-h-[520px] overflow-y-auto pr-1">
             {rejected.length === 0 ? (
-              <div className="p-8 rounded-lg bg-[#09090B] border border-white/[0.06] min-h-[160px] flex flex-col items-center justify-center text-center space-y-2 text-[#71717A] text-xs">
+              <div className="p-8 rounded-lg bg-[#070A12]/80 border border-white/[0.06] min-h-[160px] flex flex-col items-center justify-center text-center space-y-2 text-[#71717A] text-xs">
                 <Inbox className="w-8 h-8 text-[#71717A]/40 mb-1" />
                 <div className="font-medium text-[#A1A1AA]">
                   {vStr.noRejected || (isVi ? 'Chưa có giao dịch nào bị từ chối' : 'No rejected transactions')}
@@ -1373,7 +1373,7 @@ export const MempoolDashboard: React.FC = () => {
               rejected.map((tx) => (
                 <div
                   key={tx.id}
-                  className="p-4 sm:p-5 rounded-xl bg-[#15161A]/80 border border-rose-500/25 hover:border-rose-500/40 hover:bg-[#15161A] transition-all duration-150 space-y-3.5"
+                  className="p-4 sm:p-5 rounded-xl bg-[#0B0F19]/80 border border-rose-500/25 hover:border-rose-500/40 hover:bg-[#0B0F19] transition-all duration-150 space-y-3.5"
                 >
                   {/* TẦNG 1: HEADER & GIÁ TRỊ (Rộng & Rõ ràng) */}
                   <div className="flex items-start justify-between gap-3 flex-wrap sm:flex-nowrap">
@@ -1384,7 +1384,7 @@ export const MempoolDashboard: React.FC = () => {
                           className="w-2.5 h-2.5 rounded-full bg-rose-500 shrink-0"
                           title={isVi ? 'Giao dịch bị từ chối' : 'Transaction rejected'}
                         />
-                        <span className="font-mono text-xs px-2.5 py-1 rounded bg-[#09090B] text-[#F4F4F5] border border-white/10 font-semibold shrink-0">
+                        <span className="font-mono text-xs px-2.5 py-1 rounded bg-[#070A12] text-[#F4F4F5] border border-white/10 font-semibold shrink-0">
                           {tx.txNumber}
                         </span>
                         <span className="text-[11px] font-mono text-[#71717A] hidden sm:inline">
@@ -1423,7 +1423,7 @@ export const MempoolDashboard: React.FC = () => {
                   {/* TẦNG 2: THAM SỐ MẬT MÃ & KỸ THUẬT (DÀN HÀNG NGANG / GRID) */}
                   <div className="space-y-2 pt-2.5 border-t border-white/[0.06]">
                     {/* Signature Box */}
-                    <div className="bg-[#09090B] border border-white/[0.06] px-3 py-2 rounded-lg font-mono text-xs text-[#A1A1AA] flex items-center justify-between gap-2 overflow-hidden">
+                    <div className="bg-[#070A12] border border-white/[0.06] px-3 py-2 rounded-lg font-mono text-xs text-[#A1A1AA] flex items-center justify-between gap-2 overflow-hidden">
                       <div className="flex items-center gap-2 min-w-0">
                         <span className="text-[#71717A] font-semibold text-[11px] uppercase tracking-wider shrink-0">
                           SIG:
@@ -1453,15 +1453,15 @@ export const MempoolDashboard: React.FC = () => {
 
                     {/* Tech Parameters Grid */}
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 font-mono text-xs">
-                      <div className="bg-[#09090B] border border-white/[0.06] px-2.5 py-1.5 rounded flex items-center justify-between">
+                      <div className="bg-[#070A12] border border-white/[0.06] px-2.5 py-1.5 rounded flex items-center justify-between">
                         <span className="text-[#71717A] text-[11px]">nonce:</span>
                         <span className="text-[#F4F4F5] font-semibold">{tx.nonce}</span>
                       </div>
-                      <div className="bg-[#09090B] border border-white/[0.06] px-2.5 py-1.5 rounded flex items-center justify-between">
+                      <div className="bg-[#070A12] border border-white/[0.06] px-2.5 py-1.5 rounded flex items-center justify-between">
                         <span className="text-[#71717A] text-[11px]">size:</span>
                         <span className="text-[#F4F4F5]">224 Bytes</span>
                       </div>
-                      <div className="bg-[#09090B] border border-white/[0.06] px-2.5 py-1.5 rounded flex items-center justify-between col-span-2 sm:col-span-1">
+                      <div className="bg-[#070A12] border border-white/[0.06] px-2.5 py-1.5 rounded flex items-center justify-between col-span-2 sm:col-span-1">
                         <span className="text-[#71717A] text-[11px]">format:</span>
                         <span className="text-sky-400 text-[11px]">SECP256k1 / SHA-256</span>
                       </div>

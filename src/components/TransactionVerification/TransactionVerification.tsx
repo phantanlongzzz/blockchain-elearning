@@ -154,25 +154,25 @@ export const TransactionVerification: React.FC = () => {
       <div className="flex flex-wrap items-center justify-center gap-2.5 mb-8 font-sans">
         <button
           onClick={() => setActiveView('mempool')}
-          className={`px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors duration-150 ease-out flex items-center gap-2 border font-sans cursor-pointer ${
+          className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all duration-200 ease-out flex items-center gap-2 border font-sans cursor-pointer backdrop-blur-md ${
             activeView === 'mempool'
-              ? 'bg-[#15161A] text-[#F4F4F5] border-white/10 shadow-sm'
-              : 'bg-[#09090B] text-[#71717A] hover:text-[#F4F4F5] hover:bg-[#0F1014] border-white/[0.06] hover:border-white/10'
+              ? 'bg-cyan-500/15 text-cyan-300 border-cyan-500/40 shadow-[0_0_15px_rgba(0,210,255,0.15)]'
+              : 'bg-[#0B0F19]/60 text-slate-400 hover:text-white hover:bg-[#0B0F19]/90 border-white/[0.07] hover:border-white/[0.15]'
           }`}
         >
-          <Layers className={`w-4 h-4 transition-colors duration-150 ${activeView === 'mempool' ? 'text-[#F4F4F5]' : 'text-[#71717A]'}`} />
+          <Layers className={`w-4 h-4 transition-colors duration-200 ${activeView === 'mempool' ? 'text-cyan-400' : 'text-slate-400'}`} />
           <span>{strings.verification.tabMempool}</span>
         </button>
 
         <button
           onClick={() => setActiveView('ledger')}
-          className={`px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors duration-150 ease-out flex items-center gap-2 border font-sans cursor-pointer ${
+          className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all duration-200 ease-out flex items-center gap-2 border font-sans cursor-pointer backdrop-blur-md ${
             activeView === 'ledger'
-              ? 'bg-[#15161A] text-[#F4F4F5] border-white/10 shadow-sm'
-              : 'bg-[#09090B] text-[#71717A] hover:text-[#F4F4F5] hover:bg-[#0F1014] border-white/[0.06] hover:border-white/10'
+              ? 'bg-cyan-500/15 text-cyan-300 border-cyan-500/40 shadow-[0_0_15px_rgba(0,210,255,0.15)]'
+              : 'bg-[#0B0F19]/60 text-slate-400 hover:text-white hover:bg-[#0B0F19]/90 border-white/[0.07] hover:border-white/[0.15]'
           }`}
         >
-          <Boxes className={`w-4 h-4 transition-colors duration-150 ${activeView === 'ledger' ? 'text-[#F4F4F5]' : 'text-[#71717A]'}`} />
+          <Boxes className={`w-4 h-4 transition-colors duration-200 ${activeView === 'ledger' ? 'text-cyan-400' : 'text-slate-400'}`} />
           <span>{strings.verification.tabLedger}</span>
         </button>
       </div>

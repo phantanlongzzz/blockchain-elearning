@@ -31,6 +31,7 @@ import {
   HelpCircle,
   Search,
   ExternalLink,
+  Languages,
 } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { useAuth } from '../../context/AuthContext';
@@ -327,95 +328,104 @@ export const Navbar: React.FC<NavbarProps> = ({
                 />
               </button>
 
-              {/* Minimal Profile Dropdown */}
+              {/* Deep Dark Glassmorphism Profile Dropdown */}
               {userDropdownOpen && (
                 <div
-                  className="absolute right-0 top-full mt-1.5 w-60 bg-[#0C0F14] backdrop-blur-md border border-white/[0.08] rounded-xl shadow-2xl p-1.5 z-50 font-sans text-xs animate-in fade-in slide-in-from-top-1 duration-150"
+                  className="absolute right-0 top-full mt-1.5 min-w-[240px] bg-[#0B0F19]/85 backdrop-blur-xl border border-white/[0.08] shadow-[0_16px_40px_rgba(0,0,0,0.6)] rounded-xl p-2 z-50 font-sans text-xs animate-in fade-in slide-in-from-top-1 duration-150"
                   role="menu"
                   aria-label="User menu"
                 >
                   {/* User Profile Info / Guest header */}
-                  <div className="px-3 py-2 border-b border-white/[0.08]">
-                    <div className="text-[#F2F4F7] font-semibold truncate text-[13px]">
+                  <div className="px-2.5 py-2">
+                    <div className="text-white font-semibold truncate text-[13px]">
                       {displayName}
                     </div>
                     {user?.email && (
-                      <div className="text-[11px] text-[#717B8C] truncate font-mono mt-0.5">
+                      <div className="text-[11px] font-mono text-slate-400 truncate mt-0.5 select-all">
                         {user.email}
                       </div>
                     )}
                   </div>
 
+                  <div className="border-t border-white/[0.06] my-2" />
+
                   {/* User Modal Links (if authenticated) */}
                   {isAuthenticated && user && (
-                    <div className="py-1 border-b border-white/[0.08] space-y-0.5" role="none">
-                      <button
-                        role="menuitem"
-                        onClick={() => {
-                          setProfileModalOpen(true);
-                          setUserDropdownOpen(false);
-                        }}
-                        className="w-full flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[#A5AFBF] hover:text-[#F2F4F7] hover:bg-white/[0.04] text-left transition-colors cursor-pointer"
-                      >
-                        <User className="w-3.5 h-3.5 text-text-muted" />
-                        <span>{isVi ? 'Hồ sơ cá nhân' : 'Profile'}</span>
-                      </button>
+                    <>
+                      <div className="space-y-0.5" role="none">
+                        <button
+                          role="menuitem"
+                          onClick={() => {
+                            setProfileModalOpen(true);
+                            setUserDropdownOpen(false);
+                          }}
+                          className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-white/[0.05] text-left text-xs transition-colors cursor-pointer"
+                        >
+                          <User className="w-3.5 h-3.5 text-slate-400" />
+                          <span>{isVi ? 'Hồ sơ cá nhân' : 'Profile'}</span>
+                        </button>
 
-                      <button
-                        role="menuitem"
-                        onClick={() => {
-                          setQuizHistoryModalOpen(true);
-                          setUserDropdownOpen(false);
-                        }}
-                        className="w-full flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[#A5AFBF] hover:text-[#F2F4F7] hover:bg-white/[0.04] text-left transition-colors cursor-pointer"
-                      >
-                        <History className="w-3.5 h-3.5 text-text-muted" />
-                        <span>{isVi ? 'Lịch sử làm bài' : 'Quiz History'}</span>
-                      </button>
+                        <button
+                          role="menuitem"
+                          onClick={() => {
+                            setQuizHistoryModalOpen(true);
+                            setUserDropdownOpen(false);
+                          }}
+                          className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-white/[0.05] text-left text-xs transition-colors cursor-pointer"
+                        >
+                          <History className="w-3.5 h-3.5 text-slate-400" />
+                          <span>{isVi ? 'Lịch sử làm bài' : 'Quiz History'}</span>
+                        </button>
 
-                      <button
-                        role="menuitem"
-                        onClick={() => {
-                          setCertificatesModalOpen(true);
-                          setUserDropdownOpen(false);
-                        }}
-                        className="w-full flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[#A5AFBF] hover:text-[#F2F4F7] hover:bg-white/[0.04] text-left transition-colors cursor-pointer"
-                      >
-                        <Award className="w-3.5 h-3.5 text-[#F59E0B]" />
-                        <span>{isVi ? 'Chứng chỉ' : 'Certificates'}</span>
-                      </button>
-                    </div>
+                        <button
+                          role="menuitem"
+                          onClick={() => {
+                            setCertificatesModalOpen(true);
+                            setUserDropdownOpen(false);
+                          }}
+                          className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-white/[0.05] text-left text-xs transition-colors cursor-pointer"
+                        >
+                          <Award className="w-3.5 h-3.5 text-teach-3" />
+                          <span>{isVi ? 'Chứng chỉ' : 'Certificates'}</span>
+                        </button>
+                      </div>
+                      <div className="border-t border-white/[0.06] my-2" />
+                    </>
                   )}
 
                   {/* Sign In CTA (if not authenticated) */}
                   {!isAuthenticated && (
-                    <div className="p-1.5 border-b border-white/[0.08]">
-                      <button
-                        onClick={() => {
-                          setAuthModalOpen(true);
-                          setUserDropdownOpen(false);
-                        }}
-                        className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-white/[0.1] hover:bg-white/[0.15] text-[#090A0F] font-bold text-xs transition-colors cursor-pointer shadow-sm"
-                      >
-                        <LogIn className="w-3.5 h-3.5" />
-                        <span>{isVi ? 'Đăng nhập lưu tiến độ' : 'Sign In'}</span>
-                      </button>
-                    </div>
+                    <>
+                      <div className="p-1">
+                        <button
+                          onClick={() => {
+                            setAuthModalOpen(true);
+                            setUserDropdownOpen(false);
+                          }}
+                          className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-cyan-500/15 text-cyan-400 border border-cyan-500/30 hover:bg-cyan-500/25 font-semibold text-xs transition-all cursor-pointer shadow-sm"
+                        >
+                          <LogIn className="w-3.5 h-3.5" />
+                          <span>{isVi ? 'Đăng nhập lưu tiến độ' : 'Sign In'}</span>
+                        </button>
+                      </div>
+                      <div className="border-t border-white/[0.06] my-2" />
+                    </>
                   )}
 
                   {/* Language Section: EN / VI */}
-                  <div className="px-3 py-2.5 border-b border-white/[0.08]">
-                    <div className="text-[10px] uppercase font-semibold text-[#717B8C] tracking-wider mb-1.5">
-                      {isVi ? 'Ngôn ngữ' : 'Language'}
+                  <div className="px-1 py-1">
+                    <div className="flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-wider text-slate-400 mb-1.5 px-1">
+                      <Languages className="w-3.5 h-3.5" />
+                      <span>{isVi ? 'Ngôn ngữ' : 'Language'}</span>
                     </div>
-                    <div className="grid grid-cols-2 gap-1 bg-[#090D12] p-1 rounded-lg border border-white/[0.04]">
+                    <div className="grid grid-cols-2 p-1 bg-white/[0.03] border border-white/[0.06] rounded-lg gap-1 font-mono">
                       <button
                         type="button"
                         onClick={() => setLanguage('en')}
-                        className={`py-1 rounded text-center text-xs font-mono font-medium transition-colors cursor-pointer ${
+                        className={`text-xs py-1.5 rounded-md transition-all cursor-pointer text-center font-medium ${
                           language === 'en'
-                            ? 'bg-white/[0.1] text-[#090A0F] font-bold shadow-sm'
-                            : 'text-[#A5AFBF] hover:text-[#F2F4F7] hover:bg-white/[0.04]'
+                            ? 'bg-cyan-500/15 text-cyan-400 border border-cyan-500/30 font-semibold shadow-sm'
+                            : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
                         }`}
                       >
                         EN
@@ -423,10 +433,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                       <button
                         type="button"
                         onClick={() => setLanguage('vi')}
-                        className={`py-1 rounded text-center text-xs font-mono font-medium transition-colors cursor-pointer ${
+                        className={`text-xs py-1.5 rounded-md transition-all cursor-pointer text-center font-medium ${
                           language === 'vi'
-                            ? 'bg-white/[0.1] text-[#090A0F] font-bold shadow-sm'
-                            : 'text-[#A5AFBF] hover:text-[#F2F4F7] hover:bg-white/[0.04]'
+                            ? 'bg-cyan-500/15 text-cyan-400 border border-cyan-500/30 font-semibold shadow-sm'
+                            : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
                         }`}
                       >
                         VI
@@ -434,21 +444,25 @@ export const Navbar: React.FC<NavbarProps> = ({
                     </div>
                   </div>
 
+                  <div className="border-t border-white/[0.06] my-2" />
+
                   {/* Interface Settings: Cursor */}
-                  <div className="px-3 py-2.5 border-b border-white/[0.08]">
-                    <div className="text-[10px] uppercase font-semibold text-[#717B8C] tracking-wider mb-1.5">
+                  <div className="px-2 py-1">
+                    <div className="text-[11px] font-mono uppercase tracking-wider text-slate-400 mb-1.5 px-0.5">
                       {isVi ? 'Cài đặt giao diện' : 'Interface'}
                     </div>
                     <CursorToggle />
                   </div>
 
+                  <div className="border-t border-white/[0.06] my-2" />
+
                   {/* GitHub Repository Link */}
-                  <div className="py-1">
+                  <div className="space-y-0.5">
                     <a
                       href="https://github.com/phantanlongzzz/blockchain-elearning"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full flex items-center justify-between px-3 py-1.5 rounded-lg text-[#A5AFBF] hover:text-text-primary hover:bg-white/[0.04] text-left transition-colors cursor-pointer"
+                      className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-white/[0.05] text-left text-xs transition-colors cursor-pointer"
                     >
                       <span className="flex items-center gap-2">
                         <img
@@ -458,25 +472,28 @@ export const Navbar: React.FC<NavbarProps> = ({
                         />
                         <span>GitHub Repository</span>
                       </span>
-                      <ExternalLink className="w-3 h-3 text-[#717B8C]" />
+                      <ExternalLink className="w-3 h-3 text-slate-500" />
                     </a>
                   </div>
 
                   {/* Sign Out (if authenticated) */}
                   {isAuthenticated && user && (
-                    <div className="pt-1 border-t border-white/[0.08]">
-                      <button
-                        role="menuitem"
-                        onClick={() => {
-                          logout();
-                          setUserDropdownOpen(false);
-                        }}
-                        className="w-full flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-rose-400 hover:bg-rose-950/30 text-left transition-colors cursor-pointer"
-                      >
-                        <LogOut className="w-3.5 h-3.5" />
-                        <span>{isVi ? 'Đăng xuất' : 'Sign Out'}</span>
-                      </button>
-                    </div>
+                    <>
+                      <div className="border-t border-white/[0.06] my-2" />
+                      <div>
+                        <button
+                          role="menuitem"
+                          onClick={() => {
+                            logout();
+                            setUserDropdownOpen(false);
+                          }}
+                          className="w-full flex items-center gap-2.5 text-red-400 hover:bg-red-500/10 rounded-lg py-2 px-2.5 text-left text-xs transition-colors cursor-pointer"
+                        >
+                          <LogOut className="w-3.5 h-3.5" />
+                          <span>{isVi ? 'Đăng xuất' : 'Sign Out'}</span>
+                        </button>
+                      </div>
+                    </>
                   )}
                 </div>
               )}
@@ -567,18 +584,19 @@ export const Navbar: React.FC<NavbarProps> = ({
           })}
 
           {/* Mobile Language Switcher */}
-          <div className="rounded-lg border border-white/[0.08] bg-[#0C0F14] p-3 mt-2">
-            <div className="text-[10px] uppercase font-semibold text-[#717B8C] tracking-wider mb-2">
-              {isVi ? 'Ngôn ngữ' : 'Language'}
+          <div className="rounded-xl border border-white/[0.08] bg-[#0B0F19]/85 backdrop-blur-xl p-3 mt-2">
+            <div className="flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-wider text-slate-400 mb-2">
+              <Languages className="w-3.5 h-3.5" />
+              <span>{isVi ? 'Ngôn ngữ' : 'Language'}</span>
             </div>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 p-1 bg-white/[0.03] border border-white/[0.06] rounded-lg gap-1 font-mono">
               <button
                 type="button"
                 onClick={() => setLanguage('en')}
-                className={`py-1.5 rounded text-center text-xs font-mono font-medium transition-colors ${
+                className={`text-xs py-1.5 rounded-md transition-all cursor-pointer text-center font-medium ${
                   language === 'en'
-                    ? 'bg-white/[0.1] text-[#090A0F] font-bold'
-                    : 'bg-[#090D12] text-[#A5AFBF] border border-white/[0.04]'
+                    ? 'bg-cyan-500/15 text-cyan-400 border border-cyan-500/30 font-semibold shadow-sm'
+                    : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
                 }`}
               >
                 EN
@@ -586,10 +604,10 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button
                 type="button"
                 onClick={() => setLanguage('vi')}
-                className={`py-1.5 rounded text-center text-xs font-mono font-medium transition-colors ${
+                className={`text-xs py-1.5 rounded-md transition-all cursor-pointer text-center font-medium ${
                   language === 'vi'
-                    ? 'bg-white/[0.1] text-[#090A0F] font-bold'
-                    : 'bg-[#090D12] text-[#A5AFBF] border border-white/[0.04]'
+                    ? 'bg-cyan-500/15 text-cyan-400 border border-cyan-500/30 font-semibold shadow-sm'
+                    : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
                 }`}
               >
                 VI
@@ -598,20 +616,20 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           {/* Mobile Cursor Toggle */}
-          <div className="rounded-lg border border-white/[0.08] bg-[#0C0F14] p-3">
-            <div className="text-[10px] uppercase font-semibold text-[#717B8C] tracking-wider mb-2">
+          <div className="rounded-xl border border-white/[0.08] bg-[#0B0F19]/85 backdrop-blur-xl p-3">
+            <div className="text-[11px] font-mono uppercase tracking-wider text-slate-400 mb-2">
               {isVi ? 'Cài đặt giao diện' : 'Interface'}
             </div>
             <CursorToggle />
           </div>
 
           {/* Mobile GitHub Link */}
-          <div className="rounded-lg border border-white/[0.08] bg-[#0C0F14] overflow-hidden">
+          <div className="rounded-xl border border-white/[0.08] bg-[#0B0F19]/85 backdrop-blur-xl overflow-hidden">
             <a
               href="https://github.com/phantanlongzzz/blockchain-elearning"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full flex items-center justify-between px-3.5 py-2.5 text-left font-medium text-xs transition-colors text-[#A5AFBF] hover:text-text-primary hover:bg-[#11161E] cursor-pointer"
+              className="w-full flex items-center justify-between px-3.5 py-2.5 text-left font-medium text-xs transition-colors text-slate-300 hover:text-white hover:bg-white/[0.05] cursor-pointer"
             >
               <div className="flex items-center gap-2">
                 <img
@@ -621,7 +639,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 />
                 <span>GitHub Repository</span>
               </div>
-              <ExternalLink className="w-3.5 h-3.5 text-[#717B8C]" />
+              <ExternalLink className="w-3.5 h-3.5 text-slate-500" />
             </a>
           </div>
         </div>

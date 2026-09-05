@@ -43,6 +43,18 @@ export const Hero: React.FC = () => {
       id="hero"
       className="relative min-h-[85vh] py-8 sm:py-12 flex flex-col justify-center overflow-hidden font-sans rounded-3xl bg-gradient-to-b from-[#090D16]/80 via-[#060912]/90 to-[#04060B] border border-white/[0.07] shadow-[0_8px_30px_rgb(0,0,0,0.35)]"
     >
+      {/* ========================================================================= */}
+      {/* 3-LAYER CYBER MESH & AMBIENT GLOW BACKGROUND                              */}
+      {/* ========================================================================= */}
+      {/* Lớp 1 - Lưới tọa độ kỹ thuật chìm (Cyber Grid) */}
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#ffffff04_1px,transparent_1px),linear-gradient(to_bottom,#ffffff04_1px,transparent_1px)] bg-[size:3.5rem_3.5rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_30%,#000_70%,transparent_100%)] -z-10" />
+
+      {/* Lớp 2 - Quầng sáng cực quang sau Card Khối #840291 (Backdrop Aura) */}
+      <div className="pointer-events-none absolute top-1/4 right-[10%] w-[520px] h-[520px] bg-gradient-to-tr from-cyan-500/10 via-blue-600/5 to-transparent rounded-full blur-[140px] -z-10 animate-pulse [animation-duration:8s]" />
+
+      {/* Lớp 3 - Vệt sáng phản quang góc trái trên (Top Left Rim Light) */}
+      <div className="pointer-events-none absolute -top-40 -left-40 w-[600px] h-[600px] bg-cyan-500/[0.04] rounded-full blur-[160px] -z-10" />
+
       <div className="relative z-10 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         {/* ========================================================================= */}
         {/* TWO-COLUMN HERO GRID (16:9 AESTHETIC COMPOSITION)                        */}
@@ -98,6 +110,29 @@ export const Hero: React.FC = () => {
                 <Github className="w-4 h-4 text-slate-300" />
                 <span>{isVi ? 'Xem mã nguồn đồ án' : 'View Source Code'}</span>
               </a>
+            </div>
+
+            {/* Live Protocol Ticker Bar (Left Column Balance) */}
+            <div className="mt-8 pt-6 border-t border-white/[0.06] flex flex-wrap items-center gap-4 sm:gap-6">
+              <div className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
+                <span className="font-mono text-xs text-slate-400">
+                  Node P2P: <strong className="text-slate-200">12 {isVi ? 'Hoạt động' : 'Active'}</strong>
+                </span>
+              </div>
+              <div className="w-px h-3 bg-white/[0.08] hidden sm:block" />
+              <div className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                <span className="font-mono text-xs text-slate-400">
+                  Engine: <strong className="text-slate-200">Web Crypto API</strong>
+                </span>
+              </div>
+              <div className="w-px h-3 bg-white/[0.08] hidden sm:block" />
+              <div className="flex items-center gap-2">
+                <span className="font-mono text-xs text-slate-400">
+                  {isVi ? 'Độ trễ:' : 'Latency:'} <strong className="text-cyan-400">~0.4ms</strong>
+                </span>
+              </div>
             </div>
           </div>
 

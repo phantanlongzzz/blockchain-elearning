@@ -29,6 +29,11 @@ export const LessonFooter: React.FC = () => {
 
   const isVi = language === 'vi';
 
+  // Do not render lesson footer on Home page
+  if (currentLessonId === 'overview') {
+    return null;
+  }
+
   return (
     <footer className="mt-12 pt-8 pb-12 border-t border-[#1C2430] font-sans">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

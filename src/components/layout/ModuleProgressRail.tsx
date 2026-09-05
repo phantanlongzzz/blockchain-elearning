@@ -24,6 +24,11 @@ export const ModuleProgressRail: React.FC = () => {
 
   const isVi = language === 'vi';
 
+  // Do not render breadcrumb & progress rail on Home page
+  if (currentModule.id === 'home') {
+    return null;
+  }
+
   return (
     <div className="bg-[#070B14]/65 backdrop-blur-xl border-b border-white/[0.06] font-sans sticky top-14 sm:top-16 z-40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2">

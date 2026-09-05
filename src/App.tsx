@@ -60,9 +60,21 @@ function AppContent() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#06080F] bg-gradient-to-b from-[#080D1A] via-[#05070E] to-[#020408] text-text-primary selection:bg-teach-1/30 selection:text-teach-1 relative overflow-x-hidden font-sans flex flex-col justify-between">
+    <div className="min-h-screen bg-[#060913] bg-gradient-to-b from-[#080D1A] via-[#05070E] to-[#020408] text-text-primary selection:bg-teach-1/30 selection:text-teach-1 relative overflow-x-hidden font-sans flex flex-col justify-between">
+      {/* ========================================================================= */}
+      {/* 3-LAYER CYBER MESH & AMBIENT GLOW SYSTEM                                  */}
+      {/* ========================================================================= */}
+      {/* Lớp 1 - Lưới tọa độ kỹ thuật chìm (Cyber Grid) */}
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#ffffff04_1px,transparent_1px),linear-gradient(to_bottom,#ffffff04_1px,transparent_1px)] bg-[size:3.5rem_3.5rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_30%,#000_70%,transparent_100%)] -z-10" />
+
+      {/* Lớp 2 - Quầng sáng cực quang sau Card Khối #840291 (Backdrop Aura) */}
+      <div className="pointer-events-none absolute top-1/4 right-[10%] w-[520px] h-[520px] bg-gradient-to-tr from-cyan-500/10 via-blue-600/5 to-transparent rounded-full blur-[140px] -z-10 animate-pulse [animation-duration:8s]" />
+
+      {/* Lớp 3 - Vệt sáng phản quang góc trái trên (Top Left Rim Light) */}
+      <div className="pointer-events-none absolute -top-40 -left-40 w-[600px] h-[600px] bg-cyan-500/[0.04] rounded-full blur-[160px] -z-10" />
+
       {/* Single Global Focal Glow at the top of the page */}
-      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[800px] h-[350px] bg-[radial-gradient(ellipse_at_top,_rgba(0,210,255,0.08),_transparent_70%)] pointer-events-none z-0" />
+      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[800px] h-[350px] bg-[radial-gradient(ellipse_at_top,_rgba(0,210,255,0.08),_transparent_70%)] pointer-events-none -z-10" />
 
       {/* Fixed Application Shell: Top Nav & Module Progress Rail */}
       <div className="relative z-30">

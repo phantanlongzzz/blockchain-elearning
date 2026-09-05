@@ -12,7 +12,8 @@ import {
   Play,
   Pause,
   SkipBack,
-  SkipForward
+  SkipForward,
+  ArrowRight
 } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import {
@@ -934,7 +935,7 @@ export const MempoolDashboard: React.FC = () => {
             </span>
             <span className="text-[#71717A]">{vStr.readyForBlock}</span>
           </div>
-          <div className="space-y-2 text-xs max-h-80 overflow-y-auto pr-1">
+          <div className="space-y-2.5 text-xs max-h-80 overflow-y-auto pr-1">
             {mempool.length === 0 ? (
               <div className="p-5 rounded-lg bg-[#09090B] border border-white/[0.06] text-center text-[#71717A] text-xs">
                 {isVi ? 'Mempool hiện đang trống.' : 'Mempool is currently empty.'}
@@ -943,25 +944,71 @@ export const MempoolDashboard: React.FC = () => {
               mempool.map((tx) => (
                 <div
                   key={tx.id}
-                  className="p-3 rounded-lg bg-[#09090B] border border-white/[0.06] hover:border-white/15 transition-colors duration-150 flex items-center justify-between"
+                  className="p-3 rounded-lg bg-[#15161A]/70 border border-white/[0.08] hover:border-white/20 hover:bg-[#15161A] transition-all duration-150 space-y-2"
                 >
-                  <div className="space-y-0.5">
-                    <div className="flex items-center gap-2">
-                      <span className="font-mono text-[11px] font-semibold text-[#F4F4F5] bg-[#15161A] border border-white/10 px-1.5 py-0.5 rounded">
+                  {/* Upper Row: Status Dot + Badge + Flow --- Amount + Fee */}
+                  <div className="flex items-center justify-between gap-2">
+                    {/* Left: Indicator + TX Badge + Flow */}
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span
+                        className="w-2 h-2 rounded-full bg-amber-400 animate-pulse shrink-0"
+                        title={isVi ? 'Đang chờ đóng block' : 'Pending block inclusion'}
+                      />
+                      <span className="font-mono text-xs bg-[#0F1014] text-[#F4F4F5] px-2 py-0.5 rounded border border-white/[0.06] shrink-0 font-medium">
                         {tx.txNumber}
                       </span>
-                      <span className="text-[#A1A1AA]">
-                        {tx.senderName} → {tx.receiverName}
-                      </span>
+                      <div className="flex items-center gap-1.5 text-xs font-medium text-[#F4F4F5] truncate">
+                        <span>{tx.senderName}</span>
+                        <ArrowRight className="w-3 h-3 text-[#71717A] shrink-0" />
+                        <span>{tx.receiverName}</span>
+                      </div>
                     </div>
-                    <div className="text-[11px] font-mono text-[#71717A]">
-                      Sig: <span className="text-[#F4F4F5] bg-[#15161A] px-1 py-0.5 rounded border border-white/[0.04]">{tx.signature.slice(0, 14)}...</span> · Nonce: <span className="text-[#F4F4F5] bg-[#15161A] px-1 py-0.5 rounded border border-white/[0.04]">{tx.nonce}</span>
+
+                    {/* Right: Amount + Fee */}
+                    <div className="text-right shrink-0">
+                      <div className="font-mono font-bold text-sm text-financial leading-tight">
+                        {Number(tx.amount).toFixed(2)} BTC
+                      </div>
+                      <div className="text-[10px] text-[#71717A] font-mono leading-none mt-0.5">
+                        +0.00045 BTC fee
+                      </div>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <span className="font-mono text-xs font-semibold text-financial">
-                      {tx.amount} BTC
-                    </span>
+
+                  {/* Lower Row: Inline Technical Telemetry */}
+                  <div className="pt-2 border-t border-white/[0.06] font-mono text-[11px] text-[#71717A] flex items-center gap-3 flex-wrap justify-between sm:justify-start">
+                    <div className="flex items-center gap-1">
+                      <span className="text-[#71717A]/70">sig:</span>
+                      <span className="text-[#A1A1AA] hover:text-[#F4F4F5] transition-colors">
+                        {tx.signature.slice(0, 8)}...{tx.signature.slice(-4)}
+                      </span>
+                      <button
+                        onClick={() => handleCopy(tx.signature, `sig-${tx.id}`)}
+                        className="text-[#71717A] hover:text-[#F4F4F5] p-0.5 rounded transition-colors cursor-pointer"
+                        title={isVi ? 'Sao chép chữ ký' : 'Copy signature'}
+                      >
+                        {copiedKey === `sig-${tx.id}` ? (
+                          <Check className="w-3 h-3 text-[#10B981]" />
+                        ) : (
+                          <Copy className="w-3 h-3" />
+                        )}
+                      </button>
+                    </div>
+
+                    <div className="flex items-center gap-1">
+                      <span className="text-[#71717A]/70">nonce:</span>
+                      <span className="text-[#A1A1AA]">{tx.nonce}</span>
+                    </div>
+
+                    <div className="flex items-center gap-1">
+                      <span className="text-[#71717A]/70">size:</span>
+                      <span className="text-[#A1A1AA]">224 B</span>
+                    </div>
+
+                    <div className="flex items-center gap-1">
+                      <span className="text-[#71717A]/70">fee-rate:</span>
+                      <span className="text-[#A1A1AA]">18 sat/vB</span>
+                    </div>
                   </div>
                 </div>
               ))
@@ -976,7 +1023,7 @@ export const MempoolDashboard: React.FC = () => {
             </span>
             <span className="text-[#71717A]">{vStr.droppedFromConsensus}</span>
           </div>
-          <div className="space-y-2 text-xs max-h-80 overflow-y-auto pr-1">
+          <div className="space-y-2.5 text-xs max-h-80 overflow-y-auto pr-1">
             {rejected.length === 0 ? (
               <div className="p-5 rounded-lg bg-[#09090B] border border-white/[0.06] text-center text-[#71717A] text-xs">
                 {vStr.noRejected}
@@ -985,23 +1032,70 @@ export const MempoolDashboard: React.FC = () => {
               rejected.map((tx) => (
                 <div
                   key={tx.id}
-                  className="p-3 rounded-lg bg-[#09090B] border border-white/[0.06] space-y-1"
+                  className="p-3 rounded-lg bg-[#15161A]/70 border border-rose-500/20 hover:border-rose-500/30 hover:bg-[#15161A] transition-all duration-150 space-y-2"
                 >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <span className="font-mono text-[11px] font-semibold text-[#F4F4F5] bg-[#15161A] border border-white/10 px-1.5 py-0.5 rounded">
+                  {/* Upper Row: Status Dot + Badge + Flow --- Amount + Fee */}
+                  <div className="flex items-center justify-between gap-2">
+                    {/* Left: Red Indicator + TX Badge + Flow */}
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span
+                        className="w-2 h-2 rounded-full bg-rose-500 shrink-0"
+                        title={isVi ? 'Giao dịch bị từ chối' : 'Transaction rejected'}
+                      />
+                      <span className="font-mono text-xs bg-[#0F1014] text-[#F4F4F5] px-2 py-0.5 rounded border border-white/[0.06] shrink-0 font-medium">
                         {tx.txNumber}
                       </span>
-                      <span className="text-[#A1A1AA]">
-                        {tx.senderName} → {tx.receiverName}
-                      </span>
+                      <div className="flex items-center gap-1.5 text-xs font-medium text-[#F4F4F5] truncate">
+                        <span>{tx.senderName}</span>
+                        <ArrowRight className="w-3 h-3 text-[#71717A] shrink-0" />
+                        <span>{tx.receiverName}</span>
+                      </div>
                     </div>
-                    <span className="font-mono text-xs font-semibold text-financial">
-                      {tx.amount} BTC
-                    </span>
+
+                    {/* Right: Amount */}
+                    <div className="text-right shrink-0">
+                      <div className="font-mono font-bold text-sm text-rose-400 leading-tight">
+                        {Number(tx.amount).toFixed(2)} BTC
+                      </div>
+                      <div className="text-[10px] text-[#71717A] font-mono leading-none mt-0.5">
+                        +0.00045 BTC fee
+                      </div>
+                    </div>
                   </div>
-                  <div className="text-[11px] text-rose-400">
-                    {tx.rejectionReason || (isVi ? 'Xác minh thất bại' : 'Validation failed')}
+
+                  {/* Lower Row: Rejection Reason Badge + Telemetry */}
+                  <div className="pt-2 border-t border-white/[0.06] font-mono text-[11px] text-[#71717A] flex items-center gap-2.5 flex-wrap justify-between sm:justify-start">
+                    <div className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono font-medium text-rose-400 bg-rose-500/10 border border-rose-500/20">
+                      {tx.rejectionReason || (isVi ? 'Từ chối xác thực' : 'Validation Failed')}
+                    </div>
+
+                    <div className="flex items-center gap-1">
+                      <span className="text-[#71717A]/70">sig:</span>
+                      <span className="text-[#A1A1AA] hover:text-[#F4F4F5] transition-colors">
+                        {tx.signature.slice(0, 8)}...{tx.signature.slice(-4)}
+                      </span>
+                      <button
+                        onClick={() => handleCopy(tx.signature, `sig-${tx.id}`)}
+                        className="text-[#71717A] hover:text-[#F4F4F5] p-0.5 rounded transition-colors cursor-pointer"
+                        title={isVi ? 'Sao chép chữ ký' : 'Copy signature'}
+                      >
+                        {copiedKey === `sig-${tx.id}` ? (
+                          <Check className="w-3 h-3 text-[#10B981]" />
+                        ) : (
+                          <Copy className="w-3 h-3" />
+                        )}
+                      </button>
+                    </div>
+
+                    <div className="flex items-center gap-1">
+                      <span className="text-[#71717A]/70">nonce:</span>
+                      <span className="text-[#A1A1AA]">{tx.nonce}</span>
+                    </div>
+
+                    <div className="flex items-center gap-1">
+                      <span className="text-[#71717A]/70">size:</span>
+                      <span className="text-[#A1A1AA]">224 B</span>
+                    </div>
                   </div>
                 </div>
               ))

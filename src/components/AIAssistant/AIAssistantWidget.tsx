@@ -111,51 +111,35 @@ export const AIAssistantWidget: React.FC = () => {
         {isOpen && (
           <div className="w-[350px] sm:w-[400px] h-[550px] max-h-[80vh] bg-[#0F131A] border border-[#1C2430] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-10 duration-300">
             {/* Header */}
-            <div className="flex items-center justify-between p-4 bg-gradient-to-r from-slate-900 to-[#0F131A] border-b border-[#1C2430]">
+            <div className="flex items-center justify-between p-4 border-b border-white/[0.08]">
               <div className="flex items-center gap-3">
                 <div className="relative">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-cyan-600 to-blue-600 flex items-center justify-center">
-                    <Bot className="w-5 h-5 text-white" />
+                  {/* Icon Avatar Bot */}
+                  <div className="w-9 h-9 rounded-xl bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
+                    <Bot className="w-5 h-5" />
                   </div>
-                  <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-emerald-500 border-2 border-[#0F131A] rounded-full" title={strings.aiAssistant.onlineStatus} />
+                  <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 ring-2 ring-[#0B101E]" />
                 </div>
-                <div>
-                  <h3 className="text-[#F2F4F7] font-semibold text-sm leading-tight flex items-center gap-1.5">
-                    {strings.aiAssistant.title}
-                    <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                  </h3>
-                  <p className="text-cyan-400/80 text-xs">
-                    {strings.aiAssistant.subtitle}
-                  </p>
-                </div>
+                <span className="font-sans font-semibold text-sm text-white tracking-normal">
+                  {isVi ? 'Trợ lý Blockchain' : 'Blockchain Assistant'}
+                </span>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1">
                 <button
                   onClick={handleClear}
-                  className="p-2 text-slate-400 hover:text-white hover:bg-white/5 rounded-full transition-colors"
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/[0.05] transition-colors cursor-pointer"
                   title={strings.aiAssistant.clearChat}
                 >
                   <RotateCcw className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="p-2 text-slate-400 hover:text-white hover:bg-white/5 rounded-full transition-colors"
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/[0.05] transition-colors cursor-pointer"
                   title={strings.aiAssistant.closeChat}
                 >
-                  <X className="w-5 h-5" />
+                  <X className="w-4 h-4" />
                 </button>
               </div>
-            </div>
-
-            {/* Context indicator */}
-            <div className="px-4 py-1.5 bg-cyan-900/20 border-b border-cyan-900/40 text-[11px] text-cyan-300 flex items-center gap-1.5">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
-              </span>
-              <span className="truncate">
-                {strings.aiAssistant.currentSectionHint}: {isVi ? currentLesson.titleVi : currentLesson.titleEn}
-              </span>
             </div>
 
             {/* Messages Area */}
@@ -169,7 +153,7 @@ export const AIAssistantWidget: React.FC = () => {
                         <button
                           key={idx}
                           onClick={() => handleSend(suggestion)}
-                          className="text-left p-3 text-sm text-cyan-100 bg-cyan-950/30 hover:bg-cyan-900/40 border border-cyan-900/50 rounded-xl transition-colors leading-snug"
+                          className="text-left p-3 text-sm text-cyan-100 bg-cyan-950/30 hover:bg-cyan-900/40 border border-cyan-900/50 rounded-xl transition-colors leading-snug cursor-pointer"
                         >
                           {suggestion}
                         </button>
@@ -212,7 +196,7 @@ export const AIAssistantWidget: React.FC = () => {
             </div>
 
             {/* Input Area */}
-            <div className="p-4 bg-[#0F131A] border-t border-[#1C2430]">
+            <div className="p-3.5 bg-[#0F131A] border-t border-white/[0.08]">
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
@@ -246,15 +230,12 @@ export const AIAssistantWidget: React.FC = () => {
                 <button
                   type="submit"
                   disabled={!inputValue.trim() || isLoading}
-                  className="h-11 w-11 shrink-0 bg-cyan-600 hover:bg-cyan-500 text-white rounded-xl flex items-center justify-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-cyan-900/20"
+                  className="h-11 w-11 shrink-0 bg-cyan-600 hover:bg-cyan-500 text-white rounded-xl flex items-center justify-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-cyan-900/20 cursor-pointer"
                   title={strings.aiAssistant.sendButton}
                 >
                   <Send className="w-5 h-5" />
                 </button>
               </form>
-              <div className="mt-2 text-center">
-                <span className="text-[10px] text-slate-500">{strings.aiAssistant.disclaimer}</span>
-              </div>
             </div>
           </div>
         )}

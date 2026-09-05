@@ -176,8 +176,8 @@ export const MODULES_REGISTRY: ModuleMeta[] = [
       {
         id: 'block-architecture',
         moduleId: 'theory',
-        titleVi: '2.2 Kiến trúc Khối & Vòng đời Khối (Block Architecture & Lifecycle)',
-        titleEn: '2.2 Block Anatomy & Full Block Lifecycle',
+        titleVi: '2.2 Kiến trúc Khối & Vòng đời Khối',
+        titleEn: '2.2 Block Anatomy & Lifecycle',
         shortTitleVi: 'Kiến trúc Khối',
         shortTitleEn: 'Block Anatomy',
         descriptionVi: 'Mổ xẻ chi tiết Block Header, Merkle Root, Nonce, Difficulty Target và Transaction Body.',

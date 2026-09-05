@@ -68,45 +68,45 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
       {/* Main Interactive Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Left Column: Visual Interactive Block (7 cols) */}
-        <div className="lg:col-span-7 space-y-3">
+        <div className="lg:col-span-7 space-y-4">
           {/* Previous Block Reference (Block #41) */}
-          <div className="p-3.5 rounded-xl bg-[#0B0E12] border border-[#1C2430] text-[#A5AFBF] text-xs flex items-center justify-between font-mono">
+          <div className="p-3.5 rounded-2xl bg-[#0B0F19]/70 backdrop-blur-xl border border-white/[0.08] shadow-[0_8px_24px_rgba(0,0,0,0.5)] text-slate-400 text-xs flex items-center justify-between font-mono">
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-slate-600"></span>
-              <span className="text-slate-300 font-bold font-sans">
+              <span className="w-2 h-2 rounded-full bg-cyan-500/60 shadow-[0_0_6px_rgba(0,210,255,0.6)]"></span>
+              <span className="text-slate-300 font-semibold font-sans">
                 {isVi ? 'Block #41 (Khối trước)' : 'Block #41 (Previous block)'}
               </span>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-slate-500">Hash:</span>
-              <span className="text-slate-200 hover:text-text-primary transition-colors truncate max-w-[160px] sm:max-w-[220px]">
+              <span className="text-cyan-300 hover:text-cyan-200 transition-colors truncate max-w-[160px] sm:max-w-[220px]">
                 {PREV_BLOCK_HASH.slice(0, 14)}...{PREV_BLOCK_HASH.slice(-8)}
               </span>
             </div>
           </div>
 
           {/* Cryptographic Link Pointer */}
-          <div className="flex justify-center items-center gap-2 text-slate-500 font-mono text-xs py-1">
-            <ArrowDown className="w-3.5 h-3.5" />
-            <span className="text-[#8B949E] text-[11px] font-sans">
+          <div className="flex justify-center items-center gap-2 text-cyan-400/60 font-mono text-xs py-1">
+            <ArrowDown className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
+            <span className="text-slate-400 text-[11px] font-sans">
               {isVi ? 'Liên kết Previous Hash Pointer' : 'Previous Hash Pointer Link'}
             </span>
-            <ArrowDown className="w-3.5 h-3.5" />
+            <ArrowDown className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
           </div>
 
           {/* Centerpiece: Detailed Interactive Block #42 */}
-          <div className="p-5 sm:p-6 rounded-xl bg-[#0B0E12] border border-[#1C2430] space-y-5">
+          <div className="p-5 sm:p-6 rounded-2xl bg-[#0B0F19]/70 backdrop-blur-xl border border-white/[0.08] shadow-[0_16px_40px_rgba(0,0,0,0.6)] space-y-5">
             {/* Block Banner Header */}
-            <div className="flex items-center justify-between pb-3 border-b border-[#1C2430]">
+            <div className="flex items-center justify-between pb-4 border-b border-white/[0.06]">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-lg bg-white/[0.04] border border-border-primary flex items-center justify-center text-text-primary font-bold font-mono text-sm">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-600/20 border border-cyan-500/30 flex items-center justify-center text-cyan-300 font-bold font-mono text-sm shadow-[0_0_12px_rgba(0,210,255,0.2)]">
                   #42
                 </div>
                 <div>
                   <h4 className="text-sm sm:text-base font-bold text-white font-sans">
                     Block #42
                   </h4>
-                  <p className="text-xs text-[#A5AFBF] font-mono">
+                  <p className="text-xs text-slate-400 font-mono">
                     4 {isVi ? 'giao dịch' : 'transactions'}
                   </p>
                 </div>
@@ -117,19 +117,19 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
                 type="button"
                 id="btn-select-header-hash"
                 onClick={() => handleSelectField('headerHash')}
-                className={`text-right p-2.5 rounded-lg border transition-all cursor-pointer group ${
+                className={`text-right p-2.5 rounded-xl border transition-all cursor-pointer group ${
                   activeField === 'headerHash'
-                    ? 'bg-teach-1/10 border-teach-1/40 text-white ring-1 ring-teach-1/20'
-                    : 'bg-[#10151D] border-[#1C2430] text-slate-300 hover:border-slate-700'
+                    ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border-cyan-500/50 text-white ring-1 ring-cyan-500/30 shadow-[0_0_15px_rgba(0,210,255,0.25)]'
+                    : 'bg-black/40 backdrop-blur-md border-white/[0.06] text-slate-300 hover:border-cyan-500/30'
                 }`}
               >
                 <div className={`text-[10px] font-mono font-semibold uppercase transition-colors ${
-                  activeField === 'headerHash' ? 'text-teach-1' : 'text-[#8B949E] group-hover:text-teach-1'
+                  activeField === 'headerHash' ? 'text-cyan-300' : 'text-slate-400 group-hover:text-cyan-300'
                 }`}>
                   Block Hash
                 </div>
                 <div className={`font-mono text-xs truncate max-w-[140px] sm:max-w-[190px] transition-colors ${
-                  activeField === 'headerHash' ? 'text-white' : 'text-[#F1F5F9] group-hover:text-teach-1'
+                  activeField === 'headerHash' ? 'text-cyan-200 font-bold' : 'text-slate-200 group-hover:text-cyan-200'
                 }`}>
                   {computedBlockHash.slice(0, 10)}...{computedBlockHash.slice(-6)}
                 </div>
@@ -137,13 +137,13 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
             </div>
 
             {/* LAYER 1: BLOCK HEADER */}
-            <div className="p-4 rounded-lg bg-[#10151D] border border-[#1C2430] space-y-3">
+            <div className="p-4 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.05] space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-mono font-bold text-[#F1F5F9] uppercase tracking-wider flex items-center gap-2">
-                  <Layers className="w-3.5 h-3.5 text-slate-400" />
+                <span className="text-xs font-mono font-bold text-cyan-300 uppercase tracking-wider flex items-center gap-2">
+                  <Layers className="w-3.5 h-3.5 text-cyan-400" />
                   Header (80 bytes)
                 </span>
-                <span className="text-[11px] text-slate-500 font-mono">
+                <span className="text-[11px] text-slate-400 font-mono">
                   {isVi ? 'Dữ liệu băm khối' : 'Block digest input'}
                 </span>
               </div>
@@ -154,22 +154,22 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
                   type="button"
                   id="btn-select-prev-hash"
                   onClick={() => handleSelectField('prevHash')}
-                  className={`p-3 rounded-lg border text-left transition-all cursor-pointer group ${
+                  className={`p-3 rounded-xl border text-left transition-all cursor-pointer group ${
                     activeField === 'prevHash'
-                      ? 'bg-teach-2/15 border-teach-2/40 text-white ring-1 ring-teach-2/20'
-                      : 'bg-[#0B0E12] border-[#1C2430] text-slate-300 hover:border-slate-700'
+                      ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border-cyan-500/50 text-white ring-1 ring-cyan-500/30 shadow-[0_0_15px_rgba(0,210,255,0.2)]'
+                      : 'bg-white/[0.02] border-white/[0.06] text-slate-300 hover:border-cyan-500/30 hover:bg-white/[0.04]'
                   }`}
                 >
                   <div className="flex items-center justify-between text-xs font-mono mb-1">
                     <span className={`font-medium flex items-center gap-1.5 transition-colors ${
-                      activeField === 'prevHash' ? 'text-teach-2 font-semibold' : 'text-[#8B949E] group-hover:text-teach-2'
+                      activeField === 'prevHash' ? 'text-cyan-300 font-semibold' : 'text-slate-400 group-hover:text-cyan-300'
                     }`}>
-                      <Link2 className={`w-3 h-3 ${activeField === 'prevHash' ? 'text-teach-2' : 'text-slate-400 group-hover:text-teach-2'}`} />
+                      <Link2 className={`w-3 h-3 ${activeField === 'prevHash' ? 'text-cyan-400' : 'text-slate-400 group-hover:text-cyan-400'}`} />
                       Previous Hash
                     </span>
-                    <span className="text-[10px] text-slate-500">32B</span>
+                    <span className="text-[10px] text-slate-500 font-mono">32B</span>
                   </div>
-                  <div className="font-mono text-xs text-[#F1F5F9] truncate">
+                  <div className="font-mono text-xs text-slate-200 truncate">
                     {PREV_BLOCK_HASH.slice(0, 16)}...
                   </div>
                 </button>
@@ -179,22 +179,22 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
                   type="button"
                   id="btn-select-timestamp"
                   onClick={() => handleSelectField('timestamp')}
-                  className={`p-3 rounded-lg border text-left transition-all cursor-pointer group ${
+                  className={`p-3 rounded-xl border text-left transition-all cursor-pointer group ${
                     activeField === 'timestamp'
-                      ? 'bg-teach-3/15 border-teach-3/40 text-white ring-1 ring-teach-3/20'
-                      : 'bg-[#0B0E12] border-[#1C2430] text-slate-300 hover:border-slate-700'
+                      ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border-cyan-500/50 text-white ring-1 ring-cyan-500/30 shadow-[0_0_15px_rgba(0,210,255,0.2)]'
+                      : 'bg-white/[0.02] border-white/[0.06] text-slate-300 hover:border-cyan-500/30 hover:bg-white/[0.04]'
                   }`}
                 >
                   <div className="flex items-center justify-between text-xs font-mono mb-1">
                     <span className={`font-medium flex items-center gap-1.5 transition-colors ${
-                      activeField === 'timestamp' ? 'text-teach-3 font-semibold' : 'text-[#8B949E] group-hover:text-teach-3'
+                      activeField === 'timestamp' ? 'text-cyan-300 font-semibold' : 'text-slate-400 group-hover:text-cyan-300'
                     }`}>
-                      <Clock className={`w-3 h-3 ${activeField === 'timestamp' ? 'text-teach-3' : 'text-slate-400 group-hover:text-teach-3'}`} />
+                      <Clock className={`w-3 h-3 ${activeField === 'timestamp' ? 'text-cyan-400' : 'text-slate-400 group-hover:text-cyan-400'}`} />
                       Timestamp
                     </span>
-                    <span className="text-[10px] text-slate-500">4B</span>
+                    <span className="text-[10px] text-slate-500 font-mono">4B</span>
                   </div>
-                  <div className="font-mono text-xs text-[#F1F5F9]">
+                  <div className="font-mono text-xs text-slate-200">
                     {demoTimestamp} (12:00:00 UTC)
                   </div>
                 </button>
@@ -204,22 +204,22 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
                   type="button"
                   id="btn-select-merkle-root"
                   onClick={() => handleSelectField('merkleRoot')}
-                  className={`p-3 rounded-lg border text-left transition-all cursor-pointer group ${
+                  className={`p-3 rounded-xl border text-left transition-all cursor-pointer group ${
                     activeField === 'merkleRoot'
-                      ? 'bg-teach-1/15 border-teach-1/40 text-white ring-1 ring-teach-1/20'
-                      : 'bg-[#0B0E12] border-[#1C2430] text-slate-300 hover:border-slate-700'
+                      ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border-cyan-500/50 text-white ring-1 ring-cyan-500/30 shadow-[0_0_15px_rgba(0,210,255,0.2)]'
+                      : 'bg-white/[0.02] border-white/[0.06] text-slate-300 hover:border-cyan-500/30 hover:bg-white/[0.04]'
                   }`}
                 >
                   <div className="flex items-center justify-between text-xs font-mono mb-1">
                     <span className={`font-medium flex items-center gap-1.5 transition-colors ${
-                      activeField === 'merkleRoot' ? 'text-teach-1 font-semibold' : 'text-[#8B949E] group-hover:text-teach-1'
+                      activeField === 'merkleRoot' ? 'text-cyan-300 font-semibold' : 'text-slate-400 group-hover:text-cyan-300'
                     }`}>
-                      <GitFork className={`w-3 h-3 ${activeField === 'merkleRoot' ? 'text-teach-1' : 'text-slate-400 group-hover:text-teach-1'}`} />
+                      <GitFork className={`w-3 h-3 ${activeField === 'merkleRoot' ? 'text-cyan-400' : 'text-slate-400 group-hover:text-cyan-400'}`} />
                       Merkle Root
                     </span>
-                    <span className="text-[10px] text-slate-500">32B</span>
+                    <span className="text-[10px] text-slate-500 font-mono">32B</span>
                   </div>
-                  <div className="font-mono text-xs text-[#F1F5F9] truncate">
+                  <div className="font-mono text-xs text-slate-200 truncate">
                     {MERKLE_ROOT.slice(0, 16)}...
                   </div>
                 </button>
@@ -229,22 +229,22 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
                   type="button"
                   id="btn-select-nonce"
                   onClick={() => handleSelectField('nonce')}
-                  className={`p-3 rounded-lg border text-left transition-all cursor-pointer group ${
+                  className={`p-3 rounded-xl border text-left transition-all cursor-pointer group ${
                     activeField === 'nonce'
-                      ? 'bg-teach-2/15 border-teach-2/40 text-white ring-1 ring-teach-2/20'
-                      : 'bg-[#0B0E12] border-[#1C2430] text-slate-300 hover:border-slate-700'
+                      ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border-cyan-500/50 text-white ring-1 ring-cyan-500/30 shadow-[0_0_15px_rgba(0,210,255,0.2)]'
+                      : 'bg-white/[0.02] border-white/[0.06] text-slate-300 hover:border-cyan-500/30 hover:bg-white/[0.04]'
                   }`}
                 >
                   <div className="flex items-center justify-between text-xs font-mono mb-1">
                     <span className={`font-medium flex items-center gap-1.5 transition-colors ${
-                      activeField === 'nonce' ? 'text-teach-2 font-semibold' : 'text-[#8B949E] group-hover:text-teach-2'
+                      activeField === 'nonce' ? 'text-cyan-300 font-semibold' : 'text-slate-400 group-hover:text-cyan-300'
                     }`}>
-                      <Zap className={`w-3 h-3 ${activeField === 'nonce' ? 'text-teach-2' : 'text-slate-400 group-hover:text-teach-2'}`} />
+                      <Zap className={`w-3 h-3 ${activeField === 'nonce' ? 'text-cyan-400' : 'text-slate-400 group-hover:text-cyan-400'}`} />
                       Nonce
                     </span>
-                    <span className="text-[10px] text-slate-500">4B</span>
+                    <span className="text-[10px] text-slate-500 font-mono">4B</span>
                   </div>
-                  <div className="font-mono text-xs text-[#F1F5F9]">
+                  <div className="font-mono text-xs text-slate-200">
                     {demoNonce.toLocaleString()}
                   </div>
                 </button>
@@ -252,14 +252,14 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
             </div>
 
             {/* LAYER 2: BLOCK BODY */}
-            <div className="p-4 rounded-lg bg-[#10151D] border border-[#1C2430] space-y-3">
+            <div className="p-4 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.05] space-y-3">
               <div className="flex items-center justify-between">
                 <button
                   type="button"
                   onClick={() => handleSelectField('body')}
-                  className="text-xs font-mono font-bold text-[#F1F5F9] uppercase tracking-wider flex items-center gap-2 hover:text-teach-1 cursor-pointer transition-colors"
+                  className="text-xs font-mono font-bold text-slate-200 uppercase tracking-wider flex items-center gap-2 hover:text-cyan-300 cursor-pointer transition-colors"
                 >
-                  <Boxes className="w-3.5 h-3.5 text-slate-400" />
+                  <Boxes className="w-3.5 h-3.5 text-cyan-400" />
                   Body ({TRANSACTIONS.length} {isVi ? 'giao dịch' : 'transactions'})
                 </button>
                 <span className="text-[11px] text-slate-500 font-mono">
@@ -273,17 +273,17 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
                     key={tx.id}
                     type="button"
                     onClick={() => handleSelectField('body')}
-                    className={`p-2.5 rounded-lg border text-left font-mono text-xs transition-all cursor-pointer group ${
+                    className={`p-3 rounded-xl border text-left font-mono text-xs transition-all cursor-pointer group ${
                       activeField === 'body'
-                        ? 'bg-teach-5/10 border-teach-5/40 text-slate-200'
-                        : 'bg-[#0B0E12] border-[#1C2430] text-[#8B949E] hover:border-slate-700'
+                        ? 'bg-cyan-500/10 border-cyan-500/40 text-slate-200 ring-1 ring-cyan-500/20'
+                        : 'bg-white/[0.02] border-white/[0.06] text-slate-400 hover:border-cyan-500/30 hover:bg-white/[0.04]'
                     }`}
                   >
                     <div className="flex items-center justify-between text-xs mb-1">
-                      <span className="font-medium text-[#8B949E] group-hover:text-slate-300 transition-colors">
+                      <span className="font-medium text-slate-400 group-hover:text-cyan-300 transition-colors">
                         {tx.id}
                       </span>
-                      <span className="text-[#F1F5F9] font-mono font-semibold">
+                      <span className="text-cyan-300 font-mono font-semibold">
                         {tx.amount} {tx.unit}
                       </span>
                     </div>
@@ -299,11 +299,11 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
 
         {/* Right Column: Component Dissection */}
         <div className="lg:col-span-5 space-y-4">
-          <div className="p-5 sm:p-6 rounded-xl bg-[#0B0E12] border border-[#1C2430] space-y-4">
+          <div className="p-5 sm:p-6 rounded-2xl bg-[#0B0F19]/70 backdrop-blur-xl border border-white/[0.08] shadow-[0_16px_40px_rgba(0,0,0,0.6)] space-y-4">
             {/* Content for active component */}
             {activeField === 'prevHash' && (
               <div className="space-y-3">
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-teach-2/15 text-teach-2 border border-teach-2/30 text-xs font-mono font-bold">
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 text-xs font-mono font-bold">
                   <Link2 className="w-3.5 h-3.5" />
                   <span>PREVIOUS HASH</span>
                 </div>
@@ -312,7 +312,7 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
                     ? 'Block #42 lưu hash của Block #41 để liên kết chuỗi.'
                     : 'Block #42 stores Block #41’s hash to preserve chain continuity.'}
                 </p>
-                <div className="p-3.5 rounded-lg bg-[#10151D] border border-[#1C2430] text-xs text-[#A5AFBF] leading-relaxed">
+                <div className="p-3.5 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.05] text-xs text-slate-400 leading-relaxed font-sans">
                   {isVi
                     ? 'Nếu Block #41 bị thay đổi, hash của nó đổi theo, làm lệch Previous Hash của Block #42 và làm đứt chuỗi ngay lập tức.'
                     : 'If Block #41 is altered, its hash changes, causing a mismatch in Block #42 and breaking the chain.'}
@@ -322,7 +322,7 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
 
             {activeField === 'timestamp' && (
               <div className="space-y-3">
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-teach-3/15 text-teach-3 border border-teach-3/30 text-xs font-mono font-bold">
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 text-xs font-mono font-bold">
                   <Clock className="w-3.5 h-3.5" />
                   <span>TIMESTAMP</span>
                 </div>
@@ -332,7 +332,7 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
                     : 'Records when the block was packaged in UNIX epoch seconds.'}
                 </p>
                 {/* Mini Interactive Experiment */}
-                <div className="p-3.5 rounded-lg bg-[#10151D] border border-[#1C2430] space-y-2">
+                <div className="p-3.5 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.05] space-y-3">
                   <div className="text-xs font-semibold text-slate-300 flex items-center justify-between font-mono">
                     <span>{isVi ? 'Thử đổi Timestamp:' : 'Change Timestamp:'}</span>
                   </div>
@@ -340,19 +340,19 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
                     <button
                       type="button"
                       onClick={() => setDemoTimestamp((prev) => (parseInt(prev) + 600).toString())}
-                      className="px-2.5 py-1.5 rounded-md bg-teach-3/15 hover:bg-teach-3/25 text-teach-3 border border-teach-3/30 text-xs font-mono font-semibold cursor-pointer"
+                      className="px-3 py-1.5 rounded-lg bg-cyan-500/15 hover:bg-cyan-500/25 text-cyan-300 border border-cyan-500/30 text-xs font-mono font-semibold cursor-pointer transition-all"
                     >
                       +10m (+600s)
                     </button>
                     <button
                       type="button"
                       onClick={() => setDemoTimestamp('1715428800')}
-                      className="px-2.5 py-1.5 rounded-md bg-[#0B0F15] hover:bg-[#11161E] text-slate-300 text-xs font-mono cursor-pointer border border-[#1C2430]"
+                      className="px-3 py-1.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-white text-xs font-mono cursor-pointer border border-white/[0.08] transition-all"
                     >
                       {isVi ? 'Khôi phục' : 'Reset'}
                     </button>
                   </div>
-                  <div className="text-xs text-[#A5AFBF] pt-1 leading-relaxed">
+                  <div className="text-xs text-slate-400 pt-1 leading-relaxed font-sans">
                     {isVi
                       ? 'Thay đổi thời gian 1 giây sẽ tạo ra một Block Hash hoàn toàn mới do hiệu ứng tuyết lở (Avalanche Effect).'
                       : 'Changing time by 1 second mutates the entire Block Hash via the avalanche effect.'}
@@ -363,7 +363,7 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
 
             {activeField === 'merkleRoot' && (
               <div className="space-y-3">
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-teach-1/15 text-teach-1 border border-teach-1/30 text-xs font-mono font-bold">
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 text-xs font-mono font-bold">
                   <GitFork className="w-3.5 h-3.5" />
                   <span>MERKLE ROOT</span>
                 </div>
@@ -372,7 +372,7 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
                     ? 'Bản băm 32-byte tóm lược toàn bộ giao dịch trong Body.'
                     : 'A 32-byte cryptographic summary of all transactions in the Body.'}
                 </p>
-                <div className="p-3.5 rounded-lg bg-[#10151D] border border-[#1C2430] text-xs text-[#A5AFBF] leading-relaxed">
+                <div className="p-3.5 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.05] text-xs text-slate-400 leading-relaxed font-sans">
                   {isVi
                     ? 'Header chỉ cần lưu Merkle Root thay vì toàn bộ dữ liệu giao dịch, giúp node nhẹ (SPV) xác thực cực nhanh mà không cần tải cả khối.'
                     : 'Header only stores the Merkle Root instead of full raw transactions, allowing light clients (SPV) to verify transactions instantly.'}
@@ -382,7 +382,7 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
 
             {activeField === 'nonce' && (
               <div className="space-y-3">
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-teach-2/15 text-teach-2 border border-teach-2/30 text-xs font-mono font-bold">
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 text-xs font-mono font-bold">
                   <Zap className="w-3.5 h-3.5" />
                   <span>NONCE</span>
                 </div>
@@ -392,23 +392,23 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
                     : 'Integer iterated during mining to find a hash meeting difficulty target.'}
                 </p>
                 {/* Mini Interactive Nonce Stepper */}
-                <div className="p-3.5 rounded-lg bg-[#10151D] border border-[#1C2430] space-y-2">
+                <div className="p-3.5 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.05] space-y-3">
                   <div className="text-xs font-semibold text-slate-300 flex items-center justify-between font-mono">
                     <span>{isVi ? 'Tăng Nonce:' : 'Increment Nonce:'}</span>
-                    <span className="text-xs text-teach-2 font-bold">{demoNonce}</span>
+                    <span className="text-xs text-cyan-300 font-bold">{demoNonce}</span>
                   </div>
                   <div className="flex gap-2">
                     <button
                       type="button"
                       onClick={() => setDemoNonce((prev) => prev + 1)}
-                      className="px-2.5 py-1.5 rounded-md bg-teach-2/15 hover:bg-teach-2/25 text-teach-2 border border-teach-2/30 text-xs font-mono font-semibold cursor-pointer"
+                      className="px-3 py-1.5 rounded-lg bg-cyan-500/15 hover:bg-cyan-500/25 text-cyan-300 border border-cyan-500/30 text-xs font-mono font-semibold cursor-pointer transition-all"
                     >
                       +1 Nonce
                     </button>
                     <button
                       type="button"
                       onClick={() => setDemoNonce((prev) => prev + 1000)}
-                      className="px-2.5 py-1.5 rounded-md bg-teach-2/15 hover:bg-teach-2/25 text-teach-2 border border-teach-2/30 text-xs font-mono font-semibold cursor-pointer"
+                      className="px-3 py-1.5 rounded-lg bg-cyan-500/15 hover:bg-cyan-500/25 text-cyan-300 border border-cyan-500/30 text-xs font-mono font-semibold cursor-pointer transition-all"
                     >
                       +1000 Nonce
                     </button>
@@ -419,7 +419,7 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
 
             {activeField === 'body' && (
               <div className="space-y-3">
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-teach-5/15 text-teach-5 border border-teach-5/30 text-xs font-mono font-bold">
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 text-xs font-mono font-bold">
                   <Boxes className="w-3.5 h-3.5" />
                   <span>BLOCK BODY</span>
                 </div>
@@ -428,7 +428,7 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
                     ? 'Chứa danh sách giao dịch thô đã được xác thực chữ ký số và số dư.'
                     : 'Holds all raw transactions validated by digital signatures and balance checks.'}
                 </p>
-                <div className="p-3.5 rounded-lg bg-[#10151D] border border-[#1C2430] text-xs text-[#A5AFBF] leading-relaxed">
+                <div className="p-3.5 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.05] text-xs text-slate-400 leading-relaxed font-sans">
                   {isVi
                     ? 'Mỗi giao dịch gồm địa chỉ gửi, địa chỉ nhận, lượng token, số nonce và chữ ký mật mã ECDSA.'
                     : 'Each transaction contains sender address, recipient address, token amount, account nonce, and ECDSA signature.'}
@@ -438,7 +438,7 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
 
             {activeField === 'headerHash' && (
               <div className="space-y-3">
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-teach-1/15 text-teach-1 border border-teach-1/30 text-xs font-mono font-bold">
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 text-xs font-mono font-bold">
                   <Hash className="w-3.5 h-3.5" />
                   <span>BLOCK HASH</span>
                 </div>
@@ -447,8 +447,8 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
                     ? 'Mã băm của khối được tính bằng cách băm 80 bytes của Block Header.'
                     : 'Block hash is computed exclusively by hashing the 80-byte Block Header.'}
                 </p>
-                <div className="p-3.5 rounded-lg bg-[#10151D] border border-[#1C2430] font-mono text-xs text-slate-300">
-                  <div className="text-slate-200 break-all text-[11px]">
+                <div className="p-3.5 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.05] font-mono text-xs text-slate-300">
+                  <div className="text-cyan-300 break-all text-[11px]">
                     SHA-256(PrevHash + MerkleRoot + Timestamp + Nonce)
                   </div>
                 </div>
@@ -457,15 +457,15 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
           </div>
 
           {/* Quick Bridge Links */}
-          <div className="p-3.5 rounded-xl bg-[#0B0E12] border border-[#1C2430] flex items-center justify-between gap-3 text-xs">
-            <span className="text-[#A5AFBF] font-sans">
+          <div className="p-4 rounded-2xl bg-[#0B0F19]/70 backdrop-blur-xl border border-white/[0.08] shadow-[0_8px_24px_rgba(0,0,0,0.5)] flex items-center justify-between gap-3 text-xs">
+            <span className="text-slate-400 font-sans">
               {isVi ? 'Tiếp theo:' : 'Next:'}
             </span>
             <button
               type="button"
               id="btn-next-stage-from-structure"
               onClick={onNextStage}
-              className="text-text-primary hover:text-white font-semibold font-sans inline-flex items-center gap-1.5 cursor-pointer"
+              className="px-4 py-2 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-sans text-xs font-medium shadow-[0_0_15px_rgba(0,210,255,0.3)] inline-flex items-center gap-1.5 cursor-pointer transition-all"
             >
               <span>{isVi ? 'Chữ Ký Số' : 'Digital Signature'}</span>
               <ArrowRight className="w-3.5 h-3.5" />

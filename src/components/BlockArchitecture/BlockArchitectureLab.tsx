@@ -156,20 +156,22 @@ export const BlockArchitectureLab: React.FC = () => {
       className="space-y-8 scroll-mt-24 font-sans"
     >
       {/* Module Title Banner */}
-      <div className="p-6 sm:p-8 rounded-xl bg-[#0B0E12] border border-[#1C2430] shadow-sm relative overflow-hidden">
-        <div className="space-y-6">
+      <div className="p-6 sm:p-8 rounded-2xl bg-[#0B0F19]/70 backdrop-blur-xl border border-white/[0.08] shadow-[0_16px_40px_rgba(0,0,0,0.6)] relative overflow-hidden">
+        {/* Ambient Glow */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/[0.05] rounded-full blur-[120px] pointer-events-none -mr-20 -mt-20" />
+        <div className="space-y-6 relative z-10">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="space-y-2">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-white/[0.04] border border-white/[0.08] text-slate-300 text-xs font-mono font-medium uppercase tracking-wider">
-                <Sparkles className="w-3.5 h-3.5 text-text-muted" />
-                <span>{isVi ? 'BUỔI 2 · KIẾN TRÚC KHỐI & VÒNG ĐỜI KHỐI' : 'LESSON 2 · BLOCK ARCHITECTURE & LIFECYCLE'}</span>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-xs font-mono font-medium uppercase tracking-wider">
+                <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+                <span>{isVi ? '2.2 KIẾN TRÚC KHỐI & VÒNG ĐỜI KHỐI' : '2.2 BLOCK ARCHITECTURE & LIFECYCLE'}</span>
               </div>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white font-display tracking-tight">
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-white font-sans tracking-tight">
                 {isVi
-                  ? 'Cấu Trúc Khối & Vòng Đời Giao Dịch'
-                  : 'Block Structure & Transaction Lifecycle'}
+                  ? 'Kiến Trúc Khối & Vòng Đời Khối'
+                  : 'Block Architecture & Lifecycle'}
               </h2>
-              <p className="text-sm text-[#A5AFBF] max-w-3xl font-sans leading-relaxed">
+              <p className="text-sm text-slate-400 max-w-3xl font-sans leading-relaxed">
                 {isVi
                   ? 'Khám phá cấu tạo chi tiết của Block Header, Block Body, Cây Merkle và quy trình ký số bảo vệ sổ cái phi tập trung.'
                   : 'Explore the internal anatomy of Block Header, Block Body, Merkle Trees, and digital signatures securing the decentralized ledger.'}
@@ -178,19 +180,19 @@ export const BlockArchitectureLab: React.FC = () => {
 
             {/* Mode Switcher */}
             <div className="flex items-center gap-3 flex-wrap">
-              <div className="p-0.5 rounded-lg bg-[#0B0F15] border border-[#1C2430] flex items-center">
+              <div className="p-1 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.08] flex items-center">
                 <button
                   type="button"
                   id="btn-mode-guided"
                   onClick={() => setLabMode('guided')}
-                  className={`px-3 py-1.5 rounded-md text-xs font-mono font-medium transition-all cursor-pointer ${
+                  className={`px-3 py-1.5 rounded-lg text-xs font-sans font-medium transition-all cursor-pointer flex items-center gap-1.5 ${
                     labMode === 'guided'
-                      ? 'bg-emerald-500 text-slate-950 font-semibold shadow-sm'
-                      : 'text-[#A5AFBF] hover:text-slate-200'
+                      ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold shadow-[0_0_15px_rgba(0,210,255,0.3)]'
+                      : 'text-slate-400 hover:text-white'
                   }`}
                 >
-                  <GraduationCap className="w-3.5 h-3.5 inline mr-1" />
-                  {isVi ? 'Hướng Dẫn' : 'Guided'}
+                  <GraduationCap className="w-3.5 h-3.5 inline" />
+                  <span>{isVi ? 'Hướng Dẫn' : 'Guided'}</span>
                 </button>
                 <button
                   type="button"
@@ -199,33 +201,33 @@ export const BlockArchitectureLab: React.FC = () => {
                     setLabMode('hands-on');
                     handleInteraction();
                   }}
-                  className={`px-3 py-1.5 rounded-md text-xs font-mono font-medium transition-all cursor-pointer ${
+                  className={`px-3 py-1.5 rounded-lg text-xs font-sans font-medium transition-all cursor-pointer flex items-center gap-1.5 ${
                     labMode === 'hands-on'
-                      ? 'bg-emerald-500 text-slate-950 font-semibold shadow-sm'
-                      : 'text-[#A5AFBF] hover:text-slate-200'
+                      ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold shadow-[0_0_15px_rgba(0,210,255,0.3)]'
+                      : 'text-slate-400 hover:text-white'
                   }`}
                 >
-                  <FlaskConical className="w-3.5 h-3.5 inline mr-1" />
-                  {isVi ? 'Tự Do' : 'Hands-on'}
+                  <FlaskConical className="w-3.5 h-3.5 inline" />
+                  <span>{isVi ? 'Tự Do' : 'Hands-on'}</span>
                 </button>
               </div>
             </div>
           </div>
 
           {/* Progress Tracker */}
-          <div className="space-y-2 pt-2">
-            <div className="flex items-center justify-between text-xs font-mono">
-              <span className="text-[#A5AFBF]">
+          <div className="space-y-2 pt-2 border-t border-white/[0.05]">
+            <div className="flex items-center justify-between text-xs font-sans">
+              <span className="text-slate-400">
                 {isVi ? 'Tiến độ chuyên đề:' : 'Module Progress:'}{' '}
-                <span className="text-white font-medium">
+                <span className="text-slate-200 font-medium font-mono">
                   {completedCount}/{STAGES.length} {isVi ? 'phần hoàn thành' : 'sections completed'}
                 </span>
               </span>
-              <span className="text-text-primary font-semibold font-mono">{progressPercent}%</span>
+              <span className="text-cyan-300 font-semibold font-mono">{progressPercent}%</span>
             </div>
-            <div className="w-full h-1.5 rounded-full bg-[#080B10] overflow-hidden border border-[#1C2430]">
+            <div className="w-full h-1.5 rounded-full bg-black/50 overflow-hidden border border-white/[0.06]">
               <div
-                className="h-full bg-emerald-500 transition-all duration-500"
+                className="h-full bg-gradient-to-r from-cyan-500 to-blue-500 shadow-[0_0_10px_rgba(0,210,255,0.6)] transition-all duration-500"
                 style={{ width: `${progressPercent}%` }}
               />
             </div>
@@ -246,7 +248,7 @@ export const BlockArchitectureLab: React.FC = () => {
           <div
             role="tablist"
             aria-label={isVi ? 'Danh sách giai đoạn bài học cấu trúc khối' : 'Block architecture lesson stages'}
-            className="flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth p-1 bg-[#0B0E12] border border-[#1C2430] rounded-xl"
+            className="flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth p-1.5 bg-[#0B0F19]/70 backdrop-blur-xl border border-white/[0.08] rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.6)]"
           >
             {STAGES.map((stage) => {
               const Icon = stage.icon;
@@ -262,27 +264,27 @@ export const BlockArchitectureLab: React.FC = () => {
                   tabIndex={0}
                   type="button"
                   onClick={() => handleStageChange(stage.id)}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-mono transition-all shrink-0 cursor-pointer ${
+                  className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-sans transition-all shrink-0 cursor-pointer ${
                     isActive
-                      ? 'bg-white/[0.08] text-text-primary border border-border-primary font-semibold'
-                      : 'text-[#A5AFBF] hover:text-slate-200 hover:bg-[#10151D] border border-transparent'
+                      ? 'bg-gradient-to-r from-cyan-500/20 via-[#0B1220]/90 to-[#080D1A]/95 text-white border border-cyan-500/40 shadow-[0_0_15px_rgba(0,210,255,0.2)] font-semibold'
+                      : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04] border border-transparent'
                   }`}
                 >
                   <span
-                    className={`w-5 h-5 rounded flex items-center justify-center text-[10px] font-bold ${
+                    className={`w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold font-mono ${
                       isActive
-                        ? 'bg-emerald-500 text-slate-950'
+                        ? 'bg-cyan-500 text-slate-950 shadow-[0_0_8px_rgba(0,210,255,0.8)]'
                         : isDone
-                        ? 'bg-[#1C2430] text-slate-300'
-                        : 'bg-[#1C2430] text-[#717B8C]'
+                        ? 'bg-white/[0.08] text-slate-300'
+                        : 'bg-white/[0.04] text-slate-500'
                     }`}
                   >
                     {stage.num}
                   </span>
-                  <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-text-primary' : 'text-text-muted'}`} />
+                  <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-cyan-400' : 'text-slate-400'}`} />
                   <span className="font-sans whitespace-nowrap">{stage.shortTitle[language]}</span>
                   {isDone && !isActive && (
-                    <CheckCircle2 className="w-3 h-3 text-slate-400 shrink-0 ml-0.5" />
+                    <CheckCircle2 className="w-3 h-3 text-cyan-400/80 shrink-0 ml-0.5" />
                   )}
                 </button>
               );

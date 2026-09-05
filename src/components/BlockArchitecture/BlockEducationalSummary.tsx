@@ -161,10 +161,10 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
   return (
     <div className="space-y-6 font-sans">
       {/* Top Banner Guide */}
-      <div className="p-5 sm:p-6 rounded-xl bg-[#0B0E12] border border-[#1C2430] flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className="space-y-1 max-w-2xl">
-          <div className="inline-flex items-center gap-2 text-xs font-semibold text-text-primary">
-            <GraduationCap className="w-4 h-4" />
+      <div className="p-6 sm:p-7 rounded-2xl bg-[#0B0F19]/70 backdrop-blur-xl border border-white/[0.08] shadow-[0_16px_40px_rgba(0,0,0,0.6)] flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="space-y-1.5 max-w-2xl">
+          <div className="inline-flex items-center gap-2 text-xs font-semibold text-cyan-300">
+            <GraduationCap className="w-4 h-4 text-cyan-400" />
             <span>
               {isVi
                 ? 'Tổng kết kiến trúc & Vòng đời khối'
@@ -176,7 +176,7 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
               ? 'Toàn Cảnh Kiến Trúc: Từ Giao Dịch Đến Chuỗi Khối'
               : 'End-to-End Architecture: From Transaction to Blockchain'}
           </h3>
-          <p className="text-xs sm:text-sm text-[#A5AFBF] font-sans">
+          <p className="text-xs sm:text-sm text-slate-400 font-sans">
             {isVi
               ? 'Bạn đã hoàn thành các bước phân tích từng thành phần của một Block. Dưới đây là sơ đồ tổng kết luồng dữ liệu và mã nguồn chuẩn.'
               : 'You have completed the module on Block components. Below is the master architecture flow and reference implementation.'}
@@ -188,7 +188,7 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
             type="button"
             id="btn-summary-prev-stage"
             onClick={onPrevStage}
-            className="px-3.5 py-2 rounded-md bg-[#10151D] hover:bg-[#161D27] text-slate-300 font-sans text-xs flex items-center gap-1.5 transition-colors cursor-pointer border border-[#1C2430]"
+            className="px-4 py-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-white font-sans text-xs flex items-center gap-1.5 transition-all cursor-pointer border border-white/[0.08] hover:border-cyan-500/30"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>{isVi ? 'Quay Lại Mô Phỏng' : 'Back to Simulation'}</span>
@@ -197,10 +197,10 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
       </div>
 
       {/* Visual Architectural Master Flow Chart */}
-      <div className="p-5 sm:p-6 rounded-xl bg-[#0B0E12] border border-[#1C2430] space-y-6">
-        <div className="text-center space-y-1">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.04] border border-border-primary text-text-primary text-xs font-medium">
-            <Sparkles className="w-3.5 h-3.5" />
+      <div className="p-6 sm:p-7 rounded-2xl bg-[#0B0F19]/70 backdrop-blur-xl border border-white/[0.08] shadow-[0_16px_40px_rgba(0,0,0,0.6)] space-y-6">
+        <div className="text-center space-y-2">
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-medium shadow-[0_0_15px_rgba(0,210,255,0.15)]">
+            <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
             <span>
               {isVi ? 'Sơ Đồ Hệ Thống Kiến Trúc Khối' : 'Master System Architecture Flow'}
             </span>
@@ -213,154 +213,154 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
         {/* Master Flow Diagram Nodes */}
         <div className="max-w-2xl mx-auto space-y-3 font-sans text-xs">
           {/* Node 1: Transaction */}
-          <div className="p-3.5 rounded-lg bg-[#10151D] border border-[#1C2430] flex items-center justify-between">
+          <div className="p-4 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.06] flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-7 h-7 rounded-md bg-white/[0.04] text-text-muted flex items-center justify-center font-semibold font-mono text-xs border border-border-primary">
+              <div className="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-300 flex items-center justify-center font-semibold font-mono text-xs border border-cyan-500/30 shadow-[0_0_10px_rgba(0,210,255,0.2)]">
                 1
               </div>
               <div>
-                <span className="font-semibold text-slate-200">Giao Dịch (Transaction)</span>
-                <p className="text-[11px] text-[#A5AFBF]">
+                <span className="font-semibold text-white">Giao Dịch (Transaction)</span>
+                <p className="text-[11px] text-slate-400">
                   Dữ liệu chuyển giá trị (Alice → Bob : 10 BTC)
                 </p>
               </div>
             </div>
-            <span className="text-[11px] text-text-secondary bg-white/[0.04] px-2 py-0.5 rounded border border-border-primary font-mono">
+            <span className="text-[11px] text-cyan-300 bg-cyan-500/10 px-2.5 py-1 rounded-lg border border-cyan-500/20 font-mono">
               Raw Data
             </span>
           </div>
 
-          <div className="flex justify-center text-slate-600">
+          <div className="flex justify-center text-cyan-500/50">
             <ArrowDown className="w-4 h-4" />
           </div>
 
           {/* Node 2: Digital Signature */}
-          <div className="p-3.5 rounded-lg bg-[#10151D] border border-[#1C2430] flex items-center justify-between">
+          <div className="p-4 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.06] flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-7 h-7 rounded-md bg-white/[0.04] text-text-muted flex items-center justify-center font-semibold font-mono text-xs border border-border-primary">
+              <div className="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-300 flex items-center justify-center font-semibold font-mono text-xs border border-cyan-500/30 shadow-[0_0_10px_rgba(0,210,255,0.2)]">
                 2
               </div>
               <div>
-                <span className="font-semibold text-slate-200">Chữ Ký Số (Digital Signature)</span>
-                <p className="text-[11px] text-[#A5AFBF]">
+                <span className="font-semibold text-white">Chữ Ký Số (Digital Signature)</span>
+                <p className="text-[11px] text-slate-400">
                   Ký bằng Alice Private Key & Xác minh bằng Public Key
                 </p>
               </div>
             </div>
-            <span className="text-[11px] text-text-secondary bg-white/[0.04] px-2 py-0.5 rounded border border-border-primary font-mono">
+            <span className="text-[11px] text-cyan-300 bg-cyan-500/10 px-2.5 py-1 rounded-lg border border-cyan-500/20 font-mono">
               ECDSA SECP256K1
             </span>
           </div>
 
-          <div className="flex justify-center text-slate-600">
+          <div className="flex justify-center text-cyan-500/50">
             <ArrowDown className="w-4 h-4" />
           </div>
 
           {/* Node 3: Block Body */}
-          <div className="p-3.5 rounded-lg bg-[#10151D] border border-[#1C2430] flex items-center justify-between">
+          <div className="p-4 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.06] flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-7 h-7 rounded-md bg-white/[0.04] text-text-muted flex items-center justify-center font-semibold font-mono text-xs border border-border-primary">
+              <div className="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-300 flex items-center justify-center font-semibold font-mono text-xs border border-cyan-500/30 shadow-[0_0_10px_rgba(0,210,255,0.2)]">
                 3
               </div>
               <div>
-                <span className="font-semibold text-slate-200">Block Body (Thân Khối)</span>
-                <p className="text-[11px] text-[#A5AFBF]">
+                <span className="font-semibold text-white">Block Body (Thân Khối)</span>
+                <p className="text-[11px] text-slate-400">
                   Chứa danh sách toàn bộ các giao dịch đã xác thực (~1-4 MB)
                 </p>
               </div>
             </div>
-            <span className="text-[11px] text-text-secondary bg-white/[0.04] px-2 py-0.5 rounded border border-border-primary font-mono">
+            <span className="text-[11px] text-cyan-300 bg-cyan-500/10 px-2.5 py-1 rounded-lg border border-cyan-500/20 font-mono">
               Transactions List
             </span>
           </div>
 
-          <div className="flex justify-center text-slate-600">
+          <div className="flex justify-center text-cyan-500/50">
             <ArrowDown className="w-4 h-4" />
           </div>
 
           {/* Node 4: Merkle Tree & Root */}
-          <div className="p-3.5 rounded-lg bg-[#10151D] border border-[#1C2430] flex items-center justify-between">
+          <div className="p-4 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.06] flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-7 h-7 rounded-md bg-white/[0.04] text-text-muted flex items-center justify-center font-semibold font-mono text-xs border border-border-primary">
+              <div className="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-300 flex items-center justify-center font-semibold font-mono text-xs border border-cyan-500/30 shadow-[0_0_10px_rgba(0,210,255,0.2)]">
                 4
               </div>
               <div>
-                <span className="font-semibold text-slate-200">Cây Merkle & Merkle Root</span>
-                <p className="text-[11px] text-[#A5AFBF]">
+                <span className="font-semibold text-white">Cây Merkle & Merkle Root</span>
+                <p className="text-[11px] text-slate-400">
                   Băm phân cấp tóm lược toàn bộ Body thành 1 mã băm 32 bytes duy nhất
                 </p>
               </div>
             </div>
-            <span className="text-[11px] text-text-secondary bg-white/[0.04] px-2 py-0.5 rounded border border-border-primary font-mono">
+            <span className="text-[11px] text-cyan-300 bg-cyan-500/10 px-2.5 py-1 rounded-lg border border-cyan-500/20 font-mono">
               32-byte Root Hash
             </span>
           </div>
 
-          <div className="flex justify-center text-slate-600">
+          <div className="flex justify-center text-cyan-500/50">
             <ArrowDown className="w-4 h-4" />
           </div>
 
           {/* Node 5: Block Header */}
-          <div className="p-4 rounded-lg bg-[#10151D] border border-border-primary space-y-2">
+          <div className="p-5 rounded-xl bg-black/40 backdrop-blur-md border border-cyan-500/30 space-y-3 shadow-[0_0_20px_rgba(0,210,255,0.1)]">
             <div className="flex items-center justify-between text-xs">
-              <span className="font-semibold text-slate-200 flex items-center gap-2">
-                <Layers className="w-4 h-4 text-text-muted" />
+              <span className="font-semibold text-white flex items-center gap-2">
+                <Layers className="w-4 h-4 text-cyan-400" />
                 5. Block Header (~80 Bytes)
               </span>
-              <span className="text-[#717B8C] font-mono text-[11px]">Metadata Layer</span>
+              <span className="text-cyan-300 font-mono text-[11px]">Metadata Layer</span>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px] pt-1">
-              <div className="p-2 rounded bg-[#0B0E12] border border-[#1C2430] text-center">
-                <span className="text-[#717B8C] block text-[10px]">1. Prev Hash</span>
-                <span className="text-text-secondary font-medium font-mono text-[10px]">Hash Pointer</span>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-[11px] pt-1">
+              <div className="p-2.5 rounded-lg bg-[#0B0F19]/80 border border-white/[0.06] text-center">
+                <span className="text-slate-400 block text-[10px]">1. Prev Hash</span>
+                <span className="text-cyan-300 font-medium font-mono text-[10px]">Hash Pointer</span>
               </div>
-              <div className="p-2 rounded bg-[#0B0E12] border border-[#1C2430] text-center">
-                <span className="text-[#717B8C] block text-[10px]">2. Timestamp</span>
+              <div className="p-2.5 rounded-lg bg-[#0B0F19]/80 border border-white/[0.06] text-center">
+                <span className="text-slate-400 block text-[10px]">2. Timestamp</span>
                 <span className="text-slate-200 font-medium font-mono text-[10px]">Epoch Time</span>
               </div>
-              <div className="p-2 rounded bg-[#0B0E12] border border-[#1C2430] text-center">
-                <span className="text-[#717B8C] block text-[10px]">3. Merkle Root</span>
-                <span className="text-text-secondary font-medium font-mono text-[10px]">Body Digest</span>
+              <div className="p-2.5 rounded-lg bg-[#0B0F19]/80 border border-white/[0.06] text-center">
+                <span className="text-slate-400 block text-[10px]">3. Merkle Root</span>
+                <span className="text-cyan-300 font-medium font-mono text-[10px]">Body Digest</span>
               </div>
-              <div className="p-2 rounded bg-[#0B0E12] border border-[#1C2430] text-center">
-                <span className="text-[#717B8C] block text-[10px]">4. Nonce</span>
+              <div className="p-2.5 rounded-lg bg-[#0B0F19]/80 border border-white/[0.06] text-center">
+                <span className="text-slate-400 block text-[10px]">4. Nonce</span>
                 <span className="text-slate-200 font-medium font-mono text-[10px]">PoW Trial</span>
               </div>
             </div>
           </div>
 
-          <div className="flex justify-center text-slate-600">
+          <div className="flex justify-center text-cyan-500/50">
             <ArrowDown className="w-4 h-4" />
           </div>
 
           {/* Node 6: SHA-256 Engine */}
-          <div className="p-3 rounded-lg bg-[#10151D] border border-[#1C2430] text-center font-semibold text-slate-300 font-mono">
+          <div className="p-3.5 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.06] text-center font-semibold text-cyan-300 font-mono shadow-[0_0_15px_rgba(0,210,255,0.1)]">
             SHA-256( Block Header )
           </div>
 
-          <div className="flex justify-center text-slate-600">
+          <div className="flex justify-center text-cyan-500/50">
             <ArrowDown className="w-4 h-4" />
           </div>
 
           {/* Node 7: Final Block Hash & Blockchain Link */}
-          <div className="p-4 rounded-lg bg-[#10151D] border border-success/40 text-center space-y-1">
-            <div className="font-semibold text-success text-sm">
+          <div className="p-4 rounded-xl bg-gradient-to-b from-cyan-500/10 to-blue-500/10 border border-cyan-500/40 text-center space-y-1 shadow-[0_0_20px_rgba(0,210,255,0.15)]">
+            <div className="font-semibold text-cyan-300 text-sm">
               ✓ BLOCK HASH (MÃ BĂM KHỐI HOÀN TẤT)
             </div>
-            <div className="text-[11px] text-[#A5AFBF]">
+            <div className="text-[11px] text-slate-400">
               Gắn kết an toàn vào sổ cái Blockchain phân tán toàn cầu.
             </div>
           </div>
         </div>
 
         {/* Master Takeaway Callout */}
-        <div className="p-5 rounded-lg bg-[#10151D] border border-[#1C2430] text-center space-y-2">
+        <div className="p-5 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.06] text-center space-y-2">
           <div className="text-sm sm:text-base font-semibold text-white">
             {isVi
               ? 'Nguyên lý toàn vẹn dữ liệu trong Blockchain'
               : 'Cryptographic Integrity in Blockchain'}
           </div>
-          <p className="text-xs text-[#A5AFBF] max-w-2xl mx-auto leading-relaxed font-sans">
+          <p className="text-xs text-slate-400 max-w-2xl mx-auto leading-relaxed font-sans">
             {isVi
               ? 'Bất kỳ thay đổi nào trong dữ liệu giao dịch ở quá khứ sẽ làm thay đổi Leaf Hash → Merkle Root → Block Header → Block Hash, ngay lập tức phá vỡ liên kết Hash Pointer của toàn bộ các khối tiếp theo.'
               : 'Any alteration in historical transaction data mutates Leaf Hash → Merkle Root → Block Header → Block Hash, immediately invalidating the hash chain pointer of all downstream blocks.'}
@@ -371,7 +371,7 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
         <div className="space-y-3 pt-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <FileCode2 className="w-4 h-4 text-text-muted" />
+              <FileCode2 className="w-4 h-4 text-cyan-400" />
               <span className="text-xs font-semibold uppercase text-slate-200">
                 {isVi
                   ? 'Mã nguồn cài đặt cấu trúc Block'
@@ -384,7 +384,7 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
                 type="button"
                 id="btn-toggle-summary-code"
                 onClick={() => setShowCode((prev) => !prev)}
-                className="px-3 py-1.5 rounded-md bg-[#10151D] hover:bg-[#161D27] text-slate-300 font-sans text-xs border border-[#1C2430] cursor-pointer"
+                className="px-3.5 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] hover:border-cyan-500/30 text-slate-300 hover:text-white font-sans text-xs border border-white/[0.08] transition-all cursor-pointer"
               >
                 {showCode ? (isVi ? 'Ẩn mã nguồn' : 'Hide Code') : (isVi ? 'Xem mã nguồn' : 'View Code')}
               </button>
@@ -397,10 +397,10 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
                 <button
                   type="button"
                   onClick={() => setCodeLang('python')}
-                  className={`px-3 py-1 rounded-md text-xs font-sans transition-colors cursor-pointer ${
+                  className={`px-3.5 py-1.5 rounded-xl text-xs font-sans transition-all cursor-pointer ${
                     codeLang === 'python'
-                      ? 'bg-emerald-500 text-slate-950 font-semibold'
-                      : 'bg-[#10151D] text-[#A5AFBF] hover:text-white border border-[#1C2430]'
+                      ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold shadow-[0_0_15px_rgba(0,210,255,0.3)]'
+                      : 'bg-white/[0.04] text-slate-400 hover:text-white border border-white/[0.08] hover:border-cyan-500/30'
                   }`}
                 >
                   Python (Block & Merkle)
@@ -408,10 +408,10 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
                 <button
                   type="button"
                   onClick={() => setCodeLang('typescript')}
-                  className={`px-3 py-1 rounded-md text-xs font-sans transition-colors cursor-pointer ${
+                  className={`px-3.5 py-1.5 rounded-xl text-xs font-sans transition-all cursor-pointer ${
                     codeLang === 'typescript'
-                      ? 'bg-emerald-500 text-slate-950 font-semibold'
-                      : 'bg-[#10151D] text-[#A5AFBF] hover:text-white border border-[#1C2430]'
+                      ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold shadow-[0_0_15px_rgba(0,210,255,0.3)]'
+                      : 'bg-white/[0.04] text-slate-400 hover:text-white border border-white/[0.08] hover:border-cyan-500/30'
                   }`}
                 >
                   TypeScript (BlockchainBlock)
@@ -431,13 +431,13 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
 
         {/* HANDS-ON LAB CALL TO ACTION */}
         {onOpenHandsOnLab && (
-          <div className="p-4 rounded-lg bg-[#10151D] border border-[#1C2430] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="p-5 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.06] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="space-y-1">
-              <div className="text-xs font-semibold text-text-primary flex items-center gap-1.5">
-                <FlaskConical className="w-4 h-4" />
+              <div className="text-xs font-semibold text-cyan-300 flex items-center gap-2">
+                <FlaskConical className="w-4 h-4 text-cyan-400" />
                 <span>{isVi ? 'Sẵn sàng tự tay thực hành?' : 'Ready for Hands-On Lab?'}</span>
               </div>
-              <p className="text-xs text-[#A5AFBF]">
+              <p className="text-xs text-slate-400">
                 {isVi
                   ? 'Chuyển sang chế độ "Tự tay thao tác" để tự nhập người gửi, ký số, phá vỡ liên kết chuỗi và đào Nonce.'
                   : 'Switch to Hands-On mode to create custom transactions, sign payloads, tamper with data, and mine nonces.'}
@@ -447,26 +447,26 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
               type="button"
               id="btn-summary-open-lab"
               onClick={onOpenHandsOnLab}
- className="px-4 py-2 rounded-md bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-semibold text-xs transition-colors shadow-sm cursor-pointer flex items-center justify-center gap-1.5 shrink-0"
+              className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-xs transition-all shadow-[0_0_15px_rgba(0,210,255,0.3)] cursor-pointer flex items-center justify-center gap-2 shrink-0 font-sans"
             >
-              <FlaskConical className="w-3.5 h-3.5" />
+              <FlaskConical className="w-4 h-4" />
               <span>{isVi ? 'Mở Chế Độ Thực Hành' : 'Open Hands-On Lab'}</span>
             </button>
           </div>
         )}
 
         {/* Knowledge Exploration Bridge Buttons */}
-        <div className="pt-4 border-t border-[#1C2430] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 font-sans text-xs">
+        <div className="pt-4 border-t border-white/[0.06] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 font-sans text-xs">
           <button
             type="button"
             onClick={() => handleScrollTo('foundations')}
-            className="p-3.5 rounded-lg bg-[#10151D] hover:bg-[#161D27] border border-[#1C2430] text-left space-y-1 transition-colors cursor-pointer group"
+            className="p-3.5 rounded-xl bg-[#0B0F19]/80 hover:bg-[#121827] border border-white/[0.06] hover:border-cyan-500/30 text-left space-y-1 transition-all cursor-pointer group"
           >
-            <span className="text-text-primary font-semibold flex items-center justify-between">
+            <span className="text-white font-semibold flex items-center justify-between">
               <span>← Buổi 1: Nền Tảng</span>
-              <ArrowLeft className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <ArrowLeft className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity text-cyan-400" />
             </span>
-            <span className="text-[11px] text-[#A5AFBF] block">
+            <span className="text-[11px] text-slate-400 block">
               Linked List & Hash Pointer
             </span>
           </button>
@@ -474,13 +474,13 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
           <button
             type="button"
             onClick={() => handleScrollTo('blockchain')}
-            className="p-3.5 rounded-lg bg-[#10151D] hover:bg-[#161D27] border border-[#1C2430] text-left space-y-1 transition-colors cursor-pointer group"
+            className="p-3.5 rounded-xl bg-[#0B0F19]/80 hover:bg-[#121827] border border-white/[0.06] hover:border-cyan-500/30 text-left space-y-1 transition-all cursor-pointer group"
           >
-            <span className="text-slate-200 font-semibold flex items-center justify-between">
+            <span className="text-white font-semibold flex items-center justify-between">
               <span>Proof of Work</span>
-              <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity text-text-primary" />
+              <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity text-cyan-400" />
             </span>
-            <span className="text-[11px] text-[#A5AFBF] block">
+            <span className="text-[11px] text-slate-400 block">
               Cuộc Đua Khai Thác Nonce
             </span>
           </button>
@@ -488,13 +488,13 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
           <button
             type="button"
             onClick={() => handleScrollTo('proof-of-stake')}
-            className="p-3.5 rounded-lg bg-[#10151D] hover:bg-[#161D27] border border-[#1C2430] text-left space-y-1 transition-colors cursor-pointer group"
+            className="p-3.5 rounded-xl bg-[#0B0F19]/80 hover:bg-[#121827] border border-white/[0.06] hover:border-cyan-500/30 text-left space-y-1 transition-all cursor-pointer group"
           >
-            <span className="text-slate-200 font-semibold flex items-center justify-between">
+            <span className="text-white font-semibold flex items-center justify-between">
               <span>Proof of Stake</span>
-              <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity text-text-primary" />
+              <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity text-cyan-400" />
             </span>
-            <span className="text-[11px] text-[#A5AFBF] block">
+            <span className="text-[11px] text-slate-400 block">
               Cơ Chế Đặt Cọc Validator
             </span>
           </button>
@@ -502,13 +502,13 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
           <button
             type="button"
             onClick={() => handleScrollTo('quiz-section')}
-            className="p-3.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] border border-border-primary text-left space-y-1 transition-colors cursor-pointer group"
+            className="p-3.5 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-left space-y-1 transition-all cursor-pointer group shadow-[0_0_15px_rgba(0,210,255,0.1)]"
           >
-            <span className="text-text-primary font-semibold flex items-center justify-between">
+            <span className="text-cyan-300 font-semibold flex items-center justify-between">
               <span>Kiểm Tra Kiến Thức</span>
-              <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity text-cyan-400" />
             </span>
-            <span className="text-[11px] text-[#A5AFBF] block">
+            <span className="text-[11px] text-slate-400 block">
               Thi Trắc Nghiệm & Chứng Chỉ
             </span>
           </button>

@@ -4,6 +4,7 @@ import {
   RotateCcw,
   Copy,
   Check,
+  X,
   ChevronDown,
   ChevronUp,
   Eye,
@@ -15,6 +16,7 @@ import {
   SkipForward,
   ArrowRight
 } from 'lucide-react';
+import { PassIcon, DenyIcon } from '../common/StatusIcons';
 import { useLanguage } from '../../i18n/LanguageContext';
 import {
   signTransactionData,
@@ -900,22 +902,29 @@ export const MempoolDashboard: React.FC = () => {
                     · {chk.desc}
                   </span>
                 </div>
-                <div className="flex items-center gap-1.5 text-xs font-mono">
+                <div className="flex items-center text-xs font-mono">
                   {chk.pass !== undefined ? (
                     chk.pass ? (
-                      <span className="text-[#10B981] flex items-center gap-1.5 font-medium">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#10B981]" />
-                        <span>{isVi ? 'Hợp lệ' : 'Valid'}</span>
+                      <span
+                        title={isVi ? 'Hợp lệ' : 'Passed'}
+                        className="inline-flex items-center justify-center text-success"
+                      >
+                        <PassIcon className="w-4 h-4" />
                       </span>
                     ) : (
-                      <span className="text-rose-400 flex items-center gap-1.5 font-medium">
-                        <span className="w-1.5 h-1.5 rounded-full bg-rose-400" />
-                        <span>{isVi ? 'Không hợp lệ' : 'Invalid'}</span>
+                      <span
+                        title={isVi ? 'Không hợp lệ' : 'Failed'}
+                        className="inline-flex items-center justify-center text-error"
+                      >
+                        <DenyIcon className="w-4 h-4" />
                       </span>
                     )
                   ) : (
-                    <span className="text-xs text-[#71717A] flex items-center gap-1.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-white/20" />
+                    <span className="inline-flex items-center gap-1.5 text-xs text-text-muted">
+                      <span
+                        title={isVi ? 'Chờ kiểm tra' : 'Pending'}
+                        className="w-1.5 h-1.5 rounded-full bg-white/20 inline-block"
+                      />
                       <span>{isVi ? 'Chờ kiểm tra' : 'Pending'}</span>
                     </span>
                   )}

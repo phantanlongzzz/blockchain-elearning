@@ -51,8 +51,8 @@ export const Hero: React.FC = () => {
           {/* LEFT COLUMN: Core Value Proposition, Typography & CTAs */}
           <div className="lg:col-span-6 xl:col-span-6 space-y-6 text-left">
             {/* Tech Tags Pill */}
-            <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#0B0F19]/60 backdrop-blur-md border border-white/[0.08] text-xs font-mono text-slate-300 shadow-sm">
-              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_rgba(0,210,255,0.6)]" />
+            <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#0B0F19]/60 backdrop-blur-md border border-white/[0.08] text-xs font-mono text-slate-300 shadow-sm group">
+              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse group-hover:[animation-play-state:paused] shadow-[0_0_8px_rgba(0,210,255,0.6)]" />
               <span className="font-semibold text-cyan-300">NIST FIPS 180-4</span>
               <span className="text-slate-500">•</span>
               <span>SECP256k1</span>
@@ -64,7 +64,7 @@ export const Hero: React.FC = () => {
             <div className="space-y-3">
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight text-[#F8FAFC] font-display">
                 Demystifying Blockchain{' '}
-                <span className="block mt-2 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                <span className="block mt-2 bg-gradient-to-r from-cyan-400 via-sky-300 to-blue-500 bg-[length:200%_auto] bg-clip-text text-transparent animate-[gradientFlow_6s_ease_infinite] hover:[animation-play-state:paused] drop-shadow-[0_0_20px_rgba(0,210,255,0.25)] cursor-default">
                   From Zero to Consensus
                 </span>
               </h1>

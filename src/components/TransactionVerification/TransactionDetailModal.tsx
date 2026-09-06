@@ -37,7 +37,7 @@ export const TransactionDetailModal: React.FC<TransactionDetailModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-md overflow-y-auto animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/80 overflow-y-auto animate-in fade-in duration-200">
       <div className="relative w-full max-w-4xl max-h-[92vh] overflow-y-auto rounded-xl bg-bg-primary border border-border-primary p-6 sm:p-7 text-text-primary font-mono text-xs space-y-5">
         {/* Top Header */}
         <div className="flex items-center justify-between border-b border-border-primary pb-4">

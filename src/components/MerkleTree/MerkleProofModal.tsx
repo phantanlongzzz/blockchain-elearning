@@ -34,8 +34,8 @@ export const MerkleProofModal: React.FC<MerkleProofModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-md overflow-y-auto animate-in fade-in duration-200">
-      <div className="relative w-full max-w-3xl rounded-2xl bg-[#0C0F14] border border-[#1C2430] p-6 sm:p-8 shadow-2xl text-[#F2F4F7] font-mono text-xs space-y-6">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/80 overflow-y-auto animate-in fade-in duration-200">
+      <div className="relative w-full max-w-3xl rounded-2xl bg-[#0C0F14] border border-[#1C2430] p-6 sm:p-8 text-[#F2F4F7] font-mono text-xs space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-[#1C2430] pb-4">
           <div className="flex items-center gap-3">

@@ -66,7 +66,7 @@ export const DigitalSignatureMiniLab: React.FC<DigitalSignatureMiniLabProps> = (
   return (
     <div className="space-y-6 max-w-4xl mx-auto font-sans">
       {/* 1. Header */}
-      <div className="p-6 sm:p-7 rounded-2xl bg-[#0B0F19]/70 backdrop-blur-xl border border-white/[0.08] shadow-[0_16px_40px_rgba(0,0,0,0.6)] space-y-4">
+      <div className="p-6 sm:p-7 rounded-2xl bg-[#0B0F19]/70 border border-white/[0.08] space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-1">
             <h2 className="text-xl font-bold text-white font-sans tracking-tight">
@@ -84,7 +84,7 @@ export const DigitalSignatureMiniLab: React.FC<DigitalSignatureMiniLabProps> = (
               <button
                 type="button"
                 onClick={() => handleTamper(100)}
-                className="px-4 py-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/30 text-xs font-sans font-medium flex items-center gap-2 transition-all cursor-pointer shadow-[0_0_15px_rgba(244,63,94,0.15)]"
+                className="px-4 py-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/30 text-xs font-sans font-medium flex items-center gap-2 transition-all cursor-pointer"
               >
                 <AlertTriangle className="w-3.5 h-3.5" />
                 <span>{isVi ? 'Sửa thành 100 BTC' : 'Change to 100 BTC'}</span>
@@ -108,8 +108,8 @@ export const DigitalSignatureMiniLab: React.FC<DigitalSignatureMiniLabProps> = (
           <div
             className={`p-3.5 rounded-xl border transition-all space-y-2 text-xs ${
               isTampered
-                ? 'bg-rose-950/30 border-rose-500/40 shadow-[0_0_15px_rgba(244,63,94,0.15)]'
-                : 'bg-black/40 backdrop-blur-md border-white/[0.06]'
+                ? 'bg-rose-950/30 border-rose-500/40'
+                : 'bg-black/40 border-white/[0.06]'
             }`}
           >
             <div className="text-slate-400 font-mono text-[10px] uppercase font-medium">
@@ -127,8 +127,8 @@ export const DigitalSignatureMiniLab: React.FC<DigitalSignatureMiniLabProps> = (
           <div
             className={`p-3.5 rounded-xl border transition-all space-y-2 text-xs ${
               isTampered
-                ? 'bg-rose-950/30 border-rose-500/40 shadow-[0_0_15px_rgba(244,63,94,0.15)]'
-                : 'bg-black/40 backdrop-blur-md border-white/[0.06]'
+                ? 'bg-rose-950/30 border-rose-500/40'
+                : 'bg-black/40 border-white/[0.06]'
             }`}
           >
             <div className="text-slate-400 font-mono text-[10px] uppercase font-medium">
@@ -142,7 +142,7 @@ export const DigitalSignatureMiniLab: React.FC<DigitalSignatureMiniLabProps> = (
           </div>
 
           {/* Step 3: Private Key */}
-          <div className="p-3.5 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.06] space-y-2 text-xs">
+          <div className="p-3.5 rounded-xl bg-black/40 border border-white/[0.06] space-y-2 text-xs">
             <div className="text-slate-400 font-mono text-[10px] uppercase font-medium">
               3. {isVi ? 'Khóa riêng' : 'Private key'}
             </div>
@@ -152,7 +152,7 @@ export const DigitalSignatureMiniLab: React.FC<DigitalSignatureMiniLabProps> = (
           </div>
 
           {/* Step 4: Signature */}
-          <div className="p-3.5 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.06] space-y-2 text-xs">
+          <div className="p-3.5 rounded-xl bg-black/40 border border-white/[0.06] space-y-2 text-xs">
             <div className="text-slate-400 font-mono text-[10px] uppercase font-medium">
               4. {isVi ? 'Chữ ký số' : 'Signature'}
             </div>
@@ -165,8 +165,8 @@ export const DigitalSignatureMiniLab: React.FC<DigitalSignatureMiniLabProps> = (
           <div
             className={`p-3.5 rounded-xl border transition-all space-y-2 text-xs ${
               verificationResult
-                ? 'bg-cyan-500/10 border-cyan-500/30 shadow-[0_0_15px_rgba(0,210,255,0.15)]'
-                : 'bg-rose-950/30 border-rose-500/40 shadow-[0_0_15px_rgba(244,63,94,0.15)]'
+                ? 'bg-cyan-500/10 border-cyan-500/30'
+                : 'bg-rose-950/30 border-rose-500/40'
             }`}
           >
             <div className="text-slate-400 font-mono text-[10px] uppercase font-medium">
@@ -183,10 +183,10 @@ export const DigitalSignatureMiniLab: React.FC<DigitalSignatureMiniLabProps> = (
         </div>
 
         {/* Dynamic Verification Status */}
-        <div className="p-4 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.05] flex items-center gap-3 text-xs">
+        <div className="p-4 rounded-xl bg-black/40 border border-white/[0.05] flex items-center gap-3 text-xs">
           <span
             className={`w-2.5 h-2.5 rounded-full shrink-0 shadow-sm ${
-              verificationResult ? 'bg-cyan-400 shadow-[0_0_8px_rgba(0,210,255,0.8)]' : 'bg-rose-400 shadow-[0_0_8px_rgba(244,63,94,0.8)]'
+              verificationResult ? 'bg-cyan-400' : 'bg-rose-400'
             }`}
           />
           <div>
@@ -227,7 +227,7 @@ export const DigitalSignatureMiniLab: React.FC<DigitalSignatureMiniLabProps> = (
           <button
             type="button"
             onClick={onNextStage}
-            className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-sans font-medium text-xs flex items-center gap-2 shadow-[0_0_15px_rgba(0,210,255,0.3)] transition-all cursor-pointer"
+            className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-sans font-medium text-xs flex items-center gap-2 transition-all cursor-pointer"
           >
             <span>{isVi ? 'Tiếp tục: Dấu thời gian' : 'Next: Timestamp'}</span>
             <ArrowRight className="w-3.5 h-3.5" />

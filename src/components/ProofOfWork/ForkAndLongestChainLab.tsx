@@ -148,7 +148,7 @@ export const ForkAndLongestChainLab: React.FC<{onInteracted?: () => void}> = ({ 
   };
 
   return (
-    <div id="fork-longest-chain-simulation-lab" className="bg-[#0a0d12] border border-zinc-800/80 rounded-xl overflow-hidden font-sans text-zinc-100 antialiased shadow-xl">
+    <div id="fork-longest-chain-simulation-lab" className="bg-[#0a0d12] border border-zinc-800/80 rounded-xl overflow-hidden font-sans text-zinc-100 antialiased">
       
       {/* Header */}
       <div className="px-6 py-4 border-b border-zinc-800 bg-[#0a0d12]">

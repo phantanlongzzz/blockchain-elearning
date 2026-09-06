@@ -96,7 +96,7 @@ export const TamperModal: React.FC<TamperModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-md overflow-y-auto animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/80 overflow-y-auto animate-in fade-in duration-200">
       <div className="relative w-full max-w-2xl rounded-xl bg-bg-primary border border-border-primary p-6 sm:p-7 text-text-primary font-mono text-xs space-y-5">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-border-primary pb-4">

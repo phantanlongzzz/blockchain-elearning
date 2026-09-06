@@ -613,7 +613,7 @@ export const NetworkBroadcastGraph: React.FC<NetworkBroadcastGraphProps> = ({
             <span
               className={`w-4 h-4 rounded-full flex items-center justify-center text-[10px] ${
                 timelineStage === 'broadcast'
-                  ? 'bg-emerald-500 text-zinc-950 animate-pulse font-bold'
+                  ? 'bg-emerald-500 text-zinc-950 font-bold'
                   : isCompleted || timelineStage === 'receive' || timelineStage === 'validate' || timelineStage === 'sync'
                   ? 'bg-white/[0.08] border border-border-primary text-text-primary'
                   : 'bg-zinc-900 border border-zinc-700 text-zinc-500'
@@ -641,7 +641,7 @@ export const NetworkBroadcastGraph: React.FC<NetworkBroadcastGraphProps> = ({
             <span
               className={`w-4 h-4 rounded-full flex items-center justify-center text-[10px] ${
                 timelineStage === 'receive'
-                  ? 'bg-purple-500 text-zinc-950 animate-pulse font-bold'
+                  ? 'bg-purple-500 text-zinc-950 font-bold'
                   : isCompleted || timelineStage === 'validate' || timelineStage === 'sync'
                   ? 'bg-white/[0.08] border border-border-primary text-text-primary'
                   : 'bg-zinc-900 border border-zinc-700 text-zinc-500'
@@ -667,7 +667,7 @@ export const NetworkBroadcastGraph: React.FC<NetworkBroadcastGraphProps> = ({
             <span
               className={`w-4 h-4 rounded-full flex items-center justify-center text-[10px] ${
                 timelineStage === 'validate'
-                  ? 'bg-amber-500 text-zinc-950 animate-pulse font-bold'
+                  ? 'bg-amber-500 text-zinc-950 font-bold'
                   : isCompleted || timelineStage === 'sync'
                   ? 'bg-white/[0.08] border border-border-primary text-text-primary'
                   : 'bg-zinc-900 border border-zinc-700 text-zinc-500'
@@ -890,12 +890,12 @@ export const NetworkBroadcastGraph: React.FC<NetworkBroadcastGraphProps> = ({
                     </span>
                   ) : runtime.status === 'validating' ? (
                     <span className="text-amber-400 font-medium flex items-center gap-1 text-[11px]">
-                      <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping inline-block" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-amber-400 inline-block" />
                       {language === 'vi' ? 'Đang xác thực' : 'Validating'}
                     </span>
                   ) : runtime.status === 'receiving' ? (
                     <span className="text-purple-400 font-medium flex items-center gap-1 text-[11px]">
-                      <span className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-ping inline-block" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-purple-400 inline-block" />
                       {language === 'vi' ? 'Đang nhận' : 'Receiving'}
                     </span>
                   ) : (
@@ -1029,11 +1029,11 @@ export const NetworkBroadcastGraph: React.FC<NetworkBroadcastGraphProps> = ({
                       </span>
                     </div>
                   ) : selectedRuntime.status === 'validating' ? (
-                    <span className="text-amber-400 text-[11px] block animate-pulse">
+                    <span className="text-amber-400 text-[11px] block">
                       {language === 'vi' ? '◌ Đang kiểm tra...' : '◌ Verifying chain tip...'}
                     </span>
                   ) : selectedRuntime.status === 'receiving' ? (
-                    <span className="text-purple-400 text-[11px] block animate-pulse">
+                    <span className="text-purple-400 text-[11px] block">
                       {language === 'vi' ? '◌ Đang nhận khối...' : '◌ Receiving block...'}
                     </span>
                   ) : (
@@ -1067,11 +1067,11 @@ export const NetworkBroadcastGraph: React.FC<NetworkBroadcastGraphProps> = ({
                       </span>
                     </div>
                   ) : selectedRuntime.status === 'validating' ? (
-                    <span className="text-amber-400 text-[11px] block animate-pulse">
+                    <span className="text-amber-400 text-[11px] block">
                       {language === 'vi' ? '◌ Đang kiểm tra...' : '◌ Computing Merkle tree...'}
                     </span>
                   ) : selectedRuntime.status === 'receiving' ? (
-                    <span className="text-purple-400 text-[11px] block animate-pulse">
+                    <span className="text-purple-400 text-[11px] block">
                       {language === 'vi' ? '◌ Đang nhận khối...' : '◌ Receiving block...'}
                     </span>
                   ) : (
@@ -1105,11 +1105,11 @@ export const NetworkBroadcastGraph: React.FC<NetworkBroadcastGraphProps> = ({
                       </span>
                     </div>
                   ) : selectedRuntime.status === 'validating' ? (
-                    <span className="text-amber-400 text-[11px] block animate-pulse">
+                    <span className="text-amber-400 text-[11px] block">
                       {language === 'vi' ? '◌ Đang kiểm tra...' : '◌ Checking SHA-256 target...'}
                     </span>
                   ) : selectedRuntime.status === 'receiving' ? (
-                    <span className="text-purple-400 text-[11px] block animate-pulse">
+                    <span className="text-purple-400 text-[11px] block">
                       {language === 'vi' ? '◌ Đang nhận khối...' : '◌ Receiving block...'}
                     </span>
                   ) : (

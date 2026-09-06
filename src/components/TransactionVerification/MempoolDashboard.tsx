@@ -583,7 +583,7 @@ export const MempoolDashboard: React.FC = () => {
                     isFailed ? (
                       <DenyIcon className="w-3 h-3 text-error shrink-0" />
                     ) : (
-                      <span className="w-1.5 h-1.5 rounded-full bg-teach-1 animate-pulse shrink-0" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-teach-1 shrink-0" />
                     )
                   ) : (
                     <span className="w-1.5 h-1.5 rounded-full bg-white/10 shrink-0" />
@@ -681,25 +681,25 @@ export const MempoolDashboard: React.FC = () => {
               <div>
                 {activeStep === 1 && (
                   <span className="inline-flex items-center gap-1.5 text-xs font-mono text-text-muted bg-bg-primary border border-border-secondary px-2.5 py-0.5 rounded-full">
-                    <span className="w-1.5 h-1.5 rounded-full bg-text-muted animate-pulse" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-text-muted" />
                     {isVi ? 'Đang tạo...' : 'Creating...'}
                   </span>
                 )}
                 {activeStep === 2 && (
                   <span className="inline-flex items-center gap-1.5 text-xs font-mono text-teach-1 bg-teach-1/10 border border-teach-1/20 px-2.5 py-0.5 rounded-full">
-                    <span className="w-1.5 h-1.5 rounded-full bg-teach-1 animate-pulse" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-teach-1" />
                     {isVi ? 'Đang ký số...' : 'Signing...'}
                   </span>
                 )}
                 {activeStep === 3 && (
                   <span className="inline-flex items-center gap-1.5 text-xs font-mono text-teach-2 bg-teach-2/10 border border-teach-2/20 px-2.5 py-0.5 rounded-full">
-                    <span className="w-1.5 h-1.5 rounded-full bg-teach-2 animate-pulse" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-teach-2" />
                     {isVi ? 'Truyền P2P...' : 'Broadcasting...'}
                   </span>
                 )}
                 {activeStep === 4 && (
                   <span className="inline-flex items-center gap-1.5 text-xs font-mono text-color-info bg-color-info/10 border border-color-info/20 px-2.5 py-0.5 rounded-full">
-                    <span className="w-1.5 h-1.5 rounded-full bg-color-info animate-pulse" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-color-info" />
                     {isVi ? 'Đang xác thực...' : 'Validating...'}
                   </span>
                 )}
@@ -824,7 +824,7 @@ export const MempoolDashboard: React.FC = () => {
                             <span>{isVi ? '0/3 Nodes (Chờ phát sóng)' : '0/3 Nodes (Awaiting)'}</span>
                           ) : isP2pActive ? (
                             <>
-                              <span className="w-1.5 h-1.5 rounded-full bg-teach-1 animate-pulse" />
+                              <span className="w-1.5 h-1.5 rounded-full bg-teach-1" />
                               <span>{isVi ? 'Đang lan truyền...' : 'Broadcasting...'}</span>
                             </>
                           ) : (
@@ -848,7 +848,7 @@ export const MempoolDashboard: React.FC = () => {
                           )}
                           {isP2pActive && (
                             <span className="text-[11px] font-mono text-teach-1 bg-teach-1/10 border border-teach-1/20 px-2 py-0.5 rounded-full flex items-center gap-1.5">
-                              <span className="w-1.5 h-1.5 rounded-full bg-teach-1 animate-pulse" />
+                              <span className="w-1.5 h-1.5 rounded-full bg-teach-1" />
                               {isVi ? 'Đang lan truyền gói tin...' : 'Broadcasting payload...'}
                             </span>
                           )}
@@ -896,7 +896,7 @@ export const MempoolDashboard: React.FC = () => {
                             isP2pPending 
                               ? 'border-border-secondary text-text-muted opacity-50' 
                               : isP2pActive 
-                              ? 'border-teach-1/30 text-teach-1 shadow-xs animate-pulse' 
+                              ? 'border-teach-1/30 text-teach-1 shadow-xs' 
                               : 'border-border-secondary text-text-muted'
                           }`}>
                             TX Packet: 224B
@@ -1005,7 +1005,7 @@ export const MempoolDashboard: React.FC = () => {
       </div>
 
       {/* 2. Educational Ledger & Account States */}
-      <div className="p-5 rounded-xl bg-[#0B0F19]/60 backdrop-blur-md border border-white/[0.08] space-y-4 shadow-[0_8px_30px_rgb(0,0,0,0.35)]">
+      <div className="p-5 rounded-xl bg-[#0B0F19]/60 border border-white/[0.08] space-y-4">
         <div className="flex items-center justify-between">
           <span className="text-xs font-medium uppercase tracking-wider text-[#71717A]">
             {vStr.ledgerTitle}
@@ -1203,10 +1203,10 @@ export const MempoolDashboard: React.FC = () => {
       {/* 4. Live Mempool (Accepted) vs Rejected Transactions - Deep Inspector */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 w-full">
         {/* Active Mempool Column */}
-        <div className="p-5 sm:p-6 rounded-xl bg-[#0B0F19]/60 backdrop-blur-md border border-white/[0.08] space-y-4 shadow-[0_8px_30px_rgb(0,0,0,0.35)]">
+        <div className="p-5 sm:p-6 rounded-xl bg-[#0B0F19]/60 border border-white/[0.08] space-y-4">
           <div className="flex items-center justify-between pb-3 border-b border-white/[0.06] text-xs">
             <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#10B981] animate-pulse" />
+              <span className="w-2.5 h-2.5 rounded-full bg-[#10B981]" />
               <span className="font-semibold text-[#F4F4F5] text-sm">
                 {vStr.activeMempool} ({mempool.length})
               </span>
@@ -1238,7 +1238,7 @@ export const MempoolDashboard: React.FC = () => {
                     <div className="space-y-1.5 min-w-0">
                       <div className="flex items-center gap-2">
                         <span
-                          className="w-2.5 h-2.5 rounded-full bg-[#10B981] animate-pulse shrink-0"
+                          className="w-2.5 h-2.5 rounded-full bg-[#10B981] shrink-0"
                           title={isVi ? 'Đang chờ đóng block' : 'Pending block inclusion'}
                         />
                         <span className="font-mono text-xs px-2.5 py-1 rounded bg-[#070A12] text-[#F4F4F5] border border-white/10 font-semibold shrink-0">
@@ -1346,7 +1346,7 @@ export const MempoolDashboard: React.FC = () => {
         </div>
 
         {/* Rejected Transactions Column */}
-        <div className="p-5 sm:p-6 rounded-xl bg-[#0B0F19]/60 backdrop-blur-md border border-white/[0.08] space-y-4 shadow-[0_8px_30px_rgb(0,0,0,0.35)]">
+        <div className="p-5 sm:p-6 rounded-xl bg-[#0B0F19]/60 border border-white/[0.08] space-y-4">
           <div className="flex items-center justify-between pb-3 border-b border-white/[0.06] text-xs">
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-rose-500" />

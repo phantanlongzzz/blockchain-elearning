@@ -888,7 +888,7 @@ export const PowLesson: React.FC = () => {
                   )}
                   {appState === 'mining' && (
                     <>
-                      <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.4)]" />
+                      <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                       <span className="text-sm font-medium text-text-primary">{isVi ? 'Đang khai thác' : 'Mining'}</span>
                     </>
                   )}
@@ -928,7 +928,7 @@ export const PowLesson: React.FC = () => {
                 ) : appState === 'completed' || appState === 'animating_win' ? (
                   <button 
                     onClick={handleReset} 
-                    className="inline-flex items-center justify-center gap-2 px-4 py-2 h-10 rounded-lg text-xs font-medium font-mono text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 shadow-[0_0_15px_rgba(0,210,255,0.3)] transition-all active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none cursor-pointer flex-1 sm:flex-none"
+                    className="inline-flex items-center justify-center gap-2 px-4 py-2 h-10 rounded-lg text-xs font-medium font-mono text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 transition-all active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none cursor-pointer flex-1 sm:flex-none"
                   >
                     <RotateCcw className="w-3.5 h-3.5 text-white" /> {isVi ? 'Chạy Lại' : 'Run Again'}
                   </button>
@@ -1008,7 +1008,7 @@ export const PowLesson: React.FC = () => {
                 key={m.id} 
                 className={`relative p-4 rounded-xl border transition-all duration-300 ${
                   isWinnerCard 
-                    ? 'bg-[#141108] border-amber-400 animate-block-pulse shadow-[0_0_20px_rgba(245,158,11,0.12)]' 
+                    ? 'bg-[#141108] border-amber-400 animate-block-pulse' 
                     : 'bg-[#0C0F14] border-slate-800/80 hover:border-slate-700/80'
                 }`}
               >
@@ -1134,7 +1134,7 @@ export const PowLesson: React.FC = () => {
 
               <button 
                 onClick={handleReset} 
-                className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-xs font-medium font-mono text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 shadow-[0_0_15px_rgba(0,210,255,0.3)] transition-all active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none cursor-pointer shrink-0"
+                className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-xs font-medium font-mono text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 transition-all active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none cursor-pointer shrink-0"
               >
                 <RotateCcw className="w-3.5 h-3.5 text-white" /> {isVi ? 'Chạy Lại' : 'Run Again'}
               </button>
@@ -1243,7 +1243,7 @@ export const PowLesson: React.FC = () => {
             <div className="p-4 sm:p-5 rounded-2xl bg-[#0A0D12] border border-slate-800 space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-1 px-1 gap-2">
                 <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(0,210,255,0.6)] animate-pulse" />
+                  <span className="w-2 h-2 rounded-full bg-cyan-400" />
                   <h3 className="text-xs sm:text-sm font-display font-bold text-slate-300 tracking-wider">
                     {isVi ? 'Chuỗi Khối Tuyến Tính' : 'Linear Blockchain'}
                   </h3>
@@ -1268,7 +1268,7 @@ export const PowLesson: React.FC = () => {
               <div 
                 ref={timelineScrollRef}
                 onScroll={handleTimelineScroll}
-                className="flex overflow-x-auto py-4 pb-6 gap-0 items-center custom-scrollbar px-4 max-w-full bg-[#070A12]/90 rounded-xl border border-white/[0.08] backdrop-blur-md relative"
+                className="flex overflow-x-auto py-4 pb-6 gap-0 items-center custom-scrollbar px-4 max-w-full bg-[#070A12]/90 rounded-xl border border-white/[0.08] relative"
               >
                 {/* Subtle Grid Background */}
                 <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
@@ -1291,8 +1291,8 @@ export const PowLesson: React.FC = () => {
                         {/* Connection Line */}
                         {idx < blockchain.length - 1 && (
                           <div className="absolute left-[100%] top-1/2 -translate-y-1/2 w-10 flex items-center z-0">
-                            <div className="h-[2px] w-full bg-gradient-to-r from-cyan-500/30 via-cyan-400 to-cyan-500/30 shadow-[0_0_8px_rgba(0,210,255,0.35)] relative">
-                              <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 border-t-2 border-r-2 border-cyan-400 rotate-45 shadow-[0_0_6px_rgba(0,210,255,0.5)]" />
+                            <div className="h-[2px] w-full bg-gradient-to-r from-cyan-500/30 via-cyan-400 to-cyan-500/30 relative">
+                              <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 border-t-2 border-r-2 border-cyan-400 rotate-45" />
                             </div>
                           </div>
                         )}
@@ -1300,11 +1300,11 @@ export const PowLesson: React.FC = () => {
                         {/* Block Card */}
                         <div 
                           onClick={() => setSelectedBlock(block)}
-                          className={`relative z-10 w-36 bg-[#0B101E]/75 backdrop-blur-md border rounded-xl p-3 transition-all duration-200 flex flex-col cursor-pointer select-none ${
+                          className={`relative z-10 w-36 bg-[#0B101E]/75 border rounded-xl p-3 transition-all duration-200 flex flex-col cursor-pointer select-none ${
                             isLatestTip 
-                              ? 'border-cyan-400/60 shadow-[0_0_15px_rgba(0,210,255,0.25)] ring-1 ring-cyan-400/30' 
-                              : 'border-white/[0.08] hover:border-cyan-500/40 hover:shadow-[0_0_10px_rgba(0,210,255,0.15)]'
-                          } ${isFocused ? 'ring-2 ring-cyan-400/80 shadow-[0_0_15px_rgba(0,210,255,0.3)]' : ''}`}
+                              ? 'border-cyan-400/60 ring-1 ring-cyan-400/30' 
+                              : 'border-white/[0.08] hover:border-cyan-500/40 hover:'
+                          } ${isFocused ? 'ring-2 ring-cyan-400/80' : ''}`}
                         >
                           {/* Top Bar: Status Dot & Short Hash */}
                           <div className="flex items-center justify-between gap-1.5 mb-2.5">
@@ -1312,9 +1312,9 @@ export const PowLesson: React.FC = () => {
                               <div 
                                 className={`w-2 h-2 rounded-full shrink-0 ${
                                   isAttacker 
-                                    ? 'bg-rose-500 shadow-[0_0_6px_rgba(244,63,94,0.6)]' 
-                                    : 'bg-cyan-400 shadow-[0_0_6px_rgba(0,210,255,0.6)]'
-                                } ${isLatestTip ? 'animate-pulse' : ''}`} 
+                                    ? 'bg-rose-500' 
+                                    : 'bg-cyan-400'
+                                } ${isLatestTip ? '' : ''}`} 
                               />
                               <span className="font-mono text-[11px] text-slate-300 truncate">
                                 {shortHash}...
@@ -1330,18 +1330,18 @@ export const PowLesson: React.FC = () => {
                           {/* Center Box Icon */}
                           <div className="flex justify-center mb-2.5">
                             {isGenesis ? (
-                              <div className="w-10 h-10 rounded-lg bg-success/10 flex items-center justify-center border border-success/30 text-success shadow-[0_0_10px_rgba(16,185,129,0.2)]">
+                              <div className="w-10 h-10 rounded-lg bg-success/10 flex items-center justify-center border border-success/30 text-success">
                                 <span className="text-lg">🌱</span>
                               </div>
                             ) : (
                               <div 
                                 className={`w-10 h-10 rounded-lg flex items-center justify-center border transition-all ${
                                   isLatestTip
-                                    ? 'bg-cyan-500/15 border-cyan-400/40 text-cyan-300 shadow-[0_0_12px_rgba(0,210,255,0.3)]'
+                                    ? 'bg-cyan-500/15 border-cyan-400/40 text-cyan-300'
                                     : 'bg-white/[0.04] border-white/[0.08] text-slate-400 group-hover:text-cyan-400 group-hover:border-cyan-500/30'
                                 }`}
                               >
-                                <Box size={20} className={isLatestTip ? 'animate-pulse' : ''} />
+                                <Box size={20} className={isLatestTip ? '' : ''} />
                               </div>
                             )}
                           </div>
@@ -1388,7 +1388,7 @@ export const PowLesson: React.FC = () => {
           {showTelemetryDetails && (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-3 animate-in fade-in duration-200">
               {/* Mining Event Log (Terminal Style) */}
-              <div className="bg-[#050811]/90 backdrop-blur-md border border-white/[0.08] rounded-xl p-4 font-mono text-xs leading-relaxed max-h-[260px] flex flex-col">
+              <div className="bg-[#050811]/90 border border-white/[0.08] rounded-xl p-4 font-mono text-xs leading-relaxed max-h-[260px] flex flex-col">
                 <h3 className="text-xs sm:text-sm font-display font-bold text-slate-300 mb-3 flex items-center gap-2 shrink-0">
                   <Activity size={15} className="text-cyan-400"/> 
                   {isVi ? 'Nhật Ký Sự Kiện Khai Thác' : 'Mining Event Log'}
@@ -1452,7 +1452,7 @@ export const PowLesson: React.FC = () => {
               </div>
               
               {/* Node Technical Telemetry */}
-              <div className="p-4 rounded-xl border border-white/[0.08] bg-[#050811]/90 backdrop-blur-md max-h-[260px] flex flex-col">
+              <div className="p-4 rounded-xl border border-white/[0.08] bg-[#050811]/90 max-h-[260px] flex flex-col">
                 <h3 className="text-xs sm:text-sm font-display font-bold text-slate-300 mb-3 flex items-center gap-2 shrink-0">
                   <FileText size={15} className="text-amber-400"/> 
                   {isVi ? 'Chi Tiết Kỹ Thuật Nút Thợ Đào' : 'Node Technical Telemetry'}
@@ -1487,8 +1487,8 @@ export const PowLesson: React.FC = () => {
         const isLeadingModalBlock = selectedBlock.index === blockchain[blockchain.length - 1]?.index && blockchain.length > 1;
 
         return (
-          <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in zoom-in-95 duration-200">
-            <div className="bg-[#0C0F14] border border-slate-800 rounded-2xl p-6 sm:p-7 w-full max-w-lg shadow-2xl space-y-4">
+          <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4 animate-in fade-in zoom-in-95 duration-200">
+            <div className="bg-[#0C0F14] border border-slate-800 rounded-2xl p-6 sm:p-7 w-full max-w-lg space-y-4">
               <div className="flex justify-between items-center border-b border-slate-800/80 pb-3">
                 <div className="flex items-center gap-2">
                   <span className={`text-xs font-mono px-2.5 py-0.5 rounded border font-bold ${modalTheme.badge}`}>

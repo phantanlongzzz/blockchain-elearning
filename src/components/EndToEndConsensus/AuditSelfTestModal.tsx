@@ -338,8 +338,8 @@ export const AuditSelfTestModal: React.FC<AuditSelfTestModalProps> = ({
   const allPassed = testResults && testResults.every((r) => r.status === 'PASS');
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-150 font-sans">
-      <div className="bg-[#0D1322] border border-border-primary rounded-2xl w-full max-w-2xl max-h-[90vh] shadow-2xl p-5 sm:p-6 flex flex-col space-y-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 animate-in fade-in duration-150 font-sans">
+      <div className="bg-[#0D1322] border border-border-primary rounded-2xl w-full max-w-2xl max-h-[90vh] p-5 sm:p-6 flex flex-col space-y-4">
         {/* Header */}
         <div className="flex items-center justify-between pb-3 border-b border-[#1E293B]">
           <div className="flex items-center gap-2.5">
@@ -385,7 +385,7 @@ export const AuditSelfTestModal: React.FC<AuditSelfTestModalProps> = ({
                 type="button"
                 onClick={runDeterministicAudit}
                 disabled={isRunning}
- className="px-5 py-2.5 rounded-xl bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-bold text-xs flex items-center gap-2 mx-auto cursor-pointer shadow-lg "
+ className="px-5 py-2.5 rounded-xl bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-bold text-xs flex items-center gap-2 mx-auto cursor-pointer shadow-lg"
               >
                 <Play className="w-4 h-4" />
                 <span>{language === 'vi' ? 'Khởi Chạy Kiểm Toán Ngay' : 'Run Consensus Audit'}</span>

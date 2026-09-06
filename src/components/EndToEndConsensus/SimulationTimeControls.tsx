@@ -53,7 +53,7 @@ export const SimulationTimeControls: React.FC<SimulationTimeControlsProps> = ({
             onClick={() => onChangeMode('guided')}
             className={`px-2.5 py-1 rounded-md text-[11px] font-medium transition-colors flex items-center gap-1 cursor-pointer ${
               mode === 'guided'
-                ? 'bg-cyan-500 text-slate-950 font-bold shadow-[0_0_10px_rgba(0,210,255,0.25)]'
+                ? 'bg-cyan-500 text-slate-950 font-bold'
                 : 'text-zinc-400 hover:text-zinc-200'
             }`}
           >
@@ -101,7 +101,7 @@ export const SimulationTimeControls: React.FC<SimulationTimeControlsProps> = ({
           className={`px-3 py-1.5 rounded-lg font-medium text-xs flex items-center gap-1.5 transition-all cursor-pointer ${
             isPlaying
               ? 'bg-amber-500 hover:bg-amber-400 text-zinc-950 shadow-sm'
-              : 'bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold shadow-[0_0_12px_rgba(0,210,255,0.25)]'
+              : 'bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold'
           }`}
           title={
             isPlaying

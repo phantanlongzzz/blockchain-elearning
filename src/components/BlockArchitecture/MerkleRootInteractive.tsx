@@ -103,7 +103,7 @@ export const MerkleRootInteractive: React.FC<MerkleRootInteractiveProps> = ({
   return (
     <div className="space-y-6 font-sans">
       {/* Main Visual Merkle Tree Explorer Card */}
-      <div className="p-6 sm:p-7 rounded-2xl bg-[#0B0F19]/70 backdrop-blur-xl border border-white/[0.08] shadow-[0_16px_40px_rgba(0,0,0,0.6)] space-y-6">
+      <div className="p-6 sm:p-7 rounded-2xl bg-[#0B0F19]/70 border border-white/[0.08] space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-white/[0.06]">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center">
@@ -123,7 +123,7 @@ export const MerkleRootInteractive: React.FC<MerkleRootInteractiveProps> = ({
                 type="button"
                 id="btn-tamper-merkle-tx3"
                 onClick={() => handleTamperTx3(100)}
-                className="px-4 py-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/30 text-xs font-sans font-medium flex items-center gap-2 transition-all cursor-pointer shadow-[0_0_15px_rgba(244,63,94,0.15)]"
+                className="px-4 py-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/30 text-xs font-sans font-medium flex items-center gap-2 transition-all cursor-pointer"
               >
                 <AlertTriangle className="w-3.5 h-3.5" />
                 <span>
@@ -156,8 +156,8 @@ export const MerkleRootInteractive: React.FC<MerkleRootInteractiveProps> = ({
             <div
               className={`p-4 rounded-xl border max-w-md w-full text-center transition-all ${
                 isTampered
-                  ? 'bg-rose-950/30 border-rose-500/50 shadow-[0_0_20px_rgba(244,63,94,0.2)]'
-                  : 'bg-black/40 backdrop-blur-md border-cyan-500/30 shadow-[0_0_20px_rgba(0,210,255,0.12)]'
+                  ? 'bg-rose-950/30 border-rose-500/50'
+                  : 'bg-black/40 border-cyan-500/30'
               }`}
             >
               <div className="flex items-center justify-between text-xs font-mono mb-2">
@@ -192,7 +192,7 @@ export const MerkleRootInteractive: React.FC<MerkleRootInteractiveProps> = ({
           {/* TIER 2: INTERMEDIATE PARENT HASHES */}
           <div className="grid grid-cols-2 gap-4 max-w-2xl mx-auto">
             {/* Hash 1+2 */}
-            <div className="p-3.5 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.06] space-y-1.5 text-center font-mono">
+            <div className="p-3.5 rounded-xl bg-black/40 border border-white/[0.06] space-y-1.5 text-center font-mono">
               <div className="flex items-center justify-between text-xs">
                 <span className="text-slate-300 font-medium">H_12 (TX1 + TX2)</span>
                 <span className="text-slate-500 text-[10px] font-sans">Tầng 1</span>
@@ -206,8 +206,8 @@ export const MerkleRootInteractive: React.FC<MerkleRootInteractiveProps> = ({
             <div
               className={`p-3.5 rounded-xl border space-y-1.5 text-center font-mono transition-all ${
                 isTampered
-                  ? 'bg-rose-950/30 border-rose-500/50 shadow-[0_0_15px_rgba(244,63,94,0.15)]'
-                  : 'bg-black/40 backdrop-blur-md border-white/[0.06]'
+                  ? 'bg-rose-950/30 border-rose-500/50'
+                  : 'bg-black/40 border-white/[0.06]'
               }`}
             >
               <div className="flex items-center justify-between text-xs">
@@ -240,14 +240,14 @@ export const MerkleRootInteractive: React.FC<MerkleRootInteractiveProps> = ({
 
           {/* TIER 1: LEAF HASHES (4 Hashes) */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5">
-            <div className="p-3 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.06] text-center font-mono text-xs">
+            <div className="p-3 rounded-xl bg-black/40 border border-white/[0.06] text-center font-mono text-xs">
               <div className="text-[10px] text-slate-500">Leaf H_1</div>
               <div className="text-slate-300 truncate font-mono mt-1">
                 {h1.slice(0, 10)}...
               </div>
             </div>
 
-            <div className="p-3 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.06] text-center font-mono text-xs">
+            <div className="p-3 rounded-xl bg-black/40 border border-white/[0.06] text-center font-mono text-xs">
               <div className="text-[10px] text-slate-500">Leaf H_2</div>
               <div className="text-slate-300 truncate font-mono mt-1">
                 {h2.slice(0, 10)}...
@@ -257,15 +257,15 @@ export const MerkleRootInteractive: React.FC<MerkleRootInteractiveProps> = ({
             <div
               className={`p-3 rounded-xl border text-center font-mono text-xs transition-all ${
                 isTampered
-                  ? 'bg-rose-950/30 border-rose-500/50 text-rose-300 shadow-[0_0_15px_rgba(244,63,94,0.15)]'
-                  : 'bg-black/40 backdrop-blur-md border-white/[0.06] text-slate-300'
+                  ? 'bg-rose-950/30 border-rose-500/50 text-rose-300'
+                  : 'bg-black/40 border-white/[0.06] text-slate-300'
               }`}
             >
               <div className="text-[10px] text-slate-500">Leaf H_3</div>
               <div className="truncate font-mono mt-1">{h3.slice(0, 10)}...</div>
             </div>
 
-            <div className="p-3 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.06] text-center font-mono text-xs">
+            <div className="p-3 rounded-xl bg-black/40 border border-white/[0.06] text-center font-mono text-xs">
               <div className="text-[10px] text-slate-500">Leaf H_4</div>
               <div className="text-slate-300 truncate font-mono mt-1">
                 {h4.slice(0, 10)}...
@@ -287,8 +287,8 @@ export const MerkleRootInteractive: React.FC<MerkleRootInteractiveProps> = ({
                     key={tx.id}
                     className={`p-3.5 rounded-xl border font-mono text-xs space-y-2 transition-all ${
                       isThisTampered
-                        ? 'bg-rose-950/30 border-rose-500/60 shadow-[0_0_15px_rgba(244,63,94,0.2)]'
-                        : 'bg-black/40 backdrop-blur-md border-white/[0.06]'
+                        ? 'bg-rose-950/30 border-rose-500/60'
+                        : 'bg-black/40 border-white/[0.06]'
                     }`}
                   >
                     <div className="flex items-center justify-between text-xs">
@@ -327,7 +327,7 @@ export const MerkleRootInteractive: React.FC<MerkleRootInteractiveProps> = ({
           className={`p-4 rounded-xl border transition-all ${
             isTampered
               ? 'bg-rose-950/30 border-rose-500/40 text-rose-200'
-              : 'bg-black/40 backdrop-blur-md border-white/[0.05] text-slate-200'
+              : 'bg-black/40 border-white/[0.05] text-slate-200'
           }`}
         >
           <div className="flex items-start gap-3">
@@ -370,7 +370,7 @@ export const MerkleRootInteractive: React.FC<MerkleRootInteractiveProps> = ({
             type="button"
             id="btn-next-stage-from-merkle"
             onClick={onNextStage}
-            className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-xs flex items-center gap-1.5 cursor-pointer shadow-[0_0_15px_rgba(0,210,255,0.3)] font-sans transition-all"
+            className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-xs flex items-center gap-1.5 cursor-pointer font-sans transition-all"
           >
             <span>{isVi ? 'Tiếp: Vòng Đời Khối' : 'Next: Block Lifecycle'}</span>
             <ArrowRight className="w-3.5 h-3.5" />

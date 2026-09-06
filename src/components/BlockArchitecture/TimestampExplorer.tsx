@@ -68,7 +68,7 @@ export const TimestampExplorer: React.FC<TimestampExplorerProps> = ({
   return (
     <div className="space-y-6 font-sans">
       {/* Sequential Timeline of Blocks */}
-      <div className="p-6 sm:p-7 rounded-2xl bg-[#0B0F19]/70 backdrop-blur-xl border border-white/[0.08] shadow-[0_16px_40px_rgba(0,0,0,0.6)] space-y-6">
+      <div className="p-6 sm:p-7 rounded-2xl bg-[#0B0F19]/70 border border-white/[0.08] space-y-6">
         <div className="flex items-center justify-between pb-4 border-b border-white/[0.06]">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center">
@@ -86,7 +86,7 @@ export const TimestampExplorer: React.FC<TimestampExplorerProps> = ({
         {/* 3 Chronological Blocks in Timeline */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Block #100 */}
-          <div className="p-4 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.05] space-y-3 opacity-75">
+          <div className="p-4 rounded-xl bg-black/40 border border-white/[0.05] space-y-3 opacity-75">
             <div className="flex items-center justify-between text-xs font-mono">
               <span className="font-semibold text-slate-300">Block #100</span>
               <span className="text-slate-500 font-sans text-[11px]">{isVi ? 'Đã xác thực' : 'Validated'}</span>
@@ -104,7 +104,7 @@ export const TimestampExplorer: React.FC<TimestampExplorerProps> = ({
           </div>
 
           {/* Block #101 */}
-          <div className="p-4 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.05] space-y-3 opacity-90">
+          <div className="p-4 rounded-xl bg-black/40 border border-white/[0.05] space-y-3 opacity-90">
             <div className="flex items-center justify-between text-xs font-mono">
               <span className="font-semibold text-slate-300">Block #101</span>
               <span className="text-slate-500 font-sans text-[11px]">{isVi ? 'Đã xác thực' : 'Validated'}</span>
@@ -125,8 +125,8 @@ export const TimestampExplorer: React.FC<TimestampExplorerProps> = ({
           <div
             className={`p-4 rounded-xl border transition-all space-y-3 ${
               isTimeChanged
-                ? 'bg-gradient-to-b from-cyan-500/10 to-blue-500/10 border-cyan-500/40 shadow-[0_0_20px_rgba(0,210,255,0.15)]'
-                : 'bg-black/40 backdrop-blur-md border-cyan-500/30 shadow-[0_0_15px_rgba(0,210,255,0.08)]'
+                ? 'bg-gradient-to-b from-cyan-500/10 to-blue-500/10 border-cyan-500/40'
+                : 'bg-black/40 border-cyan-500/30'
             }`}
           >
             <div className="flex items-center justify-between text-xs font-mono">
@@ -160,7 +160,7 @@ export const TimestampExplorer: React.FC<TimestampExplorerProps> = ({
         </div>
 
         {/* Interactive Timestamp Modifier Controls */}
-        <div className="p-5 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.05] space-y-4">
+        <div className="p-5 rounded-xl bg-black/40 border border-white/[0.05] space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
               <h5 className="text-sm font-semibold text-slate-100 font-sans">
@@ -237,7 +237,7 @@ export const TimestampExplorer: React.FC<TimestampExplorerProps> = ({
             type="button"
             id="btn-next-stage-from-timestamp"
             onClick={onNextStage}
-            className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-xs flex items-center gap-1.5 cursor-pointer shadow-[0_0_15px_rgba(0,210,255,0.3)] font-sans transition-all"
+            className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-xs flex items-center gap-1.5 cursor-pointer font-sans transition-all"
           >
             <span>{isVi ? 'Tiếp: Merkle Root' : 'Next: Merkle Root'}</span>
             <ArrowRight className="w-3.5 h-3.5" />

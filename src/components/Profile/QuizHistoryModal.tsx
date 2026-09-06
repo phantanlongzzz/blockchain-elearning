@@ -25,12 +25,12 @@ export const QuizHistoryModal: React.FC = () => {
   return (
     <div
       id="quiz-history-modal-overlay"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#090A0F]/85 backdrop-blur-sm animate-fade-in font-sans"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#090A0F]/85 animate-fade-in font-sans"
       onClick={() => setQuizHistoryModalOpen(false)}
     >
       <div
         id="quiz-history-modal-container"
-        className="relative w-full max-w-2xl bg-[#0C0F14] border border-[#1C2430] rounded-2xl shadow-2xl overflow-hidden p-6 sm:p-8 max-h-[85vh] flex flex-col"
+        className="relative w-full max-w-2xl bg-[#0C0F14] border border-[#1C2430] rounded-2xl overflow-hidden p-6 sm:p-8 max-h-[85vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}

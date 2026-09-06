@@ -320,7 +320,7 @@ export const BlockchainVisualizer: React.FC = () => {
         <div className="flex items-center gap-2">
           {isChainValid ? (
             <span className="inline-flex items-center gap-1.5 text-xs font-sans text-slate-300 tracking-normal">
-              <span className="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(0,210,255,0.8)]" />
+              <span className="w-2 h-2 rounded-full bg-cyan-400" />
               <span>
                 {isVi
                   ? `Chuỗi ${blocks.length} khối · Liên kết mã băm SHA-256 toàn vẹn`
@@ -329,7 +329,7 @@ export const BlockchainVisualizer: React.FC = () => {
             </span>
           ) : (
             <span className="inline-flex items-center gap-1.5 text-xs font-sans text-rose-400 font-semibold tracking-normal">
-              <span className="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)] animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-rose-500" />
               <span>
                 {isVi
                   ? 'Phát hiện sai lệch băm · Liên kết chuỗi bị đứt gãy'
@@ -426,8 +426,8 @@ export const BlockchainVisualizer: React.FC = () => {
                     className={`p-3.5 rounded-xl border transition-all duration-200 flex flex-col justify-between flex-1 relative font-sans ${
                       isInvalid
                         ? isCascading
-                          ? 'border-rose-500 bg-rose-950/20 shadow-[0_0_20px_rgba(244,63,94,0.3)]'
-                          : 'border-rose-500/60 bg-rose-950/10 shadow-[0_0_15px_rgba(244,63,94,0.2)]'
+                          ? 'border-rose-500 bg-rose-950/20'
+                          : 'border-rose-500/60 bg-rose-950/10'
                         : 'border-cyan-500/30 bg-[#0B101E]/80 hover:border-cyan-500/50 shadow-sm'
                     }`}
                   >
@@ -707,8 +707,8 @@ export const BlockchainVisualizer: React.FC = () => {
           3. ADD BLOCK MODAL (MINIMAL & STREAMLINED)
           ======================================================== */}
       {isAddBlockModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm font-sans">
-          <div className="relative w-full max-w-md bg-[#0B101E] border border-white/[0.12] rounded-xl p-5 shadow-2xl text-xs space-y-4 text-slate-200 animate-in fade-in duration-150">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 font-sans">
+          <div className="relative w-full max-w-md bg-[#0B101E] border border-white/[0.12] rounded-xl p-5 text-xs space-y-4 text-slate-200 animate-in fade-in duration-150">
             <div className="flex items-center justify-between pb-2 border-b border-white/[0.08]">
               <h3 className="text-sm font-semibold text-slate-100 font-sans tracking-normal">
                 {isVi ? `Thêm Khối #${blocks.length}` : `Append Block #${blocks.length}`}

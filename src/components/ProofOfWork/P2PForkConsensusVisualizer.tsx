@@ -172,7 +172,7 @@ export const P2PForkConsensusVisualizer: React.FC<P2PForkConsensusVisualizerProp
         
         <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 px-1 gap-2">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(0,210,255,0.6)] animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-cyan-400" />
             <h3 className="text-xs sm:text-sm font-display font-bold text-slate-300 tracking-wider">
               {isVi ? 'Mạng Lưới P2P (Chuỗi Tuyến Tính)' : 'P2P Network (Linear Chain)'}
             </h3>
@@ -195,7 +195,7 @@ export const P2PForkConsensusVisualizer: React.FC<P2PForkConsensusVisualizerProp
         </div>
 
         {/* Tree Container */}
-        <div className="relative min-h-[340px] flex items-center bg-[#070A12]/90 rounded-xl border border-white/[0.08] p-6 overflow-hidden backdrop-blur-md">
+        <div className="relative min-h-[340px] flex items-center bg-[#070A12]/90 rounded-xl border border-white/[0.08] p-6 overflow-hidden">
           {/* Subtle Grid Background */}
           <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
           
@@ -217,8 +217,8 @@ export const P2PForkConsensusVisualizer: React.FC<P2PForkConsensusVisualizerProp
                     {/* Blockchain Connection Line (Data Pipeline) */}
                     {idx < trunk.length - 1 && (
                       <div className="absolute left-[100%] top-1/2 -translate-y-1/2 w-10 flex items-center z-0">
-                        <div className="h-[2px] w-full bg-gradient-to-r from-cyan-500/30 via-cyan-400 to-cyan-500/30 shadow-[0_0_8px_rgba(0,210,255,0.35)] relative">
-                          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 border-t-2 border-r-2 border-cyan-400 rotate-45 shadow-[0_0_6px_rgba(0,210,255,0.5)]" />
+                        <div className="h-[2px] w-full bg-gradient-to-r from-cyan-500/30 via-cyan-400 to-cyan-500/30 relative">
+                          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 border-t-2 border-r-2 border-cyan-400 rotate-45" />
                         </div>
                       </div>
                     )}
@@ -226,10 +226,10 @@ export const P2PForkConsensusVisualizer: React.FC<P2PForkConsensusVisualizerProp
                     {/* Block Card */}
                     <div
                       onClick={() => handleBlockClick(blk)}
-                      className={`relative z-10 w-36 bg-[#0B101E]/75 backdrop-blur-md border rounded-xl p-3 transition-all duration-200 cursor-pointer select-none ${
+                      className={`relative z-10 w-36 bg-[#0B101E]/75 border rounded-xl p-3 transition-all duration-200 cursor-pointer select-none ${
                         isLatestTip 
-                          ? 'border-cyan-400/60 shadow-[0_0_15px_rgba(0,210,255,0.25)] ring-1 ring-cyan-400/30' 
-                          : 'border-white/[0.08] hover:border-cyan-500/40 hover:shadow-[0_0_10px_rgba(0,210,255,0.15)]'
+                          ? 'border-cyan-400/60 ring-1 ring-cyan-400/30' 
+                          : 'border-white/[0.08] hover:border-cyan-500/40 hover:'
                       }`}
                     >
                       {/* Top Bar: Status Dot & Short Hash */}
@@ -238,9 +238,9 @@ export const P2PForkConsensusVisualizer: React.FC<P2PForkConsensusVisualizerProp
                           <div 
                             className={`w-2 h-2 rounded-full shrink-0 ${
                               isAttacker 
-                                ? 'bg-rose-500 shadow-[0_0_6px_rgba(244,63,94,0.6)]' 
-                                : 'bg-cyan-400 shadow-[0_0_6px_rgba(0,210,255,0.6)]'
-                            } ${isLatestTip ? 'animate-pulse' : ''}`} 
+                                ? 'bg-rose-500' 
+                                : 'bg-cyan-400'
+                            } ${isLatestTip ? '' : ''}`} 
                           />
                           <span className="font-mono text-[11px] text-slate-300 truncate">
                             {shortHash}...
@@ -256,18 +256,18 @@ export const P2PForkConsensusVisualizer: React.FC<P2PForkConsensusVisualizerProp
                       {/* Center Box Icon */}
                       <div className="flex justify-center mb-2.5">
                         {isGenesis ? (
-                          <div className="w-10 h-10 rounded-lg bg-success/10 flex items-center justify-center border border-success/30 text-success shadow-[0_0_10px_rgba(16,185,129,0.2)]">
+                          <div className="w-10 h-10 rounded-lg bg-success/10 flex items-center justify-center border border-success/30 text-success">
                             <span className="text-lg">🌱</span>
                           </div>
                         ) : (
                           <div 
                             className={`w-10 h-10 rounded-lg flex items-center justify-center border transition-all ${
                               isLatestTip
-                                ? 'bg-cyan-500/15 border-cyan-400/40 text-cyan-300 shadow-[0_0_12px_rgba(0,210,255,0.3)]'
+                                ? 'bg-cyan-500/15 border-cyan-400/40 text-cyan-300'
                                 : 'bg-white/[0.04] border-white/[0.08] text-slate-400 group-hover:text-cyan-400 group-hover:border-cyan-500/30'
                             }`}
                           >
-                            <Box size={20} className={isLatestTip ? 'animate-pulse' : ''} />
+                            <Box size={20} className={isLatestTip ? '' : ''} />
                           </div>
                         )}
                       </div>

@@ -125,7 +125,7 @@ export const DataStructuresFoundations: React.FC = () => {
       </div>
 
       {/* Modern Compact Stepper 6 Steps */}
-      <div className="bg-[#0B0F19]/70 backdrop-blur-xl p-1.5 rounded-2xl border border-white/[0.08] shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
+      <div className="bg-[#0B0F19]/70 p-1.5 rounded-2xl border border-white/[0.08]">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-1.5">
           {STAGES.map((stage) => {
             const isActive = activeStage === stage.id;
@@ -138,7 +138,7 @@ export const DataStructuresFoundations: React.FC = () => {
                 onClick={() => handleStageChange(stage.id)}
                 className={`px-3 py-2.5 rounded-xl text-left transition-all duration-200 cursor-pointer flex items-center justify-between gap-2 ${
                   isActive
-                    ? 'bg-gradient-to-r from-cyan-500/20 via-[#0B1220]/90 to-[#080D1A]/95 text-white border border-cyan-500/40 shadow-[0_0_20px_rgba(0,210,255,0.2)] ring-1 ring-cyan-500/30'
+                    ? 'bg-gradient-to-r from-cyan-500/20 via-[#0B1220]/90 to-[#080D1A]/95 text-white border border-cyan-500/40 ring-1 ring-cyan-500/30'
                     : 'bg-[#0B101E]/50 text-slate-400 hover:text-slate-200 hover:bg-white/[0.04] border border-white/[0.06] hover:border-white/[0.15]'
                 }`}
               >
@@ -163,7 +163,7 @@ export const DataStructuresFoundations: React.FC = () => {
                   <Check className="w-3 h-3 text-slate-500 shrink-0" />
                 )}
                 {isActive && (
-                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shrink-0 shadow-[0_0_8px_rgba(0,210,255,0.8)]"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shrink-0"></span>
                 )}
               </button>
             );

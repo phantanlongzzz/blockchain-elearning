@@ -104,7 +104,7 @@ export const TransactionLifecycleLab: React.FC = () => {
       </div>
 
       {/* Main Stage Content */}
-      <div className="bg-[#0A0D11] rounded-3xl border border-slate-800/80 p-4 sm:p-6 min-h-[600px] shadow-2xl relative overflow-hidden">
+      <div className="bg-[#0A0D11] rounded-3xl border border-slate-800/80 p-4 sm:p-6 min-h-[600px] relative overflow-hidden">
         {activeStage === 1 && (
           <Stage1Wallet
             utxos={utxos}

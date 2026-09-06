@@ -140,7 +140,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const displayName = user?.name || (isVi ? 'Phan Tấn Long' : 'Phan Tan Long');
 
   return (
-    <header className="sticky top-0 z-50 bg-[#070B14]/75 backdrop-blur-xl border-b border-white/[0.08] font-sans">
+    <header className="sticky top-0 z-50 bg-[#070B14]/75 border-b border-white/[0.08] font-sans">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14 sm:h-16" ref={navRef}>
           {/* Left: Brand Logo & Institution / Faculty Title */}
@@ -185,7 +185,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     onClick={() => navigateTo(module.id, module.lessons[0].id)}
                     className={`px-3 py-2 rounded-md transition-all whitespace-nowrap cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/20 relative ${
                       isActiveModule
-                        ? "text-cyan-400 font-semibold after:content-[''] after:absolute after:-bottom-4 after:left-0 after:w-full after:h-[2px] after:bg-gradient-to-r after:from-cyan-400 after:to-blue-500 after:shadow-[0_0_8px_rgba(0,210,255,0.8)]"
+                        ? "text-cyan-400 font-semibold after:content-[''] after:absolute after:-bottom-4 after:left-0 after:w-full after:h-[2px] after:bg-gradient-to-r after:from-cyan-400 after:to-blue-500 after:"
                         : "text-slate-400 hover:text-white hover:bg-white/[0.04]"
                     }`}
                   >
@@ -207,7 +207,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     aria-expanded={isDropdownOpen}
                     className={`flex items-center gap-1.5 px-3 py-2 rounded-md transition-all whitespace-nowrap cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/20 relative ${
                       isActiveModule
-                        ? "text-cyan-400 font-semibold after:content-[''] after:absolute after:-bottom-4 after:left-0 after:w-full after:h-[2px] after:bg-gradient-to-r after:from-cyan-400 after:to-blue-500 after:shadow-[0_0_8px_rgba(0,210,255,0.8)]"
+                        ? "text-cyan-400 font-semibold after:content-[''] after:absolute after:-bottom-4 after:left-0 after:w-full after:h-[2px] after:bg-gradient-to-r after:from-cyan-400 after:to-blue-500 after:"
                         : "text-slate-400 hover:text-white hover:bg-white/[0.04]"
                     }`}
                   >
@@ -222,7 +222,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   {/* Dropdown Menu */}
                   {isDropdownOpen && (
                     <div
-                      className="absolute top-full left-0 mt-1 w-56 sm:w-60 bg-[#070B14]/90 backdrop-blur-xl border border-white/[0.08] rounded-xl shadow-[0_16px_40px_rgba(0,0,0,0.6)] p-1 z-50 animate-in fade-in slide-in-from-top-1 duration-150 font-sans"
+                      className="absolute top-full left-0 mt-1 w-56 sm:w-60 bg-[#070B14]/90 border border-white/[0.08] rounded-xl p-1 z-50 animate-in fade-in slide-in-from-top-1 duration-150 font-sans"
                       role="menu"
                       aria-label={isVi ? module.titleVi : module.titleEn}
                     >
@@ -331,7 +331,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               {/* Deep Dark Glassmorphism Profile Dropdown */}
               {userDropdownOpen && (
                 <div
-                  className="absolute right-0 top-full mt-1.5 min-w-[240px] bg-[#0B0F19]/85 backdrop-blur-xl border border-white/[0.08] shadow-[0_16px_40px_rgba(0,0,0,0.6)] rounded-xl p-2 z-50 font-sans text-xs animate-in fade-in slide-in-from-top-1 duration-150"
+                  className="absolute right-0 top-full mt-1.5 min-w-[240px] bg-[#0B0F19]/85 border border-white/[0.08] rounded-xl p-2 z-50 font-sans text-xs animate-in fade-in slide-in-from-top-1 duration-150"
                   role="menu"
                   aria-label="User menu"
                 >
@@ -584,7 +584,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           })}
 
           {/* Mobile Language Switcher */}
-          <div className="rounded-xl border border-white/[0.08] bg-[#0B0F19]/85 backdrop-blur-xl p-3 mt-2">
+          <div className="rounded-xl border border-white/[0.08] bg-[#0B0F19]/85 p-3 mt-2">
             <div className="flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-wider text-slate-400 mb-2">
               <Languages className="w-3.5 h-3.5" />
               <span>{isVi ? 'Ngôn ngữ' : 'Language'}</span>
@@ -616,7 +616,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           {/* Mobile Cursor Toggle */}
-          <div className="rounded-xl border border-white/[0.08] bg-[#0B0F19]/85 backdrop-blur-xl p-3">
+          <div className="rounded-xl border border-white/[0.08] bg-[#0B0F19]/85 p-3">
             <div className="text-[11px] font-mono uppercase tracking-wider text-slate-400 mb-2">
               {isVi ? 'Cài đặt giao diện' : 'Interface'}
             </div>
@@ -624,7 +624,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           {/* Mobile GitHub Link */}
-          <div className="rounded-xl border border-white/[0.08] bg-[#0B0F19]/85 backdrop-blur-xl overflow-hidden">
+          <div className="rounded-xl border border-white/[0.08] bg-[#0B0F19]/85 overflow-hidden">
             <a
               href="https://github.com/phantanlongzzz/blockchain-elearning"
               target="_blank"

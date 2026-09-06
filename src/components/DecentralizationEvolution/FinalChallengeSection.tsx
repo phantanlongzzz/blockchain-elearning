@@ -95,7 +95,7 @@ export const FinalChallengeSection: React.FC<FinalChallengeSectionProps> = ({
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="p-6 rounded-2xl bg-gradient-to-b from-[#131d16] to-[#080c16] border border-border-primary shadow-2xl">
+      <div className="p-6 rounded-2xl bg-gradient-to-b from-[#131d16] to-[#080c16] border border-border-primary">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-1.5">
             <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-white/[0.04] border border-border-primary text-text-primary text-xs font-mono font-bold uppercase">
@@ -129,7 +129,7 @@ export const FinalChallengeSection: React.FC<FinalChallengeSectionProps> = ({
 
       {/* Interactive Drag/Click Ordering Board */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <div className="lg:col-span-8 p-6 rounded-2xl bg-[#090d16] border border-slate-800 shadow-xl space-y-6">
+        <div className="lg:col-span-8 p-6 rounded-2xl bg-[#090d16] border border-slate-800 space-y-6">
           {/* Target Sequence Box */}
           <div className="space-y-3">
             <div className="flex items-center justify-between">
@@ -221,7 +221,7 @@ export const FinalChallengeSection: React.FC<FinalChallengeSectionProps> = ({
         </div>
 
         {/* Right Column: Educational Takeaways & Summary */}
-        <div className="lg:col-span-4 p-6 rounded-2xl bg-[#090d16] border border-slate-800 shadow-xl flex flex-col justify-between space-y-5">
+        <div className="lg:col-span-4 p-6 rounded-2xl bg-[#090d16] border border-slate-800 flex flex-col justify-between space-y-5">
           <div className="space-y-4">
             <div className="flex items-center gap-2 text-xs font-mono font-bold text-text-primary uppercase">
               <Sparkles className="w-4 h-4" />

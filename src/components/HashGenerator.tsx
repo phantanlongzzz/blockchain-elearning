@@ -99,7 +99,7 @@ export const HashGenerator: React.FC = () => {
         {/* Generator Main Container */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start font-sans">
           {/* Left / Top: Input Panel */}
-          <div className="lg:col-span-12 rounded-xl bg-[#0B101E]/80 backdrop-blur-md border border-white/[0.08] p-5 sm:p-7 shadow-lg">
+          <div className="lg:col-span-12 rounded-xl bg-[#0B101E]/80 border border-white/[0.08] p-5 sm:p-7 shadow-lg">
             {/* Input Header & Mode Switcher */}
             <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/[0.08] pb-4 mb-5">
               <div className="flex items-center gap-2">
@@ -149,7 +149,7 @@ export const HashGenerator: React.FC = () => {
             {/* Input Content Area */}
             {inputMode === 'text' || inputMode === 'hex' ? (
               <div>
-                <div className="bg-[#0A0E1A]/80 backdrop-blur-md border border-white/[0.08] focus-within:border-cyan-500/40 rounded-xl p-4 shadow-inner transition-colors">
+                <div className="bg-[#0A0E1A]/80 border border-white/[0.08] focus-within:border-cyan-500/40 rounded-xl p-4 shadow-inner transition-colors">
                   <textarea
                     id="sha256-input-textarea"
                     rows={4}
@@ -195,7 +195,7 @@ export const HashGenerator: React.FC = () => {
               <div
                 onDragOver={(e) => e.preventDefault()}
                 onDrop={handleDrop}
-                className="border-2 border-dashed border-white/[0.12] hover:border-cyan-500/50 rounded-xl p-8 text-center bg-[#0A0E1A]/80 backdrop-blur-md transition-all cursor-pointer group"
+                className="border-2 border-dashed border-white/[0.12] hover:border-cyan-500/50 rounded-xl p-8 text-center bg-[#0A0E1A]/80 transition-all cursor-pointer group"
                 onClick={() => document.getElementById('file-upload-hidden-input')?.click()}
               >
                 <input
@@ -245,7 +245,7 @@ export const HashGenerator: React.FC = () => {
                       }}
                       className={`px-3 py-1.5 rounded-lg font-sans text-xs font-medium transition-all border text-center cursor-pointer ${
                         isSelected
-                          ? 'bg-cyan-500/15 text-cyan-300 border-cyan-500/35 shadow-[0_0_8px_rgba(0,210,255,0.15)] font-semibold'
+                          ? 'bg-cyan-500/15 text-cyan-300 border-cyan-500/35 font-semibold'
                           : 'bg-[#0A0E1A]/60 text-slate-400 hover:text-slate-200 hover:bg-white/[0.04] border-white/[0.08]'
                       }`}
                       title={vec.description}
@@ -259,7 +259,7 @@ export const HashGenerator: React.FC = () => {
           </div>
 
           {/* Bottom Output Panel: 64 Hex Character Digest */}
-          <div className="lg:col-span-12 rounded-xl bg-[#0B101E]/80 backdrop-blur-md border border-white/[0.08] p-5 sm:p-7 shadow-lg relative font-sans">
+          <div className="lg:col-span-12 rounded-xl bg-[#0B101E]/80 border border-white/[0.08] p-5 sm:p-7 shadow-lg relative font-sans">
             <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/[0.08] pb-4 mb-5">
               <div>
                 <div className="flex items-center gap-2">
@@ -291,7 +291,7 @@ export const HashGenerator: React.FC = () => {
             </div>
 
             {/* Digest Output String Box */}
-            <div className="p-4 rounded-lg bg-[#0A0E1A]/80 backdrop-blur-md border border-white/[0.08] mb-6 group relative">
+            <div className="p-4 rounded-lg bg-[#0A0E1A]/80 border border-white/[0.08] mb-6 group relative">
               <p
                 id="sha256-output-hex"
                 className="font-mono text-base sm:text-xl lg:text-2xl font-bold tracking-[0.05em] tabular-nums text-cyan-300 break-all select-all leading-relaxed"

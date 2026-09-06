@@ -114,7 +114,7 @@ export const DoubleSpendingLab: React.FC<DoubleSpendingLabProps> = ({
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="p-6 rounded-2xl bg-[#0B0E12] border border-rose-500/20 shadow-2xl">
+      <div className="p-6 rounded-2xl bg-[#0B0E12] border border-rose-500/20">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-1.5">
             <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs font-mono font-bold uppercase">
@@ -182,7 +182,7 @@ export const DoubleSpendingLab: React.FC<DoubleSpendingLabProps> = ({
       {/* Main Simulation Workspace */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: Alice's Double Attack Dashboard */}
-        <div className="lg:col-span-7 p-6 rounded-2xl bg-[#090d16] border border-slate-800 shadow-xl space-y-5">
+        <div className="lg:col-span-7 p-6 rounded-2xl bg-[#090d16] border border-slate-800 space-y-5">
           {/* Alice's Initial Balance */}
           <div className="p-4 rounded-xl bg-[#05070c] border border-slate-800 flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -330,7 +330,7 @@ export const DoubleSpendingLab: React.FC<DoubleSpendingLabProps> = ({
         </div>
 
         {/* Right Column: Problem Analysis & "Try to Solve" Discovery */}
-        <div className="lg:col-span-5 p-6 rounded-2xl bg-[#090d16] border border-slate-800 shadow-xl flex flex-col justify-between space-y-5">
+        <div className="lg:col-span-5 p-6 rounded-2xl bg-[#090d16] border border-slate-800 flex flex-col justify-between space-y-5">
           <div className="space-y-4">
             <div className="flex items-center gap-2 text-xs font-mono font-bold text-text-primary uppercase">
               <Sparkles className="w-4 h-4" />

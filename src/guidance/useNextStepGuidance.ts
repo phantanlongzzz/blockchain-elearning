@@ -99,7 +99,7 @@ export function useNextStepGuidance(options: UseNextStepGuidanceOptions = {}) {
         return 'ring-2 ring-amber-400 bg-amber-500/20 text-amber-200 border-amber-400/80';
       }
 
-      return 'guidance-amber-pulse ring-2 ring-amber-400/80 shadow-[0_0_20px_rgba(245,158,11,0.28)] border-amber-400';
+      return 'guidance-amber-pulse ring-2 ring-amber-400/80 border-amber-400';
     },
     [stepState, isReducedMotion]
   );

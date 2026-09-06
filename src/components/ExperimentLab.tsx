@@ -332,7 +332,7 @@ export const ExperimentLab: React.FC = () => {
         </div>
 
         {/* Main Content Area: 100% Unified Surface Card */}
-        <div className="rounded-2xl bg-[#0C0F14] border border-[#1C2430] p-6 sm:p-8 shadow-xl space-y-6 font-sans">
+        <div className="rounded-2xl bg-[#0C0F14] border border-[#1C2430] p-6 sm:p-8 space-y-6 font-sans">
           {/* ========================================================= */}
           {/* 1. TÍNH XÁC ĐỊNH (Determinism & Multi-Format Encodings)    */}
           {/* ========================================================= */}

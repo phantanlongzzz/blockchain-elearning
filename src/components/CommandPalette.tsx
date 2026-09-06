@@ -396,14 +396,14 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
       role="dialog"
       aria-modal="true"
       aria-label={isVi ? 'Bảng lệnh điều hướng' : 'Command Palette'}
-      className="fixed inset-0 z-[100] flex items-start justify-center pt-16 sm:pt-24 px-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-150 font-sans"
+      className="fixed inset-0 z-[100] flex items-start justify-center pt-16 sm:pt-24 px-4 bg-black/60 animate-in fade-in duration-150 font-sans"
       onClick={onClose}
     >
       <div
         ref={modalRef}
         onKeyDown={handleDialogKeyDown}
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-[680px] max-w-[calc(100vw-32px)] bg-[#0C0F14] border border-[#1C2430] rounded-xl shadow-2xl overflow-hidden text-[#F2F4F7] flex flex-col max-h-[70vh] animate-palette-in"
+        className="w-full max-w-[680px] max-w-[calc(100vw-32px)] bg-[#0C0F14] border border-[#1C2430] rounded-xl overflow-hidden text-[#F2F4F7] flex flex-col max-h-[70vh] animate-palette-in"
       >
         {/* Search Input Bar & Close Button */}
         <div className="flex items-center px-4 py-3.5 border-b border-[#1C2430] bg-[#090A0F] gap-3 shrink-0">

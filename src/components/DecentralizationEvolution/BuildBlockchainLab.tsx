@@ -207,7 +207,7 @@ export const BuildBlockchainLab: React.FC<BuildBlockchainLabProps> = ({
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="p-6 rounded-2xl bg-gradient-to-b from-[#0e1d1f] to-[#080c16] border border-border-primary shadow-2xl">
+      <div className="p-6 rounded-2xl bg-gradient-to-b from-[#0e1d1f] to-[#080c16] border border-border-primary">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-1.5">
             <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-white/[0.04] border border-border-primary text-text-primary text-xs font-mono font-bold uppercase">
@@ -254,7 +254,7 @@ export const BuildBlockchainLab: React.FC<BuildBlockchainLabProps> = ({
           <div
             className={`p-3 rounded-xl border flex items-center justify-between gap-3 text-xs font-mono ${
               isChainTampered
-                ? 'bg-rose-950/40 border-rose-500 text-rose-300 animate-pulse'
+                ? 'bg-rose-950/40 border-rose-500 text-rose-300'
                 : 'bg-[#0e1422] border-border-secondary text-text-secondary'
             }`}
           >
@@ -286,7 +286,7 @@ export const BuildBlockchainLab: React.FC<BuildBlockchainLabProps> = ({
             className={`p-4 rounded-2xl border transition-all duration-300 flex flex-col justify-between space-y-4 ${
               block.isValid
                 ? 'bg-[#090d16] border-slate-800 shadow-lg'
-                : 'bg-rose-950/20 border-rose-500 ring-2 ring-rose-500/20 shadow-xl shadow-rose-950/40'
+                : 'bg-rose-950/20 border-rose-500 ring-2 ring-rose-500/20 shadow-rose-950/40'
             }`}
           >
             <div className="space-y-3">
@@ -393,7 +393,7 @@ export const BuildBlockchainLab: React.FC<BuildBlockchainLabProps> = ({
       </div>
 
       {/* 4 Types of Blockchain Section */}
-      <div className="p-6 rounded-2xl bg-[#090d16] border border-slate-800 shadow-xl space-y-5">
+      <div className="p-6 rounded-2xl bg-[#090d16] border border-slate-800 space-y-5">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800">
           <div>
             <div className="text-xs font-mono font-bold text-text-secondary uppercase flex items-center gap-1.5">

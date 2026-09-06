@@ -156,7 +156,7 @@ export const BlockArchitectureLab: React.FC = () => {
       className="space-y-8 scroll-mt-24 font-sans"
     >
       {/* Module Title Banner */}
-      <div className="p-6 sm:p-8 rounded-2xl bg-[#0B0F19]/70 backdrop-blur-xl border border-white/[0.08] shadow-[0_16px_40px_rgba(0,0,0,0.6)] relative overflow-hidden">
+      <div className="p-6 sm:p-8 rounded-2xl bg-[#0B0F19]/70 border border-white/[0.08] relative overflow-hidden">
         {/* Ambient Glow */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/[0.05] rounded-full blur-[120px] pointer-events-none -mr-20 -mt-20" />
         <div className="space-y-6 relative z-10">
@@ -180,14 +180,14 @@ export const BlockArchitectureLab: React.FC = () => {
 
             {/* Mode Switcher */}
             <div className="flex items-center gap-3 flex-wrap">
-              <div className="p-1 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.08] flex items-center">
+              <div className="p-1 rounded-xl bg-black/40 border border-white/[0.08] flex items-center">
                 <button
                   type="button"
                   id="btn-mode-guided"
                   onClick={() => setLabMode('guided')}
                   className={`px-3 py-1.5 rounded-lg text-xs font-sans font-medium transition-all cursor-pointer flex items-center gap-1.5 ${
                     labMode === 'guided'
-                      ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold shadow-[0_0_15px_rgba(0,210,255,0.3)]'
+                      ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold'
                       : 'text-slate-400 hover:text-white'
                   }`}
                 >
@@ -203,7 +203,7 @@ export const BlockArchitectureLab: React.FC = () => {
                   }}
                   className={`px-3 py-1.5 rounded-lg text-xs font-sans font-medium transition-all cursor-pointer flex items-center gap-1.5 ${
                     labMode === 'hands-on'
-                      ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold shadow-[0_0_15px_rgba(0,210,255,0.3)]'
+                      ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold'
                       : 'text-slate-400 hover:text-white'
                   }`}
                 >
@@ -227,7 +227,7 @@ export const BlockArchitectureLab: React.FC = () => {
             </div>
             <div className="w-full h-1.5 rounded-full bg-black/50 overflow-hidden border border-white/[0.06]">
               <div
-                className="h-full bg-gradient-to-r from-cyan-500 to-blue-500 shadow-[0_0_10px_rgba(0,210,255,0.6)] transition-all duration-500"
+                className="h-full bg-gradient-to-r from-cyan-500 to-blue-500 transition-all duration-500"
                 style={{ width: `${progressPercent}%` }}
               />
             </div>
@@ -248,7 +248,7 @@ export const BlockArchitectureLab: React.FC = () => {
           <div
             role="tablist"
             aria-label={isVi ? 'Danh sách giai đoạn bài học cấu trúc khối' : 'Block architecture lesson stages'}
-            className="flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth p-1.5 bg-[#0B0F19]/70 backdrop-blur-xl border border-white/[0.08] rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.6)]"
+            className="flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth p-1.5 bg-[#0B0F19]/70 border border-white/[0.08] rounded-2xl"
           >
             {STAGES.map((stage) => {
               const Icon = stage.icon;
@@ -266,14 +266,14 @@ export const BlockArchitectureLab: React.FC = () => {
                   onClick={() => handleStageChange(stage.id)}
                   className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-sans transition-all shrink-0 cursor-pointer ${
                     isActive
-                      ? 'bg-gradient-to-r from-cyan-500/20 via-[#0B1220]/90 to-[#080D1A]/95 text-white border border-cyan-500/40 shadow-[0_0_15px_rgba(0,210,255,0.2)] font-semibold'
+                      ? 'bg-gradient-to-r from-cyan-500/20 via-[#0B1220]/90 to-[#080D1A]/95 text-white border border-cyan-500/40 font-semibold'
                       : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04] border border-transparent'
                   }`}
                 >
                   <span
                     className={`w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold font-mono ${
                       isActive
-                        ? 'bg-cyan-500 text-slate-950 shadow-[0_0_8px_rgba(0,210,255,0.8)]'
+                        ? 'bg-cyan-500 text-slate-950'
                         : isDone
                         ? 'bg-white/[0.08] text-slate-300'
                         : 'bg-white/[0.04] text-slate-500'

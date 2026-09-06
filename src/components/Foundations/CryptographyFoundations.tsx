@@ -57,7 +57,7 @@ export const CryptographyFoundations: React.FC<CryptographyFoundationsProps> = (
   return (
     <div className="space-y-6 animate-in fade-in duration-200">
       {/* Header */}
-      <div className="p-5 rounded-2xl bg-[#0B101E]/60 backdrop-blur-md border border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-[0_4px_20px_rgba(0,0,0,0.3)]">
+      <div className="p-5 rounded-2xl bg-[#0B101E]/60 border border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="space-y-1">
           <div className="text-xs font-mono text-cyan-400 uppercase tracking-wider mb-1">
             {language === 'vi'
@@ -96,11 +96,11 @@ export const CryptographyFoundations: React.FC<CryptographyFoundationsProps> = (
           }}
           className={`text-left transition-all cursor-pointer flex items-center gap-3 ${
             activeTab === 0
-              ? 'bg-gradient-to-b from-cyan-500/15 via-[#0B1220]/80 to-[#080D1A]/90 backdrop-blur-md border border-cyan-500/40 shadow-[0_0_20px_rgba(0,210,255,0.15)] rounded-xl p-3.5'
-              : 'bg-[#0B101E]/50 backdrop-blur-sm border border-white/[0.06] hover:border-white/[0.15] hover:bg-white/[0.03] rounded-xl p-3.5 text-slate-400 hover:text-slate-200'
+              ? 'bg-gradient-to-b from-cyan-500/15 via-[#0B1220]/80 to-[#080D1A]/90 border border-cyan-500/40 rounded-xl p-3.5'
+              : 'bg-[#0B101E]/50 border border-white/[0.06] hover:border-white/[0.15] hover:bg-white/[0.03] rounded-xl p-3.5 text-slate-400 hover:text-slate-200'
           }`}
         >
-          <Binary className={`w-4 h-4 shrink-0 ${activeTab === 0 ? 'text-cyan-400 shadow-[0_0_8px_rgba(0,210,255,0.8)]' : 'text-slate-400'}`} />
+          <Binary className={`w-4 h-4 shrink-0 ${activeTab === 0 ? 'text-cyan-400' : 'text-slate-400'}`} />
           <div>
             <div className={`text-xs font-sans font-semibold ${activeTab === 0 ? 'text-white' : 'text-slate-300'}`}>1. Hàm Băm & SHA-256</div>
             <div className={`text-[11px] font-sans truncate ${activeTab === 0 ? 'text-cyan-300/70' : 'text-slate-400'}`}>Dấu vân tay số 256-bit</div>
@@ -115,11 +115,11 @@ export const CryptographyFoundations: React.FC<CryptographyFoundationsProps> = (
           }}
           className={`text-left transition-all cursor-pointer flex items-center gap-3 ${
             activeTab === 1
-              ? 'bg-gradient-to-b from-cyan-500/15 via-[#0B1220]/80 to-[#080D1A]/90 backdrop-blur-md border border-cyan-500/40 shadow-[0_0_20px_rgba(0,210,255,0.15)] rounded-xl p-3.5'
-              : 'bg-[#0B101E]/50 backdrop-blur-sm border border-white/[0.06] hover:border-white/[0.15] hover:bg-white/[0.03] rounded-xl p-3.5 text-slate-400 hover:text-slate-200'
+              ? 'bg-gradient-to-b from-cyan-500/15 via-[#0B1220]/80 to-[#080D1A]/90 border border-cyan-500/40 rounded-xl p-3.5'
+              : 'bg-[#0B101E]/50 border border-white/[0.06] hover:border-white/[0.15] hover:bg-white/[0.03] rounded-xl p-3.5 text-slate-400 hover:text-slate-200'
           }`}
         >
-          <FileCheck2 className={`w-4 h-4 shrink-0 ${activeTab === 1 ? 'text-cyan-400 shadow-[0_0_8px_rgba(0,210,255,0.8)]' : 'text-slate-400'}`} />
+          <FileCheck2 className={`w-4 h-4 shrink-0 ${activeTab === 1 ? 'text-cyan-400' : 'text-slate-400'}`} />
           <div>
             <div className={`text-xs font-sans font-semibold ${activeTab === 1 ? 'text-white' : 'text-slate-300'}`}>2. Chữ Ký Số</div>
             <div className={`text-[11px] font-sans truncate ${activeTab === 1 ? 'text-cyan-300/70' : 'text-slate-400'}`}>Xác thực quyền sở hữu</div>
@@ -134,11 +134,11 @@ export const CryptographyFoundations: React.FC<CryptographyFoundationsProps> = (
           }}
           className={`text-left transition-all cursor-pointer flex items-center gap-3 ${
             activeTab === 2
-              ? 'bg-gradient-to-b from-cyan-500/15 via-[#0B1220]/80 to-[#080D1A]/90 backdrop-blur-md border border-cyan-500/40 shadow-[0_0_20px_rgba(0,210,255,0.15)] rounded-xl p-3.5'
-              : 'bg-[#0B101E]/50 backdrop-blur-sm border border-white/[0.06] hover:border-white/[0.15] hover:bg-white/[0.03] rounded-xl p-3.5 text-slate-400 hover:text-slate-200'
+              ? 'bg-gradient-to-b from-cyan-500/15 via-[#0B1220]/80 to-[#080D1A]/90 border border-cyan-500/40 rounded-xl p-3.5'
+              : 'bg-[#0B101E]/50 border border-white/[0.06] hover:border-white/[0.15] hover:bg-white/[0.03] rounded-xl p-3.5 text-slate-400 hover:text-slate-200'
           }`}
         >
-          <Key className={`w-4 h-4 shrink-0 ${activeTab === 2 ? 'text-cyan-400 shadow-[0_0_8px_rgba(0,210,255,0.8)]' : 'text-slate-400'}`} />
+          <Key className={`w-4 h-4 shrink-0 ${activeTab === 2 ? 'text-cyan-400' : 'text-slate-400'}`} />
           <div>
             <div className={`text-xs font-sans font-semibold ${activeTab === 2 ? 'text-white' : 'text-slate-300'}`}>3. Khóa Public & Private</div>
             <div className={`text-[11px] font-sans truncate ${activeTab === 2 ? 'text-cyan-300/70' : 'text-slate-400'}`}>Cặp khóa bất đối xứng</div>
@@ -153,11 +153,11 @@ export const CryptographyFoundations: React.FC<CryptographyFoundationsProps> = (
           }}
           className={`text-left transition-all cursor-pointer flex items-center gap-3 ${
             activeTab === 3
-              ? 'bg-gradient-to-b from-cyan-500/15 via-[#0B1220]/80 to-[#080D1A]/90 backdrop-blur-md border border-cyan-500/40 shadow-[0_0_20px_rgba(0,210,255,0.15)] rounded-xl p-3.5'
-              : 'bg-[#0B101E]/50 backdrop-blur-sm border border-white/[0.06] hover:border-white/[0.15] hover:bg-white/[0.03] rounded-xl p-3.5 text-slate-400 hover:text-slate-200'
+              ? 'bg-gradient-to-b from-cyan-500/15 via-[#0B1220]/80 to-[#080D1A]/90 border border-cyan-500/40 rounded-xl p-3.5'
+              : 'bg-[#0B101E]/50 border border-white/[0.06] hover:border-white/[0.15] hover:bg-white/[0.03] rounded-xl p-3.5 text-slate-400 hover:text-slate-200'
           }`}
         >
-          <Layers className={`w-4 h-4 shrink-0 ${activeTab === 3 ? 'text-cyan-400 shadow-[0_0_8px_rgba(0,210,255,0.8)]' : 'text-slate-400'}`} />
+          <Layers className={`w-4 h-4 shrink-0 ${activeTab === 3 ? 'text-cyan-400' : 'text-slate-400'}`} />
           <div>
             <div className={`text-xs font-sans font-semibold ${activeTab === 3 ? 'text-white' : 'text-slate-300'}`}>4. Sơ Đồ Cây Liên Kết</div>
             <div className={`text-[11px] font-sans truncate ${activeTab === 3 ? 'text-cyan-300/70' : 'text-slate-400'}`}>Ứng dụng vào Blockchain</div>
@@ -167,7 +167,7 @@ export const CryptographyFoundations: React.FC<CryptographyFoundationsProps> = (
 
       {/* Tab 0: Hash Function & SHA-256 + Live Avalanche Demo */}
       {activeTab === 0 && (
-        <div className="p-6 rounded-2xl bg-[#0B101E]/70 backdrop-blur-xl border border-white/[0.08] shadow-[0_12px_36px_rgba(0,0,0,0.5)] space-y-5">
+        <div className="p-6 rounded-2xl bg-[#0B101E]/70 border border-white/[0.08] space-y-5">
           <div>
             <h4 className="text-base font-sans font-bold text-white mb-1">
               {language === 'vi'
@@ -182,7 +182,7 @@ export const CryptographyFoundations: React.FC<CryptographyFoundationsProps> = (
           </div>
 
           {/* Frosted Glass Experiment Plate */}
-          <div className="bg-black/35 backdrop-blur-md border border-white/[0.06] rounded-xl p-5 relative">
+          <div className="bg-black/35 border border-white/[0.06] rounded-xl p-5 relative">
             <div className="flex items-center justify-between pb-3 mb-4 border-b border-white/[0.06]">
               <span className="text-xs font-mono font-semibold text-cyan-400 uppercase tracking-wider flex items-center gap-2">
                 <Cpu className="w-4 h-4 text-cyan-400" />
@@ -257,7 +257,7 @@ export const CryptographyFoundations: React.FC<CryptographyFoundationsProps> = (
 
       {/* Tab 1: Digital Signature */}
       {activeTab === 1 && (
-        <div className="p-6 rounded-2xl bg-[#0B101E]/70 backdrop-blur-xl border border-white/[0.08] shadow-[0_12px_36px_rgba(0,0,0,0.5)] space-y-5">
+        <div className="p-6 rounded-2xl bg-[#0B101E]/70 border border-white/[0.08] space-y-5">
           <div>
             <h4 className="text-base font-sans font-bold text-white mb-1">
               {language === 'vi' ? 'Chữ ký số (Digital Signature)' : 'Digital Signatures'}
@@ -270,7 +270,7 @@ export const CryptographyFoundations: React.FC<CryptographyFoundationsProps> = (
           </div>
 
           {/* Interactive Signature Workflow */}
-          <div className="bg-black/35 backdrop-blur-md border border-white/[0.06] rounded-xl p-5 relative space-y-4">
+          <div className="bg-black/35 border border-white/[0.06] rounded-xl p-5 relative space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-white/[0.06]">
               <span className="text-xs font-mono font-semibold text-cyan-400 uppercase tracking-wider flex items-center gap-2">
                 <Lock className="w-3.5 h-3.5 text-cyan-400" />
@@ -286,7 +286,7 @@ export const CryptographyFoundations: React.FC<CryptographyFoundationsProps> = (
                 onClick={() => setIsTamperingMessage(!isTamperingMessage)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-all cursor-pointer border ${
                   isTamperingMessage
-                    ? 'bg-rose-950/40 text-rose-300 border-rose-500/40 shadow-[0_0_12px_rgba(244,63,94,0.2)]'
+                    ? 'bg-rose-950/40 text-rose-300 border-rose-500/40'
                     : 'bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 border-white/[0.08] hover:border-cyan-500/30'
                 }`}
               >
@@ -364,7 +364,7 @@ export const CryptographyFoundations: React.FC<CryptographyFoundationsProps> = (
 
       {/* Tab 2: Public Key & Private Key */}
       {activeTab === 2 && (
-        <div className="p-6 rounded-2xl bg-[#0B101E]/70 backdrop-blur-xl border border-white/[0.08] shadow-[0_12px_36px_rgba(0,0,0,0.5)] space-y-5">
+        <div className="p-6 rounded-2xl bg-[#0B101E]/70 border border-white/[0.08] space-y-5">
           <div>
             <h4 className="text-base font-sans font-bold text-white mb-1">
               {language === 'vi'
@@ -435,7 +435,7 @@ export const CryptographyFoundations: React.FC<CryptographyFoundationsProps> = (
 
       {/* Tab 3: Concept Tree Map */}
       {activeTab === 3 && (
-        <div className="p-6 rounded-2xl bg-[#0B101E]/70 backdrop-blur-xl border border-white/[0.08] shadow-[0_12px_36px_rgba(0,0,0,0.5)] space-y-4">
+        <div className="p-6 rounded-2xl bg-[#0B101E]/70 border border-white/[0.08] space-y-4">
           <h4 className="text-base font-sans font-bold text-white mb-1">
             {language === 'vi'
               ? 'Sơ đồ cây: Mật mã học tạo nên Blockchain'
@@ -490,7 +490,7 @@ export const CryptographyFoundations: React.FC<CryptographyFoundationsProps> = (
         <button
           type="button"
           onClick={onNextStage}
-          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-xs font-sans font-medium text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 shadow-[0_0_15px_rgba(0,210,255,0.25)] transition-all cursor-pointer"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-xs font-sans font-medium text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 transition-all cursor-pointer"
         >
           <span>
             {language === 'vi'

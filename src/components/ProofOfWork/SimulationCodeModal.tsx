@@ -218,8 +218,8 @@ export const SimulationCodeModal: React.FC<SimulationCodeModalProps> = ({
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/85 backdrop-blur-sm font-sans">
-      <div className="relative w-full max-w-5xl max-h-[92vh] flex flex-col rounded-xl bg-[#0C0F14] border border-[#1C2430] shadow-2xl overflow-hidden text-[#F2F4F7] animate-in fade-in zoom-in-95 duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/85 font-sans">
+      <div className="relative w-full max-w-5xl max-h-[92vh] flex flex-col rounded-xl bg-[#0C0F14] border border-[#1C2430] overflow-hidden text-[#F2F4F7] animate-in fade-in zoom-in-95 duration-200">
         {/* Modal Header */}
         <div className="p-5 sm:p-6 border-b border-[#1C2430] flex items-center justify-between gap-4 bg-[#090A0F]">
           <div className="flex items-center gap-3">
@@ -285,7 +285,7 @@ export const SimulationCodeModal: React.FC<SimulationCodeModalProps> = ({
                 <span
                   className={`w-2 h-2 rounded-full ${
                     activeExecutionState === 'mining'
-                      ? 'bg-[#F59E0B] animate-ping'
+                      ? 'bg-[#F59E0B]'
                       : activeExecutionState === 'winner'
                       ? 'bg-white/[0.2]'
                       : 'bg-white/[0.2]'

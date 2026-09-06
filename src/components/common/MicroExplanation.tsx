@@ -41,7 +41,7 @@ export const MicroExplanation: React.FC<MicroExplanationProps> = ({
       </button>
 
       {isOpen && (
-        <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-3 bg-[#0D1322] border border-border-primary rounded-xl text-xs font-sans text-[#E5E7EB] shadow-2xl z-50 pointer-events-none block animate-in fade-in zoom-in-95 duration-150">
+        <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-3 bg-[#0D1322] border border-border-primary rounded-xl text-xs font-sans text-[#E5E7EB] z-50 pointer-events-none block animate-in fade-in zoom-in-95 duration-150">
           <span className="font-bold font-mono text-teach-1 block mb-1 border-b border-[#1E293B] pb-1">
             💡 {term}
           </span>

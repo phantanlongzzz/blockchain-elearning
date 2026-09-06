@@ -643,7 +643,7 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
   return (
     <div className="space-y-6 animate-in fade-in duration-200">
       {/* Header */}
-      <div className="p-5 rounded-2xl bg-[#0B0F19]/70 backdrop-blur-xl border border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-[0_16px_40px_rgba(0,0,0,0.6)]">
+      <div className="p-5 rounded-2xl bg-[#0B0F19]/70 border border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="space-y-1">
           <div className="text-xs font-mono text-cyan-400 uppercase tracking-wider mb-1">
             {language === 'vi'
@@ -684,10 +684,10 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
       </div>
 
       {/* Interactive 8-Step Stepper Bar */}
-      <div className="p-4 sm:p-5 rounded-2xl bg-[#0B0F19]/70 backdrop-blur-xl border border-white/[0.08] space-y-4 shadow-[0_16px_40px_rgba(0,0,0,0.6)]">
+      <div className="p-4 sm:p-5 rounded-2xl bg-[#0B0F19]/70 border border-white/[0.08] space-y-4">
         <div className="flex items-center justify-between text-xs font-sans">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(0,210,255,0.8)]" />
+            <span className="w-2 h-2 rounded-full bg-cyan-400" />
             <span className="text-slate-200 font-semibold">
               {language === 'vi' ? 'Lộ trình 8 bước thực nghiệm' : '8-Step Pipeline Workflow'}
             </span>
@@ -712,8 +712,8 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
                 className={`p-2 rounded-xl border text-center transition-all cursor-pointer flex flex-col items-center justify-center ${
                   isCurrent
                     ? isTamper
-                      ? 'bg-rose-950/40 border-rose-500/60 text-rose-200 shadow-[0_0_15px_rgba(244,63,94,0.3)]'
-                      : 'bg-gradient-to-b from-cyan-500/20 via-[#0B1220]/90 to-[#080D1A]/95 text-white border-cyan-500/40 shadow-[0_0_15px_rgba(0,210,255,0.2)]'
+                      ? 'bg-rose-950/40 border-rose-500/60 text-rose-200'
+                      : 'bg-gradient-to-b from-cyan-500/20 via-[#0B1220]/90 to-[#080D1A]/95 text-white border-cyan-500/40'
                     : isUnlocked
                     ? 'bg-[#0B101E]/60 hover:bg-[#0E1526] border-white/[0.06] text-slate-300 hover:text-white'
                     : 'bg-transparent border-white/[0.03] text-slate-600'
@@ -731,7 +731,7 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
         </div>
 
         {/* Current Step Focus Box (Single Core Takeaway + Expandable Explanation) */}
-        <div className="p-3.5 rounded-xl bg-[#0E1526]/70 backdrop-blur-md border border-white/[0.06] space-y-2">
+        <div className="p-3.5 rounded-xl bg-[#0E1526]/70 border border-white/[0.06] space-y-2">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div className="space-y-0.5">
               <div className="flex items-center gap-2">
@@ -782,7 +782,7 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
       {/* ==================================================== */}
       {/* ACTIVE STEP WORKBENCH (INTERACTIVE STAGES 1 - 8) */}
       {/* ==================================================== */}
-      <div className="p-6 rounded-2xl bg-[#0B0F19]/70 backdrop-blur-xl border border-white/[0.08] space-y-6 shadow-[0_16px_40px_rgba(0,0,0,0.6)]">
+      <div className="p-6 rounded-2xl bg-[#0B0F19]/70 border border-white/[0.08] space-y-6">
         {/* STEP 1: ENTER RAW TRANSACTION */}
         {currentStep === 1 && (
           <div className="space-y-6">
@@ -854,7 +854,7 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
                   <button
                     type="button"
                     onClick={handleCreateTransaction}
- className="w-full py-3 rounded-xl bg-financial hover:bg-financial/90 text-black font-semibold font-bold font-mono text-xs flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg "
+ className="w-full py-3 rounded-xl bg-financial hover:bg-financial/90 text-black font-semibold font-bold font-mono text-xs flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg"
                   >
                     <Plus className="w-4 h-4" />
                     <span>{language === 'vi' ? 'TẠO GIAO DỊCH' : 'CREATE TRANSACTION'}</span>
@@ -1071,7 +1071,7 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
                 <button
                   type="button"
                   onClick={handlePackBlock}
- className="w-full py-3 rounded-xl bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-bold font-mono text-xs flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg "
+ className="w-full py-3 rounded-xl bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-bold font-mono text-xs flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg"
                 >
                   <Boxes className="w-4 h-4" />
                   <span>{language === 'vi' ? 'ĐÓNG GÓI BLOCK #1' : 'PACK BLOCK #1'}</span>
@@ -1079,7 +1079,7 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
               </div>
 
               {/* Right: Visual Block Card */}
-              <div className="lg:col-span-7 p-5 rounded-2xl bg-[#05070c] border border-border-primary shadow-2xl space-y-4">
+              <div className="lg:col-span-7 p-5 rounded-2xl bg-[#05070c] border border-border-primary space-y-4">
                 <div className="flex items-center justify-between pb-3 border-b border-slate-800">
                   <div className="flex items-center gap-2">
                     <span className="w-2.5 h-2.5 rounded-full bg-teach-1" />
@@ -1187,7 +1187,7 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
               <div
                 className={`p-4 rounded-2xl border transition-all space-y-3 ${
                   hoveredPointer === 'b0'
-                    ? 'bg-teach-1/10 border-teach-1 ring-2 ring-teach-1/40 shadow-xl'
+                    ? 'bg-teach-1/10 border-teach-1 ring-2 ring-teach-1/40'
                     : 'bg-[#05070c] border-slate-800'
                 }`}
               >
@@ -1241,7 +1241,7 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
               <div
                 className={`p-4 rounded-2xl border transition-all space-y-3 ${
                   hoveredPointer === 'b1'
-                    ? 'bg-teach-1/10 border-teach-1 ring-2 ring-teach-1/40 shadow-xl'
+                    ? 'bg-teach-1/10 border-teach-1 ring-2 ring-teach-1/40'
                     : 'bg-[#05070c] border-slate-800'
                 }`}
               >
@@ -1391,7 +1391,7 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
               <div className="flex items-stretch gap-4 min-w-max">
                 {chainBlocks.map((blk, idx) => (
                   <React.Fragment key={blk.index}>
-                    <div className="w-72 p-4 rounded-2xl bg-[#05070c] border border-slate-800 space-y-2.5 font-mono text-xs flex flex-col justify-between shadow-xl">
+                    <div className="w-72 p-4 rounded-2xl bg-[#05070c] border border-slate-800 space-y-2.5 font-mono text-xs flex flex-col justify-between">
                       <div className="flex items-center justify-between pb-2 border-b border-slate-800">
                         <span className="text-teach-1 font-bold">
                           BLOCK #{blk.index} {blk.index === 0 ? '(GENESIS)' : ''}
@@ -1521,7 +1521,7 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
                     key={blk.index}
                     className={`p-4 rounded-2xl border transition-all space-y-3 font-mono text-xs ${
                       isTargetTampered
-                        ? 'bg-rose-950/30 border-rose-500 ring-2 ring-rose-500/40 shadow-xl'
+                        ? 'bg-rose-950/30 border-rose-500 ring-2 ring-rose-500/40'
                         : isDownstreamBroken
                         ? 'bg-amber-950/20 border-amber-500/50'
                         : 'bg-[#05070c] border-slate-800'
@@ -1749,7 +1749,7 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
                     type="button"
                     disabled={isVerifying}
                     onClick={handleRunVerification}
- className="px-5 py-2.5 rounded-xl bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-bold font-mono text-xs flex items-center gap-2 transition-all cursor-pointer shadow-lg "
+ className="px-5 py-2.5 rounded-xl bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-bold font-mono text-xs flex items-center gap-2 transition-all cursor-pointer shadow-lg"
                   >
                     <CheckCircle2 className="w-4 h-4" />
                     <span>
@@ -1894,8 +1894,8 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
 
       {/* Code Modal */}
       {isCodeModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="w-full max-w-4xl max-h-[90vh] rounded-xl bg-[#090a0f] border border-zinc-800 shadow-2xl flex flex-col overflow-hidden">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 animate-in fade-in duration-200">
+          <div className="w-full max-w-4xl max-h-[90vh] rounded-xl bg-[#090a0f] border border-zinc-800 flex flex-col overflow-hidden">
             {/* Header */}
             <div className="flex items-center justify-between px-4 py-3 bg-zinc-900 border-b border-zinc-800">
               <div className="flex items-center gap-2 text-xs font-mono font-medium text-zinc-200">

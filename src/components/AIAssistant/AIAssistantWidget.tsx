@@ -108,13 +108,13 @@ export const AIAssistantWidget: React.FC = () => {
       <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-4">
         {/* Chat Panel */}
         {isOpen && (
-          <div className="w-[350px] sm:w-[400px] h-[550px] max-h-[80vh] bg-[#0F131A] border border-[#1C2430] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-10 duration-300">
+          <div className="w-[350px] sm:w-[400px] h-[550px] max-h-[80vh] bg-[#0B101E] border border-slate-800 rounded-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-10 duration-300">
             {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b border-white/[0.08]">
+            <div className="flex items-center justify-between p-4 border-b border-slate-800">
               <div className="flex items-center gap-3">
                 <div className="relative">
                   {/* Icon Avatar Bot */}
-                  <div className="w-9 h-9 rounded-xl bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
+                  <div className="w-9 h-9 rounded-xl bg-slate-900 border border-slate-700 flex items-center justify-center text-cyan-400">
                     <Bot className="w-5 h-5" />
                   </div>
                   <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 ring-2 ring-[#0B101E]" />
@@ -126,14 +126,14 @@ export const AIAssistantWidget: React.FC = () => {
               <div className="flex items-center gap-1">
                 <button
                   onClick={handleClear}
-                  className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/[0.05] transition-colors cursor-pointer"
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
                   title={strings.aiAssistant.clearChat}
                 >
                   <RotateCcw className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/[0.05] transition-colors cursor-pointer"
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
                   title={strings.aiAssistant.closeChat}
                 >
                   <X className="w-4 h-4" />
@@ -142,7 +142,7 @@ export const AIAssistantWidget: React.FC = () => {
             </div>
 
             {/* Messages Area */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gradient-to-b from-[#0F131A]/50 to-[#0A0D0F]">
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-[#080C16]">
               {messages.length === 0 ? (
                 <div className="h-full flex flex-col justify-center">
                   <div className="space-y-2 mb-6">
@@ -152,7 +152,7 @@ export const AIAssistantWidget: React.FC = () => {
                         <button
                           key={idx}
                           onClick={() => handleSend(suggestion)}
-                          className="text-left p-3 text-sm text-cyan-100 bg-cyan-950/30 hover:bg-cyan-900/40 border border-cyan-900/50 rounded-xl transition-colors leading-snug cursor-pointer"
+                          className="text-left p-3 text-sm text-cyan-100 bg-[#0F172A] hover:bg-slate-800 border border-slate-700 rounded-xl transition-colors leading-snug cursor-pointer"
                         >
                           {suggestion}
                         </button>
@@ -181,9 +181,9 @@ export const AIAssistantWidget: React.FC = () => {
                   {isLoading && (
                     <div className="flex items-start gap-3">
                       <div className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center shrink-0">
-                        <Bot className="w-4 h-4 text-cyan-500 animate-pulse" />
+                        <Bot className="w-4 h-4 text-cyan-500" />
                       </div>
-                      <div className="bg-slate-900 border border-slate-800 text-slate-300 rounded-2xl rounded-tl-sm p-3.5 text-sm flex items-center gap-2 shadow-sm">
+                      <div className="bg-slate-900 border border-slate-800 text-slate-300 rounded-2xl rounded-tl-sm p-3.5 text-sm flex items-center gap-2">
                         <Loader2 className="w-4 h-4 animate-spin text-cyan-500" />
                         <span className="text-cyan-400/80">{strings.aiAssistant.typing}</span>
                       </div>
@@ -195,7 +195,7 @@ export const AIAssistantWidget: React.FC = () => {
             </div>
 
             {/* Input Area */}
-            <div className="p-3.5 bg-[#0F131A] border-t border-white/[0.08]">
+            <div className="p-3.5 bg-[#0B101E] border-t border-slate-800">
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
@@ -215,7 +215,7 @@ export const AIAssistantWidget: React.FC = () => {
                     }}
                     placeholder={strings.aiAssistant.inputPlaceholder}
                     disabled={isLoading}
-                    className="w-full bg-[#1A222C] border border-[#2A3441] text-white rounded-xl py-3 pl-4 pr-10 resize-none max-h-32 min-h-[44px] focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/50 placeholder:text-slate-500 text-sm disabled:opacity-50"
+                    className="w-full bg-[#060913] border border-slate-700 text-white rounded-xl py-3 pl-4 pr-10 resize-none max-h-32 min-h-[44px] focus:outline-none focus:border-cyan-500 text-sm disabled:opacity-50"
                     rows={1}
                     style={{ height: 'auto', overflowY: 'hidden' }}
                     onInput={(e) => {
@@ -229,7 +229,7 @@ export const AIAssistantWidget: React.FC = () => {
                 <button
                   type="submit"
                   disabled={!inputValue.trim() || isLoading}
-                  className="h-11 w-11 shrink-0 bg-cyan-600 hover:bg-cyan-500 text-white rounded-xl flex items-center justify-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-cyan-900/20 cursor-pointer"
+                  className="h-11 w-11 shrink-0 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-sans font-semibold rounded-xl flex items-center justify-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                   title={strings.aiAssistant.sendButton}
                 >
                   <Send className="w-5 h-5" />
@@ -243,7 +243,7 @@ export const AIAssistantWidget: React.FC = () => {
         {!isOpen && (
           <button
             onClick={() => setIsOpen(true)}
-            className="w-12 h-12 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white flex items-center justify-center shadow-[0_0_20px_rgba(0,210,255,0.35)] hover:shadow-[0_0_25px_rgba(0,210,255,0.5)] border border-cyan-300/30 transition-all duration-200 z-50 cursor-pointer"
+            className="fixed bottom-6 right-6 w-11 h-11 rounded-xl bg-slate-900 border border-slate-700 text-cyan-400 flex items-center justify-center font-mono font-bold text-sm hover:bg-slate-800 z-50 cursor-pointer transition-colors"
             aria-label={isVi ? 'Mở Trợ lý AI' : 'Open AI Assistant'}
             title={strings.aiAssistant.floatingButtonLabel}
           >

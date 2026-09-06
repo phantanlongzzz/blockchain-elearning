@@ -886,7 +886,7 @@ export const NetworkTopologyExplorer: React.FC<NetworkTopologyExplorerProps> = (
                         {worker.isOnline && (
                           <div className="absolute top-0 right-0 left-0 h-[2px] bg-teach-1/20 overflow-hidden">
                             <div
-                              className="h-full bg-teach-1 animate-pulse"
+                              className="h-full bg-teach-1"
                               style={{ width: '100%', animationDuration: `${1.5 + idx * 0.3}s` }}
                             />
                           </div>

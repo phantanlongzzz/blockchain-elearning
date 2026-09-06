@@ -531,7 +531,7 @@ export const MerkleTreeCanvas: React.FC<MerkleTreeCanvasProps> = ({
                 animStep.stage === 'tampered'
                   ? 'bg-rose-500'
                   : animStep.stage === 'building' || animStep.stage === 'recalculating'
-                  ? 'bg-amber-400 animate-pulse'
+                  ? 'bg-amber-400'
                   : animStep.stage === 'idle'
                   ? 'bg-[#717B8C]'
                   : 'bg-teach-1'

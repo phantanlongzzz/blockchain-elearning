@@ -653,13 +653,13 @@ export const PoWConsensusSection: React.FC<PoWConsensusSectionProps> = ({
       {/* 3. PROOF OF WORK LABORATORY (EMBEDDED INTERACTIVE ARENA) */}
       <div
         id="interactive-pow-laboratory"
-        className="p-5 sm:p-6 rounded-xl bg-[#0b0e14] border border-slate-800 space-y-6 shadow-xl"
+        className="p-5 sm:p-6 rounded-xl bg-[#0b0e14] border border-slate-800 space-y-6"
       >
         {/* Lab Header & Live Telemetry Badge */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-800">
           <div>
             <div className="flex items-center gap-2">
-              <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+              <div className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
               <h3 className="text-base font-semibold text-slate-100 uppercase tracking-wide">
                 {isVi
                   ? 'Phòng thí nghiệm Proof of Work (Đa luồng Web Workers)'
@@ -897,7 +897,7 @@ export const PoWConsensusSection: React.FC<PoWConsensusSectionProps> = ({
                         }`}
                       >
                         {miner.status === 'mining' && (
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                         )}
                         {isWinner
                           ? isVi

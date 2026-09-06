@@ -245,7 +245,7 @@ export const ConcurrentMiningArena: React.FC<ConcurrentMiningArenaProps> = ({
                           </span>
                           {isCurrentMining && (
                             <span className="inline-flex items-center gap-1 text-[10px] text-amber-400 font-sans">
-                              <Activity className="w-3 h-3 animate-pulse" />
+                              <Activity className="w-3 h-3" />
                               {language === 'vi' ? 'Đang tính toán' : 'Mining'}
                             </span>
                           )}

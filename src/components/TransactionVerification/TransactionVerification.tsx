@@ -154,9 +154,9 @@ export const TransactionVerification: React.FC = () => {
       <div className="flex flex-wrap items-center justify-center gap-2.5 mb-8 font-sans">
         <button
           onClick={() => setActiveView('mempool')}
-          className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all duration-200 ease-out flex items-center gap-2 border font-sans cursor-pointer backdrop-blur-md ${
+          className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all duration-200 ease-out flex items-center gap-2 border font-sans cursor-pointer ${
             activeView === 'mempool'
-              ? 'bg-cyan-500/15 text-cyan-300 border-cyan-500/40 shadow-[0_0_15px_rgba(0,210,255,0.15)]'
+              ? 'bg-cyan-500/15 text-cyan-300 border-cyan-500/40'
               : 'bg-[#0B0F19]/60 text-slate-400 hover:text-white hover:bg-[#0B0F19]/90 border-white/[0.07] hover:border-white/[0.15]'
           }`}
         >
@@ -166,9 +166,9 @@ export const TransactionVerification: React.FC = () => {
 
         <button
           onClick={() => setActiveView('ledger')}
-          className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all duration-200 ease-out flex items-center gap-2 border font-sans cursor-pointer backdrop-blur-md ${
+          className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all duration-200 ease-out flex items-center gap-2 border font-sans cursor-pointer ${
             activeView === 'ledger'
-              ? 'bg-cyan-500/15 text-cyan-300 border-cyan-500/40 shadow-[0_0_15px_rgba(0,210,255,0.15)]'
+              ? 'bg-cyan-500/15 text-cyan-300 border-cyan-500/40'
               : 'bg-[#0B0F19]/60 text-slate-400 hover:text-white hover:bg-[#0B0F19]/90 border-white/[0.07] hover:border-white/[0.15]'
           }`}
         >

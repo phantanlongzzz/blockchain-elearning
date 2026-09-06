@@ -161,7 +161,7 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
   return (
     <div className="space-y-6 font-sans">
       {/* Top Banner Guide */}
-      <div className="p-6 sm:p-7 rounded-2xl bg-[#0B0F19]/70 backdrop-blur-xl border border-white/[0.08] shadow-[0_16px_40px_rgba(0,0,0,0.6)] flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="p-6 sm:p-7 rounded-2xl bg-[#0B0F19]/70 border border-white/[0.08] flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="space-y-1.5 max-w-2xl">
           <div className="inline-flex items-center gap-2 text-xs font-semibold text-cyan-300">
             <GraduationCap className="w-4 h-4 text-cyan-400" />
@@ -197,9 +197,9 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
       </div>
 
       {/* Visual Architectural Master Flow Chart */}
-      <div className="p-6 sm:p-7 rounded-2xl bg-[#0B0F19]/70 backdrop-blur-xl border border-white/[0.08] shadow-[0_16px_40px_rgba(0,0,0,0.6)] space-y-6">
+      <div className="p-6 sm:p-7 rounded-2xl bg-[#0B0F19]/70 border border-white/[0.08] space-y-6">
         <div className="text-center space-y-2">
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-medium shadow-[0_0_15px_rgba(0,210,255,0.15)]">
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-medium">
             <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
             <span>
               {isVi ? 'Sơ Đồ Hệ Thống Kiến Trúc Khối' : 'Master System Architecture Flow'}
@@ -213,9 +213,9 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
         {/* Master Flow Diagram Nodes */}
         <div className="max-w-2xl mx-auto space-y-3 font-sans text-xs">
           {/* Node 1: Transaction */}
-          <div className="p-4 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.06] flex items-center justify-between">
+          <div className="p-4 rounded-xl bg-black/40 border border-white/[0.06] flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-300 flex items-center justify-center font-semibold font-mono text-xs border border-cyan-500/30 shadow-[0_0_10px_rgba(0,210,255,0.2)]">
+              <div className="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-300 flex items-center justify-center font-semibold font-mono text-xs border border-cyan-500/30">
                 1
               </div>
               <div>
@@ -235,9 +235,9 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
           </div>
 
           {/* Node 2: Digital Signature */}
-          <div className="p-4 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.06] flex items-center justify-between">
+          <div className="p-4 rounded-xl bg-black/40 border border-white/[0.06] flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-300 flex items-center justify-center font-semibold font-mono text-xs border border-cyan-500/30 shadow-[0_0_10px_rgba(0,210,255,0.2)]">
+              <div className="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-300 flex items-center justify-center font-semibold font-mono text-xs border border-cyan-500/30">
                 2
               </div>
               <div>
@@ -257,9 +257,9 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
           </div>
 
           {/* Node 3: Block Body */}
-          <div className="p-4 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.06] flex items-center justify-between">
+          <div className="p-4 rounded-xl bg-black/40 border border-white/[0.06] flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-300 flex items-center justify-center font-semibold font-mono text-xs border border-cyan-500/30 shadow-[0_0_10px_rgba(0,210,255,0.2)]">
+              <div className="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-300 flex items-center justify-center font-semibold font-mono text-xs border border-cyan-500/30">
                 3
               </div>
               <div>
@@ -279,9 +279,9 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
           </div>
 
           {/* Node 4: Merkle Tree & Root */}
-          <div className="p-4 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.06] flex items-center justify-between">
+          <div className="p-4 rounded-xl bg-black/40 border border-white/[0.06] flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-300 flex items-center justify-center font-semibold font-mono text-xs border border-cyan-500/30 shadow-[0_0_10px_rgba(0,210,255,0.2)]">
+              <div className="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-300 flex items-center justify-center font-semibold font-mono text-xs border border-cyan-500/30">
                 4
               </div>
               <div>
@@ -301,7 +301,7 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
           </div>
 
           {/* Node 5: Block Header */}
-          <div className="p-5 rounded-xl bg-black/40 backdrop-blur-md border border-cyan-500/30 space-y-3 shadow-[0_0_20px_rgba(0,210,255,0.1)]">
+          <div className="p-5 rounded-xl bg-black/40 border border-cyan-500/30 space-y-3">
             <div className="flex items-center justify-between text-xs">
               <span className="font-semibold text-white flex items-center gap-2">
                 <Layers className="w-4 h-4 text-cyan-400" />
@@ -334,7 +334,7 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
           </div>
 
           {/* Node 6: SHA-256 Engine */}
-          <div className="p-3.5 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.06] text-center font-semibold text-cyan-300 font-mono shadow-[0_0_15px_rgba(0,210,255,0.1)]">
+          <div className="p-3.5 rounded-xl bg-black/40 border border-white/[0.06] text-center font-semibold text-cyan-300 font-mono">
             SHA-256( Block Header )
           </div>
 
@@ -343,7 +343,7 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
           </div>
 
           {/* Node 7: Final Block Hash & Blockchain Link */}
-          <div className="p-4 rounded-xl bg-gradient-to-b from-cyan-500/10 to-blue-500/10 border border-cyan-500/40 text-center space-y-1 shadow-[0_0_20px_rgba(0,210,255,0.15)]">
+          <div className="p-4 rounded-xl bg-gradient-to-b from-cyan-500/10 to-blue-500/10 border border-cyan-500/40 text-center space-y-1">
             <div className="font-semibold text-cyan-300 text-sm">
               ✓ BLOCK HASH (MÃ BĂM KHỐI HOÀN TẤT)
             </div>
@@ -354,7 +354,7 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
         </div>
 
         {/* Master Takeaway Callout */}
-        <div className="p-5 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.06] text-center space-y-2">
+        <div className="p-5 rounded-xl bg-black/40 border border-white/[0.06] text-center space-y-2">
           <div className="text-sm sm:text-base font-semibold text-white">
             {isVi
               ? 'Nguyên lý toàn vẹn dữ liệu trong Blockchain'
@@ -399,7 +399,7 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
                   onClick={() => setCodeLang('python')}
                   className={`px-3.5 py-1.5 rounded-xl text-xs font-sans transition-all cursor-pointer ${
                     codeLang === 'python'
-                      ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold shadow-[0_0_15px_rgba(0,210,255,0.3)]'
+                      ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold'
                       : 'bg-white/[0.04] text-slate-400 hover:text-white border border-white/[0.08] hover:border-cyan-500/30'
                   }`}
                 >
@@ -410,7 +410,7 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
                   onClick={() => setCodeLang('typescript')}
                   className={`px-3.5 py-1.5 rounded-xl text-xs font-sans transition-all cursor-pointer ${
                     codeLang === 'typescript'
-                      ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold shadow-[0_0_15px_rgba(0,210,255,0.3)]'
+                      ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold'
                       : 'bg-white/[0.04] text-slate-400 hover:text-white border border-white/[0.08] hover:border-cyan-500/30'
                   }`}
                 >
@@ -431,7 +431,7 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
 
         {/* HANDS-ON LAB CALL TO ACTION */}
         {onOpenHandsOnLab && (
-          <div className="p-5 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.06] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="p-5 rounded-xl bg-black/40 border border-white/[0.06] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="space-y-1">
               <div className="text-xs font-semibold text-cyan-300 flex items-center gap-2">
                 <FlaskConical className="w-4 h-4 text-cyan-400" />
@@ -447,7 +447,7 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
               type="button"
               id="btn-summary-open-lab"
               onClick={onOpenHandsOnLab}
-              className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-xs transition-all shadow-[0_0_15px_rgba(0,210,255,0.3)] cursor-pointer flex items-center justify-center gap-2 shrink-0 font-sans"
+              className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-xs transition-all cursor-pointer flex items-center justify-center gap-2 shrink-0 font-sans"
             >
               <FlaskConical className="w-4 h-4" />
               <span>{isVi ? 'Mở Chế Độ Thực Hành' : 'Open Hands-On Lab'}</span>
@@ -502,7 +502,7 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
           <button
             type="button"
             onClick={() => handleScrollTo('quiz-section')}
-            className="p-3.5 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-left space-y-1 transition-all cursor-pointer group shadow-[0_0_15px_rgba(0,210,255,0.1)]"
+            className="p-3.5 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-left space-y-1 transition-all cursor-pointer group"
           >
             <span className="text-cyan-300 font-semibold flex items-center justify-between">
               <span>Kiểm Tra Kiến Thức</span>

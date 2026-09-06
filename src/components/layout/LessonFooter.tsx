@@ -88,7 +88,7 @@ export const LessonFooter: React.FC = () => {
               <div className="min-w-0">
                 <div className="flex items-center justify-end gap-1.5">
                   {isLessonCompleted && (
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#F59E0B] animate-ping" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#F59E0B]" />
                   )}
                   <span
                     className={`text-[10px] font-mono uppercase tracking-wider font-semibold ${

@@ -146,11 +146,11 @@ export const QuizSection: React.FC = () => {
             <div
               key={mod.quizId}
               id={`quiz-card-${mod.quizId}`}
-              className="relative p-6 sm:p-8 bg-[#0B101E]/85 backdrop-blur-xl border border-cyan-500/30 rounded-2xl shadow-[0_0_30px_rgba(0,210,255,0.08)] flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 overflow-hidden group before:absolute before:inset-0 before:bg-gradient-to-r before:from-cyan-500/[0.04] before:to-transparent before:pointer-events-none"
+              className="relative p-6 sm:p-8 bg-[#0B101E]/85 border border-cyan-500/30 rounded-2xl flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 overflow-hidden group before:absolute before:inset-0 before:bg-gradient-to-r before:from-cyan-500/[0.04] before:to-transparent before:pointer-events-none"
             >
               <div className="space-y-3 flex-1 relative z-10">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-sans font-semibold text-cyan-300 bg-cyan-500/15 border border-cyan-400/40 shadow-[0_0_10px_rgba(0,210,255,0.2)]">
+                  <span className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-sans font-semibold text-cyan-300 bg-cyan-500/15 border border-cyan-400/40">
                     ★ {language === 'vi' ? 'Đề thi tiêu điểm' : 'Featured Assessment'}
                   </span>
                   <span className="text-xs font-mono px-2.5 py-0.5 rounded-full bg-white/[0.05] text-slate-300 border border-white/[0.08]">
@@ -187,7 +187,7 @@ export const QuizSection: React.FC = () => {
                 <button
                   id={`btn-start-${mod.quizId}`}
                   onClick={() => handleStartQuiz(mod)}
-                  className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-sans text-xs font-semibold px-6 py-3 rounded-xl shadow-[0_0_20px_rgba(0,210,255,0.35)] hover:shadow-[0_0_25px_rgba(0,210,255,0.5)] transition-all duration-200 flex items-center gap-2 cursor-pointer"
+                  className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-sans text-xs font-semibold px-6 py-3 rounded-xl hover: transition-all duration-200 flex items-center gap-2 cursor-pointer"
                 >
                   <span>{strings.quiz.startQuiz}</span>
                   <ArrowRight className="w-4 h-4" />
@@ -202,7 +202,7 @@ export const QuizSection: React.FC = () => {
               <div
                 key={mod.quizId}
                 id={`quiz-card-${mod.quizId}`}
-                className="p-5 bg-[#0E1526]/70 backdrop-blur-md border border-white/[0.08] hover:border-cyan-500/40 hover:bg-cyan-500/[0.03] hover:shadow-[0_8px_30px_rgba(0,210,255,0.12)] rounded-2xl transition-all duration-200 flex flex-col justify-between space-y-4 group"
+                className="p-5 bg-[#0E1526]/70 border border-white/[0.08] hover:border-cyan-500/40 hover:bg-cyan-500/[0.03] hover: rounded-2xl transition-all duration-200 flex flex-col justify-between space-y-4 group"
               >
                 <div className="space-y-2">
                   <div className="flex items-center justify-between gap-2">
@@ -233,7 +233,7 @@ export const QuizSection: React.FC = () => {
                   <button
                     id={`btn-start-${mod.quizId}`}
                     onClick={() => handleStartQuiz(mod)}
-                    className="px-4 py-2 rounded-xl text-xs font-sans font-medium text-cyan-300 bg-cyan-500/10 border border-cyan-500/30 group-hover:bg-cyan-500 group-hover:text-white group-hover:shadow-[0_0_15px_rgba(0,210,255,0.4)] transition-all flex items-center gap-1.5 cursor-pointer"
+                    className="px-4 py-2 rounded-xl text-xs font-sans font-medium text-cyan-300 bg-cyan-500/10 border border-cyan-500/30 group-hover:bg-cyan-500 group-hover:text-white group-hover: transition-all flex items-center gap-1.5 cursor-pointer"
                   >
                     <span>{strings.quiz.startQuiz}</span>
                     <ArrowRight className="w-3.5 h-3.5" />

@@ -113,7 +113,7 @@ export const SignatureFlowVisualizer: React.FC<SignatureFlowVisualizerProps> = (
 
               {idx < steps.length - 1 && (
                 <div className="flex justify-center my-0.5">
-                  <ArrowDown className="w-3.5 h-3.5 text-[#5A6472] animate-pulse" />
+                  <ArrowDown className="w-3.5 h-3.5 text-[#5A6472]" />
                 </div>
               )}
             </React.Fragment>

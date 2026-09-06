@@ -41,7 +41,7 @@ export const Hero: React.FC = () => {
   return (
     <section
       id="hero"
-      className="relative min-h-[85vh] py-8 sm:py-12 flex flex-col justify-center overflow-hidden font-sans rounded-3xl bg-gradient-to-b from-[#090D16]/80 via-[#060912]/90 to-[#04060B] border border-white/[0.07] shadow-[0_8px_30px_rgb(0,0,0,0.35)]"
+      className="relative min-h-[85vh] py-8 sm:py-12 flex flex-col justify-center overflow-hidden font-sans rounded-3xl bg-gradient-to-b from-[#090D16]/80 via-[#060912]/90 to-[#04060B] border border-white/[0.07]"
     >
       {/* ========================================================================= */}
       {/* 3-LAYER CYBER MESH & AMBIENT GLOW BACKGROUND                              */}
@@ -50,7 +50,7 @@ export const Hero: React.FC = () => {
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#ffffff04_1px,transparent_1px),linear-gradient(to_bottom,#ffffff04_1px,transparent_1px)] bg-[size:3.5rem_3.5rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_30%,#000_70%,transparent_100%)] -z-10" />
 
       {/* Lớp 2 - Quầng sáng cực quang sau Card Khối #840291 (Backdrop Aura) */}
-      <div className="pointer-events-none absolute top-1/4 right-[10%] w-[520px] h-[520px] bg-gradient-to-tr from-cyan-500/10 via-blue-600/5 to-transparent rounded-full blur-[140px] -z-10 animate-pulse [animation-duration:8s]" />
+      <div className="pointer-events-none absolute top-1/4 right-[10%] w-[520px] h-[520px] bg-gradient-to-tr from-cyan-500/10 via-blue-600/5 to-transparent rounded-full blur-[140px] -z-10 [animation-duration:8s]" />
 
       {/* Lớp 3 - Vệt sáng phản quang góc trái trên (Top Left Rim Light) */}
       <div className="pointer-events-none absolute -top-40 -left-40 w-[600px] h-[600px] bg-cyan-500/[0.04] rounded-full blur-[160px] -z-10" />
@@ -63,8 +63,8 @@ export const Hero: React.FC = () => {
           {/* LEFT COLUMN: Core Value Proposition, Typography & CTAs */}
           <div className="lg:col-span-6 xl:col-span-6 space-y-6 text-left">
             {/* Tech Tags Pill */}
-            <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#0B0F19]/60 backdrop-blur-md border border-white/[0.08] text-xs font-mono text-slate-300 shadow-sm group">
-              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse group-hover:[animation-play-state:paused] shadow-[0_0_8px_rgba(0,210,255,0.6)]" />
+            <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#0B0F19]/60 border border-white/[0.08] text-xs font-mono text-slate-300 shadow-sm group">
+              <span className="w-2 h-2 rounded-full bg-cyan-400 group-hover:[animation-play-state:paused]" />
               <span className="font-semibold text-cyan-300">NIST FIPS 180-4</span>
               <span className="text-slate-500">•</span>
               <span>SECP256k1</span>
@@ -76,7 +76,7 @@ export const Hero: React.FC = () => {
             <div className="space-y-3">
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight text-[#F8FAFC] font-display">
                 Demystifying Blockchain{' '}
-                <span className="block mt-2 bg-gradient-to-r from-cyan-400 via-sky-300 to-blue-500 bg-[length:200%_auto] bg-clip-text text-transparent animate-[gradientFlow_6s_ease_infinite] hover:[animation-play-state:paused] drop-shadow-[0_0_20px_rgba(0,210,255,0.25)] cursor-default">
+                <span className="block mt-2 bg-gradient-to-r from-cyan-400 via-sky-300 to-blue-500 bg-[length:200%_auto] bg-clip-text text-transparent hover:[animation-play-state:paused] drop- cursor-default">
                   From Zero to Consensus
                 </span>
               </h1>
@@ -87,7 +87,7 @@ export const Hero: React.FC = () => {
               <button
                 id="hero-start-simulation-btn"
                 onClick={() => navigateTo('hash', 'generator')}
-                className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-medium text-sm transition-all duration-200 ease-out shadow-[0_0_20px_rgba(0,210,255,0.25)] hover:shadow-[0_0_30px_rgba(0,210,255,0.4)] active:scale-95 flex items-center gap-2 cursor-pointer"
+                className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-medium text-sm transition-all duration-200 ease-out hover: active:scale-95 flex items-center gap-2 cursor-pointer"
               >
                 <Zap className="w-4 h-4 text-white" />
                 <span>{isVi ? 'Bắt đầu mô phỏng' : 'Start Simulation'}</span>
@@ -122,7 +122,7 @@ export const Hero: React.FC = () => {
                 key={area.id}
                 id={`hero-card-module-${area.id}`}
                 onClick={() => navigateTo(area.id as ModuleId)}
-                className="group relative flex items-center justify-between p-4 rounded-xl bg-[#0B101E]/70 backdrop-blur-md border border-white/[0.08] hover:border-cyan-500/40 hover:bg-cyan-500/[0.04] hover:shadow-[0_0_20px_rgba(0,210,255,0.15)] transition-all duration-200 w-full text-left cursor-pointer"
+                className="group relative flex items-center justify-between p-4 rounded-xl bg-[#0B101E]/70 border border-white/[0.08] hover:border-cyan-500/40 hover:bg-cyan-500/[0.04] hover: transition-all duration-200 w-full text-left cursor-pointer"
               >
                 <div className="flex items-center gap-3.5">
                   {/* Số thứ tự phân hệ */}

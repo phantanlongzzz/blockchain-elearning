@@ -34,7 +34,7 @@ export const LinkedListVsBlockchain: React.FC<LinkedListVsBlockchainProps> = ({
   return (
     <div className="space-y-6 animate-in fade-in duration-200">
       {/* Header */}
-      <div className="p-5 rounded-2xl bg-[#0B0F19]/70 backdrop-blur-xl border border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-[0_16px_40px_rgba(0,0,0,0.6)]">
+      <div className="p-5 rounded-2xl bg-[#0B0F19]/70 border border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="space-y-1">
           <div className="text-xs font-mono text-cyan-400 uppercase tracking-wider mb-1">
             {language === 'vi'
@@ -75,12 +75,12 @@ export const LinkedListVsBlockchain: React.FC<LinkedListVsBlockchainProps> = ({
 
       {/* Main Interactive Morph Canvas */}
       {activeView === 'animation' && (
-        <div className="p-6 rounded-2xl bg-[#0B0F19]/70 backdrop-blur-xl border border-white/[0.08] space-y-6 shadow-[0_16px_40px_rgba(0,0,0,0.6)]">
+        <div className="p-6 rounded-2xl bg-[#0B0F19]/70 border border-white/[0.08] space-y-6">
           {/* Step Stepper Header */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-white/[0.08]">
             <div className="space-y-1">
               <div className="text-xs font-sans text-slate-200 font-medium flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(0,210,255,0.8)]" />
+                <span className="w-2 h-2 rounded-full bg-cyan-400" />
                 <span className="font-semibold text-slate-100">
                   {morphStep === 0 && (language === 'vi' ? 'Bước 1: Linked List truyền thống (Con trỏ RAM)' : 'Step 1: Standard Linked List (RAM Pointers)')}
                   {morphStep === 1 && (language === 'vi' ? 'Bước 2: Thay con trỏ RAM bằng Hash Pointer' : 'Step 2: Replacing RAM Pointers with Hash Pointers')}
@@ -106,7 +106,7 @@ export const LinkedListVsBlockchain: React.FC<LinkedListVsBlockchainProps> = ({
               <button
                 type="button"
                 onClick={handleNextMorph}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-sans font-medium text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 shadow-[0_0_15px_rgba(0,210,255,0.3)] transition-all active:scale-95 cursor-pointer"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-sans font-medium text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 transition-all active:scale-95 cursor-pointer"
               >
                 <span>
                   {morphStep === 0 && (language === 'vi' ? 'Chuyển sang Hash Pointer' : 'Morph to Hash Pointer')}
@@ -119,14 +119,14 @@ export const LinkedListVsBlockchain: React.FC<LinkedListVsBlockchainProps> = ({
           </div>
 
           {/* Morph Visualization Arena */}
-          <div className="p-6 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.05] min-h-[200px] flex items-center overflow-x-auto justify-center bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:16px_16px]">
+          <div className="p-6 rounded-xl bg-black/40 border border-white/[0.05] min-h-[200px] flex items-center overflow-x-auto justify-center bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:16px_16px]">
             <div className="flex items-center gap-4 w-full justify-center pb-2">
               {/* Element 0 - Node A / Block #0 */}
               <div
                 onClick={() => setSelectedEntity(morphStep === 2 ? 'block' : 'node')}
-                className={`w-48 p-4 rounded-xl backdrop-blur-md border transition-all cursor-pointer shadow-[0_8px_24px_rgba(0,0,0,0.45)] ${
+                className={`w-48 p-4 rounded-xl border transition-all cursor-pointer ${
                   morphStep === 2
-                    ? 'bg-[#0B101E]/90 border-cyan-500/40 ring-1 ring-cyan-500/30 shadow-[0_0_20px_rgba(0,210,255,0.15)]'
+                    ? 'bg-[#0B101E]/90 border-cyan-500/40 ring-1 ring-cyan-500/30'
                     : morphStep === 1
                     ? 'bg-[#0B101E]/80 border-cyan-500/30 hover:border-cyan-500/50'
                     : 'bg-[#0B101E]/80 border-white/[0.08] hover:border-cyan-500/30'
@@ -168,7 +168,7 @@ export const LinkedListVsBlockchain: React.FC<LinkedListVsBlockchainProps> = ({
                 <span className="text-[10px] font-mono text-cyan-400 uppercase tracking-wider transition-colors group-hover:text-cyan-300">
                   {morphStep === 2 ? 'PREV HASH' : morphStep === 1 ? 'HASH PTR' : 'NEXT'}
                 </span>
-                <div className="w-12 h-[2px] bg-gradient-to-r from-cyan-500 to-blue-500 shadow-[0_0_8px_rgba(0,210,255,0.4)] relative flex items-center justify-end">
+                <div className="w-12 h-[2px] bg-gradient-to-r from-cyan-500 to-blue-500 relative flex items-center justify-end">
                   <ArrowRight className="w-3.5 h-3.5 text-cyan-400 -mr-1 transition-transform group-hover:translate-x-0.5" />
                 </div>
               </div>
@@ -176,9 +176,9 @@ export const LinkedListVsBlockchain: React.FC<LinkedListVsBlockchainProps> = ({
               {/* Element 1 - Node B / Block #1 */}
               <div
                 onClick={() => setSelectedEntity(morphStep === 2 ? 'block' : 'node')}
-                className={`w-48 p-4 rounded-xl backdrop-blur-md border transition-all cursor-pointer shadow-[0_8px_24px_rgba(0,0,0,0.45)] ${
+                className={`w-48 p-4 rounded-xl border transition-all cursor-pointer ${
                   morphStep === 2
-                    ? 'bg-[#0B101E]/90 border-cyan-500/40 ring-1 ring-cyan-500/30 shadow-[0_0_20px_rgba(0,210,255,0.15)]'
+                    ? 'bg-[#0B101E]/90 border-cyan-500/40 ring-1 ring-cyan-500/30'
                     : morphStep === 1
                     ? 'bg-[#0B101E]/80 border-cyan-500/30 hover:border-cyan-500/50'
                     : 'bg-[#0B101E]/80 border-white/[0.08] hover:border-cyan-500/30'
@@ -215,7 +215,7 @@ export const LinkedListVsBlockchain: React.FC<LinkedListVsBlockchainProps> = ({
 
           {/* Minimal Inspection Note */}
           {selectedEntity && (
-            <div className="p-4 rounded-xl bg-[#0B101E]/90 backdrop-blur-sm border border-white/[0.08] text-xs leading-relaxed space-y-1.5 animate-in fade-in duration-150">
+            <div className="p-4 rounded-xl bg-[#0B101E]/90 border border-white/[0.08] text-xs leading-relaxed space-y-1.5 animate-in fade-in duration-150">
               <div className="text-slate-200 font-sans font-semibold text-xs flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
                 <span>
@@ -242,7 +242,7 @@ export const LinkedListVsBlockchain: React.FC<LinkedListVsBlockchainProps> = ({
 
       {/* Mode 2: Detailed Side-by-Side Matrix */}
       {activeView === 'matrix' && (
-        <div className="p-6 rounded-xl bg-[#0B101E]/80 backdrop-blur-md border border-white/[0.08] space-y-4 shadow-[0_8px_32px_rgba(0,0,0,0.35)]">
+        <div className="p-6 rounded-xl bg-[#0B101E]/80 border border-white/[0.08] space-y-4">
           <div className="text-sm font-sans font-semibold text-slate-100">
             {language === 'vi'
               ? 'Bảng đối chiếu: Linked List vs. Blockchain'
@@ -299,7 +299,7 @@ export const LinkedListVsBlockchain: React.FC<LinkedListVsBlockchainProps> = ({
         <button
           type="button"
           onClick={onNextStage}
-          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-xs font-sans font-medium text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 shadow-[0_0_15px_rgba(0,210,255,0.25)] transition-all cursor-pointer"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-xs font-sans font-medium text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 transition-all cursor-pointer"
         >
           <span>
             {language === 'vi'

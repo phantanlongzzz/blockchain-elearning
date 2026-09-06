@@ -284,8 +284,8 @@ export const PoSConsensusSection: React.FC<PoSConsensusSectionProps> = ({
 
       {/* Full PoS Lab Modal */}
       {showFullPoSLabModal && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#0B0E12] border border-slate-800 rounded-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto p-6 space-y-6 shadow-2xl relative">
+        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
+          <div className="bg-[#0B0E12] border border-slate-800 rounded-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto p-6 space-y-6 relative">
             <div className="flex items-center justify-between pb-4 border-b border-slate-800">
               <h3 className="text-base font-semibold text-slate-100">
                 {isVi ? 'Phòng thí nghiệm Proof of Stake' : 'Proof of stake laboratory'}

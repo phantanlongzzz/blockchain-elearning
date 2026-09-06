@@ -115,7 +115,7 @@ export const PoSTerminologyBar: React.FC = () => {
       {selectedTerm && (
         <div
           id="pos-term-popover"
-          className="mt-2.5 p-3.5 sm:p-4 rounded-xl bg-[#0C0F14] border border-[rgba(0,201,141,0.35)] shadow-xl space-y-2 animate-in fade-in slide-in-from-top-1 duration-150 relative z-20"
+          className="mt-2.5 p-3.5 sm:p-4 rounded-xl bg-[#0C0F14] border border-[rgba(0,201,141,0.35)] space-y-2 animate-in fade-in slide-in-from-top-1 duration-150 relative z-20"
         >
           <div className="flex items-center justify-between gap-2 border-b border-[#1C2430] pb-2">
             <div className="flex items-center gap-2">

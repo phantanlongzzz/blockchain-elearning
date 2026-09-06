@@ -156,7 +156,7 @@ export const HashPointerBlockchainLab: React.FC<HashPointerBlockchainLabProps> =
   return (
     <div className="space-y-6 animate-in fade-in duration-200">
       {/* Header */}
-      <div className="p-5 rounded-2xl bg-[#0B0F19]/70 backdrop-blur-xl border border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-[0_16px_40px_rgba(0,0,0,0.6)]">
+      <div className="p-5 rounded-2xl bg-[#0B0F19]/70 border border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="space-y-1">
           <div className="text-xs font-mono text-cyan-400 uppercase tracking-wider mb-1">
             {language === 'vi'
@@ -194,7 +194,7 @@ export const HashPointerBlockchainLab: React.FC<HashPointerBlockchainLabProps> =
             <button
               type="button"
               onClick={handleRepairChain}
-              className="px-3.5 py-1.5 rounded-lg bg-cyan-500/15 hover:bg-cyan-500/25 text-cyan-300 border border-cyan-500/40 font-medium font-sans text-xs flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap shadow-[0_0_12px_rgba(0,210,255,0.25)]"
+              className="px-3.5 py-1.5 rounded-lg bg-cyan-500/15 hover:bg-cyan-500/25 text-cyan-300 border border-cyan-500/40 font-medium font-sans text-xs flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap"
             >
               <Wrench className="w-3.5 h-3.5 text-cyan-400" />
               <span>{language === 'vi' ? 'Tính toán lại chuỗi' : 'Recalculate Chain'}</span>
@@ -213,12 +213,12 @@ export const HashPointerBlockchainLab: React.FC<HashPointerBlockchainLabProps> =
       </div>
 
       {/* Main 4-Block Interactive Chain Canvas (Layer 1 Outer Card) */}
-      <div className="p-6 rounded-2xl bg-[#0B0F19]/70 backdrop-blur-xl border border-white/[0.08] shadow-[0_16px_40px_rgba(0,0,0,0.6)] space-y-5">
+      <div className="p-6 rounded-2xl bg-[#0B0F19]/70 border border-white/[0.08] space-y-5">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-white/[0.06]">
           <div className="text-xs font-sans font-medium flex items-center gap-2">
             <span
               className={`w-2 h-2 rounded-full ${
-                isTampered ? 'bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)]' : 'bg-cyan-400 shadow-[0_0_8px_rgba(0,210,255,0.8)]'
+                isTampered ? 'bg-rose-500' : 'bg-cyan-400'
               }`}
             />
             <span className={isTampered ? 'text-rose-400 font-semibold' : 'text-slate-200'}>
@@ -236,7 +236,7 @@ export const HashPointerBlockchainLab: React.FC<HashPointerBlockchainLabProps> =
         </div>
 
         {/* 4 Blocks & Hash Pointer Connectors Container */}
-        <div className="bg-black/40 backdrop-blur-md border border-white/[0.05] rounded-xl p-5 relative overflow-hidden bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:16px_16px]">
+        <div className="bg-black/40 border border-white/[0.05] rounded-xl p-5 relative overflow-hidden bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:16px_16px]">
           <div className="flex flex-col xl:flex-row items-stretch gap-3">
             {blocks.map((block, idx) => {
               const status = getBlockStatus(idx);
@@ -254,10 +254,10 @@ export const HashPointerBlockchainLab: React.FC<HashPointerBlockchainLabProps> =
                   <div
                     className={`flex-1 min-w-0 p-4 rounded-xl border transition-all duration-200 flex flex-col justify-between space-y-3.5 ${
                       isCorrupted
-                        ? 'bg-[#180d19]/90 border-rose-500/60 shadow-[0_0_20px_rgba(244,63,94,0.2)]'
+                        ? 'bg-[#180d19]/90 border-rose-500/60'
                         : idx === 0
-                        ? 'bg-[#0E1526]/85 backdrop-blur-md border-cyan-500/40 shadow-[0_4px_20px_rgba(0,0,0,0.4)]'
-                        : 'bg-[#0E1526]/85 backdrop-blur-md border-white/[0.08] hover:border-cyan-500/35 shadow-[0_4px_20px_rgba(0,0,0,0.4)]'
+                        ? 'bg-[#0E1526]/85 border-cyan-500/40'
+                        : 'bg-[#0E1526]/85 border-white/[0.08] hover:border-cyan-500/35'
                     }`}
                   >
                     {/* Block Header Tag */}
@@ -273,13 +273,13 @@ export const HashPointerBlockchainLab: React.FC<HashPointerBlockchainLabProps> =
                         <span
                           className={`px-2 py-0.5 rounded-full text-[10px] font-sans font-medium border flex items-center gap-1 transition-all ${
                             isCorrupted
-                              ? 'bg-rose-500/15 text-rose-300 border-rose-500/30 shadow-[0_0_8px_rgba(244,63,94,0.2)]'
+                              ? 'bg-rose-500/15 text-rose-300 border-rose-500/30'
                               : 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30'
                           }`}
                         >
                           <span
                             className={`w-1.5 h-1.5 rounded-full ${
-                              isCorrupted ? 'bg-rose-400' : 'bg-cyan-400 shadow-[0_0_6px_rgba(0,210,255,0.6)]'
+                              isCorrupted ? 'bg-rose-400' : 'bg-cyan-400'
                             }`}
                           />
                           {status.isValid
@@ -356,8 +356,8 @@ export const HashPointerBlockchainLab: React.FC<HashPointerBlockchainLabProps> =
                         <div
                           className={`p-2 rounded-full border transition-all ${
                             isPointerToNextBroken
-                              ? 'bg-rose-950/60 border-rose-500/60 text-rose-400 shadow-[0_0_14px_rgba(244,63,94,0.4)] animate-pulse border-dashed'
-                              : 'bg-cyan-950/40 border-cyan-500/30 text-cyan-400/80 shadow-[0_0_8px_rgba(0,210,255,0.15)]'
+                              ? 'bg-rose-950/60 border-rose-500/60 text-rose-400 border-dashed'
+                              : 'bg-cyan-950/40 border-cyan-500/30 text-cyan-400/80'
                           }`}
                           title={
                             isPointerToNextBroken
@@ -389,7 +389,7 @@ export const HashPointerBlockchainLab: React.FC<HashPointerBlockchainLabProps> =
                         <div
                           className={`px-3 py-1 rounded-full border text-xs font-mono flex items-center gap-1.5 transition-all ${
                             isPointerToNextBroken
-                              ? 'bg-rose-950/40 border-rose-500/50 text-rose-400 shadow-[0_0_10px_rgba(244,63,94,0.3)] border-dashed'
+                              ? 'bg-rose-950/40 border-rose-500/50 text-rose-400 border-dashed'
                               : 'bg-cyan-950/30 border-cyan-500/30 text-cyan-400/90'
                           }`}
                         >
@@ -462,7 +462,7 @@ export const HashPointerBlockchainLab: React.FC<HashPointerBlockchainLabProps> =
         <button
           type="button"
           onClick={onNextStage}
-          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-xs font-sans font-medium text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 shadow-[0_0_15px_rgba(0,210,255,0.25)] transition-all cursor-pointer"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-xs font-sans font-medium text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 transition-all cursor-pointer"
         >
           <span>
             {language === 'vi'

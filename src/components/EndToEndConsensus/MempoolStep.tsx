@@ -68,7 +68,7 @@ export const MempoolStep: React.FC<MempoolStepProps> = ({
                 <HelpCircle className="w-3.5 h-3.5" />
               </button>
               {showTooltip && (
-                <div className="absolute left-0 top-full mt-1 z-30 w-72 p-2.5 rounded-lg bg-zinc-900 border border-zinc-700 text-xs text-zinc-300 shadow-xl">
+                <div className="absolute left-0 top-full mt-1 z-30 w-72 p-2.5 rounded-lg bg-zinc-900 border border-zinc-700 text-xs text-zinc-300">
                   {language === 'vi'
                     ? 'Thợ đào (Miners) luôn tự động ưu tiên chọn các giao dịch có tỷ lệ phí (fee rate) cao nhất vào khối ứng viên để tối đa hóa phần thưởng kinh tế.'
                     : 'Miners automatically prioritize transactions with higher fee rates to maximize their economic reward when assembling candidate blocks.'}

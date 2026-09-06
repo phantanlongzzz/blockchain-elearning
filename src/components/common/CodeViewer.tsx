@@ -248,7 +248,7 @@ export const CodeViewer: React.FC<CodeViewerProps> = ({
 
   return (
     <div
-      className={`rounded-xl overflow-hidden border border-[#2b2b2b] bg-[#1e1e1e] text-[#d4d4d4] shadow-2xl ${className}`}
+      className={`rounded-xl overflow-hidden border border-[#2b2b2b] bg-[#1e1e1e] text-[#d4d4d4] ${className}`}
       style={{ fontFamily: "Consolas, 'Cascadia Code', 'Fira Code', Menlo, Monaco, 'Courier New', monospace" }}
     >
       {/* VS Code Dark Title Bar & Tab */}

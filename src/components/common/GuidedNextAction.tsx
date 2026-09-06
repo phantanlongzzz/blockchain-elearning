@@ -64,7 +64,7 @@ export const GuidedNextAction: React.FC<GuidedNextActionProps> = ({
   // Next-ready pulse modifier
   let guidanceModifier = '';
   if (isReady && !isLocked) {
-    guidanceModifier = 'guidance-amber-pulse ring-2 ring-amber-400/80 !border-amber-400/90 text-zinc-100 shadow-[0_0_18px_rgba(245,158,11,0.25)]';
+    guidanceModifier = 'guidance-amber-pulse ring-2 ring-amber-400/80 !border-amber-400/90 text-zinc-100';
     if (variant === 'primary' || variant === 'amber') {
       guidanceModifier += ' !bg-amber-500 hover:!bg-amber-400 !text-zinc-950 font-bold';
     }
@@ -88,7 +88,7 @@ export const GuidedNextAction: React.FC<GuidedNextActionProps> = ({
       {/* Subtle indicator badge when NEXT_STEP_READY */}
       {isReady && !isLocked && (
         <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-amber-400/20 border border-amber-300/40 text-amber-200 text-[10px] font-mono font-semibold uppercase tracking-wider">
-          <span className="w-1.5 h-1.5 rounded-full bg-amber-400 inline-block animate-ping" />
+          <span className="w-1.5 h-1.5 rounded-full bg-amber-400 inline-block" />
           <span>{badge || (isVi ? 'Tiếp' : 'Next')}</span>
         </span>
       )}

@@ -334,7 +334,7 @@ export const BruteForceSimulator: React.FC = () => {
                 foundResult
                   ? 'text-text-primary'
                   : isRunning
-                  ? 'text-amber-400 animate-pulse'
+                  ? 'text-amber-400'
                   : 'text-slate-500'
               }`}
             >

@@ -253,7 +253,7 @@ export const InteractiveBlockInspector: React.FC = () => {
   const renderHighlightedHash = (hash: string, isScrambling = false) => {
     if (isScrambling) {
       return (
-        <span className="text-cyan-300 font-semibold drop-shadow-[0_0_6px_rgba(0,210,255,0.6)]">
+        <span className="text-cyan-300 font-semibold drop-">
           {hash}
         </span>
       );
@@ -262,7 +262,7 @@ export const InteractiveBlockInspector: React.FC = () => {
     if (match) {
       return (
         <>
-          <span className="text-cyan-400 font-bold drop-shadow-[0_0_8px_rgba(0,210,255,0.8)]">{match[1]}</span>
+          <span className="text-cyan-400 font-bold drop-">{match[1]}</span>
           <span>{match[2]}</span>
         </>
       );
@@ -272,13 +272,13 @@ export const InteractiveBlockInspector: React.FC = () => {
 
   return (
     <div 
-      className={`relative group w-full rounded-2xl bg-[#0B101E]/85 backdrop-blur-xl border p-5 shadow-[0_16px_40px_rgba(0,0,0,0.6)] text-slate-200 overflow-hidden transition-colors duration-200 ${
+      className={`relative group w-full rounded-2xl bg-[#0B101E]/85 border p-5 text-slate-200 overflow-hidden transition-colors duration-200 ${
         miningFlash
-          ? 'ring-2 ring-cyan-400 shadow-[0_0_30px_rgba(0,210,255,0.6)] border-cyan-400'
+          ? 'ring-2 ring-cyan-400 border-cyan-400'
           : isShockwave
-          ? 'border-rose-500 shadow-[0_0_35px_rgba(244,63,94,0.4)]'
+          ? 'border-rose-500'
           : tamperedTxIndex !== null
-          ? 'border-rose-500/60 shadow-[0_0_25px_rgba(244,63,94,0.2)]'
+          ? 'border-rose-500/60'
           : 'border-cyan-500/20 hover:border-cyan-500/40'
       }`}
     >
@@ -289,20 +289,20 @@ export const InteractiveBlockInspector: React.FC = () => {
       <div
         className={`pointer-events-none absolute inset-x-0 h-16 bg-gradient-to-b from-transparent ${
           tamperedTxIndex !== null
-            ? 'via-rose-500/[0.12] animate-[scanline_2s_ease-in-out_infinite]'
-            : 'via-cyan-400/[0.07] animate-[scanline_4s_ease-in-out_infinite]'
+            ? 'via-rose-500/[0.12]'
+            : 'via-cyan-400/[0.07]'
         } to-transparent -z-0 group-hover:[animation-play-state:paused]`}
       />
 
       {/* Cyber Corner Highlights */}
-      <div className={`absolute top-0 left-0 w-3 h-[1px] ${tamperedTxIndex !== null ? 'bg-rose-500 shadow-[0_0_6px_rgba(244,63,94,0.8)]' : 'bg-cyan-400 shadow-[0_0_6px_#00d2ff]'}`} />
-      <div className={`absolute top-0 left-0 w-[1px] h-3 ${tamperedTxIndex !== null ? 'bg-rose-500 shadow-[0_0_6px_rgba(244,63,94,0.8)]' : 'bg-cyan-400 shadow-[0_0_6px_#00d2ff]'}`} />
-      <div className={`absolute top-0 right-0 w-3 h-[1px] ${tamperedTxIndex !== null ? 'bg-rose-500 shadow-[0_0_6px_rgba(244,63,94,0.8)]' : 'bg-cyan-400 shadow-[0_0_6px_#00d2ff]'}`} />
-      <div className={`absolute top-0 right-0 w-[1px] h-3 ${tamperedTxIndex !== null ? 'bg-rose-500 shadow-[0_0_6px_rgba(244,63,94,0.8)]' : 'bg-cyan-400 shadow-[0_0_6px_#00d2ff]'}`} />
-      <div className={`absolute bottom-0 left-0 w-3 h-[1px] ${tamperedTxIndex !== null ? 'bg-rose-500 shadow-[0_0_6px_rgba(244,63,94,0.8)]' : 'bg-cyan-400 shadow-[0_0_6px_#00d2ff]'}`} />
-      <div className={`absolute bottom-0 left-0 w-[1px] h-3 ${tamperedTxIndex !== null ? 'bg-rose-500 shadow-[0_0_6px_rgba(244,63,94,0.8)]' : 'bg-cyan-400 shadow-[0_0_6px_#00d2ff]'}`} />
-      <div className={`absolute bottom-0 right-0 w-3 h-[1px] ${tamperedTxIndex !== null ? 'bg-rose-500 shadow-[0_0_6px_rgba(244,63,94,0.8)]' : 'bg-cyan-400 shadow-[0_0_6px_#00d2ff]'}`} />
-      <div className={`absolute bottom-0 right-0 w-[1px] h-3 ${tamperedTxIndex !== null ? 'bg-rose-500 shadow-[0_0_6px_rgba(244,63,94,0.8)]' : 'bg-cyan-400 shadow-[0_0_6px_#00d2ff]'}`} />
+      <div className={`absolute top-0 left-0 w-3 h-[1px] ${tamperedTxIndex !== null ? 'bg-rose-500' : 'bg-cyan-400'}`} />
+      <div className={`absolute top-0 left-0 w-[1px] h-3 ${tamperedTxIndex !== null ? 'bg-rose-500' : 'bg-cyan-400'}`} />
+      <div className={`absolute top-0 right-0 w-3 h-[1px] ${tamperedTxIndex !== null ? 'bg-rose-500' : 'bg-cyan-400'}`} />
+      <div className={`absolute top-0 right-0 w-[1px] h-3 ${tamperedTxIndex !== null ? 'bg-rose-500' : 'bg-cyan-400'}`} />
+      <div className={`absolute bottom-0 left-0 w-3 h-[1px] ${tamperedTxIndex !== null ? 'bg-rose-500' : 'bg-cyan-400'}`} />
+      <div className={`absolute bottom-0 left-0 w-[1px] h-3 ${tamperedTxIndex !== null ? 'bg-rose-500' : 'bg-cyan-400'}`} />
+      <div className={`absolute bottom-0 right-0 w-3 h-[1px] ${tamperedTxIndex !== null ? 'bg-rose-500' : 'bg-cyan-400'}`} />
+      <div className={`absolute bottom-0 right-0 w-[1px] h-3 ${tamperedTxIndex !== null ? 'bg-rose-500' : 'bg-cyan-400'}`} />
 
       {/* 1. Top Header Row */}
       <div className="flex items-center justify-between border-b border-white/[0.06] pb-3.5 mb-4 relative z-10">
@@ -329,7 +329,7 @@ export const InteractiveBlockInspector: React.FC = () => {
       </div>
 
       {/* 2. Navigation Sub-tabs (Neon Capsule Tabs) */}
-      <div className="p-1 bg-black/50 backdrop-blur-md border border-white/[0.08] rounded-xl flex items-center gap-1.5 mb-4 relative z-10">
+      <div className="p-1 bg-black/50 border border-white/[0.08] rounded-xl flex items-center gap-1.5 mb-4 relative z-10">
         <button
           onClick={() => {
             setActiveTab('header');
@@ -337,7 +337,7 @@ export const InteractiveBlockInspector: React.FC = () => {
           }}
           className={`flex-1 px-4 py-2 rounded-lg font-sans text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer ${
             activeTab === 'header'
-              ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-400 text-cyan-300 shadow-[0_0_14px_rgba(0,210,255,0.3)] font-semibold'
+              ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-400 text-cyan-300 font-semibold'
               : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04] border border-transparent font-medium'
           }`}
         >
@@ -351,7 +351,7 @@ export const InteractiveBlockInspector: React.FC = () => {
           }}
           className={`flex-1 px-4 py-2 rounded-lg font-sans text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer ${
             activeTab === 'merkle'
-              ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-400 text-cyan-300 shadow-[0_0_14px_rgba(0,210,255,0.3)] font-semibold'
+              ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-400 text-cyan-300 font-semibold'
               : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04] border border-transparent font-medium'
           }`}
         >
@@ -365,7 +365,7 @@ export const InteractiveBlockInspector: React.FC = () => {
           }}
           className={`flex-1 px-4 py-2 rounded-lg font-sans text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer ${
             activeTab === 'bytestream'
-              ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-400 text-cyan-300 shadow-[0_0_14px_rgba(0,210,255,0.3)] font-semibold'
+              ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-400 text-cyan-300 font-semibold'
               : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04] border border-transparent font-medium'
           }`}
         >
@@ -422,7 +422,7 @@ export const InteractiveBlockInspector: React.FC = () => {
                   : 'border-white/[0.06] text-slate-300'
               }`}>
                 {isMerkleScrambling ? (
-                  <span className="text-cyan-300 font-semibold drop-shadow-[0_0_6px_rgba(0,210,255,0.6)]">
+                  <span className="text-cyan-300 font-semibold drop-">
                     {scrambledMerkleRoot}
                   </span>
                 ) : (
@@ -437,7 +437,7 @@ export const InteractiveBlockInspector: React.FC = () => {
                 <span className="text-[10px] font-sans text-slate-400 uppercase tracking-wider block mb-1">Nonce</span>
                 <div className="flex items-center justify-between">
                   <span className={`font-mono font-semibold text-sm tabular-nums transition-colors ${
-                    isMining ? 'text-amber-400 animate-pulse group-hover:[animation-play-state:paused] drop-shadow-[0_0_8px_rgba(245,158,11,0.6)]' : 'text-cyan-400'
+                    isMining ? 'text-amber-400 group-hover:[animation-play-state:paused] drop-' : 'text-cyan-400'
                   }`}>
                     {nonce}
                   </span>
@@ -496,7 +496,7 @@ export const InteractiveBlockInspector: React.FC = () => {
               </div>
               <div className={`bg-black/40 border rounded-lg px-3 py-2 font-mono text-[11px] leading-relaxed break-all select-all cursor-text transition-all duration-300 ${
                 miningFlash
-                  ? 'ring-2 ring-cyan-400 bg-cyan-950/40 border-cyan-400 shadow-[0_0_20px_rgba(0,210,255,0.6)] text-cyan-200'
+                  ? 'ring-2 ring-cyan-400 bg-cyan-950/40 border-cyan-400 text-cyan-200'
                   : 'border-white/[0.06] text-slate-300'
               }`}>
                 {renderHighlightedHash(scrambledBlockHash, isHashScrambling || isMining)}
@@ -531,7 +531,7 @@ export const InteractiveBlockInspector: React.FC = () => {
                       key={tx.id}
                       onClick={() => handleOpenTxModal(idx)}
                       title={isVi ? 'Nhấp để kiểm tra và can thiệp giao dịch' : 'Click to inspect and tamper transaction'}
-                      className="flex items-center justify-between p-3 rounded-xl border border-rose-500/70 bg-rose-500/10 shadow-[0_0_15px_rgba(244,63,94,0.25)] animate-pulse group-hover:[animation-play-state:paused] transition-all cursor-pointer group/tampered"
+                      className="flex items-center justify-between p-3 rounded-xl border border-rose-500/70 bg-rose-500/10 group-hover:[animation-play-state:paused] transition-all cursor-pointer group/tampered"
                     >
                       {idx === 0 ? (
                         <div className="flex items-center gap-2">
@@ -558,7 +558,7 @@ export const InteractiveBlockInspector: React.FC = () => {
                           {tx.amount.toFixed(3)} BTC
                         </span>
                         <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[10px] font-sans font-bold text-rose-300 bg-rose-500/20 border border-rose-500/40">
-                          <span className="w-1.5 h-1.5 rounded-full bg-rose-400 animate-ping group-hover:[animation-play-state:paused]" />
+                          <span className="w-1.5 h-1.5 rounded-full bg-rose-400 group-hover:[animation-play-state:paused]" />
                           <span>{isVi ? 'Đã can thiệp' : 'Tampered'}</span>
                         </span>
                       </div>
@@ -572,7 +572,7 @@ export const InteractiveBlockInspector: React.FC = () => {
                       key={tx.id}
                       onClick={() => handleOpenTxModal(idx)}
                       title={isVi ? 'Nhấp để kiểm tra và can thiệp giao dịch' : 'Click to inspect and tamper transaction'}
-                      className="flex items-center justify-between p-3 rounded-xl bg-white/[0.03] border border-white/[0.08] hover:border-cyan-400/50 hover:bg-cyan-500/[0.04] hover:shadow-[0_0_15px_rgba(0,210,255,0.15)] transition-all cursor-pointer group"
+                      className="flex items-center justify-between p-3 rounded-xl bg-white/[0.03] border border-white/[0.08] hover:border-cyan-400/50 hover:bg-cyan-500/[0.04] hover: transition-all cursor-pointer group"
                     >
                       <div className="flex items-center gap-2">
                         <span className="px-2 py-0.5 rounded-md font-mono text-[11px] font-bold text-purple-400 bg-purple-500/10 border border-purple-500/30">
@@ -594,7 +594,7 @@ export const InteractiveBlockInspector: React.FC = () => {
                     key={tx.id}
                     onClick={() => handleOpenTxModal(idx)}
                     title={isVi ? 'Nhấp để kiểm tra và can thiệp giao dịch' : 'Click to inspect and tamper transaction'}
-                    className="flex items-center justify-between p-3 rounded-xl bg-white/[0.03] border border-white/[0.08] hover:border-cyan-400/50 hover:bg-cyan-500/[0.04] hover:shadow-[0_0_15px_rgba(0,210,255,0.15)] transition-all cursor-pointer group"
+                    className="flex items-center justify-between p-3 rounded-xl bg-white/[0.03] border border-white/[0.08] hover:border-cyan-400/50 hover:bg-cyan-500/[0.04] hover: transition-all cursor-pointer group"
                   >
                     <div className="flex items-center">
                       <span className="px-2 py-0.5 rounded-md font-mono text-[11px] font-bold text-cyan-400 bg-cyan-500/10 border border-cyan-500/30">
@@ -624,7 +624,7 @@ export const InteractiveBlockInspector: React.FC = () => {
               </span>
             </div>
             <div className={`p-3.5 rounded-lg bg-black/40 border text-[11px] lg:text-xs leading-relaxed break-all select-all cursor-text font-mono tracking-normal transition-colors ${
-              isHeaderBytesScrambling ? 'border-cyan-500/30 text-cyan-300 drop-shadow-[0_0_6px_rgba(0,210,255,0.4)]' : 'border-white/[0.06] text-slate-300'
+              isHeaderBytesScrambling ? 'border-cyan-500/30 text-cyan-300 drop-' : 'border-white/[0.06] text-slate-300'
             }`}>
               {scrambledHeaderBytes}
             </div>
@@ -654,16 +654,16 @@ export const InteractiveBlockInspector: React.FC = () => {
       {tamperedTxIndex !== null ? (
         <div className="flex items-center gap-2 text-xs font-mono text-rose-400 pt-2 border-t border-rose-500/20 mt-4 relative z-10">
           <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-80 group-hover:[animation-play-state:paused]" />
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500 shadow-[0_0_8px_#f43f5e]" />
+            <span className="absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-80 group-hover:[animation-play-state:paused]" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500" />
           </span>
           <span className="font-semibold">{isVi ? 'Mất đồng thuận · Khối vô hiệu' : 'Consensus Broken · Invalid Block'}</span>
         </div>
       ) : (
         <div className="flex items-center gap-2 text-xs font-mono text-success pt-2 border-t border-white/[0.06] mt-4 relative z-10">
           <span className="relative flex h-2 w-2">
-            <span className="animate-pulse absolute inline-flex h-full w-full rounded-full bg-success opacity-75 group-hover:[animation-play-state:paused]" />
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-success shadow-[0_0_8px_rgba(16,185,129,0.6)]" />
+            <span className="absolute inline-flex h-full w-full rounded-full bg-success opacity-75 group-hover:[animation-play-state:paused]" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-success" />
           </span>
           <span>{isVi ? 'Mạng đồng thuận' : 'Network Consensus'}</span>
         </div>
@@ -672,11 +672,11 @@ export const InteractiveBlockInspector: React.FC = () => {
       {/* Transaction Inspector Modal (Glassmorphism Popup) */}
       {isTxModalOpen && selectedTx && (
         <div 
-          className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-150"
+          className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 animate-in fade-in duration-150"
           onClick={handleCloseTxModal}
         >
           <div 
-            className="max-w-md w-full bg-[#0B101E]/95 backdrop-blur-xl border border-cyan-500/30 rounded-2xl p-5 shadow-[0_20px_60px_rgba(0,0,0,0.8)] relative font-sans text-xs"
+            className="max-w-md w-full bg-[#0B101E]/95 border border-cyan-500/30 rounded-2xl p-5 relative font-sans text-xs"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
@@ -809,7 +809,7 @@ export const InteractiveBlockInspector: React.FC = () => {
                       onClick={handleApplyTamper}
                       className={`px-4 py-2 rounded-lg text-xs font-sans font-medium transition-all cursor-pointer ${
                         Math.abs((parseFloat(editAmount) || 0) - selectedTx.originalAmount) > 0.000001
-                          ? 'bg-rose-600/30 text-rose-200 border border-rose-500/60 shadow-[0_0_15px_rgba(244,63,94,0.3)] hover:bg-rose-600/40'
+                          ? 'bg-rose-600/30 text-rose-200 border border-rose-500/60 hover:bg-rose-600/40'
                           : 'bg-white/[0.06] text-slate-400 border border-white/[0.08] hover:text-white'
                       }`}
                     >

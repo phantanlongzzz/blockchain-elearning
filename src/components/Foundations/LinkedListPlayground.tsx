@@ -419,7 +419,7 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
   return (
     <div className="space-y-4 animate-in fade-in duration-200">
       {/* Header Section */}
-      <div className="bg-[#0B0F19]/70 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-5 mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-[0_16px_40px_rgba(0,0,0,0.6)]">
+      <div className="bg-[#0B0F19]/70 border border-white/[0.08] rounded-2xl p-5 mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="space-y-1">
           <div className="text-xs font-mono text-cyan-400 uppercase tracking-wider mb-1">
             {language === 'vi' ? 'Giai đoạn 02 · Cấu trúc danh sách' : 'Stage 02 · Linked Data Structure'}
@@ -473,7 +473,7 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
           onClick={() => setViewMode('visual')}
           className={`px-3 py-1.5 rounded-lg text-xs font-sans font-medium transition-colors cursor-pointer ${
             viewMode === 'visual'
-              ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/35 shadow-[0_0_12px_rgba(0,210,255,0.15)]'
+              ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/35'
               : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04] border border-transparent'
           }`}
         >
@@ -485,7 +485,7 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
           onClick={() => setViewMode('sushi')}
           className={`px-3 py-1.5 rounded-lg text-xs font-sans font-medium transition-colors cursor-pointer ${
             viewMode === 'sushi'
-              ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/35 shadow-[0_0_12px_rgba(0,210,255,0.15)]'
+              ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/35'
               : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04] border border-transparent'
           }`}
         >
@@ -497,7 +497,7 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
           onClick={() => setViewMode('code')}
           className={`px-3 py-1.5 rounded-lg text-xs font-sans font-medium transition-colors cursor-pointer ${
             viewMode === 'code'
-              ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/35 shadow-[0_0_12px_rgba(0,210,255,0.15)]'
+              ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/35'
               : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04] border border-transparent'
           }`}
         >
@@ -507,7 +507,7 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
 
       {/* Mode 1: Visual Interactive Linked List (Outer Card Wrapper) */}
       {viewMode === 'visual' && (
-        <div className="p-6 rounded-2xl bg-[#0B0F19]/70 backdrop-blur-xl border border-white/[0.08] shadow-[0_16px_40px_rgba(0,0,0,0.6)] space-y-4">
+        <div className="p-6 rounded-2xl bg-[#0B0F19]/70 border border-white/[0.08] space-y-4">
           {/* Action Toolbar */}
           <div className="bg-[#070B14]/80 border border-white/[0.06] rounded-xl p-3 flex flex-wrap items-center justify-between gap-3 mb-4">
             {/* Insertion controls */}
@@ -520,7 +520,7 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
                 disabled={isSimulating || isAutomating}
                 className={`bg-black/50 border rounded-lg px-3 py-1.5 text-xs font-mono text-slate-200 outline-none w-48 placeholder:text-slate-600 transition-all ${
                   highlightedInput === 'data'
-                    ? 'border-cyan-400 ring-2 ring-cyan-400/50 shadow-[0_0_15px_rgba(0,210,255,0.3)] bg-cyan-950/20'
+                    ? 'border-cyan-400 ring-2 ring-cyan-400/50 bg-cyan-950/20'
                     : 'border-white/[0.08] focus:border-cyan-500/40'
                 } disabled:opacity-75`}
               />
@@ -530,7 +530,7 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
                 disabled={isSimulating || isAutomating}
                 className={`text-xs font-sans font-medium px-3 py-1.5 rounded-lg transition-all cursor-pointer whitespace-nowrap shrink-0 disabled:cursor-not-allowed ${
                   activeActionBtn === 'insertBeginning'
-                    ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-400 ring-2 ring-cyan-400 shadow-[0_0_16px_rgba(0,210,255,0.4)] scale-105'
+                    ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-400 ring-2 ring-cyan-400 scale-105'
                     : 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 hover:bg-cyan-500/20 disabled:opacity-50'
                 }`}
               >
@@ -542,7 +542,7 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
                 disabled={isSimulating || isAutomating}
                 className={`text-xs font-sans px-3 py-1.5 rounded-lg transition-all cursor-pointer whitespace-nowrap shrink-0 disabled:cursor-not-allowed ${
                   activeActionBtn === 'insertEnd'
-                    ? 'bg-cyan-500/20 text-white border border-cyan-400 ring-2 ring-cyan-400 shadow-[0_0_16px_rgba(0,210,255,0.4)] scale-105'
+                    ? 'bg-cyan-500/20 text-white border border-cyan-400 ring-2 ring-cyan-400 scale-105'
                     : 'bg-white/[0.04] text-slate-300 border border-white/[0.08] hover:text-white disabled:opacity-50'
                 }`}
               >
@@ -560,7 +560,7 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
                 disabled={isSimulating || isAutomating}
                 className={`bg-black/50 border rounded-lg px-3 py-1.5 text-xs font-mono text-slate-200 outline-none w-36 placeholder:text-slate-600 transition-all ${
                   highlightedInput === 'search'
-                    ? 'border-cyan-400 ring-2 ring-cyan-400/50 shadow-[0_0_15px_rgba(0,210,255,0.3)] bg-cyan-950/20'
+                    ? 'border-cyan-400 ring-2 ring-cyan-400/50 bg-cyan-950/20'
                     : 'border-white/[0.08] focus:border-cyan-500/40'
                 } disabled:opacity-75`}
               />
@@ -570,7 +570,7 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
                 onClick={handleSearch}
                 className={`text-xs font-sans px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap shrink-0 disabled:cursor-not-allowed ${
                   activeActionBtn === 'search'
-                    ? 'bg-cyan-500/20 text-white border border-cyan-400 ring-2 ring-cyan-400 shadow-[0_0_16px_rgba(0,210,255,0.4)] scale-105'
+                    ? 'bg-cyan-500/20 text-white border border-cyan-400 ring-2 ring-cyan-400 scale-105'
                     : 'bg-white/[0.04] border border-white/[0.08] text-slate-300 hover:border-cyan-500/30 hover:text-white disabled:opacity-50'
                 }`}
               >
@@ -583,7 +583,7 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
           {/* Search Result Feedback */}
           {searchResult.searched && (
             <div className="p-3 rounded-lg bg-black/40 border border-white/[0.06] text-xs font-mono flex items-center gap-2">
-              <span className={`w-2 h-2 rounded-full ${searchResult.found ? 'bg-cyan-400 shadow-[0_0_8px_rgba(0,210,255,0.8)]' : 'bg-rose-400'}`}></span>
+              <span className={`w-2 h-2 rounded-full ${searchResult.found ? 'bg-cyan-400' : 'bg-rose-400'}`}></span>
               <span className={searchResult.found ? 'text-cyan-300' : 'text-rose-400'}>
                 {searchResult.found
                   ? language === 'vi'
@@ -597,7 +597,7 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
           )}
 
           {/* Layer 2: Struct Inspector Canvas */}
-          <div className="bg-black/35 backdrop-blur-md border border-white/[0.05] rounded-xl p-6 relative overflow-x-auto bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:16px_16px] min-h-[190px] flex items-center">
+          <div className="bg-black/35 border border-white/[0.05] rounded-xl p-6 relative overflow-x-auto bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:16px_16px] min-h-[190px] flex items-center">
             {nodes.length === 0 ? (
               <div className="w-full text-center text-xs font-mono text-slate-500 py-6">
                 HEAD = NULL (Danh sách rỗng)
@@ -605,9 +605,9 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
             ) : (
               <div className="flex items-center gap-2 w-full pb-2">
                 {/* HEAD Register Pointer */}
-                <div className="bg-cyan-950/30 border border-cyan-500/30 text-cyan-400 rounded-lg px-3 py-2 text-xs font-mono flex flex-col items-center justify-center gap-1 shadow-[0_0_12px_rgba(0,210,255,0.1)] shrink-0 mr-2">
+                <div className="bg-cyan-950/30 border border-cyan-500/30 text-cyan-400 rounded-lg px-3 py-2 text-xs font-mono flex flex-col items-center justify-center gap-1 shrink-0 mr-2">
                   <span className="text-[10px] font-semibold tracking-wider uppercase">HEAD</span>
-                  <div className="w-4 h-[2px] bg-cyan-400 my-0.5 shadow-[0_0_6px_rgba(0,210,255,0.6)]" />
+                  <div className="w-4 h-[2px] bg-cyan-400 my-0.5" />
                   <span className="text-[10px] text-cyan-300 font-mono">→ [0]</span>
                 </div>
 
@@ -628,15 +628,15 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
                       <div className="flex flex-col items-center shrink-0">
                         {/* Struct Node Card */}
                         <div
-                          className={`bg-[#0B101E]/85 backdrop-blur-md border rounded-xl p-3.5 min-w-[200px] shadow-[0_8px_24px_rgba(0,0,0,0.5)] transition-all ${
+                          className={`bg-[#0B101E]/85 border rounded-xl p-3.5 min-w-[200px] transition-all ${
                             isNewlyAdded
-                              ? 'border-cyan-400 ring-2 ring-cyan-400/60 shadow-[0_0_24px_rgba(0,210,255,0.4)] scale-[1.02] duration-300'
+                              ? 'border-cyan-400 ring-2 ring-cyan-400/60 scale-[1.02] duration-300'
                               : isActiveSimNode
-                              ? 'border-cyan-400 ring-2 ring-cyan-400/40 shadow-[0_0_20px_rgba(0,210,255,0.35)] scale-[1.02] duration-300'
+                              ? 'border-cyan-400 ring-2 ring-cyan-400/40 scale-[1.02] duration-300'
                               : isFoundNode
-                              ? 'border-cyan-400 ring-2 ring-cyan-400/40 shadow-[0_0_24px_rgba(0,210,255,0.3)]'
+                              ? 'border-cyan-400 ring-2 ring-cyan-400/40'
                               : isCurrentInSearch
-                              ? 'border-amber-400 ring-1 ring-amber-400/30 shadow-[0_0_16px_rgba(251,191,36,0.2)]'
+                              ? 'border-amber-400 ring-1 ring-amber-400/30'
                               : 'border-white/[0.08] hover:border-cyan-500/30'
                           }`}
                         >
@@ -689,7 +689,7 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
                           <span
                             className={`text-[9px] font-mono transition-colors ${
                               isArrowActive
-                                ? 'text-cyan-400 font-bold drop-shadow-[0_0_8px_#00d2ff]'
+                                ? 'text-cyan-400 font-bold drop-'
                                 : 'text-cyan-400/80'
                             }`}
                           >
@@ -698,14 +698,14 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
                           <div
                             className={`w-8 h-[2px] relative flex items-center justify-end transition-all ${
                               isArrowActive
-                                ? 'bg-gradient-to-r from-cyan-400 to-cyan-300 shadow-[0_0_10px_rgba(0,210,255,0.8)]'
-                                : 'bg-gradient-to-r from-cyan-500/40 to-cyan-400 shadow-[0_0_6px_rgba(0,210,255,0.3)]'
+                                ? 'bg-gradient-to-r from-cyan-400 to-cyan-300'
+                                : 'bg-gradient-to-r from-cyan-500/40 to-cyan-400'
                             }`}
                           >
                             <ArrowRight
                               className={`w-3 h-3 -mr-1 transition-all ${
                                 isArrowActive
-                                  ? 'text-cyan-300 drop-shadow-[0_0_8px_#00d2ff] scale-125'
+                                  ? 'text-cyan-300 drop- scale-125'
                                   : 'text-cyan-400'
                               }`}
                             />
@@ -716,7 +716,7 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
                           <div
                             className={`px-3 py-2 rounded-lg font-mono text-xs flex items-center justify-center transition-all duration-300 ${
                               activeNodeIndex === nodes.length
-                                ? 'bg-cyan-950/40 border border-cyan-400 text-cyan-300 shadow-[0_0_15px_rgba(0,210,255,0.35)] scale-[1.05]'
+                                ? 'bg-cyan-950/40 border border-cyan-400 text-cyan-300 scale-[1.05]'
                                 : 'bg-white/[0.02] border border-dashed border-white/[0.15] text-slate-400'
                             }`}
                           >
@@ -733,7 +733,7 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
 
           {/* Mini Status Banner for Traversal Simulation */}
           <div className="mt-4 p-2.5 rounded-xl bg-cyan-950/20 border border-cyan-500/20 font-mono text-xs text-cyan-300 flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
             <span>{simStatus || (language === 'vi' ? 'Hệ thống sẵn sàng mô phỏng' : 'System ready for simulation')}</span>
           </div>
         </div>
@@ -741,7 +741,7 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
 
       {/* Mode 2: Sushi Recipe Step */}
       {viewMode === 'sushi' && (
-        <div className="p-6 rounded-2xl bg-[#0B0F19]/60 backdrop-blur-xl border border-white/[0.08] shadow-[0_12px_40px_rgba(0,0,0,0.5)] space-y-4">
+        <div className="p-6 rounded-2xl bg-[#0B0F19]/60 border border-white/[0.08] space-y-4">
           <div className="flex items-center justify-between">
             <div className="text-sm font-sans font-semibold text-slate-100">
               {language === 'vi'
@@ -771,9 +771,9 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
             <div
-              className={`p-4 rounded-xl backdrop-blur-md border space-y-1.5 transition-all duration-300 ${
+              className={`p-4 rounded-xl border space-y-1.5 transition-all duration-300 ${
                 activeNodeIndex === 0
-                  ? 'bg-cyan-950/40 border-cyan-400 shadow-[0_0_20px_rgba(0,210,255,0.3)] scale-[1.02]'
+                  ? 'bg-cyan-950/40 border-cyan-400 scale-[1.02]'
                   : 'bg-[#0E1424]/85 border-cyan-500/20'
               }`}
             >
@@ -789,9 +789,9 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
             </div>
 
             <div
-              className={`p-4 rounded-xl backdrop-blur-md border space-y-1.5 transition-all duration-300 ${
+              className={`p-4 rounded-xl border space-y-1.5 transition-all duration-300 ${
                 activeNodeIndex === 1
-                  ? 'bg-cyan-950/40 border-cyan-400 shadow-[0_0_20px_rgba(0,210,255,0.3)] scale-[1.02]'
+                  ? 'bg-cyan-950/40 border-cyan-400 scale-[1.02]'
                   : 'bg-[#0E1424]/85 border-cyan-500/20'
               }`}
             >
@@ -807,9 +807,9 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
             </div>
 
             <div
-              className={`p-4 rounded-xl backdrop-blur-md border space-y-1.5 transition-all duration-300 ${
+              className={`p-4 rounded-xl border space-y-1.5 transition-all duration-300 ${
                 activeNodeIndex === 2
-                  ? 'bg-cyan-950/40 border-cyan-400 shadow-[0_0_20px_rgba(0,210,255,0.3)] scale-[1.02]'
+                  ? 'bg-cyan-950/40 border-cyan-400 scale-[1.02]'
                   : 'bg-[#0E1424]/85 border-cyan-500/20'
               }`}
             >
@@ -829,7 +829,7 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
 
       {/* Mode 3: Python Code View */}
       {viewMode === 'code' && (
-        <div className="p-6 rounded-2xl bg-[#0B0F19]/60 backdrop-blur-xl border border-white/[0.08] shadow-[0_12px_40px_rgba(0,0,0,0.5)] space-y-3">
+        <div className="p-6 rounded-2xl bg-[#0B0F19]/60 border border-white/[0.08] space-y-3">
           <div className="flex items-center justify-between text-xs font-sans text-slate-400">
             <span className="font-medium text-slate-200">
               {language === 'vi' ? 'Lớp Node & LinkedList trong Python' : 'Node & LinkedList Classes'}
@@ -856,7 +856,7 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
         <button
           type="button"
           onClick={onNextStage}
-          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-xs font-sans font-medium text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 shadow-[0_0_15px_rgba(0,210,255,0.25)] transition-all cursor-pointer"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-xs font-sans font-medium text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 transition-all cursor-pointer"
         >
           <span>
             {language === 'vi'
@@ -868,8 +868,8 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
 
       {/* Clean Sans Search Result Modal (No icon, No badge) */}
       {searchResultModal?.open && searchResultModal.data && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
-          <div className="bg-[#0B101E] border border-cyan-500/30 rounded-2xl p-6 w-full max-w-md shadow-2xl transition-all">
+        <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
+          <div className="bg-[#0B101E] border border-cyan-500/30 rounded-2xl p-6 w-full max-w-md transition-all">
             <h3 className="font-sans font-bold text-lg text-white mb-2">
               {language === 'vi' ? 'Kết quả tìm kiếm thành công' : 'Search Result Successful'}
             </h3>

@@ -12,10 +12,10 @@ export const AIAssistantPlaceholder: React.FC = () => {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40vw] h-[40vw] max-w-[600px] max-h-[600px] bg-white/[0.08]/10 rounded-full blur-[100px] opacity-50 pointer-events-none" />
       
       <div className="relative z-10 flex flex-col items-center max-w-2xl text-center space-y-6">
-        <div className="relative flex items-center justify-center w-20 h-20 rounded-2xl bg-[#0F131A] border border-[#1C2430] shadow-2xl mb-4">
+        <div className="relative flex items-center justify-center w-20 h-20 rounded-2xl bg-[#0F131A] border border-[#1C2430] mb-4">
           <div className="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent rounded-2xl opacity-50" />
           <Bot className="w-10 h-10 text-text-primary" />
-          <Sparkles className="absolute -top-2 -right-2 w-5 h-5 text-amber-400 animate-pulse" />
+          <Sparkles className="absolute -top-2 -right-2 w-5 h-5 text-amber-400" />
         </div>
 
         <h1 className="text-3xl sm:text-4xl font-bold text-[#F2F4F7] tracking-tight">
@@ -30,7 +30,7 @@ export const AIAssistantPlaceholder: React.FC = () => {
 
         <div className="pt-6">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#11161E] border border-[#1C2430] text-sm text-[#717B8C]">
-            <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-amber-500" />
             {isVi ? 'Đang phát triển...' : 'Under development...'}
           </div>
         </div>

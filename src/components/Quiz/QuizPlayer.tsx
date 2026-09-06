@@ -140,7 +140,7 @@ export const QuizPlayer: React.FC<QuizPlayerProps> = ({
   return (
     <div
       id="quiz-player-container"
-      className="bg-[#0C0F14] border border-[#1C2430] rounded-2xl shadow-xl p-6 sm:p-8 relative"
+      className="bg-[#0C0F14] border border-[#1C2430] rounded-2xl p-6 sm:p-8 relative"
     >
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#1C2430]">
@@ -338,11 +338,11 @@ export const QuizPlayer: React.FC<QuizPlayerProps> = ({
       {showConfirmModal && (
         <div
           id="confirm-submit-modal-overlay"
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-fade-in"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 animate-fade-in"
         >
           <div
             id="confirm-submit-modal-container"
-            className="w-full max-w-md bg-[#0C0F14] border border-[#1C2430] rounded-2xl shadow-2xl p-6 text-center space-y-4"
+            className="w-full max-w-md bg-[#0C0F14] border border-[#1C2430] rounded-2xl p-6 text-center space-y-4"
           >
             <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-success/10 border border-success/30 text-success mx-auto">
               <AlertCircle className="w-6 h-6" />

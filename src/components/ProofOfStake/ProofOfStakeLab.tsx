@@ -377,7 +377,7 @@ export const ProofOfStakeLab: React.FC = () => {
 
             {isMoreMenuOpen && (
               <div
-                className="absolute right-0 top-full mt-1.5 w-48 bg-[#0C0F14] backdrop-blur-md border border-white/[0.08] rounded-xl shadow-2xl p-1.5 z-40 font-sans text-xs animate-in fade-in slide-in-from-top-1 duration-150"
+                className="absolute right-0 top-full mt-1.5 w-48 bg-[#0C0F14] border border-white/[0.08] rounded-xl p-1.5 z-40 font-sans text-xs animate-in fade-in slide-in-from-top-1 duration-150"
                 role="menu"
               >
                 {/* Help Modal */}
@@ -535,7 +535,7 @@ export const ProofOfStakeLab: React.FC = () => {
           className="fixed inset-0 z-50 bg-[#090A0F] p-4 sm:p-8 overflow-y-auto space-y-6 animate-in fade-in zoom-in-95 duration-200"
         >
           {/* Fullscreen Header */}
-          <div className="sticky top-0 z-40 bg-[#090A0F]/95 backdrop-blur-xl pb-4 border-b border-white/[0.08] flex flex-wrap items-center justify-between gap-4">
+          <div className="sticky top-0 z-40 bg-[#090A0F]/95 pb-4 border-b border-white/[0.08] flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-2xl bg-white/[0.04] border border-border-primary flex items-center justify-center text-text-primary">
                 <Sparkles className="w-5 h-5" />

@@ -198,7 +198,7 @@ export const TransactionCreateStep: React.FC<TransactionCreateStepProps> = ({
               type="submit"
               id="btn-create-e2e-tx"
               disabled={isMining}
-              className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-sans text-xs font-semibold px-5 py-2.5 rounded-xl shadow-[0_0_15px_rgba(0,210,255,0.3)] hover:shadow-[0_0_20px_rgba(0,210,255,0.45)] transition-all flex items-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50"
+              className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-sans text-xs font-semibold px-5 py-2.5 rounded-xl hover: transition-all flex items-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>{language === 'vi' ? 'Tạo giao dịch' : 'Create Transaction'}</span>

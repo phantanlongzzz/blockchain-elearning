@@ -30,7 +30,7 @@ export const ModuleProgressRail: React.FC = () => {
   }
 
   return (
-    <div className="bg-[#070B14]/65 backdrop-blur-xl border-b border-white/[0.06] font-sans sticky top-14 sm:top-16 z-40">
+    <div className="bg-[#070B14]/65 border-b border-white/[0.06] font-sans sticky top-14 sm:top-16 z-40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
         {/* ROW 2: Breadcrumb Path & Stats */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
@@ -71,7 +71,7 @@ export const ModuleProgressRail: React.FC = () => {
         {/* ROW 3: Segmented Glass Slider for Module Lessons */}
         {currentModule.lessons.length > 1 && (
           <div className="mt-1.5 pt-1.5 border-t border-white/[0.04] overflow-x-auto no-scrollbar pb-0.5">
-            <div className="inline-flex items-center gap-1 p-1 bg-black/40 backdrop-blur-md border border-white/[0.06] rounded-xl">
+            <div className="inline-flex items-center gap-1 p-1 bg-black/40 border border-white/[0.06] rounded-xl">
               {currentModule.lessons.map((lesson, idx) => {
                 const isSelected = lesson.id === currentLesson.id;
                 const lessonProg = progressMap[lesson.id];
@@ -85,7 +85,7 @@ export const ModuleProgressRail: React.FC = () => {
                     onClick={() => navigateTo(currentModule.id, lesson.id)}
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-sans tracking-normal transition-all shrink-0 cursor-pointer ${
                       isSelected
-                        ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/35 shadow-[0_0_12px_rgba(0,210,255,0.2)] font-semibold'
+                        ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/35 font-semibold'
                         : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04] border border-transparent font-medium'
                     }`}
                   >

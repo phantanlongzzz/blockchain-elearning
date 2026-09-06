@@ -31,8 +31,8 @@ export const ExperimentParametersModal: React.FC<ExperimentParametersModalProps>
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-150 font-sans">
-      <div className="bg-[#0D1322] border border-[#1E293B] rounded-2xl w-full max-w-lg shadow-2xl p-5 sm:p-6 space-y-5">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 animate-in fade-in duration-150 font-sans">
+      <div className="bg-[#0D1322] border border-[#1E293B] rounded-2xl w-full max-w-lg p-5 sm:p-6 space-y-5">
         {/* Header */}
         <div className="flex items-center justify-between pb-3 border-b border-[#1E293B]">
           <div className="flex items-center gap-2">

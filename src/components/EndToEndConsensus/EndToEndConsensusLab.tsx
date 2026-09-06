@@ -1348,7 +1348,7 @@ export const EndToEndConsensusLab: React.FC = () => {
 
             let stepButtonClasses = 'bg-[#0c101c]/50 border-zinc-800/60 text-zinc-500 hover:text-zinc-300 hover:border-zinc-700 rounded-xl p-2.5';
             if (isActive) {
-              stepButtonClasses = 'bg-cyan-500/15 border border-cyan-400/50 text-cyan-300 shadow-[0_0_12px_rgba(0,210,255,0.15)] rounded-xl p-2.5 font-semibold';
+              stepButtonClasses = 'bg-cyan-500/15 border border-cyan-400/50 text-cyan-300 rounded-xl p-2.5 font-semibold';
             } else if (isNextTarget) {
               stepButtonClasses = 'guidance-amber-pulse bg-amber-950/40 border-amber-400 text-amber-200 ring-1 ring-amber-400/80 font-medium rounded-xl p-2.5';
             } else if (isCompleted) {
@@ -1366,7 +1366,7 @@ export const EndToEndConsensusLab: React.FC = () => {
                 className={`border text-left transition-all cursor-pointer text-xs relative ${stepButtonClasses}`}
               >
                 {isNextTarget && (
-                  <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping" />
+                  <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-amber-400" />
                 )}
                 <div className="text-[11px] font-mono text-zinc-400 flex items-center justify-between">
                   <span>{language === 'vi' ? s.labelVi : s.labelEn}</span>
@@ -1616,12 +1616,12 @@ export const EndToEndConsensusLab: React.FC = () => {
               }}
               className={`text-xs font-semibold transition-all flex items-center gap-2 active:scale-95 cursor-pointer shadow-sm ${
                 isReadyForNext
-                  ? 'guidance-amber-pulse bg-amber-500 hover:bg-amber-400 text-zinc-950 ring-2 ring-amber-400/80 shadow-[0_0_18px_rgba(245,158,11,0.3)] font-bold px-4 py-2 rounded-xl'
-                  : 'bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-sans text-xs font-bold px-4 py-2 rounded-xl shadow-[0_0_15px_rgba(0,210,255,0.3)]'
+                  ? 'guidance-amber-pulse bg-amber-500 hover:bg-amber-400 text-zinc-950 ring-2 ring-amber-400/80 font-bold px-4 py-2 rounded-xl'
+                  : 'bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-sans text-xs font-bold px-4 py-2 rounded-xl'
               }`}
             >
               {isReadyForNext && (
-                <span className="w-1.5 h-1.5 rounded-full bg-zinc-950 animate-ping" />
+                <span className="w-1.5 h-1.5 rounded-full bg-zinc-950" />
               )}
               <span>
                 {isReadyForNext && nextRecommendedActionVi

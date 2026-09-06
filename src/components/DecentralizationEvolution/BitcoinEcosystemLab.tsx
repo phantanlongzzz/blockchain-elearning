@@ -159,7 +159,7 @@ export const BitcoinEcosystemLab: React.FC<BitcoinEcosystemLabProps> = ({
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="p-6 rounded-2xl bg-[#0B0E12] border border-amber-500/20 shadow-2xl">
+      <div className="p-6 rounded-2xl bg-[#0B0E12] border border-amber-500/20">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-1.5">
             <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-mono font-bold uppercase">
@@ -227,10 +227,10 @@ export const BitcoinEcosystemLab: React.FC<BitcoinEcosystemLabProps> = ({
       {/* Main Simulation Stage & Step Explanation */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: Interactive Visual Animation Stage */}
-        <div className="lg:col-span-8 p-6 rounded-2xl bg-[#090d16] border border-slate-800 shadow-xl space-y-6">
+        <div className="lg:col-span-8 p-6 rounded-2xl bg-[#090d16] border border-slate-800 space-y-6">
           <div className="flex items-center justify-between pb-3 border-b border-slate-800">
             <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse" />
+              <span className="w-2.5 h-2.5 rounded-full bg-amber-400" />
               <h4 className="text-sm font-bold font-mono text-white uppercase">
                 {language === 'vi' ? 'MÔ PHỎNG CHI TIẾT BƯỚC' : 'STEP DETAIL'}: {pipelineStep} / 7
               </h4>
@@ -266,7 +266,7 @@ export const BitcoinEcosystemLab: React.FC<BitcoinEcosystemLabProps> = ({
             {pipelineStep === 2 && (
               <div className="text-center space-y-3 animate-fadeIn max-w-md">
                 <div className="w-12 h-12 rounded-xl bg-white/[0.04] text-text-muted border border-border-primary mx-auto flex items-center justify-center">
-                  <Radio className="w-6 h-6 animate-pulse" />
+                  <Radio className="w-6 h-6" />
                 </div>
                 <div className="text-sm font-bold text-white font-mono">
                   Lan Truyền Mạng Ngang Hàng (P2P Broadcast)
@@ -414,7 +414,7 @@ export const BitcoinEcosystemLab: React.FC<BitcoinEcosystemLabProps> = ({
         </div>
 
         {/* Right Column: Sovereign Role Explorer */}
-        <div className="lg:col-span-4 p-6 rounded-2xl bg-[#090d16] border border-slate-800 shadow-xl flex flex-col justify-between space-y-5">
+        <div className="lg:col-span-4 p-6 rounded-2xl bg-[#090d16] border border-slate-800 flex flex-col justify-between space-y-5">
           <div className="space-y-4">
             <div className="flex items-center gap-2 text-xs font-mono font-bold text-amber-400 uppercase">
               <Sparkles className="w-4 h-4" />

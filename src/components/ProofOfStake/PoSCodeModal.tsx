@@ -158,8 +158,8 @@ export const PoSCodeModal: React.FC<PoSCodeModalProps> = ({
   const isVi = language === 'vi';
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
-      <div className="bg-[#0C0F14] border border-[#1C2430] rounded-2xl w-full max-w-4xl max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 animate-fadeIn">
+      <div className="bg-[#0C0F14] border border-[#1C2430] rounded-2xl w-full max-w-4xl max-h-[92vh] flex flex-col overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between px-5 sm:px-6 py-3.5 sm:py-4 border-b border-[#1C2430] bg-[#0F131A]">
           <div className="flex items-center gap-3">

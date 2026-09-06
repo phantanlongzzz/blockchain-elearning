@@ -70,9 +70,9 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
         {/* Left Column: Visual Interactive Block (7 cols) */}
         <div className="lg:col-span-7 space-y-4">
           {/* Previous Block Reference (Block #41) */}
-          <div className="p-3.5 rounded-2xl bg-[#0B0F19]/70 backdrop-blur-xl border border-white/[0.08] shadow-[0_8px_24px_rgba(0,0,0,0.5)] text-slate-400 text-xs flex items-center justify-between font-mono">
+          <div className="p-3.5 rounded-2xl bg-[#0B0F19]/70 border border-white/[0.08] text-slate-400 text-xs flex items-center justify-between font-mono">
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-cyan-500/60 shadow-[0_0_6px_rgba(0,210,255,0.6)]"></span>
+              <span className="w-2 h-2 rounded-full bg-cyan-500/60"></span>
               <span className="text-slate-300 font-semibold font-sans">
                 {isVi ? 'Block #41 (Khối trước)' : 'Block #41 (Previous block)'}
               </span>
@@ -87,19 +87,19 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
 
           {/* Cryptographic Link Pointer */}
           <div className="flex justify-center items-center gap-2 text-cyan-400/60 font-mono text-xs py-1">
-            <ArrowDown className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
+            <ArrowDown className="w-3.5 h-3.5 text-cyan-400" />
             <span className="text-slate-400 text-[11px] font-sans">
               {isVi ? 'Liên kết Previous Hash Pointer' : 'Previous Hash Pointer Link'}
             </span>
-            <ArrowDown className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
+            <ArrowDown className="w-3.5 h-3.5 text-cyan-400" />
           </div>
 
           {/* Centerpiece: Detailed Interactive Block #42 */}
-          <div className="p-5 sm:p-6 rounded-2xl bg-[#0B0F19]/70 backdrop-blur-xl border border-white/[0.08] shadow-[0_16px_40px_rgba(0,0,0,0.6)] space-y-5">
+          <div className="p-5 sm:p-6 rounded-2xl bg-[#0B0F19]/70 border border-white/[0.08] space-y-5">
             {/* Block Banner Header */}
             <div className="flex items-center justify-between pb-4 border-b border-white/[0.06]">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-600/20 border border-cyan-500/30 flex items-center justify-center text-cyan-300 font-bold font-mono text-sm shadow-[0_0_12px_rgba(0,210,255,0.2)]">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-600/20 border border-cyan-500/30 flex items-center justify-center text-cyan-300 font-bold font-mono text-sm">
                   #42
                 </div>
                 <div>
@@ -119,8 +119,8 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
                 onClick={() => handleSelectField('headerHash')}
                 className={`text-right p-2.5 rounded-xl border transition-all cursor-pointer group ${
                   activeField === 'headerHash'
-                    ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border-cyan-500/50 text-white ring-1 ring-cyan-500/30 shadow-[0_0_15px_rgba(0,210,255,0.25)]'
-                    : 'bg-black/40 backdrop-blur-md border-white/[0.06] text-slate-300 hover:border-cyan-500/30'
+                    ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border-cyan-500/50 text-white ring-1 ring-cyan-500/30'
+                    : 'bg-black/40 border-white/[0.06] text-slate-300 hover:border-cyan-500/30'
                 }`}
               >
                 <div className={`text-[10px] font-mono font-semibold uppercase transition-colors ${
@@ -137,7 +137,7 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
             </div>
 
             {/* LAYER 1: BLOCK HEADER */}
-            <div className="p-4 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.05] space-y-3">
+            <div className="p-4 rounded-xl bg-black/40 border border-white/[0.05] space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-mono font-bold text-cyan-300 uppercase tracking-wider flex items-center gap-2">
                   <Layers className="w-3.5 h-3.5 text-cyan-400" />
@@ -156,7 +156,7 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
                   onClick={() => handleSelectField('prevHash')}
                   className={`p-3 rounded-xl border text-left transition-all cursor-pointer group ${
                     activeField === 'prevHash'
-                      ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border-cyan-500/50 text-white ring-1 ring-cyan-500/30 shadow-[0_0_15px_rgba(0,210,255,0.2)]'
+                      ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border-cyan-500/50 text-white ring-1 ring-cyan-500/30'
                       : 'bg-white/[0.02] border-white/[0.06] text-slate-300 hover:border-cyan-500/30 hover:bg-white/[0.04]'
                   }`}
                 >
@@ -181,7 +181,7 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
                   onClick={() => handleSelectField('timestamp')}
                   className={`p-3 rounded-xl border text-left transition-all cursor-pointer group ${
                     activeField === 'timestamp'
-                      ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border-cyan-500/50 text-white ring-1 ring-cyan-500/30 shadow-[0_0_15px_rgba(0,210,255,0.2)]'
+                      ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border-cyan-500/50 text-white ring-1 ring-cyan-500/30'
                       : 'bg-white/[0.02] border-white/[0.06] text-slate-300 hover:border-cyan-500/30 hover:bg-white/[0.04]'
                   }`}
                 >
@@ -206,7 +206,7 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
                   onClick={() => handleSelectField('merkleRoot')}
                   className={`p-3 rounded-xl border text-left transition-all cursor-pointer group ${
                     activeField === 'merkleRoot'
-                      ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border-cyan-500/50 text-white ring-1 ring-cyan-500/30 shadow-[0_0_15px_rgba(0,210,255,0.2)]'
+                      ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border-cyan-500/50 text-white ring-1 ring-cyan-500/30'
                       : 'bg-white/[0.02] border-white/[0.06] text-slate-300 hover:border-cyan-500/30 hover:bg-white/[0.04]'
                   }`}
                 >
@@ -231,7 +231,7 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
                   onClick={() => handleSelectField('nonce')}
                   className={`p-3 rounded-xl border text-left transition-all cursor-pointer group ${
                     activeField === 'nonce'
-                      ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border-cyan-500/50 text-white ring-1 ring-cyan-500/30 shadow-[0_0_15px_rgba(0,210,255,0.2)]'
+                      ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border-cyan-500/50 text-white ring-1 ring-cyan-500/30'
                       : 'bg-white/[0.02] border-white/[0.06] text-slate-300 hover:border-cyan-500/30 hover:bg-white/[0.04]'
                   }`}
                 >
@@ -252,7 +252,7 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
             </div>
 
             {/* LAYER 2: BLOCK BODY */}
-            <div className="p-4 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.05] space-y-3">
+            <div className="p-4 rounded-xl bg-black/40 border border-white/[0.05] space-y-3">
               <div className="flex items-center justify-between">
                 <button
                   type="button"
@@ -299,7 +299,7 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
 
         {/* Right Column: Component Dissection */}
         <div className="lg:col-span-5 space-y-4">
-          <div className="p-5 sm:p-6 rounded-2xl bg-[#0B0F19]/70 backdrop-blur-xl border border-white/[0.08] shadow-[0_16px_40px_rgba(0,0,0,0.6)] space-y-4">
+          <div className="p-5 sm:p-6 rounded-2xl bg-[#0B0F19]/70 border border-white/[0.08] space-y-4">
             {/* Content for active component */}
             {activeField === 'prevHash' && (
               <div className="space-y-3">
@@ -312,7 +312,7 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
                     ? 'Block #42 lưu hash của Block #41 để liên kết chuỗi.'
                     : 'Block #42 stores Block #41’s hash to preserve chain continuity.'}
                 </p>
-                <div className="p-3.5 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.05] text-xs text-slate-400 leading-relaxed font-sans">
+                <div className="p-3.5 rounded-xl bg-black/40 border border-white/[0.05] text-xs text-slate-400 leading-relaxed font-sans">
                   {isVi
                     ? 'Nếu Block #41 bị thay đổi, hash của nó đổi theo, làm lệch Previous Hash của Block #42 và làm đứt chuỗi ngay lập tức.'
                     : 'If Block #41 is altered, its hash changes, causing a mismatch in Block #42 and breaking the chain.'}
@@ -332,7 +332,7 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
                     : 'Records when the block was packaged in UNIX epoch seconds.'}
                 </p>
                 {/* Mini Interactive Experiment */}
-                <div className="p-3.5 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.05] space-y-3">
+                <div className="p-3.5 rounded-xl bg-black/40 border border-white/[0.05] space-y-3">
                   <div className="text-xs font-semibold text-slate-300 flex items-center justify-between font-mono">
                     <span>{isVi ? 'Thử đổi Timestamp:' : 'Change Timestamp:'}</span>
                   </div>
@@ -372,7 +372,7 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
                     ? 'Bản băm 32-byte tóm lược toàn bộ giao dịch trong Body.'
                     : 'A 32-byte cryptographic summary of all transactions in the Body.'}
                 </p>
-                <div className="p-3.5 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.05] text-xs text-slate-400 leading-relaxed font-sans">
+                <div className="p-3.5 rounded-xl bg-black/40 border border-white/[0.05] text-xs text-slate-400 leading-relaxed font-sans">
                   {isVi
                     ? 'Header chỉ cần lưu Merkle Root thay vì toàn bộ dữ liệu giao dịch, giúp node nhẹ (SPV) xác thực cực nhanh mà không cần tải cả khối.'
                     : 'Header only stores the Merkle Root instead of full raw transactions, allowing light clients (SPV) to verify transactions instantly.'}
@@ -392,7 +392,7 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
                     : 'Integer iterated during mining to find a hash meeting difficulty target.'}
                 </p>
                 {/* Mini Interactive Nonce Stepper */}
-                <div className="p-3.5 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.05] space-y-3">
+                <div className="p-3.5 rounded-xl bg-black/40 border border-white/[0.05] space-y-3">
                   <div className="text-xs font-semibold text-slate-300 flex items-center justify-between font-mono">
                     <span>{isVi ? 'Tăng Nonce:' : 'Increment Nonce:'}</span>
                     <span className="text-xs text-cyan-300 font-bold">{demoNonce}</span>
@@ -428,7 +428,7 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
                     ? 'Chứa danh sách giao dịch thô đã được xác thực chữ ký số và số dư.'
                     : 'Holds all raw transactions validated by digital signatures and balance checks.'}
                 </p>
-                <div className="p-3.5 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.05] text-xs text-slate-400 leading-relaxed font-sans">
+                <div className="p-3.5 rounded-xl bg-black/40 border border-white/[0.05] text-xs text-slate-400 leading-relaxed font-sans">
                   {isVi
                     ? 'Mỗi giao dịch gồm địa chỉ gửi, địa chỉ nhận, lượng token, số nonce và chữ ký mật mã ECDSA.'
                     : 'Each transaction contains sender address, recipient address, token amount, account nonce, and ECDSA signature.'}
@@ -447,7 +447,7 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
                     ? 'Mã băm của khối được tính bằng cách băm 80 bytes của Block Header.'
                     : 'Block hash is computed exclusively by hashing the 80-byte Block Header.'}
                 </p>
-                <div className="p-3.5 rounded-xl bg-black/40 backdrop-blur-md border border-white/[0.05] font-mono text-xs text-slate-300">
+                <div className="p-3.5 rounded-xl bg-black/40 border border-white/[0.05] font-mono text-xs text-slate-300">
                   <div className="text-cyan-300 break-all text-[11px]">
                     SHA-256(PrevHash + MerkleRoot + Timestamp + Nonce)
                   </div>
@@ -457,7 +457,7 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
           </div>
 
           {/* Quick Bridge Links */}
-          <div className="p-4 rounded-2xl bg-[#0B0F19]/70 backdrop-blur-xl border border-white/[0.08] shadow-[0_8px_24px_rgba(0,0,0,0.5)] flex items-center justify-between gap-3 text-xs">
+          <div className="p-4 rounded-2xl bg-[#0B0F19]/70 border border-white/[0.08] flex items-center justify-between gap-3 text-xs">
             <span className="text-slate-400 font-sans">
               {isVi ? 'Tiếp theo:' : 'Next:'}
             </span>
@@ -465,7 +465,7 @@ export const BlockStructureExplorer: React.FC<BlockStructureExplorerProps> = ({
               type="button"
               id="btn-next-stage-from-structure"
               onClick={onNextStage}
-              className="px-4 py-2 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-sans text-xs font-medium shadow-[0_0_15px_rgba(0,210,255,0.3)] inline-flex items-center gap-1.5 cursor-pointer transition-all"
+              className="px-4 py-2 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-sans text-xs font-medium inline-flex items-center gap-1.5 cursor-pointer transition-all"
             >
               <span>{isVi ? 'Chữ Ký Số' : 'Digital Signature'}</span>
               <ArrowRight className="w-3.5 h-3.5" />

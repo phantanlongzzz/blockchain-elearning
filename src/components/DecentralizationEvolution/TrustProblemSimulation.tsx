@@ -80,7 +80,7 @@ export const TrustProblemSimulation: React.FC<TrustProblemSimulationProps> = ({
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="p-6 rounded-2xl bg-[#0B0E12] border border-border-primary shadow-2xl">
+      <div className="p-6 rounded-2xl bg-[#0B0E12] border border-border-primary">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-1.5">
             <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-white/[0.04] border border-border-primary text-text-primary text-xs font-mono font-bold uppercase">
@@ -146,7 +146,7 @@ export const TrustProblemSimulation: React.FC<TrustProblemSimulationProps> = ({
       {/* Main Simulation Workspace */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: Interactive Visual Vault & Actors */}
-        <div className="lg:col-span-8 p-6 rounded-2xl bg-[#090d16] border border-slate-800 shadow-xl space-y-6">
+        <div className="lg:col-span-8 p-6 rounded-2xl bg-[#090d16] border border-slate-800 space-y-6">
           {/* Top: The Central Custodian (Goldsmith) */}
           <div className={`p-4 rounded-xl border transition-all ${
             isFractionalReserveExceeded
@@ -200,7 +200,7 @@ export const TrustProblemSimulation: React.FC<TrustProblemSimulationProps> = ({
                   <span>{language === 'vi' ? 'TỔNG CHỨNG CHỈ ĐÃ IN' : 'TOTAL CERTIFICATES'}</span>
                 </div>
                 <div className={`text-lg font-bold font-mono mt-1 ${
-                  isFractionalReserveExceeded ? 'text-rose-400 animate-pulse' : 'text-success'
+                  isFractionalReserveExceeded ? 'text-rose-400' : 'text-success'
                 }`}>
                   {totalPaperClaims} CHỨNG CHỈ
                 </div>
@@ -311,7 +311,7 @@ export const TrustProblemSimulation: React.FC<TrustProblemSimulationProps> = ({
         </div>
 
         {/* Right Column: Educational Breakdown Card */}
-        <div className="lg:col-span-4 p-6 rounded-2xl bg-[#090d16] border border-slate-800 shadow-xl flex flex-col justify-between space-y-4">
+        <div className="lg:col-span-4 p-6 rounded-2xl bg-[#090d16] border border-slate-800 flex flex-col justify-between space-y-4">
           <div className="space-y-4">
             <div className="flex items-center gap-2 text-xs font-mono font-bold text-text-primary uppercase">
               <Sparkles className="w-4 h-4" />

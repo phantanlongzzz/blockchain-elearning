@@ -200,7 +200,7 @@ export const StakeDistributionBar: React.FC<StakeDistributionBarProps> = ({
                           textAnchor="middle"
                           dominantBaseline="central"
                           fill="#FFFFFF"
-                          className="font-mono font-bold text-[11px] pointer-events-none drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]"
+                          className="font-mono font-bold text-[11px] pointer-events-none drop-"
                         >
                           {slice.percentage.toFixed(0)}%
                         </text>

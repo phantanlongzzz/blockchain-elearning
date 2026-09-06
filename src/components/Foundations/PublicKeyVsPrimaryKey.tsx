@@ -6,7 +6,7 @@ export const PublicKeyVsPrimaryKey: React.FC = () => {
   const isVi = language === 'vi';
 
   return (
-    <div className="rounded-xl bg-black/35 backdrop-blur-md border border-white/[0.06] p-5 sm:p-6 space-y-4 font-sans">
+    <div className="rounded-xl bg-black/35 border border-white/[0.06] p-5 sm:p-6 space-y-4 font-sans">
       {/* Section Title */}
       <div className="space-y-1">
         <h4 className="text-sm sm:text-base font-bold text-white font-sans">

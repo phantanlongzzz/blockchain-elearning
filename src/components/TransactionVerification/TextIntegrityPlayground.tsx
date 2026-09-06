@@ -103,7 +103,7 @@ export const TextIntegrityPlayground: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         
         {/* LEFT: Original Text */}
-        <div className="bg-[#0B0E12] rounded-2xl border border-[#1B2027] p-5 flex flex-col shadow-xl">
+        <div className="bg-[#0B0E12] rounded-2xl border border-[#1B2027] p-5 flex flex-col">
           <div className="mb-3 flex items-center justify-between">
             <h3 className="text-sm font-display font-bold text-white uppercase tracking-wide">Văn bản gốc</h3>
           </div>
@@ -124,7 +124,7 @@ export const TextIntegrityPlayground: React.FC = () => {
         </div>
 
         {/* RIGHT: Test Text */}
-        <div className={`bg-[#0B0E12] rounded-2xl border p-5 flex flex-col shadow-xl transition-colors duration-300 ${!isMatch ? 'border-rose-500/40' : 'border-[#1B2027]'}`}>
+        <div className={`bg-[#0B0E12] rounded-2xl border p-5 flex flex-col transition-colors duration-300 ${!isMatch ? 'border-rose-500/40' : 'border-[#1B2027]'}`}>
           <div className="mb-3 flex items-center justify-between">
             <h3 className="text-sm font-display font-bold text-white uppercase tracking-wide">Văn bản kiểm tra</h3>
           </div>

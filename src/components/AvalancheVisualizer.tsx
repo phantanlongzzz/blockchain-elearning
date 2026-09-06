@@ -152,7 +152,7 @@ export const AvalancheVisualizer: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-6">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teach-1/10 border border-teach-1/25 text-teach-1 text-xs font-mono font-semibold tracking-wider uppercase mb-3 shadow-[0_0_12px_rgba(0,210,255,0.15)]">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teach-1/10 border border-teach-1/25 text-teach-1 text-xs font-mono font-semibold tracking-wider uppercase mb-3">
             <Activity className="w-3.5 h-3.5" />
             <span>{strings.avalanche.badge}</span>
           </div>
@@ -200,7 +200,7 @@ export const AvalancheVisualizer: React.FC = () => {
                   }}
                   className={`text-xs font-mono px-3.5 py-1.5 rounded-lg border transition-all cursor-pointer flex items-center gap-1.5 ${
                     isActive
-                      ? 'bg-teach-1/15 text-teach-1 border-teach-1/40 shadow-[0_0_12px_rgba(0,210,255,0.2)] font-semibold'
+                      ? 'bg-teach-1/15 text-teach-1 border-teach-1/40 font-semibold'
                       : 'bg-transparent text-[#A1A1AA] hover:text-[#F4F4F5] border-transparent hover:bg-white/[0.04]'
                   }`}
                 >
@@ -223,10 +223,10 @@ export const AvalancheVisualizer: React.FC = () => {
         {/* Dual Input and Hash Comparison Panel */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           {/* Side A - Sky Blue / Cyan (teach-1) */}
-          <div className="rounded-2xl bg-[#0B0F19]/60 backdrop-blur-md border border-teach-1/25 p-5 sm:p-6 shadow-[0_8px_30px_rgb(0,0,0,0.35)] relative overflow-hidden">
+          <div className="rounded-2xl bg-[#0B0F19]/60 border border-teach-1/25 p-5 sm:p-6 relative overflow-hidden">
             <div className="flex items-center justify-between border-b border-white/[0.06] pb-3 mb-4">
               <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-teach-1 shadow-[0_0_8px_rgba(0,210,255,0.6)]" />
+                <span className="w-2.5 h-2.5 rounded-full bg-teach-1" />
                 <span className="text-xs font-mono font-bold text-teach-1 uppercase tracking-wider">
                   {strings.avalanche.inputA}
                 </span>
@@ -297,10 +297,10 @@ export const AvalancheVisualizer: React.FC = () => {
           </div>
 
           {/* Side B - Violet / Purple (teach-2 / purple-400) */}
-          <div className="rounded-2xl bg-[#0B0F19]/60 backdrop-blur-md border border-purple-500/25 p-5 sm:p-6 shadow-[0_8px_30px_rgb(0,0,0,0.35)] relative overflow-hidden">
+          <div className="rounded-2xl bg-[#0B0F19]/60 border border-purple-500/25 p-5 sm:p-6 relative overflow-hidden">
             <div className="flex items-center justify-between border-b border-white/[0.06] pb-3 mb-4">
               <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-purple-400 shadow-[0_0_8px_rgba(168,85,247,0.6)]" />
+                <span className="w-2.5 h-2.5 rounded-full bg-purple-400" />
                 <span className="text-xs font-mono font-bold text-purple-400 uppercase tracking-wider">
                   {strings.avalanche.inputB}
                 </span>
@@ -373,7 +373,7 @@ export const AvalancheVisualizer: React.FC = () => {
 
         {/* Central Bit Difference & Hamming Distance Metrics Banner */}
         {diffResult && (
-          <div className="rounded-2xl bg-[#0B0F19]/60 backdrop-blur-md border border-white/[0.08] p-6 sm:p-7 shadow-[0_8px_30px_rgb(0,0,0,0.35)] mb-6 font-sans">
+          <div className="rounded-2xl bg-[#0B0F19]/60 border border-white/[0.08] p-6 sm:p-7 mb-6 font-sans">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center text-center md:text-left">
               {/* Metric 1: Hamming Distance */}
               <div className="border-b md:border-b-0 md:border-r border-white/[0.06] pb-5 md:pb-0 md:pr-6">
@@ -435,7 +435,7 @@ export const AvalancheVisualizer: React.FC = () => {
                   title="50% Strict Avalanche Reference"
                 />
                 <div
-                  className="h-full rounded-full bg-gradient-to-r from-cyan-500 to-sky-400 shadow-[0_0_12px_rgba(0,210,255,0.4)] transition-all duration-300"
+                  className="h-full rounded-full bg-gradient-to-r from-cyan-500 to-sky-400 transition-all duration-300"
                   style={{ width: `${Math.min(100, Math.max(0, diffResult.percentage))}%` }}
                 />
               </div>
@@ -445,7 +445,7 @@ export const AvalancheVisualizer: React.FC = () => {
 
         {/* 256-Bit Cryptographic Heatmap Matrix */}
         {diffResult && (
-          <div className="rounded-2xl bg-[#0B0F19]/60 backdrop-blur-md border border-white/[0.08] p-5 sm:p-7 shadow-[0_8px_30px_rgb(0,0,0,0.35)] font-sans">
+          <div className="rounded-2xl bg-[#0B0F19]/60 border border-white/[0.08] p-5 sm:p-7 font-sans">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/[0.06] pb-4 mb-5">
               <div>
                 <div className="flex items-center gap-2">
@@ -462,7 +462,7 @@ export const AvalancheVisualizer: React.FC = () => {
               {/* Legend */}
               <div className="flex items-center gap-4 text-xs font-mono">
                 <div className="flex items-center gap-2">
-                  <span className="w-3.5 h-3.5 rounded-[3px] bg-teach-1 shadow-[0_0_8px_rgba(0,210,255,0.5)] inline-block" />
+                  <span className="w-3.5 h-3.5 rounded-[3px] bg-teach-1 inline-block" />
                   <span className="text-[#F4F4F5]">{strings.avalanche.flippedBit} (<strong className="text-teach-1">{diffResult.changedBits}</strong>)</span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -487,11 +487,11 @@ export const AvalancheVisualizer: React.FC = () => {
                     onMouseLeave={() => setHoveredBitIndex(null)}
                     className={`w-full aspect-square rounded-[3px] transition-all duration-150 cursor-pointer relative ${
                       isHovered
-                        ? 'scale-150 z-30 ring-2 ring-white shadow-[0_0_16px_rgba(255,255,255,0.5)]'
+                        ? 'scale-150 z-30 ring-2 ring-white'
                         : ''
                     } ${
                       isFlipped
-                        ? 'bg-teach-1 shadow-[0_0_6px_rgba(0,210,255,0.35)] hover:shadow-[0_0_12px_rgba(0,210,255,0.7)]'
+                        ? 'bg-teach-1 hover:'
                         : 'bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.08] hover:border-white/20'
                     }`}
                     title={`Bit #${String(idx).padStart(3, '0')} | Hash A: ${bitA} • Hash B: ${bitB} | [${isFlipped ? (isVi ? 'ĐÃ ĐẢO BIT' : 'FLIPPED') : (isVi ? 'GIỮ NGUYÊN' : 'UNCHANGED')}]`}
@@ -526,7 +526,7 @@ export const AvalancheVisualizer: React.FC = () => {
                     <span
                       className={`px-2 py-0.5 rounded text-[11px] font-semibold tracking-wider ${
                         diffResult.diffIndices.includes(hoveredBitIndex)
-                          ? 'bg-teach-1/15 text-teach-1 border border-teach-1/30 shadow-[0_0_8px_rgba(0,210,255,0.2)]'
+                          ? 'bg-teach-1/15 text-teach-1 border border-teach-1/30'
                           : 'bg-white/5 text-[#71717A] border border-white/10'
                       }`}
                     >
@@ -538,7 +538,7 @@ export const AvalancheVisualizer: React.FC = () => {
                 </>
               ) : (
                 <div className="flex items-center gap-2 text-[#71717A]">
-                  <Activity className="w-3.5 h-3.5 text-teach-1/60 animate-pulse" />
+                  <Activity className="w-3.5 h-3.5 text-teach-1/60" />
                   <span>{strings.avalanche.hoverPrompt}</span>
                 </div>
               )}

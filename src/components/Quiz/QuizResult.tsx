@@ -46,7 +46,7 @@ export const QuizResult: React.FC<QuizResultProps> = ({
   return (
     <div
       id="quiz-result-container"
-      className="bg-[#0C0F14] border border-[#1C2430] rounded-2xl shadow-xl p-6 sm:p-8 animate-fade-in space-y-6"
+      className="bg-[#0C0F14] border border-[#1C2430] rounded-2xl p-6 sm:p-8 animate-fade-in space-y-6"
     >
       {/* Top Banner */}
       <div className="text-center space-y-2 pb-6 border-b border-[#1C2430]">

@@ -178,7 +178,7 @@ export const ForkTreeVisualizer: React.FC<ForkTreeVisualizerProps> = ({
                   {/* Active mining pulse indicator on active branches */}
                   {isRacing && (
                     <div className="flex items-center gap-1 text-[10px] font-mono text-teach-1 px-2 py-0.5 bg-teach-1/10 rounded border border-teach-1/30 shrink-0">
-                      <span className="w-1.5 h-1.5 rounded-full bg-teach-1 animate-pulse" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-teach-1" />
                       <span>{isVi ? 'Đang mở rộng' : 'Mining next...'}</span>
                     </div>
                   )}

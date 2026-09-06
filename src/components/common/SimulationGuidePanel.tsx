@@ -219,12 +219,12 @@ export const SimulationGuidePanel: React.FC<SimulationGuidePanelProps> = ({
                   disabled={!currentStep.isCompleted}
                   className={`px-4 py-2 rounded-lg border text-xs font-mono font-bold flex items-center gap-1.5 cursor-pointer transition-all ${
                     currentStep.isCompleted
-                      ? 'guidance-amber-pulse bg-amber-500 hover:bg-amber-400 text-slate-950 border-amber-400 shadow-[0_0_18px_rgba(245,158,11,0.28)]'
+                      ? 'guidance-amber-pulse bg-amber-500 hover:bg-amber-400 text-slate-950 border-amber-400'
                       : 'bg-slate-900 text-slate-500 border-slate-800 opacity-60 cursor-not-allowed'
                   }`}
                 >
                   {currentStep.isCompleted && (
-                    <span className="w-1.5 h-1.5 rounded-full bg-slate-950 animate-ping" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-slate-950" />
                   )}
                   <span>{isVi ? 'Bước Tiếp Theo →' : 'Next Step →'}</span>
                 </button>
@@ -321,7 +321,7 @@ export const SimulationGuidePanel: React.FC<SimulationGuidePanelProps> = ({
                       <span className="px-2.5 py-1 bg-slate-900 border border-slate-700 text-teach-1 rounded-md cursor-help hover:border-border-primary hover:text-teach-1 transition-all font-semibold">
                         💡 {concept.term}
                       </span>
-                      <div className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-3 bg-[#0d1322] border border-border-primary rounded-lg text-xs font-sans text-slate-200 shadow-2xl opacity-0 group-hover:opacity-100 transition-all duration-200 z-50">
+                      <div className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-3 bg-[#0d1322] border border-border-primary rounded-lg text-xs font-sans text-slate-200 opacity-0 group-hover:opacity-100 transition-all duration-200 z-50">
                         <div className="font-bold font-mono text-teach-1 mb-1 border-b border-slate-800 pb-1">
                           {concept.term}
                         </div>

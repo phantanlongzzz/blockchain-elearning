@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Bot, X, Send, RotateCcw, MessageSquare, Loader2, Sparkles } from 'lucide-react';
+import { Bot, X, Send, RotateCcw, Loader2 } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { useNavigation } from '../../context/NavigationContext';
 import { sendChatMessage, ChatMessageItem as ChatMessageType } from '../../services/aiChatService';
@@ -10,7 +10,6 @@ export const AIAssistantWidget: React.FC = () => {
   const { language, strings } = useLanguage();
   const { currentLesson } = useNavigation();
   const [isOpen, setIsOpen] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
   
   const [messages, setMessages] = useState<ChatMessageType[]>([]);
   const [inputValue, setInputValue] = useState('');
@@ -244,21 +243,11 @@ export const AIAssistantWidget: React.FC = () => {
         {!isOpen && (
           <button
             onClick={() => setIsOpen(true)}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            className="relative flex items-center justify-center w-14 h-14 bg-gradient-to-r from-cyan-600 to-blue-600 text-white rounded-full shadow-lg hover:shadow-cyan-500/25 transition-all duration-300 hover:scale-105 group"
+            className="w-12 h-12 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white flex items-center justify-center shadow-[0_0_20px_rgba(0,210,255,0.35)] hover:shadow-[0_0_25px_rgba(0,210,255,0.5)] border border-cyan-300/30 transition-all duration-200 z-50 cursor-pointer"
+            aria-label={isVi ? 'Mở Trợ lý AI' : 'Open AI Assistant'}
             title={strings.aiAssistant.floatingButtonLabel}
           >
-            <MessageSquare className="w-6 h-6 group-hover:scale-110 transition-transform" />
-            <Sparkles className="absolute -top-1 -right-1 w-4 h-4 text-amber-300 animate-pulse" />
-            
-            {/* Tooltip on hover if not open */}
-            {isHovered && (
-              <div className="absolute right-full mr-4 px-3 py-1.5 bg-slate-800 text-white text-xs font-medium rounded-lg whitespace-nowrap shadow-xl border border-slate-700 animate-in fade-in slide-in-from-right-2">
-                {strings.aiAssistant.floatingButtonLabel}
-                <div className="absolute top-1/2 -right-1 -translate-y-1/2 border-[5px] border-transparent border-l-slate-800" />
-              </div>
-            )}
+            <span className="font-mono text-sm font-bold tracking-wider select-none">AI</span>
           </button>
         )}
       </div>

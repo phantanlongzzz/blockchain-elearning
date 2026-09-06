@@ -34,6 +34,9 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
   const [activeNodeIndex, setActiveNodeIndex] = useState<number | null>(null);
   const [isSimulating, setIsSimulating] = useState(false);
   const [isAutomating, setIsAutomating] = useState(false);
+  const [activeActionBtn, setActiveActionBtn] = useState<'insertBeginning' | 'insertEnd' | 'search' | null>(null);
+  const [highlightedInput, setHighlightedInput] = useState<'data' | 'search' | null>(null);
+  const [newlyAddedNodeId, setNewlyAddedNodeId] = useState<string | null>(null);
   const [simStatus, setSimStatus] = useState<string>('');
   const [searchResultModal, setSearchResultModal] = useState<{
     open: boolean;
@@ -45,14 +48,21 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
     };
   } | null>(null);
   const simTimeoutsRef = useRef<number[]>([]);
+  const workflowRunIdRef = useRef<number>(0);
 
   const clearSimTimeouts = () => {
     simTimeoutsRef.current.forEach((id) => window.clearTimeout(id));
     simTimeoutsRef.current = [];
   };
 
+  const wait = (ms: number) => new Promise<void>((resolve) => {
+    const timerId = window.setTimeout(resolve, ms);
+    simTimeoutsRef.current.push(timerId);
+  });
+
   useEffect(() => {
     return () => {
+      workflowRunIdRef.current += 1;
       clearSimTimeouts();
       if (searchIntervalRef.current) {
         clearInterval(searchIntervalRef.current);
@@ -135,8 +145,13 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
     onInteracted?.();
   };
 
-  // Automated E2E Workflow Demonstration
-  const handleRunWorkflow = () => {
+  // Automated E2E Workflow Demonstration with Slow-Motion Timeline
+  const handleRunWorkflow = async () => {
+    // Increment run ID to cancel previous running workflows
+    workflowRunIdRef.current += 1;
+    const currentRunId = workflowRunIdRef.current;
+    const isAborted = () => workflowRunIdRef.current !== currentRunId;
+
     clearSimTimeouts();
     if (searchIntervalRef.current) {
       clearInterval(searchIntervalRef.current);
@@ -147,9 +162,12 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
     setSearchResultModal(null);
     setSearchResult({ found: false, index: -1, searched: false });
     setActiveNodeIndex(null);
+    setNewlyAddedNodeId(null);
+    setActiveActionBtn(null);
+    setHighlightedInput(null);
     setViewMode('visual');
 
-    // Bước 1: Khóa nút bấm
+    // 1. Khởi động (0.0s): Khóa nút bấm
     setIsAutomating(true);
     setSimStatus(
       language === 'vi'
@@ -158,6 +176,10 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
     );
     onInteracted?.();
 
+    await wait(600);
+    if (isAborted()) return;
+
+    // 2. Điền giá trị mới (0.6s):
     const sampleWords = ['consensus', 'mempool', 'witness', 'nonce'];
     const chosenWord = sampleWords[Math.floor(Math.random() * sampleWords.length)];
 
@@ -167,134 +189,170 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
       setNodes(currentNodes);
     }
 
-    // Bước 2 (Sau 400ms): Tự động điền dữ liệu ngẫu nhiên vào ô input
-    const t1 = window.setTimeout(() => {
-      setInputData(chosenWord);
+    setInputData(chosenWord);
+    setHighlightedInput('data');
+    setSimStatus(
+      language === 'vi'
+        ? `Tự động điền giá trị "${chosenWord}" vào ô nhập liệu...`
+        : `Auto-populating "${chosenWord}" into input field...`
+    );
+
+    await wait(1200);
+    if (isAborted()) return;
+
+    // 3. Giả lập bấm nút Chèn (1.8s):
+    const isInsertHead = Math.random() >= 0.5;
+    setActiveActionBtn(isInsertHead ? 'insertBeginning' : 'insertEnd');
+    setSimStatus(
+      language === 'vi'
+        ? isInsertHead
+          ? 'Giả lập bấm nút: Chèn Đầu (HEAD)...'
+          : 'Giả lập bấm nút: Chèn Cuối (TAIL)...'
+        : isInsertHead
+        ? 'Simulating button click: Insert at Beginning (HEAD)...'
+        : 'Simulating button click: Insert at End (TAIL)...'
+    );
+
+    await wait(800);
+    if (isAborted()) return;
+
+    setActiveActionBtn(null);
+    setHighlightedInput(null);
+
+    // 4. Chèn Node vào danh sách (2.6s):
+    const newNodeId = `node-${Date.now()}`;
+    if (isInsertHead) {
+      const newHeadNode: LinkedListNodeItem = {
+        id: newNodeId,
+        data: chosenWord,
+        nextId: currentNodes.length > 0 ? currentNodes[0].id : null,
+      };
+      currentNodes = [newHeadNode, ...currentNodes];
       setSimStatus(
         language === 'vi'
-          ? `Tự động điền dữ liệu ngẫu nhiên: "${chosenWord}"`
-          : `Auto-populating random data: "${chosenWord}"`
+          ? `Đã tạo Node mới "${chosenWord}" tại HEAD, trỏ .next vào Node cũ`
+          : `Created new Node "${chosenWord}" at HEAD, pointing .next to previous HEAD`
       );
-    }, 400);
-
-    // Bước 3 (Sau 1000ms): Random 50/50 giữa Chèn Đầu hoặc Chèn Cuối
-    const t2 = window.setTimeout(() => {
-      const isInsertHead = Math.random() >= 0.5;
-      const newNodeId = `node-${Date.now()}`;
-
-      if (isInsertHead) {
-        const newHeadNode: LinkedListNodeItem = {
-          id: newNodeId,
-          data: chosenWord,
-          nextId: currentNodes.length > 0 ? currentNodes[0].id : null,
-        };
-        currentNodes = [newHeadNode, ...currentNodes];
-        setSimStatus(
-          language === 'vi'
-            ? `Đã chèn "${chosenWord}" vào HEAD (Đầu danh sách liên kết)`
-            : `Inserted "${chosenWord}" at HEAD of linked list`
-        );
+    } else {
+      const newTailNode: LinkedListNodeItem = {
+        id: newNodeId,
+        data: chosenWord,
+        nextId: null,
+      };
+      if (currentNodes.length === 0) {
+        currentNodes = [newTailNode];
       } else {
-        const newTailNode: LinkedListNodeItem = {
-          id: newNodeId,
-          data: chosenWord,
-          nextId: null,
-        };
-        if (currentNodes.length === 0) {
-          currentNodes = [newTailNode];
-        } else {
-          const updated = currentNodes.map((n, idx) =>
-            idx === currentNodes.length - 1 ? { ...n, nextId: newNodeId } : n
-          );
-          currentNodes = [...updated, newTailNode];
-        }
-        setSimStatus(
-          language === 'vi'
-            ? `Đã chèn "${chosenWord}" vào TAIL (Cuối danh sách liên kết)`
-            : `Inserted "${chosenWord}" at TAIL of linked list`
+        const updated = currentNodes.map((n, idx) =>
+          idx === currentNodes.length - 1 ? { ...n, nextId: newNodeId } : n
         );
+        currentNodes = [...updated, newTailNode];
       }
-
-      setNodes(currentNodes);
-      setInputData('');
-    }, 1000);
-
-    // Bước 4 (Sau 1800ms): Điền vào ô tìm kiếm
-    const t3 = window.setTimeout(() => {
-      setSearchTarget(chosenWord);
       setSimStatus(
         language === 'vi'
-          ? `Điền giá trị tìm kiếm mục tiêu: "${chosenWord}"`
-          : `Setting target search value: "${chosenWord}"`
+          ? `Đã tạo Node mới "${chosenWord}" tại TAIL, cập nhật con trỏ .next`
+          : `Created new Node "${chosenWord}" at TAIL, updated .next pointer`
       );
-    }, 1800);
+    }
 
-    // Bước 5 (Sau 2400ms): Duyệt tuyến tính từ HEAD tới target node
-    const t4 = window.setTimeout(() => {
-      setIsSearching(true);
-      const targetIdx = currentNodes.findIndex(
-        (n) => n.data.toLowerCase() === chosenWord.toLowerCase()
-      );
-      const maxStep = targetIdx >= 0 ? targetIdx : 0;
+    setNodes(currentNodes);
+    setNewlyAddedNodeId(newNodeId);
+    setInputData('');
 
-      for (let s = 0; s <= maxStep; s++) {
-        const stepDelay = s * 220;
-        const subTimer = window.setTimeout(() => {
-          setCurrentSearchIdx(s);
-          setActiveNodeIndex(s);
-          setSimStatus(
-            language === 'vi'
-              ? `Đang duyệt tuyến tính qua Node #${s}...`
-              : `Linearly traversing Node #${s}...`
-          );
-        }, stepDelay);
-        simTimeoutsRef.current.push(subTimer);
-      }
-    }, 2400);
+    await wait(1500);
+    if (isAborted()) return;
 
-    // Bước 6 (Sau 3200ms): Mở modal kết quả & mở khóa
-    const t5 = window.setTimeout(() => {
-      setIsSearching(false);
-      const targetIdx = currentNodes.findIndex(
-        (n) => n.data.toLowerCase() === chosenWord.toLowerCase()
-      );
-      const finalIdx = targetIdx >= 0 ? targetIdx : 0;
-      const totalSteps = finalIdx + 1;
-      const hexAddr = `0x${((finalIdx + 1) * 2048).toString(16).toUpperCase()}`;
-      const posLabel =
-        finalIdx === 0
-          ? 'HEAD (Vị trí 0)'
-          : finalIdx === currentNodes.length - 1
-          ? `TAIL (Vị trí ${finalIdx})`
-          : `Vị trí #${finalIdx}`;
+    // 5. Điền giá trị cần tìm (4.1s):
+    setSearchTarget(chosenWord);
+    setHighlightedInput('search');
+    setSimStatus(
+      language === 'vi'
+        ? `Điền giá trị tìm kiếm mục tiêu: "${chosenWord}"`
+        : `Setting target search value: "${chosenWord}"`
+    );
 
-      setCurrentSearchIdx(null);
-      setActiveNodeIndex(finalIdx);
-      setSearchResult({
-        found: true,
-        index: finalIdx,
-        searched: true,
-      });
+    await wait(600);
+    if (isAborted()) return;
 
-      setSearchResultModal({
-        open: true,
-        data: {
-          value: chosenWord,
-          position: posLabel,
-          address: hexAddr,
-          steps: totalSteps,
-        },
-      });
+    setActiveActionBtn('search');
+    setSimStatus(
+      language === 'vi'
+        ? 'Giả lập bấm nút: Tìm Kiếm...'
+        : 'Simulating button click: Search...'
+    );
 
-      setIsAutomating(false);
+    await wait(1000);
+    if (isAborted()) return;
+
+    setActiveActionBtn(null);
+    setHighlightedInput(null);
+
+    // 6. Dò tìm tuần tự từng Node (5.1s – 7.0s):
+    setIsSearching(true);
+    const targetIdx = currentNodes.findIndex(
+      (n) => n.data.toLowerCase() === chosenWord.toLowerCase()
+    );
+    const maxStep = targetIdx >= 0 ? targetIdx : 0;
+
+    for (let s = 0; s <= maxStep; s++) {
+      setActiveNodeIndex(s);
+      setCurrentSearchIdx(s);
+      const hexAddr = `0x${((s + 1) * 2048).toString(16).toUpperCase()}`;
       setSimStatus(
         language === 'vi'
-          ? `Hoàn tất kịch bản: Đã tìm thấy "${chosenWord}" tại ô nhớ ${hexAddr}`
-          : `Workflow complete: Found "${chosenWord}" at memory ${hexAddr}`
+          ? `Đang duyệt tuyến tính qua Node #${s} (Địa chỉ ${hexAddr})...`
+          : `Linearly traversing Node #${s} (Addr ${hexAddr})...`
       );
-    }, 3200);
 
-    simTimeoutsRef.current = [t1, t2, t3, t4, t5];
+      await wait(900);
+      if (isAborted()) return;
+    }
+
+    // Giữ viền sáng khi tìm thấy Node mục tiêu
+    setSearchResult({
+      found: true,
+      index: maxStep,
+      searched: true,
+    });
+    setSimStatus(
+      language === 'vi'
+        ? `Đã tìm thấy "${chosenWord}" tại Node #${maxStep}!`
+        : `Found "${chosenWord}" at Node #${maxStep}!`
+    );
+
+    await wait(1000);
+    if (isAborted()) return;
+
+    // 7. Hiển thị Modal kết quả (Sau ~7.5s):
+    setIsSearching(false);
+    const totalSteps = maxStep + 1;
+    const hexAddr = `0x${((maxStep + 1) * 2048).toString(16).toUpperCase()}`;
+    const posLabel =
+      maxStep === 0
+        ? 'HEAD (Vị trí 0)'
+        : maxStep === currentNodes.length - 1
+        ? `TAIL (Vị trí ${maxStep})`
+        : `Vị trí #${maxStep}`;
+
+    setCurrentSearchIdx(null);
+    setActiveNodeIndex(null);
+    setNewlyAddedNodeId(null);
+
+    setSearchResultModal({
+      open: true,
+      data: {
+        value: chosenWord,
+        position: posLabel,
+        address: hexAddr,
+        steps: totalSteps,
+      },
+    });
+
+    setIsAutomating(false);
+    setSimStatus(
+      language === 'vi'
+        ? `Hoàn tất kịch bản: Đã tìm thấy "${chosenWord}" tại ô nhớ ${hexAddr}`
+        : `Workflow complete: Found "${chosenWord}" at memory ${hexAddr}`
+    );
   };
 
   // Step-by-step search simulation
@@ -336,6 +394,7 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
   };
 
   const handleReset = () => {
+    workflowRunIdRef.current += 1;
     clearSimTimeouts();
     if (searchIntervalRef.current) {
       clearInterval(searchIntervalRef.current);
@@ -344,6 +403,9 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
     setActiveNodeIndex(null);
     setIsSimulating(false);
     setIsAutomating(false);
+    setActiveActionBtn(null);
+    setHighlightedInput(null);
+    setNewlyAddedNodeId(null);
     setSearchResultModal(null);
     setSimStatus('');
     setNodes(INITIAL_LINKED_LIST_NODES);
@@ -455,22 +517,34 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
                 value={inputData}
                 onChange={(e) => setInputData(e.target.value)}
                 placeholder={strings.foundations.pythonList.valuePlaceholder}
-                disabled={isSimulating}
-                className="bg-black/50 border border-white/[0.08] focus:border-cyan-500/40 rounded-lg px-3 py-1.5 text-xs font-mono text-slate-200 outline-none w-48 placeholder:text-slate-600 disabled:opacity-50"
+                disabled={isSimulating || isAutomating}
+                className={`bg-black/50 border rounded-lg px-3 py-1.5 text-xs font-mono text-slate-200 outline-none w-48 placeholder:text-slate-600 transition-all ${
+                  highlightedInput === 'data'
+                    ? 'border-cyan-400 ring-2 ring-cyan-400/50 shadow-[0_0_15px_rgba(0,210,255,0.3)] bg-cyan-950/20'
+                    : 'border-white/[0.08] focus:border-cyan-500/40'
+                } disabled:opacity-75`}
               />
               <button
                 type="button"
                 onClick={handleInsertBeginning}
-                disabled={isSimulating}
-                className="bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 hover:bg-cyan-500/20 text-xs font-sans font-medium px-3 py-1.5 rounded-lg transition-all cursor-pointer whitespace-nowrap shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={isSimulating || isAutomating}
+                className={`text-xs font-sans font-medium px-3 py-1.5 rounded-lg transition-all cursor-pointer whitespace-nowrap shrink-0 disabled:cursor-not-allowed ${
+                  activeActionBtn === 'insertBeginning'
+                    ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-400 ring-2 ring-cyan-400 shadow-[0_0_16px_rgba(0,210,255,0.4)] scale-105'
+                    : 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 hover:bg-cyan-500/20 disabled:opacity-50'
+                }`}
               >
                 {strings.foundations.linkedList.insertBeginning}
               </button>
               <button
                 type="button"
                 onClick={handleInsertEnd}
-                disabled={isSimulating}
-                className="bg-white/[0.04] text-slate-300 border border-white/[0.08] hover:text-white text-xs font-sans px-3 py-1.5 rounded-lg transition-all cursor-pointer whitespace-nowrap shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={isSimulating || isAutomating}
+                className={`text-xs font-sans px-3 py-1.5 rounded-lg transition-all cursor-pointer whitespace-nowrap shrink-0 disabled:cursor-not-allowed ${
+                  activeActionBtn === 'insertEnd'
+                    ? 'bg-cyan-500/20 text-white border border-cyan-400 ring-2 ring-cyan-400 shadow-[0_0_16px_rgba(0,210,255,0.4)] scale-105'
+                    : 'bg-white/[0.04] text-slate-300 border border-white/[0.08] hover:text-white disabled:opacity-50'
+                }`}
               >
                 {strings.foundations.linkedList.insertEnd}
               </button>
@@ -483,14 +557,22 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
                 value={searchTarget}
                 onChange={(e) => setSearchTarget(e.target.value)}
                 placeholder={strings.foundations.linkedList.searchValue}
-                disabled={isSimulating}
-                className="bg-black/50 border border-white/[0.08] focus:border-cyan-500/40 rounded-lg px-3 py-1.5 text-xs font-mono text-slate-200 outline-none w-36 placeholder:text-slate-600 disabled:opacity-50"
+                disabled={isSimulating || isAutomating}
+                className={`bg-black/50 border rounded-lg px-3 py-1.5 text-xs font-mono text-slate-200 outline-none w-36 placeholder:text-slate-600 transition-all ${
+                  highlightedInput === 'search'
+                    ? 'border-cyan-400 ring-2 ring-cyan-400/50 shadow-[0_0_15px_rgba(0,210,255,0.3)] bg-cyan-950/20'
+                    : 'border-white/[0.08] focus:border-cyan-500/40'
+                } disabled:opacity-75`}
               />
               <button
                 type="button"
-                disabled={isSearching || isSimulating}
+                disabled={isSearching || isSimulating || isAutomating}
                 onClick={handleSearch}
-                className="bg-white/[0.04] border border-white/[0.08] text-slate-300 hover:border-cyan-500/30 hover:text-white disabled:opacity-50 text-xs font-sans px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap shrink-0 disabled:cursor-not-allowed"
+                className={`text-xs font-sans px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap shrink-0 disabled:cursor-not-allowed ${
+                  activeActionBtn === 'search'
+                    ? 'bg-cyan-500/20 text-white border border-cyan-400 ring-2 ring-cyan-400 shadow-[0_0_16px_rgba(0,210,255,0.4)] scale-105'
+                    : 'bg-white/[0.04] border border-white/[0.08] text-slate-300 hover:border-cyan-500/30 hover:text-white disabled:opacity-50'
+                }`}
               >
                 <Search className="w-3.5 h-3.5 text-cyan-400" />
                 <span>{strings.foundations.linkedList.search}</span>
@@ -536,6 +618,7 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
                   const isCurrentInSearch = currentSearchIdx === idx;
                   const isFoundNode = searchResult.found && searchResult.index === idx;
                   const isActiveSimNode = activeNodeIndex === idx;
+                  const isNewlyAdded = newlyAddedNodeId === node.id;
                   const hexAddr = `0x${((idx + 1) * 2048).toString(16).toUpperCase()}`;
                   const nextHexAddr = node.nextId ? `0x${((idx + 2) * 2048).toString(16).toUpperCase()}` : 'NULL';
                   const isArrowActive = activeNodeIndex === idx;
@@ -546,7 +629,9 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
                         {/* Struct Node Card */}
                         <div
                           className={`bg-[#0B101E]/85 backdrop-blur-md border rounded-xl p-3.5 min-w-[200px] shadow-[0_8px_24px_rgba(0,0,0,0.5)] transition-all ${
-                            isActiveSimNode
+                            isNewlyAdded
+                              ? 'border-emerald-400 ring-2 ring-emerald-400/40 shadow-[0_0_20px_rgba(52,211,153,0.35)] scale-[1.02] duration-300'
+                              : isActiveSimNode
                               ? 'border-cyan-400 ring-2 ring-cyan-400/40 shadow-[0_0_20px_rgba(0,210,255,0.35)] scale-[1.02] duration-300'
                               : isFoundNode
                               ? 'border-cyan-400 ring-2 ring-cyan-400/40 shadow-[0_0_24px_rgba(0,210,255,0.3)]'
@@ -560,7 +645,7 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
                             <span className="font-semibold text-slate-200">
                               #{idx} {isHead ? '· HEAD' : isTail ? '· TAIL' : '· NODE'}
                             </span>
-                            <span className={isActiveSimNode ? 'text-cyan-300 font-bold font-mono' : 'text-slate-500 font-mono'}>
+                            <span className={isActiveSimNode || isNewlyAdded ? 'text-cyan-300 font-bold font-mono' : 'text-slate-500 font-mono'}>
                               Addr: {hexAddr}
                             </span>
                           </div>
@@ -587,7 +672,7 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
                               <button
                                 type="button"
                                 onClick={() => handleDeleteNode(idx)}
-                                disabled={isSimulating}
+                                disabled={isSimulating || isAutomating}
                                 className="text-slate-500 hover:text-rose-400 transition-colors cursor-pointer p-0.5 disabled:opacity-30 disabled:cursor-not-allowed"
                                 title="Xóa Node này"
                               >

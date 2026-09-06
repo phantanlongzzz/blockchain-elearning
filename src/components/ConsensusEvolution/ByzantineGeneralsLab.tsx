@@ -6,6 +6,9 @@ import {
   Calculator,
   AlertTriangle,
   ChevronDown,
+  ChevronUp,
+  BookOpen,
+  ShieldCheck,
 } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { GeneralNode, NetworkPacket } from './types';
@@ -38,6 +41,7 @@ export const ByzantineGeneralsLab: React.FC<ByzantineGeneralsLabProps> = ({
   // Threshold interactive experimenter
   const [toleratedTraitors, setToleratedTraitors] = useState<number>(1);
   const [showExplanation, setShowExplanation] = useState<boolean>(false);
+  const [isBftDeepDiveOpen, setIsBftDeepDiveOpen] = useState<boolean>(false);
 
   // Nodes initial setup
   const [nodes, setNodes] = useState<GeneralNode[]>([
@@ -637,6 +641,111 @@ export const ByzantineGeneralsLab: React.FC<ByzantineGeneralsLabProps> = ({
             </div>
           </div>
         </div>
+      </div>
+
+      {/* ========================================================
+          3. PROGRESSIVE DISCLOSURE: DEEP DIVE SECTION
+          Consolidated technical details for Consensus & BFT
+          ======================================================== */}
+      <div className="bg-[#0B0E12] border border-slate-800 rounded-xl overflow-hidden transition-all">
+        <button
+          type="button"
+          id="bft-deep-dive-toggle"
+          onClick={() => setIsBftDeepDiveOpen(!isBftDeepDiveOpen)}
+          className="w-full p-4 sm:p-5 flex items-center justify-between text-left hover:bg-white/[0.02] transition-colors cursor-pointer group"
+          aria-expanded={isBftDeepDiveOpen}
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 shrink-0">
+              <BookOpen className="w-4 h-4" />
+            </div>
+            <div>
+              <h3 className="text-sm font-semibold text-slate-100 font-sans tracking-tight">
+                {isVi ? 'Chi tiết thuật toán đồng thuận & BFT' : 'Consensus Algorithm & BFT Details'}
+              </h3>
+              <p className="text-xs text-slate-400 mt-0.5">
+                {isVi
+                  ? 'Chứng minh toán học định lý Lamport (3f + 1), giả định đồng bộ/bất đồng bộ và tính an toàn (Safety vs Liveness)'
+                  : 'Lamport\'s 3f + 1 mathematical proof, synchrony models, and safety vs liveness guarantees'}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 text-xs font-mono text-slate-400">
+            <span className="hidden sm:inline">
+              {isBftDeepDiveOpen ? (isVi ? 'Thu gọn' : 'Collapse') : (isVi ? 'Xem chi tiết' : 'Expand')}
+            </span>
+            <div className="w-7 h-7 rounded-lg bg-white/[0.04] border border-white/[0.06] flex items-center justify-center text-slate-400 group-hover:text-slate-200 transition-colors">
+              {isBftDeepDiveOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+            </div>
+          </div>
+        </button>
+
+        {isBftDeepDiveOpen && (
+          <div className="p-5 sm:p-6 border-t border-slate-800 bg-[#080C10] space-y-6 animate-in fade-in duration-200">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* Card 1: Lamport 3f+1 Proof */}
+              <div className="p-4 rounded-xl border border-indigo-500/20 bg-indigo-950/10 space-y-2.5">
+                <div className="flex items-center gap-2">
+                  <div className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-400">
+                    <Calculator className="w-4 h-4" />
+                  </div>
+                  <h4 className="text-xs font-semibold text-slate-100 font-sans">
+                    {isVi ? '1. Định lý giới hạn Lamport (1982)' : '1. Lamport\'s Impossibility Theorem'}
+                  </h4>
+                </div>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  {isVi
+                    ? 'Leslie Lamport chứng minh rằng với thông điệp truyền miệng không ký tên điện tử, không hệ thống nào có thể đạt đồng thuận nếu số nút độc hại f chiếm từ 1/3 tổng số nút trở lên. Hệ thống cần tối thiểu N ≥ 3f + 1 nút để luôn bảo đảm đa số trung thực.'
+                    : 'Lamport proved that with oral (unauthenticated) messages, no consensus protocol can tolerate f faulty nodes unless N ≥ 3f + 1, meaning strictly less than 1/3 of nodes can be malicious.'}
+                </p>
+                <div className="pt-1 font-mono text-[11px] text-indigo-300/80 bg-black/40 p-2 rounded border border-indigo-500/20">
+                  N &gt; 3f ⟺ f &lt; N / 3 (Ngưỡng dung lỗi BFT tối đa: ~33.3%)
+                </div>
+              </div>
+
+              {/* Card 2: Safety vs Liveness */}
+              <div className="p-4 rounded-xl border border-amber-500/20 bg-amber-950/10 space-y-2.5">
+                <div className="flex items-center gap-2">
+                  <div className="p-1.5 rounded-lg bg-amber-500/10 text-amber-400">
+                    <AlertTriangle className="w-4 h-4" />
+                  </div>
+                  <h4 className="text-xs font-semibold text-slate-100 font-sans">
+                    {isVi ? '2. An toàn (Safety) vs Sống còn (Liveness)' : '2. Safety vs Liveness'}
+                  </h4>
+                </div>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  {isVi
+                    ? 'Đồng thuận đòi hỏi hai thuộc tính: Safety (không có 2 nút trung thực nào đưa ra quyết định trái ngược nhau - ngăn chặn phân nhánh sai) và Liveness (tất cả các nút trung thực cuối cùng đều đưa ra quyết định - không bị treo mạng vô hạn).'
+                    : 'Consensus relies on two core guarantees: Safety (no two honest nodes commit different transactions) and Liveness (the system eventually makes progress without deadlocking).'}
+                </p>
+                <div className="pt-1 font-mono text-[11px] text-amber-300/80 bg-black/40 p-2 rounded border border-amber-500/20">
+                  Safety: Không bao giờ sai | Liveness: Luôn có tiến triển
+                </div>
+              </div>
+
+              {/* Card 3: Cryptographic Signatures */}
+              <div className="p-4 rounded-xl border border-emerald-500/20 bg-emerald-950/10 space-y-2.5">
+                <div className="flex items-center gap-2">
+                  <div className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-400">
+                    <ShieldCheck className="w-4 h-4" />
+                  </div>
+                  <h4 className="text-xs font-semibold text-slate-100 font-sans">
+                    {isVi ? '3. Giải pháp chữ ký số (Signed Messages)' : '3. Cryptographic Signatures Solution'}
+                  </h4>
+                </div>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  {isVi
+                    ? 'Khi sử dụng chữ ký số mật mã học (khóa công khai/khóa bí mật), phó tướng độc hại không thể giả mạo lệnh của chỉ huy. Khi đó, ngưỡng chịu lỗi giảm từ 3f + 1 xuống f + 1 (hệ thống chịu được f kẻ phản bội chỉ với N ≥ f + 2 nút).'
+                    : 'Using cryptographic digital signatures prevents traitors from forging commander messages, relaxing the requirement from N ≥ 3f + 1 down to N ≥ f + 2 in synchronous networks.'}
+                </p>
+                <div className="pt-1 font-mono text-[11px] text-emerald-300/80 bg-black/40 p-2 rounded border border-emerald-500/20">
+                  Signed: Sig_commander(Order) ➔ Không thể làm giả
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Navigation Footer */}

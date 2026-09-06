@@ -10,6 +10,11 @@ import {
   Pencil,
   Eye,
   X,
+  ChevronDown,
+  ChevronUp,
+  BookOpen,
+  ShieldCheck,
+  Zap,
 } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 import { hashSha256, fastSha256Hex } from '../utils/sha256';
@@ -202,6 +207,9 @@ export const BlockchainVisualizer: React.FC = () => {
 
   // Cascade invalidation transition effect
   const [invalidatingIndices, setInvalidatingIndices] = useState<Set<number>>(new Set());
+
+  // Progressive Disclosure: Deep-dive educational explanation section
+  const [isDeepDiveOpen, setIsDeepDiveOpen] = useState(false);
 
   // Check prefers-reduced-motion
   const isReducedMotion =
@@ -883,7 +891,112 @@ export const BlockchainVisualizer: React.FC = () => {
       </div>
 
       {/* ========================================================
-          3. ADD BLOCK MODAL (MINIMAL & STREAMLINED)
+          3. PROGRESSIVE DISCLOSURE: DEEP DIVE SECTION
+          (Collapsed by default to prioritize primary simulation)
+          ======================================================== */}
+      <div className="mt-8 bg-[#0B101E]/60 border border-white/[0.08] rounded-xl overflow-hidden transition-all">
+        <button
+          type="button"
+          id="blockchain-deep-dive-toggle"
+          onClick={() => setIsDeepDiveOpen(!isDeepDiveOpen)}
+          className="w-full p-4 sm:p-5 flex items-center justify-between text-left hover:bg-white/[0.02] transition-colors cursor-pointer group"
+          aria-expanded={isDeepDiveOpen}
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 shrink-0">
+              <BookOpen className="w-4 h-4" />
+            </div>
+            <div>
+              <h3 className="text-sm font-semibold text-slate-100 font-sans tracking-tight">
+                {isVi ? 'Hiểu sâu hơn về chuỗi khối' : 'Deeper Understanding of Blockchain'}
+              </h3>
+              <p className="text-xs text-slate-400 mt-0.5">
+                {isVi
+                  ? 'Cơ chế thác đổ (Cascade Invalidation), Hiệu ứng tuyết lở (Avalanche Effect) và Quy tắc bảo mật 51%'
+                  : 'Cascade invalidation mechanics, avalanche effect, and 51% security guarantees'}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 text-xs font-mono text-slate-400">
+            <span className="hidden sm:inline">
+              {isDeepDiveOpen ? (isVi ? 'Thu gọn' : 'Collapse') : (isVi ? 'Xem chi tiết' : 'Expand')}
+            </span>
+            <div className="w-7 h-7 rounded-lg bg-white/[0.04] border border-white/[0.06] flex items-center justify-center text-slate-400 group-hover:text-slate-200 transition-colors">
+              {isDeepDiveOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+            </div>
+          </div>
+        </button>
+
+        {isDeepDiveOpen && (
+          <div className="p-5 sm:p-6 border-t border-white/[0.08] bg-[#070A12]/80 space-y-6 animate-in fade-in duration-200">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* Card 1: Cascade Invalidation */}
+              <div className="p-4 rounded-xl border border-rose-500/20 bg-rose-950/10 space-y-2.5">
+                <div className="flex items-center gap-2">
+                  <div className="p-1.5 rounded-lg bg-rose-500/10 text-rose-400">
+                    <AlertTriangle className="w-4 h-4" />
+                  </div>
+                  <h4 className="text-xs font-semibold text-slate-100 font-sans">
+                    {isVi ? '1. Cơ chế sụp đổ dây chuyền' : '1. Cascade Invalidation'}
+                  </h4>
+                </div>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  {isVi
+                    ? 'Mỗi khối chứa mã băm của khối trước (Previous Hash). Khi dữ liệu của một khối trong quá khứ bị sửa đổi, mã băm của khối đó thay đổi lập tức, làm đứt gãy liên kết toán học của toàn bộ các khối tiếp theo phía sau.'
+                    : 'Each block embeds the previous block\'s SHA-256 hash. Mutating historical data breaks the cryptographic link for all subsequent blocks in the ledger.'}
+                </p>
+                <div className="pt-1 font-mono text-[11px] text-rose-300/80 bg-black/40 p-2 rounded border border-rose-500/20">
+                  Block[N].data Δ ➔ Hash[N] Δ ➔ Block[N+1].prevHash ≠ Hash[N] ➔ INVALID
+                </div>
+              </div>
+
+              {/* Card 2: Avalanche Effect */}
+              <div className="p-4 rounded-xl border border-cyan-500/20 bg-cyan-950/10 space-y-2.5">
+                <div className="flex items-center gap-2">
+                  <div className="p-1.5 rounded-lg bg-cyan-500/10 text-cyan-400">
+                    <Zap className="w-4 h-4" />
+                  </div>
+                  <h4 className="text-xs font-semibold text-slate-100 font-sans">
+                    {isVi ? '2. Hiệu ứng tuyết lở (Avalanche Effect)' : '2. Avalanche Effect'}
+                  </h4>
+                </div>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  {isVi
+                    ? 'Đặc tính của hàm băm SHA-256: Chỉ cần thay đổi 1 ký tự hoặc 1 bit duy nhất ở dữ liệu đầu vào, hơn 50% số bit ở bản băm đầu ra sẽ đổi ngẫu nhiên. Kẻ tấn công không thể điều chỉnh dữ liệu mà giữ nguyên mã băm.'
+                    : 'A core property of SHA-256: flipping even a single bit in the input randomly diffuses through ~50% of output bits, making hash collision forging computationally infeasible.'}
+                </p>
+                <div className="pt-1 font-mono text-[11px] text-cyan-300/80 bg-black/40 p-2 rounded border border-cyan-500/20">
+                  SHA256(&quot;Alice➔Bob: 5&quot;) ≠ SHA256(&quot;Alice➔Bob: 6&quot;)
+                </div>
+              </div>
+
+              {/* Card 3: 51% Rule */}
+              <div className="p-4 rounded-xl border border-emerald-500/20 bg-emerald-950/10 space-y-2.5">
+                <div className="flex items-center gap-2">
+                  <div className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-400">
+                    <ShieldCheck className="w-4 h-4" />
+                  </div>
+                  <h4 className="text-xs font-semibold text-slate-100 font-sans">
+                    {isVi ? '3. Quy tắc bảo mật 51% (PoW)' : '3. 51% Security Rule'}
+                  </h4>
+                </div>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  {isVi
+                    ? 'Để hợp thức hóa một khối bị sửa đổi trong quá khứ, kẻ tấn công buộc phải đào lại khối đó và toàn bộ các khối tiếp theo với tốc độ nhanh hơn phần còn lại của toàn mạng. Điều này đòi hỏi kiểm soát >51% hashrate toàn cầu.'
+                    : 'To validate altered historical blocks, an attacker must remine that block and every subsequent block faster than the honest network, requiring control of >51% of global computational hashrate.'}
+                </p>
+                <div className="pt-1 font-mono text-[11px] text-emerald-300/80 bg-black/40 p-2 rounded border border-emerald-500/20">
+                  Cost to rewrite block: Work(N) + Work(N+1) + ... &gt; 51% Hashrate
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* ========================================================
+          4. ADD BLOCK MODAL (MINIMAL & STREAMLINED)
           ======================================================== */}
       {isAddBlockModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 font-sans">

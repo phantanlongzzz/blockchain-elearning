@@ -24,8 +24,8 @@ export const TransactionCreateStep: React.FC<TransactionCreateStepProps> = ({
 }) => {
   const [sender, setSender] = useState('Alice');
   const [recipient, setRecipient] = useState('Bob');
-  const [amount, setAmount] = useState<number>(10.0);
-  const [fee, setFee] = useState<number>(0.0005);
+  const [amount, setAmount] = useState<string>('10.0');
+  const [fee, setFee] = useState<string>('0.0005');
   const [lastCreatedTx, setLastCreatedTx] = useState<E2ETransaction | null>(null);
   const [copiedHash, setCopiedHash] = useState(false);
 
@@ -35,13 +35,15 @@ export const TransactionCreateStep: React.FC<TransactionCreateStepProps> = ({
     const preset = PRESET_TXS[selectedIdx];
     setSender(preset.sender);
     setRecipient(preset.recipient);
-    setAmount(preset.amount);
-    setFee(preset.fee);
+    setAmount(preset.amount.toString());
+    setFee(preset.fee.toString());
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!sender.trim() || !recipient.trim() || amount <= 0) return;
+    const numAmount = parseFloat(amount);
+    const numFee = parseFloat(fee);
+    if (!sender.trim() || !recipient.trim() || isNaN(numAmount) || numAmount <= 0) return;
 
     const now = new Date();
     const timestamp = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}.${now.getMilliseconds().toString().padStart(3, '0')}`;
@@ -49,7 +51,7 @@ export const TransactionCreateStep: React.FC<TransactionCreateStepProps> = ({
     const txHash = calculateTxHash({
       sender: sender.trim(),
       receiver: recipient.trim(),
-      amount: Number(amount),
+      amount: numAmount,
       timestamp,
     });
 
@@ -57,8 +59,8 @@ export const TransactionCreateStep: React.FC<TransactionCreateStepProps> = ({
       id: `tx-${Date.now().toString(36)}-${Math.random().toString(36).substring(2, 6)}`,
       sender: sender.trim(),
       recipient: recipient.trim(),
-      amount: Number(amount),
-      feeBTC: Number(fee),
+      amount: numAmount,
+      feeBTC: isNaN(numFee) ? 0.0005 : numFee,
       timestamp,
       hash: txHash,
       status: 'mempool',
@@ -101,7 +103,7 @@ export const TransactionCreateStep: React.FC<TransactionCreateStepProps> = ({
               onChange={handleSelectPreset}
               defaultValue=""
               disabled={isMining}
-              className="appearance-none bg-[#080c16] border border-zinc-800 hover:border-zinc-700 rounded-lg pl-3 pr-8 py-1.5 text-xs text-zinc-200 focus:outline-none focus:border-border-primary focus:ring-1 focus:ring-white/20 transition-colors cursor-pointer disabled:opacity-50"
+              className="appearance-none bg-[#080c16] border border-zinc-800 hover:border-zinc-700 rounded-lg pl-3 pr-8 py-1.5 text-xs text-zinc-200 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 transition-colors cursor-pointer disabled:opacity-50"
             >
               <option value="" disabled>
                 {language === 'vi' ? 'Chọn giao dịch mẫu ▾' : 'Choose a preset ▾'}
@@ -131,7 +133,7 @@ export const TransactionCreateStep: React.FC<TransactionCreateStepProps> = ({
                 onChange={(e) => setSender(e.target.value)}
                 placeholder="Alice"
                 disabled={isMining}
-                className="w-full bg-[#080c16] border border-zinc-800 focus:border-border-primary focus:ring-1 focus:ring-white/20 rounded-lg px-3 py-2 text-xs font-mono text-zinc-100 placeholder-zinc-600 focus:outline-none transition-colors disabled:opacity-50"
+                className="w-full bg-[#080c16] border border-zinc-800 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 rounded-lg px-3 py-2 text-xs font-mono text-zinc-100 placeholder-zinc-600 focus:outline-none transition-colors disabled:opacity-50"
                 required
               />
             </div>
@@ -148,7 +150,7 @@ export const TransactionCreateStep: React.FC<TransactionCreateStepProps> = ({
                 onChange={(e) => setRecipient(e.target.value)}
                 placeholder="Bob"
                 disabled={isMining}
-                className="w-full bg-[#080c16] border border-zinc-800 focus:border-border-primary focus:ring-1 focus:ring-white/20 rounded-lg px-3 py-2 text-xs font-mono text-zinc-100 placeholder-zinc-600 focus:outline-none transition-colors disabled:opacity-50"
+                className="w-full bg-[#080c16] border border-zinc-800 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 rounded-lg px-3 py-2 text-xs font-mono text-zinc-100 placeholder-zinc-600 focus:outline-none transition-colors disabled:opacity-50"
                 required
               />
             </div>
@@ -159,14 +161,14 @@ export const TransactionCreateStep: React.FC<TransactionCreateStepProps> = ({
                 {language === 'vi' ? 'Số lượng BTC' : 'Amount BTC'}
               </label>
               <input
-                type="number"
+                type="text"
+                inputMode="decimal"
+                lang="en-US"
                 id="input-tx-amount"
-                step="0.001"
-                min="0.001"
                 value={amount}
-                onChange={(e) => setAmount(parseFloat(e.target.value) || 0)}
+                onChange={(e) => setAmount(e.target.value)}
                 disabled={isMining}
-                className="w-full bg-[#080c16] border border-zinc-800 focus:border-border-primary focus:ring-1 focus:ring-white/20 rounded-lg px-3 py-2 text-xs font-mono text-zinc-100 focus:outline-none transition-colors disabled:opacity-50"
+                className="w-full bg-[#080c16] border border-zinc-800 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 rounded-lg px-3 py-2 text-xs font-mono text-zinc-100 focus:outline-none transition-colors disabled:opacity-50"
                 required
               />
             </div>
@@ -177,14 +179,14 @@ export const TransactionCreateStep: React.FC<TransactionCreateStepProps> = ({
                 {language === 'vi' ? 'Phí BTC' : 'Fee BTC'}
               </label>
               <input
-                type="number"
+                type="text"
+                inputMode="decimal"
+                lang="en-US"
                 id="input-tx-fee"
-                step="0.0001"
-                min="0.0001"
                 value={fee}
-                onChange={(e) => setFee(parseFloat(e.target.value) || 0)}
+                onChange={(e) => setFee(e.target.value)}
                 disabled={isMining}
-                className="w-full bg-[#080c16] border border-zinc-800 focus:border-border-primary focus:ring-1 focus:ring-white/20 rounded-lg px-3 py-2 text-xs font-mono text-zinc-100 focus:outline-none transition-colors disabled:opacity-50"
+                className="w-full bg-[#080c16] border border-zinc-800 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 rounded-lg px-3 py-2 text-xs font-mono text-zinc-100 focus:outline-none transition-colors disabled:opacity-50"
                 required
               />
             </div>
@@ -196,7 +198,7 @@ export const TransactionCreateStep: React.FC<TransactionCreateStepProps> = ({
               type="submit"
               id="btn-create-e2e-tx"
               disabled={isMining}
- className="px-4 py-2 rounded-lg bg-financial hover:bg-financial/90 text-black font-semibold font-medium text-xs flex items-center gap-1.5 transition-colors active:scale-95 disabled:opacity-50 cursor-pointer"
+              className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-sans text-xs font-semibold px-5 py-2.5 rounded-xl shadow-[0_0_15px_rgba(0,210,255,0.3)] hover:shadow-[0_0_20px_rgba(0,210,255,0.45)] transition-all flex items-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>{language === 'vi' ? 'Tạo giao dịch' : 'Create Transaction'}</span>

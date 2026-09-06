@@ -255,7 +255,7 @@ const LAB_STEPS = [
   { step: 2, labelVi: '02 Mempool', labelEn: '02 Mempool', nameVi: 'Bể giao dịch chờ', nameEn: 'Mempool' },
   { step: 3, labelVi: '03 Khối', labelEn: '03 Block', nameVi: 'Khối ứng viên', nameEn: 'Candidate Block' },
   { step: 4, labelVi: '04 Khai thác', labelEn: '04 Mining', nameVi: 'Đua khai thác', nameEn: 'Mining Race' },
-  { step: 5, labelVi: '05 Lan truyền', labelEn: '05 P2P', nameVi: 'Lan truyền trong mạng P2P', nameEn: 'P2P Broadcast' },
+  { step: 5, labelVi: '05 Lan truyền', labelEn: '05 P2P', nameVi: 'Mạng P2P', nameEn: 'P2P Network' },
   { step: 6, labelVi: '06 Phân nhánh', labelEn: '06 Fork', nameVi: 'Phân nhánh chuỗi', nameEn: 'Fork Resolution' },
   { step: 7, labelVi: '07 Sổ cái', labelEn: '07 Ledger', nameVi: 'Sổ cái chính thức', nameEn: 'Canonical Ledger' },
   { step: 8, labelVi: '08 Nhật ký', labelEn: '08 Events', nameVi: 'Nhật ký sự kiện', nameEn: 'Event Log' },
@@ -314,7 +314,7 @@ export const EndToEndConsensusLab: React.FC = () => {
       id: 'log-1',
       timestamp: '13:56:45',
       category: 'consensus',
-      message: 'Blockchain initialized at Block #2 (Canonical Tip)',
+      message: 'Chuỗi khối khởi tạo tại Khối #2 (Nhánh chính thức)',
     },
   ]);
 
@@ -1340,19 +1340,19 @@ export const EndToEndConsensusLab: React.FC = () => {
         />
 
         {/* Compact Stepper (Visible in Guided & Free Modes) */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-1.5">
+        <div className="grid grid-cols-4 md:grid-cols-8 gap-1.5">
           {LAB_STEPS.map((s) => {
             const isActive = guidedStep === s.step;
             const isCompleted = guidedStep > s.step;
             const isNextTarget = isReadyForNext && nextActionTargetId === `step-${s.step}`;
 
-            let stepButtonClasses = 'bg-[#0c101c]/50 border-zinc-800/60 text-zinc-500 hover:text-zinc-400';
+            let stepButtonClasses = 'bg-[#0c101c]/50 border-zinc-800/60 text-zinc-500 hover:text-zinc-300 hover:border-zinc-700 rounded-xl p-2.5';
             if (isActive) {
-              stepButtonClasses = 'bg-zinc-800 border-zinc-600 text-zinc-100 font-medium ring-1 ring-emerald-500/30';
+              stepButtonClasses = 'bg-cyan-500/15 border border-cyan-400/50 text-cyan-300 shadow-[0_0_12px_rgba(0,210,255,0.15)] rounded-xl p-2.5 font-semibold';
             } else if (isNextTarget) {
-              stepButtonClasses = 'guidance-amber-pulse bg-amber-950/40 border-amber-400 text-amber-200 ring-1 ring-amber-400/80 font-medium';
+              stepButtonClasses = 'guidance-amber-pulse bg-amber-950/40 border-amber-400 text-amber-200 ring-1 ring-amber-400/80 font-medium rounded-xl p-2.5';
             } else if (isCompleted) {
-              stepButtonClasses = 'bg-[#0c101c] border-zinc-800 text-zinc-300 hover:text-zinc-100 hover:border-zinc-700';
+              stepButtonClasses = 'bg-[#0c101c] border-zinc-800 text-zinc-300 hover:text-cyan-300 hover:border-cyan-500/40 rounded-xl p-2.5';
             }
 
             return (
@@ -1363,7 +1363,7 @@ export const EndToEndConsensusLab: React.FC = () => {
                   setGuidedStep(s.step);
                   startNextStep(`step-${s.step}`);
                 }}
-                className={`py-2 px-2.5 rounded-lg border text-left transition-colors cursor-pointer text-xs relative ${stepButtonClasses}`}
+                className={`border text-left transition-all cursor-pointer text-xs relative ${stepButtonClasses}`}
               >
                 {isNextTarget && (
                   <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping" />
@@ -1372,7 +1372,7 @@ export const EndToEndConsensusLab: React.FC = () => {
                   <span>{language === 'vi' ? s.labelVi : s.labelEn}</span>
                   {isNextTarget && <span className="text-amber-400 text-[10px] font-bold">✦ Tiếp</span>}
                 </div>
-                <div className="text-xs truncate text-zinc-200 mt-0.5">
+                <div className="text-xs truncate text-zinc-200 mt-0.5 font-medium">
                   {language === 'vi' ? s.nameVi : s.nameEn}
                 </div>
               </button>
@@ -1401,9 +1401,6 @@ export const EndToEndConsensusLab: React.FC = () => {
             }}
           />
         )}
-
-        {/* Educational "Aha Moment" Insight Banner */}
-        <EducationalInsightBanner currentStep={guidedStep} language={language} />
 
         {/* Failure Injection System & Causality Graph (Rendered in Sandbox & Debug mode, or when faults are active) */}
         {(simulationMode === 'debug' || simulationMode === 'free' || tamperedBlockHeight !== null) && (
@@ -1589,8 +1586,14 @@ export const EndToEndConsensusLab: React.FC = () => {
           <div className="flex items-center gap-2 text-xs font-mono text-zinc-400">
             <span>{language === 'vi' ? `Bước ${guidedStep} / 8` : `Step ${guidedStep} of 8`}</span>
             <span className="text-zinc-600">•</span>
-            <span className="text-text-secondary font-semibold uppercase text-[10px]">
-              {simulationMode} mode
+            <span className="text-cyan-400 font-semibold uppercase text-[10px] font-sans">
+              {language === 'vi'
+                ? simulationMode === 'guided'
+                  ? 'CHẾ ĐỘ HƯỚNG DẪN'
+                  : simulationMode === 'free'
+                  ? 'CHẾ ĐỘ TỰ DO'
+                  : 'CHẾ ĐỘ GỠ LỖI'
+                : `${simulationMode.toUpperCase()} MODE`}
             </span>
           </div>
 
@@ -1611,10 +1614,10 @@ export const EndToEndConsensusLab: React.FC = () => {
                 setGuidedStep((prev) => Math.min(8, prev + 1));
                 startNextStep();
               }}
-              className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all flex items-center gap-2 active:scale-95 cursor-pointer shadow-sm ${
+              className={`text-xs font-semibold transition-all flex items-center gap-2 active:scale-95 cursor-pointer shadow-sm ${
                 isReadyForNext
-                  ? 'guidance-amber-pulse bg-amber-500 hover:bg-amber-400 text-zinc-950 ring-2 ring-amber-400/80 shadow-[0_0_18px_rgba(245,158,11,0.3)] font-bold'
-                  : 'bg-emerald-500 hover:bg-emerald-400 text-zinc-950'
+                  ? 'guidance-amber-pulse bg-amber-500 hover:bg-amber-400 text-zinc-950 ring-2 ring-amber-400/80 shadow-[0_0_18px_rgba(245,158,11,0.3)] font-bold px-4 py-2 rounded-xl'
+                  : 'bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-sans text-xs font-bold px-4 py-2 rounded-xl shadow-[0_0_15px_rgba(0,210,255,0.3)]'
               }`}
             >
               {isReadyForNext && (

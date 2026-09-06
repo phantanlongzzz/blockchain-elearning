@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ShieldAlert, RefreshCw, Edit3, ArrowRight, Wrench } from 'lucide-react';
+import { ShieldAlert, RefreshCw, Edit3, ArrowRight, ArrowDown, Wrench, Unlink, Link2 } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { HashPointerBlockItem } from '../../types';
 import { fastSha256Hex } from '../../utils/sha256';
@@ -9,9 +9,9 @@ interface HashPointerBlockchainLabProps {
   onNextStage?: () => void;
 }
 
-// 4-Block Initial Baseline
+// 4-Block Initial Baseline with exact canonical Vietnamese transaction data
 const BASELINE_BLOCKS: { index: number; data: string }[] = [
-  { index: 0, data: 'Genesis Block · DLU Blockchain' },
+  { index: 0, data: 'Khối Khởi tạo · DLU Blockchain' },
   { index: 1, data: 'Alice chuyển 10 DLU COIN cho Bob' },
   { index: 2, data: 'Bob chuyển 5 DLU COIN cho Charlie' },
   { index: 3, data: 'Charlie chuyển 2 DLU COIN cho Dave' },
@@ -76,7 +76,7 @@ export const HashPointerBlockchainLab: React.FC<HashPointerBlockchainLabProps> =
   // Handle Tamper on Block 1
   const handleTamperBlock1 = () => {
     const newDatas = [...blocksData];
-    newDatas[1] = 'Alice chuyển 999 DLU COIN cho Hacker (Đã bị sửa!)';
+    newDatas[1] = 'Alice chuyển 999 DLU COIN cho Hacker';
     setBlocksData(newDatas);
 
     // Compute actual new hashes with updated data
@@ -133,24 +133,24 @@ export const HashPointerBlockchainLab: React.FC<HashPointerBlockchainLabProps> =
 
   // Check validity of a block
   const getBlockStatus = (idx: number) => {
-    if (idx === 0) return { isValid: true, reason: 'Genesis' };
-    if (!isTampered) return { isValid: true, reason: 'Valid' };
+    if (idx === 0) return { isValid: true, reason: language === 'vi' ? 'Khởi tạo' : 'Genesis' };
+    if (!isTampered) return { isValid: true, reason: language === 'vi' ? 'Hợp lệ' : 'Valid' };
 
     // If block is the tampered block or any block after it
     if (tamperedBlockIdx !== null && idx >= tamperedBlockIdx) {
       if (idx === tamperedBlockIdx) {
         return {
           isValid: false,
-          reason: language === 'vi' ? 'Dữ liệu bị sửa đổi (Hash bị biến đổi)' : 'Data Modified (Hash Changed)',
+          reason: language === 'vi' ? 'Dữ liệu bị sửa đổi (Mã băm thay đổi)' : 'Data Modified (Hash Changed)',
         };
       }
       return {
         isValid: false,
-        reason: language === 'vi' ? 'Previous Hash không khớp với mã băm khối trước!' : 'PrevHash does not match prior block hash!',
+        reason: language === 'vi' ? 'Mã băm trước không khớp với mã băm thực tế khối trước!' : 'PrevHash does not match prior block actual hash!',
       };
     }
 
-    return { isValid: true, reason: 'Valid' };
+    return { isValid: true, reason: language === 'vi' ? 'Hợp lệ' : 'Valid' };
   };
 
   return (
@@ -180,7 +180,7 @@ export const HashPointerBlockchainLab: React.FC<HashPointerBlockchainLabProps> =
             type="button"
             onClick={handleTamperBlock1}
             disabled={isTampered}
-            className="px-3 py-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 disabled:opacity-40 text-rose-300 hover:text-rose-200 border border-rose-500/30 text-xs font-sans font-medium flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap"
+            className="px-3.5 py-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 disabled:opacity-40 text-rose-300 hover:text-rose-200 border border-rose-500/30 text-xs font-sans font-medium flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap"
           >
             <Edit3 className="w-3.5 h-3.5" />
             <span>
@@ -194,7 +194,7 @@ export const HashPointerBlockchainLab: React.FC<HashPointerBlockchainLabProps> =
             <button
               type="button"
               onClick={handleRepairChain}
-              className="px-3 py-1.5 rounded-lg bg-cyan-500/15 hover:bg-cyan-500/25 text-cyan-300 border border-cyan-500/40 font-medium font-sans text-xs flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap shadow-[0_0_12px_rgba(0,210,255,0.25)]"
+              className="px-3.5 py-1.5 rounded-lg bg-cyan-500/15 hover:bg-cyan-500/25 text-cyan-300 border border-cyan-500/40 font-medium font-sans text-xs flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap shadow-[0_0_12px_rgba(0,210,255,0.25)]"
             >
               <Wrench className="w-3.5 h-3.5 text-cyan-400" />
               <span>{language === 'vi' ? 'Tính toán lại chuỗi' : 'Recalculate Chain'}</span>
@@ -220,113 +220,199 @@ export const HashPointerBlockchainLab: React.FC<HashPointerBlockchainLabProps> =
               className={`w-2 h-2 rounded-full ${
                 isTampered ? 'bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)]' : 'bg-cyan-400 shadow-[0_0_8px_rgba(0,210,255,0.8)]'
               }`}
-            ></span>
+            />
             <span className={isTampered ? 'text-rose-400 font-semibold' : 'text-slate-200'}>
               {language === 'vi'
-                ? `Trạng thái chuỗi 4 khối: ${isTampered ? 'PHÁT HIỆN GIẢ MẠO (INVALID)' : 'HỢP LỆ (VALID)'}`
-                : `4-Block Chain Status: ${isTampered ? 'TAMPER DETECTED (INVALID)' : 'INTACT (VALID)'}`}
+                ? `Trạng thái chuỗi: ${isTampered ? 'PHÁT HIỆN CAN THIỆP' : 'HỢP LỆ'}`
+                : `Chain Status: ${isTampered ? 'TAMPER DETECTED' : 'VALID'}`}
             </span>
           </div>
 
           <span className="text-[11px] font-sans text-slate-400">
             {language === 'vi'
-              ? 'Con trỏ băm khóa chặt dữ liệu của khối trước'
-              : 'Hash pointers cryptographically seal adjacent blocks'}
+              ? 'Mỗi khối lưu trữ con trỏ băm (Mã băm trước) niêm phong toàn vẹn khối liền trước'
+              : 'Cryptographic hash pointers seal previous block integrity'}
           </span>
         </div>
 
-        {/* 4 Blocks Grid (Layer 2 Inset Canvas) */}
+        {/* 4 Blocks & Hash Pointer Connectors Container */}
         <div className="bg-black/40 backdrop-blur-md border border-white/[0.05] rounded-xl p-5 relative overflow-hidden bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:16px_16px]">
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3.5">
+          <div className="flex flex-col xl:flex-row items-stretch gap-3">
             {blocks.map((block, idx) => {
               const status = getBlockStatus(idx);
               const isCorrupted = !status.isValid;
               const isTargetOfTamper = isTampered && idx === 1;
 
+              // Check if hash pointer linking from current block to next block is broken
+              const nextBlock = blocks[idx + 1];
+              const isPointerToNextBroken =
+                isTampered && nextBlock && (idx >= 1 || block.hash !== nextBlock.previousHash);
+
               return (
-                <div
-                  key={block.index}
-                  className={`p-3.5 rounded-xl border transition-all duration-200 flex flex-col justify-between space-y-3 ${
-                    isCorrupted
-                      ? 'bg-[#180d19]/90 border-rose-500/60 shadow-[0_0_20px_rgba(244,63,94,0.2)]'
-                      : idx === 0
-                      ? 'bg-[#0E1526]/85 backdrop-blur-md border-cyan-500/40 shadow-[0_4px_20px_rgba(0,0,0,0.4)]'
-                      : 'bg-[#0E1526]/85 backdrop-blur-md border-white/[0.08] hover:border-cyan-500/35 shadow-[0_4px_20px_rgba(0,0,0,0.4)]'
-                  }`}
-                >
-                  {/* Block Header Tag */}
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between pb-2 border-b border-white/[0.06]">
-                      <span
-                        className={`text-xs font-mono font-semibold ${
-                          isCorrupted ? 'text-rose-400' : 'text-slate-200'
-                        }`}
-                      >
-                        KHỐI #{block.index} {idx === 0 ? '(GENESIS)' : ''}
-                      </span>
-                      <span
-                        className={`px-1.5 py-0.5 rounded text-[10px] font-mono font-medium border flex items-center gap-1 ${
+                <React.Fragment key={block.index}>
+                  {/* Block Card */}
+                  <div
+                    className={`flex-1 min-w-0 p-4 rounded-xl border transition-all duration-200 flex flex-col justify-between space-y-3.5 ${
+                      isCorrupted
+                        ? 'bg-[#180d19]/90 border-rose-500/60 shadow-[0_0_20px_rgba(244,63,94,0.2)]'
+                        : idx === 0
+                        ? 'bg-[#0E1526]/85 backdrop-blur-md border-cyan-500/40 shadow-[0_4px_20px_rgba(0,0,0,0.4)]'
+                        : 'bg-[#0E1526]/85 backdrop-blur-md border-white/[0.08] hover:border-cyan-500/35 shadow-[0_4px_20px_rgba(0,0,0,0.4)]'
+                    }`}
+                  >
+                    {/* Block Header Tag */}
+                    <div className="space-y-2.5">
+                      <div className="flex items-center justify-between pb-2 border-b border-white/[0.06]">
+                        <span
+                          className={`text-xs font-mono font-semibold ${
+                            isCorrupted ? 'text-rose-400' : 'text-slate-200'
+                          }`}
+                        >
+                          KHỐI #{block.index} {idx === 0 ? (language === 'vi' ? '· KHỞI TẠO' : '· GENESIS') : ''}
+                        </span>
+                        <span
+                          className={`px-2 py-0.5 rounded-full text-[10px] font-sans font-medium border flex items-center gap-1 transition-all ${
+                            isCorrupted
+                              ? 'bg-rose-500/15 text-rose-300 border-rose-500/30 shadow-[0_0_8px_rgba(244,63,94,0.2)]'
+                              : 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30'
+                          }`}
+                        >
+                          <span
+                            className={`w-1.5 h-1.5 rounded-full ${
+                              isCorrupted ? 'bg-rose-400' : 'bg-cyan-400 shadow-[0_0_6px_rgba(0,210,255,0.6)]'
+                            }`}
+                          />
+                          {status.isValid
+                            ? language === 'vi'
+                              ? 'HỢP LỆ'
+                              : 'VALID'
+                            : language === 'vi'
+                            ? 'BỊ HỎNG'
+                            : 'BROKEN'}
+                        </span>
+                      </div>
+
+                      {/* Previous Hash Field */}
+                      <div className="space-y-1 text-xs">
+                        <div className="flex items-center justify-between text-slate-400 font-sans text-[10px]">
+                          <span>{language === 'vi' ? 'Mã băm trước' : 'Previous Hash'}</span>
+                          {idx > 0 && isTampered && idx >= 2 && (
+                            <span className="text-rose-400 font-semibold font-sans text-[10px] tracking-tight">
+                              {language === 'vi' ? 'SAI LỆCH MÃ' : 'MISMATCH'}
+                            </span>
+                          )}
+                        </div>
+                        <div
+                          className={`p-2.5 rounded-lg truncate font-mono text-xs transition-all ${
+                            idx > 0 && isTampered && idx >= 2
+                              ? 'bg-rose-500/[0.04] text-rose-200 border border-rose-500/30 font-semibold'
+                              : 'bg-white/[0.03] border border-white/[0.07] text-slate-300'
+                          }`}
+                        >
+                          {block.previousHash.slice(0, 18)}...
+                        </div>
+                      </div>
+
+                      {/* Block Data Field */}
+                      <div className="space-y-1 text-xs font-sans">
+                        <span className="text-[10px] text-slate-400 block font-sans">
+                          {language === 'vi' ? 'Dữ liệu giao dịch' : 'Transaction Data'}
+                        </span>
+                        <div
+                          className={`p-2.5 rounded-lg text-xs leading-relaxed font-sans transition-all min-h-[42px] flex items-center ${
+                            isTargetOfTamper
+                              ? 'bg-rose-500/[0.04] text-rose-200 border border-rose-500/30 font-medium'
+                              : 'bg-white/[0.03] border border-white/[0.07] text-slate-300'
+                          }`}
+                        >
+                          {block.data}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Block Hash */}
+                    <div className="pt-2.5 border-t border-white/[0.06] text-xs">
+                      <div className="flex items-center justify-between text-slate-400 font-sans text-[10px] mb-1">
+                        <span>{language === 'vi' ? 'Mã băm khối' : 'Block Hash'}</span>
+                        <span className="text-[9px] text-slate-500 font-mono">SHA-256</span>
+                      </div>
+                      <div
+                        className={`p-2.5 rounded-lg truncate font-mono text-xs transition-all ${
                           isCorrupted
-                            ? 'bg-rose-500/10 text-rose-300 border-rose-500/30'
-                            : 'bg-cyan-500/10 text-cyan-300 border-cyan-500/30'
+                            ? 'bg-rose-500/[0.04] text-rose-200 border border-rose-500/30'
+                            : 'bg-white/[0.03] border border-white/[0.07] text-cyan-300 font-semibold'
                         }`}
                       >
-                        <span className={`w-1.5 h-1.5 rounded-full ${isCorrupted ? 'bg-rose-400' : 'bg-cyan-400'}`} />
-                        {status.isValid ? 'VALID' : 'BROKEN'}
-                      </span>
-                    </div>
-
-                    {/* Previous Hash Field */}
-                    <div className="space-y-1 font-mono text-[10px]">
-                      <div className="flex items-center justify-between text-slate-400 font-sans text-[10px]">
-                        <span>PREVIOUS HASH</span>
-                        {idx > 0 && isTampered && idx >= 2 && (
-                          <span className="text-rose-400 font-semibold">MISMATCH</span>
-                        )}
-                      </div>
-                      <div
-                        className={`p-1.5 rounded truncate font-mono text-[10px] ${
-                          idx > 0 && isTampered && idx >= 2
-                            ? 'bg-rose-950/30 text-rose-300 border border-rose-500/30 font-semibold'
-                            : 'bg-black/40 text-slate-400 border border-white/[0.05]'
-                        }`}
-                      >
-                        {block.previousHash.slice(0, 18)}...
-                      </div>
-                    </div>
-
-                    {/* Block Data Field */}
-                    <div className="space-y-1 text-xs font-sans">
-                      <span className="text-[10px] text-slate-400 block font-sans">DATA</span>
-                      <div
-                        className={`p-2 rounded text-xs leading-relaxed font-sans ${
-                          isTargetOfTamper
-                            ? 'bg-rose-950/40 text-rose-200 border border-rose-500/40 font-medium'
-                            : 'bg-black/40 text-slate-300 border border-white/[0.05]'
-                        }`}
-                      >
-                        {block.data}
+                        {block.hash.slice(0, 20)}...
                       </div>
                     </div>
                   </div>
 
-                  {/* Block Hash */}
-                  <div className="pt-2 border-t border-white/[0.06] font-mono text-[10px]">
-                    <div className="flex items-center justify-between text-slate-400 font-sans text-[10px] mb-1">
-                      <span>BLOCK HASH</span>
-                      <span className="text-[9px] text-slate-500 font-mono">SHA-256</span>
-                    </div>
-                    <div
-                      className={`p-1.5 rounded truncate font-mono ${
-                        isCorrupted
-                          ? 'bg-rose-950/30 text-rose-300 border border-rose-500/30'
-                          : 'bg-black/40 text-cyan-300 border border-white/[0.05]'
-                      }`}
-                    >
-                      {block.hash.slice(0, 20)}...
-                    </div>
-                  </div>
-                </div>
+                  {/* Hash Pointer Arrow Connector (between blocks) */}
+                  {idx < blocks.length - 1 && (
+                    <>
+                      {/* Desktop connector (xl screen) */}
+                      <div className="hidden xl:flex flex-col items-center justify-center -mx-1 shrink-0 z-10 self-center">
+                        <div
+                          className={`p-2 rounded-full border transition-all ${
+                            isPointerToNextBroken
+                              ? 'bg-rose-950/60 border-rose-500/60 text-rose-400 shadow-[0_0_14px_rgba(244,63,94,0.4)] animate-pulse border-dashed'
+                              : 'bg-cyan-950/40 border-cyan-500/30 text-cyan-400/80 shadow-[0_0_8px_rgba(0,210,255,0.15)]'
+                          }`}
+                          title={
+                            isPointerToNextBroken
+                              ? (language === 'vi' ? 'Gãy con trỏ băm: Hash không khớp!' : 'Broken Hash Pointer: Hash mismatch!')
+                              : (language === 'vi' ? 'Con trỏ băm SHA-256 khóa chặt' : 'Cryptographic Hash Pointer')
+                          }
+                        >
+                          {isPointerToNextBroken ? (
+                            <Unlink className="w-4 h-4 text-rose-400" />
+                          ) : (
+                            <ArrowRight className="w-5 h-5 text-cyan-400/60" />
+                          )}
+                        </div>
+                        <span
+                          className={`text-[9px] font-mono mt-1 font-semibold tracking-tight whitespace-nowrap ${
+                            isPointerToNextBroken ? 'text-rose-400' : 'text-cyan-400/70'
+                          }`}
+                        >
+                          {isPointerToNextBroken
+                            ? language === 'vi'
+                              ? 'GÃY CHUỖI'
+                              : 'BROKEN'
+                            : 'PrevHash'}
+                        </span>
+                      </div>
+
+                      {/* Mobile / Tablet connector (< xl screen) */}
+                      <div className="xl:hidden flex items-center justify-center py-1">
+                        <div
+                          className={`px-3 py-1 rounded-full border text-xs font-mono flex items-center gap-1.5 transition-all ${
+                            isPointerToNextBroken
+                              ? 'bg-rose-950/40 border-rose-500/50 text-rose-400 shadow-[0_0_10px_rgba(244,63,94,0.3)] border-dashed'
+                              : 'bg-cyan-950/30 border-cyan-500/30 text-cyan-400/90'
+                          }`}
+                        >
+                          {isPointerToNextBroken ? (
+                            <>
+                              <Unlink className="w-3.5 h-3.5 text-rose-400 shrink-0" />
+                              <span className="text-[10px] font-semibold">
+                                {language === 'vi' ? 'GÃY LIÊN KẾT CON TRỎ BĂM' : 'BROKEN HASH POINTER'}
+                              </span>
+                            </>
+                          ) : (
+                            <>
+                              <ArrowDown className="w-3.5 h-3.5 text-cyan-400/70 shrink-0" />
+                              <span className="text-[10px]">
+                                {language === 'vi' ? 'CON TRỎ BĂM PREVIOUS HASH' : 'PREVIOUS HASH POINTER'}
+                              </span>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </React.Fragment>
               );
             })}
           </div>
@@ -388,3 +474,4 @@ export const HashPointerBlockchainLab: React.FC<HashPointerBlockchainLabProps> =
     </div>
   );
 };
+

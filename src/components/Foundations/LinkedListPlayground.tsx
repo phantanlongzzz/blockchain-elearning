@@ -630,7 +630,7 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
                         <div
                           className={`bg-[#0B101E]/85 backdrop-blur-md border rounded-xl p-3.5 min-w-[200px] shadow-[0_8px_24px_rgba(0,0,0,0.5)] transition-all ${
                             isNewlyAdded
-                              ? 'border-emerald-400 ring-2 ring-emerald-400/40 shadow-[0_0_20px_rgba(52,211,153,0.35)] scale-[1.02] duration-300'
+                              ? 'border-cyan-400 ring-2 ring-cyan-400/60 shadow-[0_0_24px_rgba(0,210,255,0.4)] scale-[1.02] duration-300'
                               : isActiveSimNode
                               ? 'border-cyan-400 ring-2 ring-cyan-400/40 shadow-[0_0_20px_rgba(0,210,255,0.35)] scale-[1.02] duration-300'
                               : isFoundNode
@@ -911,7 +911,7 @@ export const LinkedListPlayground: React.FC<LinkedListPlaygroundProps> = ({
                 <span className="text-slate-400">
                   {language === 'vi' ? 'Độ phức tạp thời gian:' : 'Time complexity:'}
                 </span>
-                <span className="text-emerald-400 font-medium">
+                <span className="text-cyan-300 font-medium font-sans">
                   {language === 'vi' ? 'O(n) - Tuyến tính' : 'O(n) - Linear'}
                 </span>
               </div>

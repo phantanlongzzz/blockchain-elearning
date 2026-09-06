@@ -112,25 +112,26 @@ export const Hero: React.FC = () => {
               </a>
             </div>
 
-            {/* Live Protocol Ticker Bar (Left Column Balance) */}
+            {/* Live Protocol Ticker Bar (Left Column Balance - Static Minimal) */}
             <div className="mt-8 pt-6 border-t border-white/[0.06] flex flex-wrap items-center gap-4 sm:gap-6">
               <div className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
+                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
                 <span className="font-mono text-xs text-slate-400">
-                  Node P2P: <strong className="text-slate-200">12 {isVi ? 'Hoạt động' : 'Active'}</strong>
+                  Node P2P: <strong className="text-slate-200 font-medium">12 {isVi ? 'Hoạt động' : 'Active'}</strong>
                 </span>
               </div>
               <div className="w-px h-3 bg-white/[0.08] hidden sm:block" />
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                 <span className="font-mono text-xs text-slate-400">
-                  Engine: <strong className="text-slate-200">Web Crypto API</strong>
+                  Engine: <strong className="text-slate-200 font-medium">Web Crypto API</strong>
                 </span>
               </div>
               <div className="w-px h-3 bg-white/[0.08] hidden sm:block" />
               <div className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-slate-500" />
                 <span className="font-mono text-xs text-slate-400">
-                  {isVi ? 'Độ trễ:' : 'Latency:'} <strong className="text-cyan-400">~0.4ms</strong>
+                  {isVi ? 'Độ trễ:' : 'Latency:'} <strong className="text-slate-200 font-medium">~0.4ms</strong>
                 </span>
               </div>
             </div>

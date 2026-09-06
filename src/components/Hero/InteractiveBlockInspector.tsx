@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { 
   Boxes, 
   Hash, 
@@ -95,14 +95,7 @@ export const InteractiveBlockInspector: React.FC = () => {
   const [tamperedTxIndex, setTamperedTxIndex] = useState<number | null>(null);
   const [calculatedBlockHash, setCalculatedBlockHash] = useState<string>('000000a4f9e1d82c7b30f4e95126830a1c4b7e9f0d2a5c8e1b3d6f9a0c2e4b7a');
   const [scrambleTrigger, setScrambleTrigger] = useState<number>(0);
-  const [isGlitching, setIsGlitching] = useState<boolean>(false);
   const [isShockwave, setIsShockwave] = useState<boolean>(false);
-
-  // 3D Hologram Tilt & Spotlight Ref and State
-  const cardRef = useRef<HTMLDivElement>(null);
-  const [tilt, setTilt] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
-  const [mousePos, setMousePos] = useState<{ x: number; y: number; inside: boolean }>({ x: 0, y: 0, inside: false });
-  const [isInteractiveHovered, setIsInteractiveHovered] = useState<boolean>(false);
 
   // Modal State
   const [selectedTx, setSelectedTx] = useState<TransactionItem | null>(null);
@@ -172,48 +165,6 @@ export const InteractiveBlockInspector: React.FC = () => {
     setTimeout(() => setCopiedKey(null), 2000);
   };
 
-  // 3D Tilt calculation on mousemove with Interactive Flattening Lock
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    // 1. Lock 3D calculation completely when Tx Modal is open
-    if (isTxModalOpen) {
-      setTilt({ x: 0, y: 0 });
-      return;
-    }
-    if (!cardRef.current) return;
-
-    const rect = cardRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const width = rect.width;
-    const height = rect.height;
-
-    // 2. Check if hovering over interactive elements (buttons, tabs, inputs, transaction items)
-    const target = e.target as HTMLElement | null;
-    const isInteractive = !!target?.closest(
-      'button, input, [role="button"], a, select, textarea, .cursor-pointer, .interactive-item'
-    );
-
-    if (isInteractive) {
-      setIsInteractiveHovered(true);
-      setTilt({ x: 0, y: 0 }); // Neutralize 3D tilt instantly for precise interaction
-      setMousePos({ x, y, inside: true });
-    } else {
-      setIsInteractiveHovered(false);
-      // Max tilt angle ±5 deg
-      const rotateX = -((y / height) - 0.5) * 10;
-      const rotateY = ((x / width) - 0.5) * 10;
-
-      setTilt({ x: rotateX, y: rotateY });
-      setMousePos({ x, y, inside: true });
-    }
-  };
-
-  const handleMouseLeave = () => {
-    setIsInteractiveHovered(false);
-    setTilt({ x: 0, y: 0 });
-    setMousePos((prev) => ({ ...prev, inside: false }));
-  };
-
   // Real-time Nonce Mining Engine
   const handleMineStep = () => {
     if (isMining) return;
@@ -251,7 +202,6 @@ export const InteractiveBlockInspector: React.FC = () => {
     setSelectedTxIndex(index);
     setEditAmount(tx.amount.toFixed(3));
     setIsTxModalOpen(true);
-    setTilt({ x: 0, y: 0 });
   };
 
   const handleCloseTxModal = () => {
@@ -282,9 +232,7 @@ export const InteractiveBlockInspector: React.FC = () => {
     const isChanged = Math.abs(numAmount - transactions[targetIdx].originalAmount) > 0.000001;
     if (isChanged) {
       setTamperedTxIndex(targetIdx);
-      setIsGlitching(true);
       setIsShockwave(true);
-      setTimeout(() => setIsGlitching(false), 200);
       setTimeout(() => setIsShockwave(false), 600);
     } else {
       if (tamperedTxIndex === targetIdx) {
@@ -324,45 +272,16 @@ export const InteractiveBlockInspector: React.FC = () => {
 
   return (
     <div 
-      ref={cardRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{
-        transform: isTxModalOpen 
-          ? 'none' 
-          : `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
-        transition: isTxModalOpen
-          ? 'none'
-          : isInteractiveHovered || (tilt.x === 0 && tilt.y === 0)
-          ? 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease'
-          : (mousePos.inside 
-              ? 'transform 0.08s ease-out' 
-              : 'transform 0.5s ease-out, border-color 0.3s ease, box-shadow 0.3s ease'),
-      }}
-      className={`relative group w-full rounded-2xl bg-white/[0.03] backdrop-blur-md border p-5 sm:p-6 text-slate-200 overflow-hidden transition-all duration-300 ${
-        isGlitching ? 'animate-micro-glitch' : ''
-      } ${
+      className={`relative group w-full rounded-2xl bg-[#0B101E]/85 backdrop-blur-xl border p-5 shadow-[0_16px_40px_rgba(0,0,0,0.6)] text-slate-200 overflow-hidden transition-colors duration-200 ${
         miningFlash
           ? 'ring-2 ring-cyan-400 shadow-[0_0_30px_rgba(0,210,255,0.6)] border-cyan-400'
           : isShockwave
           ? 'border-rose-500 shadow-[0_0_35px_rgba(244,63,94,0.4)]'
           : tamperedTxIndex !== null
           ? 'border-rose-500/60 shadow-[0_0_25px_rgba(244,63,94,0.2)]'
-          : 'border-white/[0.08] hover:border-cyan-500/30'
+          : 'border-cyan-500/20 hover:border-cyan-500/40'
       }`}
     >
-      {/* 0. Radial Spotlight Follow Effect */}
-      <div
-        className="pointer-events-none absolute inset-0 transition-opacity duration-300 -z-0"
-        style={{
-          opacity: (!isTxModalOpen && mousePos.inside) ? 1 : 0,
-          background:
-            tamperedTxIndex !== null
-              ? `radial-gradient(400px circle at ${mousePos.x}px ${mousePos.y}px, rgba(244, 63, 94, 0.12), transparent 80%)`
-              : `radial-gradient(400px circle at ${mousePos.x}px ${mousePos.y}px, rgba(0, 210, 255, 0.08), transparent 80%)`,
-        }}
-      />
-
       {/* Subtle background glow element strictly inside the card */}
       <div className="absolute -top-12 -right-12 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -402,7 +321,7 @@ export const InteractiveBlockInspector: React.FC = () => {
         <button
           onClick={handleMineStep}
           disabled={isMining}
-          className="bg-cyan-500/15 text-cyan-400 hover:bg-cyan-500/25 border border-cyan-500/30 text-xs px-3 py-1.5 rounded-lg font-sans font-medium transition-all duration-150 flex items-center gap-1.5 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+          className="bg-cyan-500/15 text-cyan-400 hover:bg-cyan-500/20 hover:border-cyan-400/40 border border-cyan-500/30 text-xs px-3 py-1.5 rounded-lg font-sans font-medium transition-colors flex items-center gap-1.5 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
         >
           <Cpu className={`w-3.5 h-3.5 text-cyan-400 ${isMining ? 'animate-spin' : ''}`} />
           <span>{isMining ? (isVi ? 'Đang tính toán Nonce...' : 'Computing Nonce...') : (isVi ? 'Đào khối' : 'Mine Block')}</span>
@@ -416,7 +335,7 @@ export const InteractiveBlockInspector: React.FC = () => {
             setActiveTab('header');
             setScrambleTrigger((prev) => prev + 1);
           }}
-          className={`flex-1 px-4 py-2 rounded-lg font-sans text-xs flex items-center justify-center gap-2 transition-all cursor-pointer ${
+          className={`flex-1 px-4 py-2 rounded-lg font-sans text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer ${
             activeTab === 'header'
               ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-400 text-cyan-300 shadow-[0_0_14px_rgba(0,210,255,0.3)] font-semibold'
               : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04] border border-transparent font-medium'
@@ -430,7 +349,7 @@ export const InteractiveBlockInspector: React.FC = () => {
             setActiveTab('merkle');
             setScrambleTrigger((prev) => prev + 1);
           }}
-          className={`flex-1 px-4 py-2 rounded-lg font-sans text-xs flex items-center justify-center gap-2 transition-all cursor-pointer ${
+          className={`flex-1 px-4 py-2 rounded-lg font-sans text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer ${
             activeTab === 'merkle'
               ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-400 text-cyan-300 shadow-[0_0_14px_rgba(0,210,255,0.3)] font-semibold'
               : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04] border border-transparent font-medium'
@@ -444,7 +363,7 @@ export const InteractiveBlockInspector: React.FC = () => {
             setActiveTab('bytestream');
             setScrambleTrigger((prev) => prev + 1);
           }}
-          className={`flex-1 px-4 py-2 rounded-lg font-sans text-xs flex items-center justify-center gap-2 transition-all cursor-pointer ${
+          className={`flex-1 px-4 py-2 rounded-lg font-sans text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer ${
             activeTab === 'bytestream'
               ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-400 text-cyan-300 shadow-[0_0_14px_rgba(0,210,255,0.3)] font-semibold'
               : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04] border border-transparent font-medium'

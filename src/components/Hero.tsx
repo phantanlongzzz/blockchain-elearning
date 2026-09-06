@@ -82,13 +82,6 @@ export const Hero: React.FC = () => {
               </h1>
             </div>
 
-            {/* Sub-headline */}
-            <p className="text-sm sm:text-base text-[#94A3B8] leading-relaxed max-w-xl font-sans font-normal">
-              {isVi 
-                ? 'Tương tác trực quan với hàm băm SHA-256, chữ ký số ECDSA, cây Merkle và các thuật toán đồng thuận theo chuẩn NIST FIPS 180-4.' 
-                : 'Interact visually with SHA-256 hashing, ECDSA digital signatures, Merkle trees, and decentralized consensus algorithms certified to NIST FIPS 180-4.'}
-            </p>
-
             {/* CTA Group */}
             <div className="flex flex-wrap items-center gap-4 pt-2">
               <button
@@ -110,30 +103,6 @@ export const Hero: React.FC = () => {
                 <Github className="w-4 h-4 text-slate-300" />
                 <span>{isVi ? 'Xem mã nguồn đồ án' : 'View Source Code'}</span>
               </a>
-            </div>
-
-            {/* Live Protocol Ticker Bar (Left Column Balance - Static Minimal) */}
-            <div className="mt-8 pt-6 border-t border-white/[0.06] flex flex-wrap items-center gap-4 sm:gap-6">
-              <div className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-                <span className="font-mono text-xs text-slate-400">
-                  Node P2P: <strong className="text-slate-200 font-medium">12 {isVi ? 'Hoạt động' : 'Active'}</strong>
-                </span>
-              </div>
-              <div className="w-px h-3 bg-white/[0.08] hidden sm:block" />
-              <div className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                <span className="font-mono text-xs text-slate-400">
-                  Engine: <strong className="text-slate-200 font-medium">Web Crypto API</strong>
-                </span>
-              </div>
-              <div className="w-px h-3 bg-white/[0.08] hidden sm:block" />
-              <div className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-slate-500" />
-                <span className="font-mono text-xs text-slate-400">
-                  {isVi ? 'Độ trễ:' : 'Latency:'} <strong className="text-slate-200 font-medium">~0.4ms</strong>
-                </span>
-              </div>
             </div>
           </div>
 

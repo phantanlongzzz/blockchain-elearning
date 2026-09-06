@@ -303,7 +303,7 @@ export const ExperimentLab: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-10">
-          <div className="inline-flex items-center px-3.5 py-1 rounded-full bg-bg-elevated border border-border-primary text-text-primary text-xs font-mono tracking-widest uppercase mb-3">
+          <div className="inline-flex items-center px-3.5 py-1 rounded-full bg-bg-elevated border border-border-primary text-text-primary text-xs font-sans font-semibold tracking-wider uppercase mb-3">
             <span>{strings.experiments.badge}</span>
           </div>
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#F2F4F7] tracking-tight font-sans mb-3">

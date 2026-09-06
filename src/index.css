@@ -176,19 +176,19 @@
   --radius-md: 8px;
   --radius-sm: 6px;
 
-  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", "Roboto", sans-serif;
   
-  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
+  --font-mono: Consolas, "Lucida Console", "Courier New", monospace;
 
-  --font-roboto-mono: "Roboto Mono", monospace;
+  --font-roboto-mono: Consolas, "Lucida Console", "Courier New", monospace;
 }
 
 .font-roboto-mono {
-  font-family: var(--font-roboto-mono) !important;
+  font-family: var(--font-mono) !important;
 }
 
 @layer base {
-  /* Default body typography - Clean sans-serif for human readability (Be Vietnam Pro) */
+  /* Default body typography - Clean sans-serif for human readability */
   body {
     background-color: #06080F;
     color: #F4F4F5;
@@ -202,12 +202,11 @@
     letter-spacing: -0.02em;
   }
 
-  /* JetBrains Mono as Primary Technical & Cryptographic Typeface for blockchain hashes, hex, bits, bytes, indices & technical code */
+  /* Consolas / Codeforces Style as Primary Technical & Cryptographic Typeface */
   code, pre, kbd, samp, .font-mono {
-  font-family: var(--font-mono) !important;
-  letter-spacing: 0.03em;
-  font-variant-numeric: tabular-nums;
-}
+    font-family: var(--font-mono) !important;
+    font-variant-numeric: tabular-nums;
+  }
 }
 
 /* Typography rules */

@@ -144,14 +144,12 @@ export const Hero: React.FC = () => {
         {/* ========================================================================= */}
         {/* RESEARCHER IDENTITY FOOTER / METADATA BAR                                */}
         {/* ========================================================================= */}
-        <div className="pt-6 border-t border-white/[0.06] flex flex-wrap items-center justify-between gap-3 text-xs font-mono text-slate-400">
-          <div className="flex items-center gap-2 text-xs font-mono text-slate-400 flex-wrap">
+        <div className="pt-6 border-t border-white/[0.06] flex flex-wrap items-center justify-between gap-3 text-xs font-sans text-slate-400">
+          <div className="flex items-center gap-2 text-xs font-sans text-slate-400 flex-wrap">
             <GraduationCap className="w-4 h-4 text-cyan-400 shrink-0" />
-            <span>Đồ án môn học: <strong className="text-slate-200 font-semibold">Công nghệ Blockchain</strong></span>
+            <span>Đồ án: <strong className="text-slate-200">Công nghệ Blockchain</strong></span>
             <span className="text-white/20">·</span>
-            <span>Sinh viên: <strong className="text-slate-200 font-semibold">Phan Tấn Long</strong></span>
-            <span className="text-white/20">·</span>
-            <span>MSSV: <strong className="text-slate-200 font-semibold">2312679</strong></span>
+            <span>Sinh viên: <strong className="text-slate-200">Phan Tấn Long</strong></span>
           </div>
 
           <a

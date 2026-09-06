@@ -38,7 +38,7 @@ export const AboutResearch: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 font-sans">
-          <div className="inline-flex items-center gap-2 text-teach-1 text-xs font-mono font-semibold tracking-wider uppercase mb-3">
+          <div className="inline-flex items-center gap-2 text-teach-1 text-xs font-sans font-semibold tracking-wider uppercase mb-3">
             <BookOpen className="w-3.5 h-3.5 text-text-muted" />
             <span>{strings.aboutResearch.badge}</span>
           </div>

@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { 
   Boxes, 
   Hash, 
@@ -18,7 +18,7 @@ import {
   FileCode,
   X
 } from 'lucide-react';
-import { hashSha256 } from '../../utils/sha256';
+import { hashSha256, fastSha256Hex } from '../../utils/sha256';
 import { useLanguage } from '../../i18n/LanguageContext';
 
 interface TransactionItem {
@@ -42,11 +42,22 @@ const INITIAL_TRANSACTIONS: TransactionItem[] = [
  * Custom Hook: Matrix Decoder Scramble
  * Animates random hex character resolution during tab switching, tampering, and mining
  */
-function useScrambleText(targetText: string, triggerKey: any, duration = 300) {
+function useScrambleText(
+  targetText: string,
+  triggerKey: any,
+  duration = 300,
+  enabled = true
+) {
   const [displayText, setDisplayText] = useState(targetText);
   const [isScrambling, setIsScrambling] = useState(false);
 
   useEffect(() => {
+    if (!enabled) {
+      setDisplayText(targetText);
+      setIsScrambling(false);
+      return;
+    }
+
     setIsScrambling(true);
     const hexChars = '0123456789abcdef';
     const startTime = Date.now();
@@ -76,7 +87,7 @@ function useScrambleText(targetText: string, triggerKey: any, duration = 300) {
     }, 30);
 
     return () => clearInterval(timer);
-  }, [targetText, triggerKey, duration]);
+  }, [targetText, triggerKey, duration, enabled]);
 
   return { displayText, isScrambling };
 }
@@ -126,11 +137,23 @@ export const InteractiveBlockInspector: React.FC = () => {
     return `${v} ${p.slice(0, 16)} ${p.slice(16, 32)} ${m.slice(0, 16)} ${m.slice(16, 32)} ${t} ${b} ${n}`;
   }, [prevHash, merkleRoot, nonce]);
 
+  const nonceDisplayRef = useRef<HTMLSpanElement>(null);
+  const hashDisplayRef = useRef<HTMLSpanElement>(null);
+  const rafIdRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (rafIdRef.current !== null) {
+        cancelAnimationFrame(rafIdRef.current);
+      }
+    };
+  }, []);
+
   // Recompute block hash when nonce or merkle root changes
-  const updateHash = useCallback(async (currentNonce: number, mRoot: string) => {
+  const updateHash = useCallback((currentNonce: number, mRoot: string) => {
     const rawHeader = `${blockHeight}:${prevHash.slice(0, 16)}:${mRoot.slice(0, 16)}:${currentNonce}:0x20000000`;
-    const res = await hashSha256(rawHeader);
-    setCalculatedBlockHash(res.hex);
+    const hex = fastSha256Hex(rawHeader);
+    setCalculatedBlockHash(hex);
   }, [blockHeight, prevHash]);
 
   useEffect(() => {
@@ -141,22 +164,26 @@ export const InteractiveBlockInspector: React.FC = () => {
   const { displayText: scrambledPrevHash, isScrambling: isPrevScrambling } = useScrambleText(
     prevHash,
     activeTab + '_' + scrambleTrigger,
-    300
+    300,
+    activeTab === 'header'
   );
   const { displayText: scrambledMerkleRoot, isScrambling: isMerkleScrambling } = useScrambleText(
     merkleRoot,
     activeTab + '_' + scrambleTrigger + '_' + tamperedTxIndex,
-    300
+    300,
+    activeTab === 'header'
   );
   const { displayText: scrambledHeaderBytes, isScrambling: isHeaderBytesScrambling } = useScrambleText(
     rawHeaderBytes,
     activeTab + '_' + scrambleTrigger,
-    300
+    300,
+    activeTab === 'bytestream'
   );
   const { displayText: scrambledBlockHash, isScrambling: isHashScrambling } = useScrambleText(
     calculatedBlockHash,
-    activeTab + '_' + scrambleTrigger + '_' + nonce,
-    isMining ? 60 : 300
+    activeTab + '_' + scrambleTrigger,
+    300,
+    activeTab === 'header' && !isMining
   );
 
   const handleCopy = async (text: string, key: string) => {
@@ -165,7 +192,7 @@ export const InteractiveBlockInspector: React.FC = () => {
     setTimeout(() => setCopiedKey(null), 2000);
   };
 
-  // Real-time Nonce Mining Engine
+  // Real-time Nonce Mining Engine (decoupled from React rendering tree)
   const handleMineStep = () => {
     if (isMining) return;
     setIsMining(true);
@@ -173,6 +200,7 @@ export const InteractiveBlockInspector: React.FC = () => {
     const targetNonce = 21417;
     const startTime = performance.now();
     const duration = 1200; // 1.2s
+    const hexChars = '0123456789abcdef';
 
     const animateNonce = (currentTime: number) => {
       const elapsed = currentTime - startTime;
@@ -181,11 +209,25 @@ export const InteractiveBlockInspector: React.FC = () => {
       const easeProgress = 1 - Math.pow(1 - progress, 3);
       const currentVal = Math.floor(startNonce + (targetNonce - startNonce) * easeProgress);
 
-      setNonce(currentVal);
+      if (nonceDisplayRef.current) {
+        nonceDisplayRef.current.textContent = currentVal.toString();
+      }
+
+      if (hashDisplayRef.current) {
+        let scramble = '';
+        for (let i = 0; i < 64; i++) {
+          scramble += hexChars[Math.floor(Math.random() * 16)];
+        }
+        hashDisplayRef.current.textContent = scramble;
+      }
 
       if (progress < 1) {
-        requestAnimationFrame(animateNonce);
+        rafIdRef.current = requestAnimationFrame(animateNonce);
       } else {
+        rafIdRef.current = null;
+        if (nonceDisplayRef.current) {
+          nonceDisplayRef.current.textContent = targetNonce.toString();
+        }
         setNonce(targetNonce);
         setIsMining(false);
         setMiningFlash(true);
@@ -193,7 +235,7 @@ export const InteractiveBlockInspector: React.FC = () => {
         setTimeout(() => setMiningFlash(false), 450);
       }
     };
-    requestAnimationFrame(animateNonce);
+    rafIdRef.current = requestAnimationFrame(animateNonce);
   };
 
   const handleOpenTxModal = (index: number) => {
@@ -253,7 +295,7 @@ export const InteractiveBlockInspector: React.FC = () => {
   const renderHighlightedHash = (hash: string, isScrambling = false) => {
     if (isScrambling) {
       return (
-        <span className="text-cyan-300 font-semibold drop-">
+        <span ref={hashDisplayRef} className="text-cyan-300 font-semibold drop-">
           {hash}
         </span>
       );
@@ -436,22 +478,27 @@ export const InteractiveBlockInspector: React.FC = () => {
               <div className="p-2.5 rounded-lg bg-white/[0.02] border border-white/[0.06]">
                 <span className="text-[10px] font-sans text-slate-400 uppercase tracking-wider block mb-1">Nonce</span>
                 <div className="flex items-center justify-between">
-                  <span className={`font-mono font-semibold text-sm tabular-nums transition-colors ${
-                    isMining ? 'text-amber-400 group-hover:[animation-play-state:paused] drop-' : 'text-cyan-400'
-                  }`}>
+                  <span
+                    ref={nonceDisplayRef}
+                    className={`font-mono font-semibold text-sm tabular-nums transition-colors ${
+                      isMining ? 'text-amber-400 group-hover:[animation-play-state:paused] drop-' : 'text-cyan-400'
+                    }`}
+                  >
                     {nonce}
                   </span>
                   <div className="flex items-center gap-1">
                     <button
                       onClick={() => setNonce((n) => Math.max(0, n - 1))}
-                      className="w-4 h-4 rounded bg-white/[0.05] hover:bg-white/[0.1] text-[10px] text-slate-300 hover:text-white flex items-center justify-center cursor-pointer transition-colors border border-white/[0.06]"
+                      disabled={isMining}
+                      className="w-4 h-4 rounded bg-white/[0.05] hover:bg-white/[0.1] text-[10px] text-slate-300 hover:text-white flex items-center justify-center cursor-pointer transition-colors border border-white/[0.06] disabled:opacity-50 disabled:cursor-not-allowed"
                       title="Decrease Nonce"
                     >
                       -
                     </button>
                     <button
                       onClick={() => setNonce((n) => n + 1)}
-                      className="w-4 h-4 rounded bg-white/[0.05] hover:bg-white/[0.1] text-[10px] text-slate-300 hover:text-white flex items-center justify-center cursor-pointer transition-colors border border-white/[0.06]"
+                      disabled={isMining}
+                      className="w-4 h-4 rounded bg-white/[0.05] hover:bg-white/[0.1] text-[10px] text-slate-300 hover:text-white flex items-center justify-center cursor-pointer transition-colors border border-white/[0.06] disabled:opacity-50 disabled:cursor-not-allowed"
                       title="Increase Nonce"
                     >
                       +

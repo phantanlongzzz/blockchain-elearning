@@ -831,7 +831,7 @@ export const viTranslations: TranslationSchema = {
     "allModules": "Toàn Bộ 8 Chủ Đề",
     "startQuiz": "Bắt Đầu",
     "retakeQuiz": "Làm Lại",
-    "questionCount": "Số Câu Hỏi",
+    "questionCount": "câu hỏi",
     "timeEstimate": "~15-20 Phút",
     "passingScoreReq": "Điểm Đạt Yêu Cầu",
     "questionOf": "Câu hỏi",

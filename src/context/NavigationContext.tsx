@@ -316,8 +316,8 @@ export const MODULES_REGISTRY: ModuleMeta[] = [
       {
         id: 'quiz',
         moduleId: 'blockchain',
-        titleVi: '4.3 Trung tâm Đánh giá & Thi Trắc nghiệm (Quiz Hub)',
-        titleEn: '4.3 Assessment Center & Certification Quiz Hub',
+        titleVi: '4.3 Trung tâm Đánh giá & Thi Trắc nghiệm',
+        titleEn: '4.3 Assessment Center & Certification',
         shortTitleVi: 'Thi Trắc nghiệm & Chứng chỉ',
         shortTitleEn: 'Quiz & Certificate',
         descriptionVi: 'Ngân hàng đề trắc nghiệm có bấm giờ, giải thích chi tiết và cấp chứng chỉ hoàn thành.',

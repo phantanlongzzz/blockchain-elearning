@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Binary, Cpu, ArrowRight, ExternalLink, Lock, Unlock, CheckCircle2, FileCheck2, Layers, Key } from 'lucide-react';
+import { Binary, Cpu, ExternalLink, Lock, Unlock, CheckCircle2, FileCheck2, Layers, Key, ChevronDown, ChevronUp } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { fastSha256Hex } from '../../utils/sha256';
 import { PublicKeyVsPrimaryKey } from './PublicKeyVsPrimaryKey';
@@ -17,6 +17,11 @@ export const CryptographyFoundations: React.FC<CryptographyFoundationsProps> = (
 
   // Active Primitive Tab: 0 = Hash & SHA-256, 1 = Digital Signature, 2 = Public & Private Key, 3 = Concept Map
   const [activeTab, setActiveTab] = useState<number>(0);
+  
+  // Opt-in disclosures
+  const [showHashDetails, setShowHashDetails] = useState<boolean>(false);
+  const [showSigDetails, setShowSigDetails] = useState<boolean>(false);
+  const [showKeyDetails, setShowKeyDetails] = useState<boolean>(false);
 
   // Live Avalanche Simulator Inputs
   const [avalancheInputA, setAvalancheInputA] = useState<string>('Hello');
@@ -169,16 +174,38 @@ export const CryptographyFoundations: React.FC<CryptographyFoundationsProps> = (
       {activeTab === 0 && (
         <div className="p-6 rounded-2xl bg-[#0B101E]/70 border border-white/[0.08] space-y-5">
           <div>
-            <h4 className="text-base font-sans font-bold text-white mb-1">
-              {language === 'vi'
-                ? 'Hàm băm mật mã học & Thuật toán SHA-256'
-                : 'Cryptographic Hash Functions & SHA-256'}
-            </h4>
-            <p className="text-xs font-sans text-slate-400 leading-relaxed mb-4">
-              {language === 'vi'
-                ? 'Hàm băm là một thuật toán toán học biến đổi bất kỳ dữ liệu đầu vào nào thành chuỗi bản băm 256-bit cố định (64 ký tự Hex). Cùng một đầu vào luôn cho ra đúng một kết quả duy nhất.'
-                : 'A cryptographic hash function maps arbitrary input data to a fixed 256-bit digest (64 hex characters). Deterministic: identical input always produces identical output.'}
-            </p>
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center justify-between">
+                <h4 className="text-base font-sans font-bold text-white mb-1">
+                  {language === 'vi'
+                    ? 'Hàm băm mật mã học & Thuật toán SHA-256'
+                    : 'Cryptographic Hash Functions & SHA-256'}
+                </h4>
+                <button
+                  type="button"
+                  onClick={() => setShowHashDetails(!showHashDetails)}
+                  aria-expanded={showHashDetails}
+                  aria-controls="hash-details"
+                  className="px-2.5 py-1 rounded-lg bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 text-[11px] font-mono transition-colors flex items-center gap-1.5"
+                >
+                  {showHashDetails ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+                  {showHashDetails
+                    ? language === 'vi' ? 'Ẩn Hiểu thêm' : 'Hide details'
+                    : language === 'vi' ? 'Hiểu thêm' : 'Learn more'
+                  }
+                </button>
+              </div>
+              
+              {showHashDetails && (
+                <div id="hash-details" className="p-3 rounded-lg bg-black/40 border border-white/[0.05] animate-in fade-in">
+                  <p className="text-xs font-sans text-slate-400 leading-relaxed mb-4">
+                    {language === 'vi'
+                      ? 'Hàm băm là một thuật toán toán học biến đổi bất kỳ dữ liệu đầu vào nào thành chuỗi bản băm 256-bit cố định (64 ký tự Hex). Cùng một đầu vào luôn cho ra đúng một kết quả duy nhất.'
+                      : 'A cryptographic hash function maps arbitrary input data to a fixed 256-bit digest (64 hex characters). Deterministic: identical input always produces identical output.'}
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Frosted Glass Experiment Plate */}
@@ -259,14 +286,36 @@ export const CryptographyFoundations: React.FC<CryptographyFoundationsProps> = (
       {activeTab === 1 && (
         <div className="p-6 rounded-2xl bg-[#0B101E]/70 border border-white/[0.08] space-y-5">
           <div>
-            <h4 className="text-base font-sans font-bold text-white mb-1">
-              {language === 'vi' ? 'Chữ ký số (Digital Signature)' : 'Digital Signatures'}
-            </h4>
-            <p className="text-xs font-sans text-slate-400 leading-relaxed mb-4">
-              {language === 'vi'
-                ? 'Chữ ký số là bằng chứng toán học chứng minh giao dịch được tạo bởi chính chủ sở hữu tài khoản: "Khóa Bí Mật dùng để Ký — Khóa Công Khai dùng để Kiểm Tra".'
-                : 'A digital signature provides mathematical proof of authorization: "Private Key signs, Public Key verifies".'}
-            </p>
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center justify-between">
+                <h4 className="text-base font-sans font-bold text-white mb-1">
+                  {language === 'vi' ? 'Chữ ký số (Digital Signature)' : 'Digital Signatures'}
+                </h4>
+                <button
+                  type="button"
+                  onClick={() => setShowSigDetails(!showSigDetails)}
+                  aria-expanded={showSigDetails}
+                  aria-controls="sig-details"
+                  className="px-2.5 py-1 rounded-lg bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 text-[11px] font-mono transition-colors flex items-center gap-1.5"
+                >
+                  {showSigDetails ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+                  {showSigDetails
+                    ? language === 'vi' ? 'Ẩn Hiểu thêm' : 'Hide details'
+                    : language === 'vi' ? 'Hiểu thêm' : 'Learn more'
+                  }
+                </button>
+              </div>
+              
+              {showSigDetails && (
+                <div id="sig-details" className="p-3 rounded-lg bg-black/40 border border-white/[0.05] animate-in fade-in">
+                  <p className="text-xs font-sans text-slate-400 leading-relaxed mb-4">
+                    {language === 'vi'
+                      ? 'Chữ ký số là bằng chứng toán học chứng minh giao dịch được tạo bởi chính chủ sở hữu tài khoản: "Khóa Bí Mật dùng để Ký — Khóa Công Khai dùng để Kiểm Tra".'
+                      : 'A digital signature provides mathematical proof of authorization: "Private Key signs, Public Key verifies".'}
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Interactive Signature Workflow */}
@@ -366,16 +415,38 @@ export const CryptographyFoundations: React.FC<CryptographyFoundationsProps> = (
       {activeTab === 2 && (
         <div className="p-6 rounded-2xl bg-[#0B101E]/70 border border-white/[0.08] space-y-5">
           <div>
-            <h4 className="text-base font-sans font-bold text-white mb-1">
-              {language === 'vi'
-                ? 'Cặp khóa bất đối xứng (Public & Private Key)'
-                : 'Asymmetric Key Pairs (Public & Private Keys)'}
-            </h4>
-            <p className="text-xs font-sans text-slate-400 leading-relaxed mb-4">
-              {language === 'vi'
-                ? 'Mỗi người dùng trong Blockchain sở hữu một cặp khóa mật mã học gắn liền nhau bằng thuật toán đường cong elip.'
-                : 'Every participant owns a mathematically linked cryptographic key pair generated via elliptic curves.'}
-            </p>
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center justify-between">
+                <h4 className="text-base font-sans font-bold text-white mb-1">
+                  {language === 'vi'
+                    ? 'Cặp khóa bất đối xứng (Public & Private Key)'
+                    : 'Asymmetric Key Pairs (Public & Private Keys)'}
+                </h4>
+                <button
+                  type="button"
+                  onClick={() => setShowKeyDetails(!showKeyDetails)}
+                  aria-expanded={showKeyDetails}
+                  aria-controls="key-details"
+                  className="px-2.5 py-1 rounded-lg bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 text-[11px] font-mono transition-colors flex items-center gap-1.5"
+                >
+                  {showKeyDetails ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+                  {showKeyDetails
+                    ? language === 'vi' ? 'Ẩn Hiểu thêm' : 'Hide details'
+                    : language === 'vi' ? 'Hiểu thêm' : 'Learn more'
+                  }
+                </button>
+              </div>
+              
+              {showKeyDetails && (
+                <div id="key-details" className="p-3 rounded-lg bg-black/40 border border-white/[0.05] animate-in fade-in">
+                  <p className="text-xs font-sans text-slate-400 leading-relaxed mb-4">
+                    {language === 'vi'
+                      ? 'Mỗi người dùng trong Blockchain sở hữu một cặp khóa mật mã học gắn liền nhau bằng thuật toán đường cong elip.'
+                      : 'Every participant owns a mathematically linked cryptographic key pair generated via elliptic curves.'}
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShieldAlert, ArrowRight, RotateCcw, CheckCircle2, AlertTriangle, Building, Coins, FileText, Flame, Sparkles } from 'lucide-react';
+import { ShieldAlert, ArrowRight, RotateCcw, CheckCircle2, AlertTriangle, Building, Coins, FileText, Flame, Sparkles, ChevronDown, ChevronUp } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 
 interface TrustProblemSimulationProps {
@@ -26,6 +26,8 @@ export const TrustProblemSimulation: React.FC<TrustProblemSimulationProps> = ({
   const [charlieCert, setCharlieCert] = useState<number>(0);
   const [secretIssueCount, setSecretIssueCount] = useState<number>(0);
   const [isBankRunTriggered, setIsBankRunTriggered] = useState<boolean>(false);
+  
+  const [showConclusion, setShowConclusion] = useState<boolean>(false);
 
   const totalPaperClaims = aliceCert + bobCert + charlieCert;
   const isFractionalReserveExceeded = totalPaperClaims > vaultGold;
@@ -343,27 +345,44 @@ export const TrustProblemSimulation: React.FC<TrustProblemSimulationProps> = ({
                 </div>
               </div>
             ) : (
-              <div className="space-y-3 animate-fadeIn">
-                <div className="p-3 rounded-xl bg-rose-950/40 border border-rose-500/50 space-y-2">
-                  <div className="flex items-center gap-2 text-rose-400 font-bold text-xs font-mono uppercase">
-                    <Flame className="w-4 h-4" />
-                    <span>{language === 'vi' ? '⚠ KHỦNG HOẢNG NIỀM TIN (BANK RUN)' : '⚠ TRUST BREAKDOWN'}</span>
-                  </div>
-                  <p className="text-xs text-rose-200 leading-relaxed">
-                    {language === 'vi'
-                      ? 'Khi tin đồn lộ ra, Bob và Charlie cùng mang 200 giấy đến rút vàng. Két chỉ có 100 vàng thật. Hệ thống sụp đổ, người rút sau mất trắng!'
-                      : 'When word spread, both rushed to withdraw. Only 100 gold existed for 200 paper claims. The system collapsed!'}
-                  </p>
-                </div>
+              <div className="space-y-3 animate-fadeIn flex flex-col gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowConclusion(!showConclusion)}
+                  aria-expanded={showConclusion}
+                  aria-controls="conclusion-details"
+                  className="self-start px-3 py-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-400 text-[11px] font-mono transition-colors flex items-center gap-1.5"
+                >
+                  {showConclusion ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+                  {showConclusion
+                    ? language === 'vi' ? 'Ẩn Kết luận' : 'Hide Conclusion'
+                    : language === 'vi' ? 'Xem kết luận' : 'View Conclusion'
+                  }
+                </button>
+                {showConclusion && (
+                  <div id="conclusion-details" className="space-y-3">
+                    <div className="p-3 rounded-xl bg-rose-950/40 border border-rose-500/50 space-y-2">
+                      <div className="flex items-center gap-2 text-rose-400 font-bold text-xs font-mono uppercase">
+                        <Flame className="w-4 h-4" />
+                        <span>{language === 'vi' ? '⚠ KHỦNG HOẢNG NIỀM TIN (BANK RUN)' : '⚠ TRUST BREAKDOWN'}</span>
+                      </div>
+                      <p className="text-xs text-rose-200 leading-relaxed">
+                        {language === 'vi'
+                          ? 'Khi tin đồn lộ ra, Bob và Charlie cùng mang 200 giấy đến rút vàng. Két chỉ có 100 vàng thật. Hệ thống sụp đổ, người rút sau mất trắng!'
+                          : 'When word spread, both rushed to withdraw. Only 100 gold existed for 200 paper claims. The system collapsed!'}
+                      </p>
+                    </div>
 
-                <div className="space-y-1 text-xs text-slate-300 pt-1">
-                  <div className="font-bold text-white">{language === 'vi' ? 'Kết luận cốt lõi:' : 'Core Takeaway:'}</div>
-                  <p className="text-[11px] text-slate-400 leading-relaxed">
-                    {language === 'vi'
-                      ? 'Hệ thống dựa trên "Sự tin tưởng vào con người/tổ chức trung gian" luôn mang rủi ro gian lận và sụp đổ. Blockchain ra đời để thay thế sự tin tưởng mù quáng đó bằng "Toán học & Mật mã học có thể tự kiểm toán công khai".'
-                      : 'Systems relying on human trust carry systemic failure risk. Blockchain replaces blind trust with publicly verifiable cryptography.'}
-                  </p>
-                </div>
+                    <div className="space-y-1 text-xs text-slate-300 pt-1">
+                      <div className="font-bold text-white">{language === 'vi' ? 'Kết luận cốt lõi:' : 'Core Takeaway:'}</div>
+                      <p className="text-[11px] text-slate-400 leading-relaxed">
+                        {language === 'vi'
+                          ? 'Hệ thống dựa trên "Sự tin tưởng vào con người/tổ chức trung gian" luôn mang rủi ro gian lận và sụp đổ. Blockchain ra đời để thay thế sự tin tưởng mù quáng đó bằng "Toán học & Mật mã học có thể tự kiểm toán công khai".'
+                          : 'Systems relying on human trust carry systemic failure risk. Blockchain replaces blind trust with publicly verifiable cryptography.'}
+                      </p>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>

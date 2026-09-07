@@ -859,8 +859,8 @@ export const NetworkTopologyExplorer: React.FC<NetworkTopologyExplorerProps> = (
                       </div>
                       <div className="text-[11px] text-zinc-400">
                         {language === 'vi'
-                          ? 'Nhiều máy cùng tham gia xử lý và chia sẻ khối lượng công việc. Cách tổ chức điều phối có thể khác nhau tùy hệ thống.'
-                          : 'Multiple machines participate in processing and sharing workload. Coordination methods may vary across systems.'}
+                          ? 'Phân bổ và cân bằng tải công việc giữa các nút.'
+                          : 'Dispatches and balances workload across worker nodes.'}
                       </div>
                     </div>
                   </div>
@@ -1083,31 +1083,31 @@ export const NetworkTopologyExplorer: React.FC<NetworkTopologyExplorerProps> = (
           </div>
 
           {/* Interactive Experiment Hint */}
-          <div className="p-3.5 rounded-xl bg-zinc-900/70 border border-zinc-800/80 flex items-start gap-2.5 text-xs text-zinc-300 leading-relaxed">
-            <ShieldCheck className="w-4 h-4 text-teach-1 shrink-0 mt-0.5" />
+          <div className="p-3 rounded-xl bg-zinc-900/70 border border-zinc-800/80 flex items-center gap-2.5 text-xs text-zinc-300">
+            <ShieldCheck className="w-4 h-4 text-teach-1 shrink-0" />
             <div>
               <span className="font-medium text-zinc-200">
-                {language === 'vi' ? 'Thử nghiệm tương tác: ' : 'Interactive test: '}
+                {language === 'vi' ? 'Thử nghiệm: ' : 'Test: '}
               </span>
               {topology === 'centralized' && (
                 <span>
                   {language === 'vi'
-                    ? 'Nhấp vào nút "Vô hiệu hóa máy chủ" để quan sát sự cố điểm lỗi duy nhất khi toàn bộ các nút phụ thuộc mất liên lạc.'
-                    : 'Click "Disable server" to observe how a Single Point of Failure halts communication across all dependent nodes.'}
+                    ? 'Nhấp "Vô hiệu hóa máy chủ" để quan sát điểm lỗi duy nhất (SPOF).'
+                    : 'Click "Disable server" to observe Single Point of Failure (SPOF).'}
                 </span>
               )}
               {topology === 'distributed' && (
                 <span>
                   {language === 'vi'
-                    ? 'Thử tắt một nút xử lý để quan sát cách công việc được phân phối lại mà toàn bộ hệ thống không nhất thiết dừng theo.'
-                    : 'Try turning off a worker node to observe how workload is dynamically redistributed without stopping the whole system.'}
+                    ? 'Tắt một nút để quan sát công việc được tự động tái phân bổ.'
+                    : 'Turn off a worker to observe dynamic workload redistribution.'}
                 </span>
               )}
               {topology === 'decentralized' && (
                 <span>
                   {language === 'vi'
-                    ? 'Thử tắt một nút bất kỳ: Các nút ngang hàng còn lại vẫn tiếp tục truyền thông tin qua những đường kết nối khác.'
-                    : 'Try turning off any peer: The remaining peers continue routing data directly through alternate links.'}
+                    ? 'Tắt một nút bất kỳ: các nút còn lại tiếp tục truyền qua đường đi thay thế.'
+                    : 'Turn off any peer: remaining peers route through alternate paths.'}
                 </span>
               )}
             </div>
@@ -1346,8 +1346,8 @@ export const NetworkTopologyExplorer: React.FC<NetworkTopologyExplorerProps> = (
                     </div>
                     <p className="text-[11px] text-zinc-300 leading-snug">
                       {language === 'vi'
-                        ? 'Phân tán nói về cách tài nguyên hoặc hoạt động được phân bố. Phi tập trung nói về cách quyền kiểm soát và ra quyết định được phân bố. Hai khái niệm có liên quan nhưng không đồng nghĩa.'
-                        : 'Distributed refers to how resources or operations are shared. Decentralized refers to how control and decision-making authority are allocated. The two concepts are related but not synonymous.'}
+                        ? 'Ví dụ: Bitcoin vừa phân tán (nhiều máy lưu sổ cái) vừa phi tập trung (không thực thể nào độc quyền ra quyết định).'
+                        : 'Example: Bitcoin is both distributed (shared ledger across nodes) and decentralized (no central authority).'}
                     </p>
                   </div>
                 )}

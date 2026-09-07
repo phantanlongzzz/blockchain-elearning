@@ -873,7 +873,9 @@ export const ExperimentLab: React.FC = () => {
                     {strings.experiments.exp5Title}
                   </h3>
                   <p className="text-xs text-[#A5AFBF] mt-0.5 font-sans">
-                    {strings.experiments.exp5Desc}
+                    {isVi
+                      ? 'Tìm va chạm thực nghiệm trên không gian bit rút gọn (2⁸ – 2²⁰).'
+                      : 'Find empirical collisions on truncated bit spaces (2⁸ – 2²⁰).'}
                   </p>
                 </div>
 
@@ -986,16 +988,16 @@ export const ExperimentLab: React.FC = () => {
                   </div>
                 </div>
               ) : (
-                <div className="p-8 rounded-xl bg-[#080C10] border border-dashed border-[#1C2430] text-center font-sans text-xs text-[#A5AFBF] space-y-2">
+                <div className="p-6 rounded-xl bg-[#080C10] border border-dashed border-[#1C2430] text-center font-sans text-xs text-[#A5AFBF] space-y-1.5">
                   <p className="font-semibold text-[#F2F4F7] text-sm font-sans">
                     {isVi
                       ? 'Sẵn sàng thử nghiệm va chạm theo Nghịch Lý Sinh Nhật'
                       : 'Ready to test Birthday Attack Collision Dynamics'}
                   </p>
-                  <p className="text-[#717B8C] max-w-lg mx-auto leading-relaxed">
+                  <p className="text-[#717B8C] max-w-md mx-auto leading-relaxed">
                     {isVi
-                      ? 'Chọn không gian bit rút gọn (ví dụ 12-bit hoặc 16-bit) và nhấn "Bắt đầu tìm" để quan sát tốc độ va chạm trong không gian mẫu nhỏ so với không gian thực 256-bit.'
-                      : 'Select a truncated bit space (e.g. 12-bit or 16-bit) and click "Find Collision" to observe collision dynamics in reduced spaces.'}
+                      ? 'Chọn không gian bit rút gọn rồi nhấn "Bắt đầu tìm" để quan sát tốc độ va chạm thực tế so với không gian 256-bit.'
+                      : 'Select truncated bit size and click "Find Collision" to observe empirical collision rate vs 256-bit space.'}
                   </p>
                 </div>
               )}

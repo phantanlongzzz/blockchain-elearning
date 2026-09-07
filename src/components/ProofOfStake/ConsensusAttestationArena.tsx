@@ -388,25 +388,37 @@ export const ConsensusAttestationArena: React.FC<ConsensusAttestationArenaProps>
             </button>
           </div>
 
-          {/* Educational Principle Callout */}
-          <div className="border-l-2 border-amber-500/60 pl-3.5 py-1 text-xs text-[#9AA5B5] leading-relaxed">
-            <strong className="text-amber-300 font-semibold block mb-0.5">
-              {isVi ? '💡 Động lực kinh tế trong Proof of Stake:' : '💡 Economic Incentives in Proof of Stake:'}
-            </strong>
-            {isVi ? (
-              <>
-                Người giải khối luôn có động lực kinh tế để làm việc trung thực — làm đúng thì nhận{' '}
-                <span className="text-amber-400 font-semibold">phần thưởng ETH</span>, còn nếu cố tình gian lận sẽ bị cả mạng lưới phát hiện và{' '}
-                <span className="text-rose-400 font-semibold">tịch thu tiền cọc (Slashing)</span>.
-              </>
-            ) : (
-              <>
-                Block Solvers are economically incentivized to act honestly — acting correctly earns{' '}
-                <span className="text-amber-400 font-semibold">ETH rewards</span>, while attempting fraud guarantees peer detection and{' '}
-                <span className="text-rose-400 font-semibold">deposit slashing</span>.
-              </>
-            )}
-          </div>
+          {/* Learn More Disclosure */}
+          <details className="group border border-white/[0.08] rounded-xl bg-[#0C0F14] overflow-hidden text-xs">
+            <summary className="px-4 py-2.5 flex items-center justify-between text-[#9AA5B5] hover:text-[#F2F4F7] cursor-pointer select-none transition-colors font-medium">
+              <span className="flex items-center gap-2">
+                <span>💡</span>
+                <span>
+                  {isVi
+                    ? 'Hiểu thêm: Động lực kinh tế & Cơ chế phạt (Slashing)'
+                    : 'Learn more: Economic Incentives & Slashing'}
+                </span>
+              </span>
+              <span className="text-[11px] text-[#717B8C] font-mono group-open:rotate-180 transition-transform">
+                ▼
+              </span>
+            </summary>
+            <div className="px-4 pb-3.5 pt-1 text-xs text-[#9AA5B5] leading-relaxed border-t border-white/[0.04]">
+              {isVi ? (
+                <>
+                  Người giải khối luôn có động lực kinh tế để làm việc trung thực: làm đúng thì nhận{' '}
+                  <span className="text-amber-400 font-semibold">phần thưởng ETH</span>, còn nếu cố tình gian lận sẽ bị mạng lưới phát hiện và{' '}
+                  <span className="text-rose-400 font-semibold">tịch thu tiền cọc (Slashing)</span>.
+                </>
+              ) : (
+                <>
+                  Block Solvers are economically incentivized to act honestly: acting correctly earns{' '}
+                  <span className="text-amber-400 font-semibold">ETH rewards</span>, while attempting fraud triggers peer detection and{' '}
+                  <span className="text-rose-400 font-semibold">deposit slashing</span>.
+                </>
+              )}
+            </div>
+          </details>
         </div>
       )}
 

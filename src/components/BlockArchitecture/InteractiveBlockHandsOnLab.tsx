@@ -140,6 +140,9 @@ export const InteractiveBlockHandsOnLab: React.FC<{
   // Selected TX for workbench editing / signing / tampering
   const [selectedTxId, setSelectedTxId] = useState<string>('tx-1');
 
+  // Toggle for detailed Merkle Tree diagram
+  const [showMerkleTree, setShowMerkleTree] = useState<boolean>(false);
+
   // Before / After State tracking for Tampering Diff
   const [beforeAfterDiff, setBeforeAfterDiff] = useState<{
     originalTxHash: string;
@@ -1350,13 +1353,24 @@ export const InteractiveBlockHandsOnLab: React.FC<{
                   <GitFork className="w-3.5 h-3.5 text-cyan-400" />
                   <span>Cây Merkle Tự Động (Merkle Tree)</span>
                 </span>
-                <span className="text-[10px] font-mono text-cyan-300">
-                  {processedTxs.length} Transactions
-                </span>
+                <div className="flex items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setShowMerkleTree((prev) => !prev)}
+                    aria-expanded={showMerkleTree}
+                    className="px-2.5 py-1 rounded bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] text-slate-300 hover:text-white transition-all text-[10px] uppercase font-semibold font-sans cursor-pointer"
+                  >
+                    {showMerkleTree ? (isVi ? 'Ẩn Cây Merkle' : 'Hide Merkle Tree') : (isVi ? 'Hiện Cây Merkle' : 'Show Merkle Tree')}
+                  </button>
+                  <span className="text-[10px] font-mono text-cyan-300">
+                    {processedTxs.length} Transactions
+                  </span>
+                </div>
               </div>
 
               {/* Tree Diagram Flow */}
-              <div className="space-y-4 font-mono text-xs">
+              {showMerkleTree && (
+                <div className="space-y-4 font-mono text-xs">
                 {/* Merkle Root Node */}
                 <div className="flex justify-center">
                   <div
@@ -1454,6 +1468,7 @@ export const InteractiveBlockHandsOnLab: React.FC<{
                   ))}
                 </div>
               </div>
+              )}
             </div>
 
             {/* BLOCK BODY (TRANSACTIONS PAYLOAD) */}

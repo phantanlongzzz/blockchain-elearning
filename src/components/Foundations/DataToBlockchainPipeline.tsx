@@ -2,7 +2,6 @@ import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { Boxes, ArrowRight, ArrowDown, RefreshCw, ShieldCheck, ShieldAlert, CheckCircle2, XCircle, SkipForward, SkipBack, Layers, FileText, Binary, GraduationCap, ExternalLink, Code2, Zap, ChevronDown, ChevronUp, Link2, Info, Sliders, Plus, RotateCcw, Check, AlertTriangle } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { fastSha256Hex } from '../../utils/sha256';
-import { calculateHammingDifference } from '../../utils/binary';
 import { CodeViewer } from '../common/CodeViewer';
 
 interface DataToBlockchainPipelineProps {
@@ -350,20 +349,7 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
   };
 
   // ----------------------------------------------------
-  // STEP 7 STATE: Avalanche Effect Live Bit Distance Lab
-  // ----------------------------------------------------
-  const [avalancheInputA, setAvalancheInputA] = useState<string>('Alice -> Bob : 10 BTC');
-  const [avalancheInputB, setAvalancheInputB] = useState<string>('Alice -> Bob : 11 BTC');
-
-  const avalancheHashA = useMemo(() => fastSha256Hex(avalancheInputA), [avalancheInputA]);
-  const avalancheHashB = useMemo(() => fastSha256Hex(avalancheInputB), [avalancheInputB]);
-
-  const avalancheDiff = useMemo(() => {
-    return calculateHammingDifference(avalancheHashA, avalancheHashB);
-  }, [avalancheHashA, avalancheHashB]);
-
-  // ----------------------------------------------------
-  // STEP 8 STATE: Blockchain Integrity Verification Engine
+  // STEP 7 STATE: Blockchain Integrity Verification Engine
   // ----------------------------------------------------
   const [isVerifying, setIsVerifying] = useState<boolean>(false);
   const [verifyProgressIndex, setVerifyProgressIndex] = useState<number>(-1);
@@ -612,20 +598,7 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
     },
     {
       step: 7,
-      title: language === 'vi' ? '7. Hiệu Ứng Thác Đổ' : '7. Avalanche Effect',
-      badge: language === 'vi' ? 'Độ nhạy cực cao' : 'Hyper Sensitivity',
-      coreMessage:
-        language === 'vi'
-          ? 'Hash cực kỳ nhạy với thay đổi dữ liệu.'
-          : 'Hash is hyper-sensitive to any single-bit input change.',
-      explanation:
-        language === 'vi'
-          ? 'Một thay đổi nhỏ như 10 BTC thành 11 BTC làm đảo lộn ~50% toàn bộ 256 bits của mã băm output. Tính chất thác đổ này đảm bảo không ai có thể dự đoán hay giấu diếm việc sửa đổi dữ liệu.'
-          : 'A single character edit flips approximately 50% of all 256 bits across the output hash, ensuring cryptographic tamper evidence.',
-    },
-    {
-      step: 8,
-      title: language === 'vi' ? '8. Xác Minh Toàn Vẹn' : '8. Integrity Verification',
+      title: language === 'vi' ? '7. Xác Minh Toàn Vẹn' : '7. Integrity Verification',
       badge: language === 'vi' ? 'Bảo vệ toàn vẹn' : 'Consensus Verify',
       coreMessage:
         language === 'vi'
@@ -647,8 +620,8 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
         <div className="space-y-1">
           <div className="text-xs font-mono text-cyan-400 uppercase tracking-wider mb-1">
             {language === 'vi'
-              ? 'Giai đoạn 06 · Mô phỏng tương tác 8 bước'
-              : 'Stage 06 · 8-Step Interactive Pipeline'}
+              ? 'Giai đoạn 06 · Mô phỏng tương tác 7 bước'
+              : 'Stage 06 · 7-Step Interactive Pipeline'}
           </div>
           <h3 className="text-base sm:text-lg font-bold text-white font-sans">
             {language === 'vi' ? 'Từ Dữ Liệu Đến Blockchain' : 'From Data to Blockchain'}
@@ -1626,105 +1599,8 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
           </div>
         )}
 
-        {/* STEP 7: AVALANCHE EFFECT EXPERIMENT */}
+        {/* STEP 7: INTEGRITY VERIFICATION LOOP */}
         {currentStep === 7 && (
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-              {/* String A */}
-              <div className="lg:col-span-6 p-5 rounded-2xl bg-[#05070c] border border-slate-800 space-y-3 font-mono text-xs">
-                <div className="flex items-center justify-between pb-2 border-b border-slate-800">
-                  <span className="font-bold text-teach-1">INPUT A (ORIGINAL)</span>
-                  <span className="text-[10px] text-slate-500">64 Hex Output</span>
-                </div>
-                <input
-                  type="text"
-                  value={avalancheInputA}
-                  onChange={(e) => setAvalancheInputA(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-teach-1 font-bold focus:outline-none"
-                />
-                <div>
-                  <span className="text-[10px] text-slate-500 block">SHA-256 HASH A:</span>
-                  <div className="p-2.5 rounded bg-black text-teach-1 text-xs break-all border border-teach-1/30 font-bold">
-                    {avalancheHashA}
-                  </div>
-                </div>
-              </div>
-
-              {/* String B */}
-              <div className="lg:col-span-6 p-5 rounded-2xl bg-[#05070c] border border-slate-800 space-y-3 font-mono text-xs">
-                <div className="flex items-center justify-between pb-2 border-b border-slate-800">
-                  <span className="font-bold text-amber-300">INPUT B (MODIFIED 1 CHAR)</span>
-                  <span className="text-[10px] text-amber-400">Mutated Output</span>
-                </div>
-                <input
-                  type="text"
-                  value={avalancheInputB}
-                  onChange={(e) => setAvalancheInputB(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-amber-300 font-bold focus:outline-none"
-                />
-                <div>
-                  <span className="text-[10px] text-slate-500 block">SHA-256 HASH B:</span>
-                  <div className="p-2.5 rounded bg-black text-amber-300 text-xs break-all border border-amber-500/30 font-bold">
-                    {avalancheHashB}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Bit Distance Calculation Metric */}
-            <div className="p-5 rounded-2xl bg-[#0B0E12] border border-border-primary space-y-4 font-mono text-xs">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-800">
-                <span className="font-bold text-white uppercase flex items-center gap-2">
-                  <Zap className="w-4 h-4 text-teach-1" />
-                  <span>
-                    {language === 'vi'
-                      ? 'KẾT QUẢ TÍNH TOÁN HIỆU ỨNG THÁC ĐỔ (HAMMING BIT DISTANCE)'
-                      : 'AVALANCHE EFFECT HAMMING DISTANCE'}
-                  </span>
-                </span>
-                <span className="text-teach-1 font-bold px-3 py-1 rounded bg-teach-1/10 border border-teach-1/30">
-                  Different Bits: {avalancheDiff.changedBits} / 256 ({avalancheDiff.percentage.toFixed(2)}%)
-                </span>
-              </div>
-
-              {/* Bit Matrix Preview */}
-              <div className="p-3 rounded-xl bg-black/60 border border-slate-800 space-y-1.5">
-                <span className="text-[10px] text-slate-500 block">
-                  {language === 'vi'
-                    ? 'So sánh trực tiếp 256 bits (Các bit màu cam là bit bị đảo ngược hoàn toàn):'
-                    : '256-bit side-by-side binary comparison (Orange indicates flipped bits):'}
-                </span>
-                <div className="flex flex-wrap gap-0.5 max-h-24 overflow-y-auto p-1 font-mono text-[9px]">
-                  {Array.from({ length: 256 }).map((_, i) => {
-                    const isDiff = avalancheDiff.diffIndices.includes(i);
-                    return (
-                      <span
-                        key={i}
-                        className={`w-3.5 h-3.5 flex items-center justify-center rounded-xs select-none ${
-                          isDiff
-                            ? 'bg-amber-500 text-black font-bold'
-                            : 'bg-slate-800 text-slate-500'
-                        }`}
-                        title={`Bit #${i}: HashA=${avalancheDiff.bitsA[i]} vs HashB=${avalancheDiff.bitsB[i]}`}
-                      >
-                        {avalancheDiff.bitsA[i]}
-                      </span>
-                    );
-                  })}
-                </div>
-              </div>
-
-              <p className="text-xs text-slate-300 font-sans leading-relaxed">
-                {language === 'vi'
-                  ? '⚡ Thay đổi rất nhỏ ở input có thể tạo ra thay đổi rất lớn ở output hash (~50% số bit bị đảo ngược). Điều này đảm bảo không kẻ gian nào có thể "đoán" hoặc "điều chỉnh" dữ liệu mà không làm lộ dấu vết.'
-                  : '⚡ Minute input adjustments trigger macro output variations (~50% bit flip rate), providing mathematical tamper resistance.'}
-              </p>
-            </div>
-          </div>
-        )}
-
-        {/* STEP 8: INTEGRITY VERIFICATION LOOP */}
-        {currentStep === 8 && (
           <div className="space-y-6">
             <div className="p-5 rounded-2xl bg-[#05070c] border border-slate-800 space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-slate-800">
@@ -1851,14 +1727,14 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
 
           {/* Step Indicator */}
           <span className="text-xs font-mono text-zinc-500 hidden md:inline-block">
-            {language === 'vi' ? `Bước ${currentStep} / 8: ${currentStepDef.badge}` : `Step ${currentStep} / 8: ${currentStepDef.badge}`}
+            {language === 'vi' ? `Bước ${currentStep} / 7: ${currentStepDef.badge}` : `Step ${currentStep} / 7: ${currentStepDef.badge}`}
           </span>
 
           {/* Continue Button (Enabled only when prerequisite action is satisfied) */}
           <button
             type="button"
-            disabled={currentStep === 8}
-            onClick={() => handleStepSelect(Math.min(8, currentStep + 1))}
+            disabled={currentStep === 7}
+            onClick={() => handleStepSelect(Math.min(7, currentStep + 1))}
             className="w-full sm:w-auto px-4 py-2 rounded-lg bg-zinc-100 hover:bg-white text-zinc-900 font-medium font-mono text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <span>{language === 'vi' ? 'Tiếp tục' : 'Continue'}</span>
@@ -1866,13 +1742,13 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
           </button>
         </div>
 
-        {/* Final Completion Action (Link to Quiz) when on Step 8 */}
-        {currentStep === 8 && verificationDone && (
+        {/* Final Completion Action (Link to Quiz) when on Step 7 */}
+        {currentStep === 7 && verificationDone && (
           <div className="pt-3 border-t border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-4 animate-in fade-in">
             <div className="text-xs text-zinc-400 font-sans">
               {language === 'vi'
-                ? 'Hoàn thành toàn bộ thực nghiệm 8 bước từ Dữ liệu thô đến Blockchain toàn vẹn.'
-                : 'Completed all 8 interactive pipeline steps from raw data to verified blockchain.'}
+                ? 'Hoàn thành toàn bộ thực nghiệm 7 bước từ Dữ liệu thô đến Blockchain toàn vẹn.'
+                : 'Completed all 7 interactive pipeline steps from raw data to verified blockchain.'}
             </div>
 
             <a

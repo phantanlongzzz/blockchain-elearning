@@ -1627,6 +1627,12 @@ export const EndToEndConsensusLab: React.FC = () => {
                 const isCompleted = guidedStep > s.step;
                 const isTarget = isReadyForNext && nextActionTargetId === `step-${s.step}`;
 
+                const accessibleLabel = isActive
+                  ? (language === 'vi' ? `Bước ${s.step}: ${s.nameVi} (Đang chọn)` : `Step ${s.step}: ${s.nameEn} (Current)`)
+                  : isCompleted
+                  ? (language === 'vi' ? `Bước ${s.step}: ${s.nameVi} — đã hoàn thành` : `Step ${s.step}: ${s.nameEn} — completed`)
+                  : (language === 'vi' ? `Bước ${s.step}: ${s.nameVi}` : `Step ${s.step}: ${s.nameEn}`);
+
                 return (
                   <button
                     key={s.step}
@@ -1639,15 +1645,22 @@ export const EndToEndConsensusLab: React.FC = () => {
                       isActive
                         ? 'bg-cyan-500 text-zinc-950 font-bold shadow-xs'
                         : isTarget
-                        ? 'guidance-amber-pulse bg-amber-500/20 text-amber-300 border border-amber-400 font-semibold'
+                        ? 'guidance-amber-pulse bg-amber-500/20 text-amber-300 border border-amber-400 font-semibold text-[10px]'
                         : isCompleted
-                        ? 'text-emerald-400/90 hover:bg-zinc-800 hover:text-emerald-300 text-[10px]'
+                        ? 'hover:bg-zinc-800/80'
                         : 'text-zinc-600 hover:text-zinc-400 hover:bg-zinc-800/60 text-[10px]'
                     }`}
-                    title={`${s.step}. ${language === 'vi' ? s.nameVi : s.nameEn}`}
-                    aria-label={`Step ${s.step}`}
+                    title={`${s.step}. ${language === 'vi' ? s.nameVi : s.nameEn}${isCompleted ? (language === 'vi' ? ' (Đã hoàn thành)' : ' (Completed)') : ''}`}
+                    aria-label={accessibleLabel}
+                    aria-current={isActive ? 'step' : undefined}
                   >
-                    {isCompleted && !isActive ? '✓' : s.step}
+                    {isActive ? (
+                      s.step
+                    ) : isCompleted ? (
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400/90 shrink-0" />
+                    ) : (
+                      s.step
+                    )}
                   </button>
                 );
               })}

@@ -289,6 +289,7 @@ export const EndToEndConsensusLab: React.FC = () => {
   const [isConfigModalOpen, setIsConfigModalOpen] = useState<boolean>(false);
   const [isAuditModalOpen, setIsAuditModalOpen] = useState<boolean>(false);
   const [inspectingNode, setInspectingNode] = useState<E2ENetworkNode | null>(null);
+  const [showInsights, setShowInsights] = useState<boolean>(false);
 
   // Fault Injection State
   const [tamperedBlockHeight, setTamperedBlockHeight] = useState<number | null>(null);
@@ -1306,6 +1307,31 @@ export const EndToEndConsensusLab: React.FC = () => {
             </button>
           </div>
         </div>
+
+        {/* Educational Insight Banner Toggle */}
+        <div className="flex justify-end">
+          <button
+            type="button"
+            onClick={() => setShowInsights(!showInsights)}
+            aria-expanded={showInsights}
+            aria-controls="educational-insight-banner"
+            className="px-3 py-1.5 rounded-lg bg-zinc-900/50 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 hover:text-zinc-200 text-xs font-mono transition-colors flex items-center gap-1.5 cursor-pointer"
+          >
+            {showInsights
+              ? (language === 'vi' ? 'Ẩn Lý thuyết' : 'Hide Educational Insights')
+              : (language === 'vi' ? 'Hiển thị Lý thuyết' : 'Show Educational Insights')
+            }
+          </button>
+        </div>
+
+        {showInsights && (
+          <div id="educational-insight-banner" className="animate-in slide-in-from-top-2">
+            <EducationalInsightBanner
+              currentStep={guidedStep}
+              language={language}
+            />
+          </div>
+        )}
 
         {/* Network Health HUD & Chain Health Ribbon */}
         <NetworkHealthHUD

@@ -150,6 +150,7 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
   const isVi = language === 'vi';
   const [codeLang, setCodeLang] = useState<'python' | 'typescript'>('python');
   const [showCode, setShowCode] = useState<boolean>(false);
+  const [showFlowChart, setShowFlowChart] = useState<boolean>(false);
 
   const handleScrollTo = (elementId: string) => {
     const el = document.getElementById(elementId);
@@ -198,19 +199,35 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
 
       {/* Visual Architectural Master Flow Chart */}
       <div className="p-6 sm:p-7 rounded-2xl bg-[#0B0F19]/70 border border-white/[0.08] space-y-6">
-        <div className="text-center space-y-2">
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-medium">
-            <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-            <span>
-              {isVi ? 'Sơ Đồ Hệ Thống Kiến Trúc Khối' : 'Master System Architecture Flow'}
-            </span>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-center sm:text-left">
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-medium">
+              <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+              <span>
+                {isVi ? 'Sơ Đồ Hệ Thống Kiến Trúc Khối' : 'Master System Architecture Flow'}
+              </span>
+            </div>
+            <h4 className="text-sm sm:text-base font-semibold text-white font-mono">
+              Transaction → Signature → Body → Merkle Tree → Header → Hash → Blockchain
+            </h4>
           </div>
-          <h4 className="text-sm sm:text-base font-semibold text-white font-mono">
-            Transaction → Signature → Body → Merkle Tree → Header → Hash → Blockchain
-          </h4>
+          <button
+            type="button"
+            onClick={() => setShowFlowChart(!showFlowChart)}
+            aria-expanded={showFlowChart}
+            aria-controls="block-architecture-flow-chart"
+            className="px-4 py-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-white font-sans text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer border border-white/[0.08] hover:border-cyan-500/30 shrink-0"
+          >
+            {showFlowChart
+              ? (isVi ? 'Ẩn Sơ đồ Kiến trúc' : 'Hide Architecture Flow')
+              : (isVi ? 'Hiển thị Sơ đồ Kiến trúc' : 'Show Architecture Flow')
+            }
+          </button>
         </div>
 
-        {/* Master Flow Diagram Nodes */}
+        {showFlowChart && (
+          <div id="block-architecture-flow-chart" className="space-y-6">
+            {/* Master Flow Diagram Nodes */}
         <div className="max-w-2xl mx-auto space-y-3 font-sans text-xs">
           {/* Node 1: Transaction */}
           <div className="p-4 rounded-xl bg-black/40 border border-white/[0.06] flex items-center justify-between">
@@ -366,6 +383,8 @@ export const BlockEducationalSummary: React.FC<BlockEducationalSummaryProps> = (
               : 'Any alteration in historical transaction data mutates Leaf Hash → Merkle Root → Block Header → Block Hash, immediately invalidating the hash chain pointer of all downstream blocks.'}
           </p>
         </div>
+          </div>
+        )}
 
         {/* Source Code Viewer Toggle */}
         <div className="space-y-3 pt-2">

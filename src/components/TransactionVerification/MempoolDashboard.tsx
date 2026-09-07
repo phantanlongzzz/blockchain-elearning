@@ -124,6 +124,7 @@ export const MempoolDashboard: React.FC = () => {
   const [revealedKeyAccount, setRevealedKeyAccount] = useState<string | null>(null);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [isP2pExpanded, setIsP2pExpanded] = useState<boolean>(true);
+  const [showLedger, setShowLedger] = useState<boolean>(false);
 
   // Derived state from current step
   const currentTrace = trace[stepIndex] || {
@@ -1006,15 +1007,30 @@ export const MempoolDashboard: React.FC = () => {
 
       {/* 2. Educational Ledger & Account States */}
       <div className="p-5 rounded-xl bg-[#0B0F19]/60 border border-white/[0.08] space-y-4">
-        <div className="flex items-center justify-between">
-          <span className="text-xs font-medium uppercase tracking-wider text-[#71717A]">
-            {vStr.ledgerTitle}
-          </span>
-          <span className="text-xs text-[#71717A]">{vStr.ledgerSubtitle}</span>
+        <div className="flex items-center justify-between flex-wrap gap-3">
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-medium uppercase tracking-wider text-[#71717A]">
+              {vStr.ledgerTitle}
+            </span>
+            <button
+              type="button"
+              onClick={() => setShowLedger(!showLedger)}
+              aria-expanded={showLedger}
+              aria-controls="educational-ledger-content"
+              className="px-3 py-1.5 rounded-lg bg-bg-elevated hover:bg-bg-hover border border-border-primary text-text-muted hover:text-text-primary text-xs font-mono transition-colors flex items-center gap-1.5 cursor-pointer"
+            >
+              {showLedger
+                ? (isVi ? 'Ẩn Sổ cái & Tài khoản' : 'Hide Ledger & Accounts')
+                : (isVi ? 'Hiển thị Sổ cái & Tài khoản' : 'Show Ledger & Accounts')
+              }
+            </button>
+          </div>
+          <span className="text-xs text-[#71717A] hidden sm:block">{vStr.ledgerSubtitle}</span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-          {accounts.map((acc) => {
+        {showLedger && (
+          <div id="educational-ledger-content" className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 animate-in slide-in-from-top-2">
+            {accounts.map((acc) => {
             const isExpanded = expandedAccount === acc.name;
             const isKeyRevealed = revealedKeyAccount === acc.name;
 
@@ -1107,6 +1123,7 @@ export const MempoolDashboard: React.FC = () => {
             );
           })}
         </div>
+        )}
       </div>
 
       {/* 3. Real-Time Node Verification Audit Log */}

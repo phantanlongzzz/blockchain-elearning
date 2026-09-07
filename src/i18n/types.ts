@@ -146,6 +146,12 @@ export interface TranslationSchema {
     hoverPrompt: string;
     flippedStatus: string;
     unchangedStatus: string;
+    sampleHammingTitle?: string;
+    theoreticalExpectation?: string;
+    binomialDistribution?: string;
+    hexDiffusionNote?: string;
+    deepDiveTitle?: string;
+    sacDefinition?: string;
   };
   pipeline: {
     badge: string;

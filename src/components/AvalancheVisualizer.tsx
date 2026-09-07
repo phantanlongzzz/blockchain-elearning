@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import {
   Activity,
-  Shuffle,
   Hash,
   ChevronDown,
   BookOpen,
@@ -10,7 +9,8 @@ import {
   HelpCircle,
   Pin,
   ArrowRight,
-  Sparkles
+  Sparkles,
+  TrendingUp
 } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 import { hashSha256 } from '../utils/sha256';
@@ -66,7 +66,7 @@ export const AvalancheVisualizer: React.FC = () => {
     compareHashes(inputA, inputB);
   }, [inputA, inputB, compareHashes]);
 
-  // Clean, human-readable presets with zero punctuation clutter
+  // Clean, human-readable presets with zero syntax clutter
   const presets = useMemo(() => [
     {
       id: 'case-shift',
@@ -203,7 +203,7 @@ export const AvalancheVisualizer: React.FC = () => {
     });
   }, [diffResult]);
 
-  // Active inspected bit (hover takes transient priority, fallback to pinned selection)
+  // Active inspected bit
   const activeBitIndex = hoveredBitIndex !== null ? hoveredBitIndex : selectedBitIndex;
 
   // Keyboard navigation for the 256-bit matrix
@@ -275,30 +275,30 @@ export const AvalancheVisualizer: React.FC = () => {
           <div>
             <div className="flex items-center gap-2.5">
               <span className="w-2.5 h-2.5 rounded-full bg-sky-400 ring-4 ring-sky-500/20" />
-              <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white">
+              <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white font-sans">
                 {isVi ? 'Hiệu Ứng Thác Lũ (Avalanche Effect)' : 'Avalanche Effect Visualizer'}
               </h2>
             </div>
-            <p className="text-sm text-slate-300 mt-1 max-w-2xl leading-relaxed">
+            <p className="text-sm sm:text-base text-slate-200 mt-1 max-w-2xl leading-relaxed font-sans">
               {isVi
-                ? 'Quan sát trực quan: chỉ cần đổi 1 bit siêu nhỏ ở đầu vào, mã băm SHA-256 đầu ra sẽ nổ tung ngẫu nhiên và đảo xấp xỉ một nửa số bit.'
+                ? 'Quan sát trực quan: chỉ cần thay đổi 1 bit cực nhỏ ở đầu vào, mã băm SHA-256 đầu ra sẽ đảo ngẫu nhiên xấp xỉ một nửa số bit.'
                 : 'See how flipping just 1 tiny input bit causes the 256-bit SHA-256 digest to randomly invert approximately half its bits.'}
             </p>
           </div>
 
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-2.5 shrink-0">
             <button
               type="button"
               id="btn-toggle-mc"
               onClick={() => setShowMonteCarlo((prev) => !prev)}
               aria-expanded={showMonteCarlo}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors cursor-pointer flex items-center gap-1.5 ${
+              className={`px-3.5 py-2 rounded-lg text-sm font-medium border transition-colors cursor-pointer flex items-center gap-2 font-sans ${
                 showMonteCarlo
-                  ? 'bg-slate-800 border-sky-500 text-sky-200'
-                  : 'bg-slate-900 hover:bg-slate-800 border-slate-800 text-slate-300 hover:text-white'
+                  ? 'bg-slate-800 border-sky-500 text-sky-200 font-semibold'
+                  : 'bg-slate-900 hover:bg-slate-800 border-slate-800 text-slate-200 hover:text-white'
               }`}
             >
-              <Activity className="w-3.5 h-3.5 text-sky-400" />
+              <Activity className="w-4 h-4 text-sky-400" />
               <span>{isVi ? 'Kiểm định ngẫu nhiên' : 'Monte Carlo Test'}</span>
             </button>
 
@@ -307,20 +307,20 @@ export const AvalancheVisualizer: React.FC = () => {
               id="btn-toggle-theory"
               onClick={() => setShowTheory((prev) => !prev)}
               aria-expanded={showTheory}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors cursor-pointer flex items-center gap-1.5 ${
+              className={`px-3.5 py-2 rounded-lg text-sm font-medium border transition-colors cursor-pointer flex items-center gap-2 font-sans ${
                 showTheory
-                  ? 'bg-slate-800 border-amber-500 text-amber-200'
-                  : 'bg-slate-900 hover:bg-slate-800 border-slate-800 text-slate-300 hover:text-white'
+                  ? 'bg-slate-800 border-amber-500 text-amber-200 font-semibold'
+                  : 'bg-slate-900 hover:bg-slate-800 border-slate-800 text-slate-200 hover:text-white'
               }`}
             >
-              <BookOpen className="w-3.5 h-3.5 text-amber-400" />
+              <BookOpen className="w-4 h-4 text-amber-400" />
               <span>{isVi ? 'Lý thuyết toán học' : 'Theory'}</span>
             </button>
           </div>
         </header>
 
         {/* 2. PRESETS: CLEAN HUMAN LABELS (ZERO SYNTAX CLUTTER) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {presets.map((preset) => {
             const isActive = inputA === preset.a && inputB === preset.b;
             return (
@@ -331,19 +331,19 @@ export const AvalancheVisualizer: React.FC = () => {
                   setInputA(preset.a);
                   setInputB(preset.b);
                 }}
-                className={`p-3 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
+                className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between font-sans ${
                   isActive
                     ? 'bg-sky-950/40 border-sky-500 text-white ring-1 ring-sky-400/40 shadow-sm'
-                    : 'bg-slate-900/60 border-slate-800 text-slate-300 hover:border-slate-700 hover:bg-slate-900'
+                    : 'bg-slate-900/60 border-slate-800 text-slate-200 hover:border-slate-700 hover:bg-slate-900'
                 }`}
               >
                 <div className="flex items-center justify-between w-full">
-                  <span className="font-semibold text-xs text-white">
+                  <span className="font-semibold text-sm text-white">
                     {isVi ? preset.titleVi : preset.titleEn}
                   </span>
-                  {isActive && <Sparkles className="w-3.5 h-3.5 text-sky-400 shrink-0" />}
+                  {isActive && <Sparkles className="w-4 h-4 text-sky-400 shrink-0" />}
                 </div>
-                <span className="text-[11px] text-slate-400 mt-1">
+                <span className="text-xs sm:text-sm text-slate-300 mt-1.5 leading-normal">
                   {isVi ? preset.subtitleVi : preset.subtitleEn}
                 </span>
               </button>
@@ -354,81 +354,81 @@ export const AvalancheVisualizer: React.FC = () => {
         {/* 3. STEP 1: INPUT WORKBENCH & BIT-LEVEL GRAPHICAL SCAFFOLDING */}
         <div className="rounded-xl bg-slate-900/80 border border-slate-800 p-4 sm:p-5 space-y-4 shadow-sm">
           <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+            <span className="text-sm font-semibold uppercase tracking-wider text-slate-200 flex items-center gap-2 font-sans">
               <span className="w-1.5 h-4 bg-sky-400 rounded-full" />
               <span>{isVi ? 'Bước 1: So sánh hai chuỗi văn bản đầu vào' : 'Step 1: Compare Two Input Messages'}</span>
             </span>
           </div>
 
           {/* Dual Inputs */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <label htmlFor="avalanche-input-a" className="text-xs font-medium text-sky-300 flex items-center justify-between">
+              <label htmlFor="avalanche-input-a" className="text-sm font-medium text-sky-300 flex items-center justify-between font-sans">
                 <span>{isVi ? 'Thông điệp A' : 'Message A'}</span>
-                <span className="text-[11px] text-slate-400 font-mono">{inputA.length} ký tự</span>
+                <span className="text-xs text-slate-300">{inputA.length} ký tự</span>
               </label>
               <input
                 id="avalanche-input-a"
                 type="text"
                 value={inputA}
                 onChange={(e) => setInputA(e.target.value)}
-                className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3.5 py-2 text-sm font-mono text-white placeholder-slate-500 focus:outline-hidden focus:border-sky-400 focus:ring-1 focus:ring-sky-400/40"
+                className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3.5 py-2.5 text-sm sm:text-base font-sans text-white placeholder-slate-500 focus:outline-hidden focus:border-sky-400 focus:ring-1 focus:ring-sky-400/40"
                 placeholder="Nhập thông điệp A..."
               />
             </div>
 
             <div className="space-y-1.5">
-              <label htmlFor="avalanche-input-b" className="text-xs font-medium text-violet-300 flex items-center justify-between">
+              <label htmlFor="avalanche-input-b" className="text-sm font-medium text-violet-300 flex items-center justify-between font-sans">
                 <span>{isVi ? 'Thông điệp B' : 'Message B'}</span>
-                <span className="text-[11px] text-slate-400 font-mono">{inputB.length} ký tự</span>
+                <span className="text-xs text-slate-300">{inputB.length} ký tự</span>
               </label>
               <input
                 id="avalanche-input-b"
                 type="text"
                 value={inputB}
                 onChange={(e) => setInputB(e.target.value)}
-                className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3.5 py-2 text-sm font-mono text-white placeholder-slate-500 focus:outline-hidden focus:border-violet-400 focus:ring-1 focus:ring-violet-400/40"
+                className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3.5 py-2.5 text-sm sm:text-base font-sans text-white placeholder-slate-500 focus:outline-hidden focus:border-violet-400 focus:ring-1 focus:ring-violet-400/40"
                 placeholder="Nhập thông điệp B..."
               />
             </div>
           </div>
 
-          {/* VISUAL BIT SCAFFOLDING (Replaces ugly string punctuation with intuitive graphic blocks) */}
-          <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
-              <span className="font-semibold text-slate-200 flex items-center gap-1.5">
-                <Hash className="w-3.5 h-3.5 text-amber-400" />
+          {/* VISUAL BIT SCAFFOLDING */}
+          <div className="bg-slate-950 p-4 sm:p-5 rounded-xl border border-slate-800 space-y-3 font-sans">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <span className="font-semibold text-sm sm:text-base text-white flex items-center gap-2">
+                <Hash className="w-4 h-4 text-amber-400" />
                 <span>{isVi ? 'Kính lúp nhị phân: Điểm khác biệt giữa hai đầu vào' : 'Binary Magnifier: Input Difference'}</span>
               </span>
-              <span className="text-amber-300 font-mono font-medium">
-                {isVi ? 'Đầu vào lệch:' : 'Input diff:'} <strong>{inputDiff.changedBits} bit</strong>
+              <span className="text-sm font-medium text-amber-300">
+                {isVi ? 'Độ lệch đầu vào:' : 'Input diff:'} <strong className="font-bold text-amber-200">{inputDiff.changedBits} bit</strong>
               </span>
             </div>
 
             {inputByteScaffold.mode === 'char-diff' ? (
-              <div className="space-y-2.5 pt-1">
-                <p className="text-xs text-slate-300">
+              <div className="space-y-3 pt-1">
+                <p className="text-sm text-slate-200 leading-relaxed">
                   {isVi
                     ? `Tại ký tự thứ ${inputByteScaffold.charIndex}, máy tính chuyển ký tự thành 8 ô bit nhị phân:`
                     : `At character position ${inputByteScaffold.charIndex}, computer encodes character into 8 binary bits:`}
                 </p>
 
-                <div className="space-y-2 font-mono">
+                <div className="space-y-2.5">
                   {/* Row A */}
                   <div className="flex items-center gap-3">
-                    <span className="w-20 text-xs font-bold text-sky-300 shrink-0">
+                    <span className="w-24 text-sm font-bold text-sky-300 shrink-0 font-sans">
                       Ký tự &apos;{inputByteScaffold.charA}&apos;:
                     </span>
-                    <div className="flex items-center gap-1.5">
+                    <div className="flex items-center gap-1.5 font-mono">
                       {inputByteScaffold.bitsA.map((bitVal, idx) => {
                         const isFlipped = inputByteScaffold.flippedIndices.includes(idx);
                         return (
                           <span
                             key={idx}
-                            className={`w-7 h-7 rounded flex items-center justify-center text-xs font-bold transition-all ${
+                            className={`w-7 h-7 sm:w-8 sm:h-8 rounded flex items-center justify-center text-xs sm:text-sm font-bold transition-all ${
                               isFlipped
                                 ? 'bg-amber-400 text-slate-950 ring-2 ring-amber-300/80 scale-105 shadow-sm'
-                                : 'bg-slate-800 text-slate-400 border border-slate-700'
+                                : 'bg-slate-800 text-slate-300 border border-slate-700'
                             }`}
                           >
                             {bitVal}
@@ -440,19 +440,19 @@ export const AvalancheVisualizer: React.FC = () => {
 
                   {/* Row B */}
                   <div className="flex items-center gap-3">
-                    <span className="w-20 text-xs font-bold text-violet-300 shrink-0">
+                    <span className="w-24 text-sm font-bold text-violet-300 shrink-0 font-sans">
                       Ký tự &apos;{inputByteScaffold.charB}&apos;:
                     </span>
-                    <div className="flex items-center gap-1.5">
+                    <div className="flex items-center gap-1.5 font-mono">
                       {inputByteScaffold.bitsB.map((bitVal, idx) => {
                         const isFlipped = inputByteScaffold.flippedIndices.includes(idx);
                         return (
                           <span
                             key={idx}
-                            className={`w-7 h-7 rounded flex items-center justify-center text-xs font-bold transition-all ${
+                            className={`w-7 h-7 sm:w-8 sm:h-8 rounded flex items-center justify-center text-xs sm:text-sm font-bold transition-all ${
                               isFlipped
                                 ? 'bg-amber-400 text-slate-950 ring-2 ring-amber-300/80 scale-105 shadow-sm'
-                                : 'bg-slate-800 text-slate-400 border border-slate-700'
+                                : 'bg-slate-800 text-slate-300 border border-slate-700'
                             }`}
                           >
                             {bitVal}
@@ -463,8 +463,8 @@ export const AvalancheVisualizer: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 text-[11px] text-amber-300/90 pt-1">
-                  <span className="w-2 h-2 rounded-full bg-amber-400" />
+                <div className="flex items-center gap-2 text-xs sm:text-sm text-amber-300 pt-1 font-medium">
+                  <span className="w-2 h-2 rounded-full bg-amber-400 shrink-0" />
                   <span>
                     {isVi
                       ? `7 ô bit hoàn toàn giống hệt nhau, chỉ có đúng ${inputByteScaffold.flippedCount} ô màu vàng bị thay đổi!`
@@ -473,8 +473,8 @@ export const AvalancheVisualizer: React.FC = () => {
                 </div>
               </div>
             ) : inputByteScaffold.mode === 'append-diff' ? (
-              <div className="space-y-2">
-                <p className="text-xs text-slate-300">
+              <div className="space-y-2.5">
+                <p className="text-sm text-slate-200">
                   {isVi
                     ? `Thêm một ký tự '${inputByteScaffold.extraChar}' ở cuối chuỗi tương đương thêm 8 bit nhị phân mới:`
                     : `Appending '${inputByteScaffold.extraChar}' introduces 8 new binary bits:`}
@@ -483,7 +483,7 @@ export const AvalancheVisualizer: React.FC = () => {
                   {inputByteScaffold.bits.map((bitVal, idx) => (
                     <span
                       key={idx}
-                      className="w-7 h-7 rounded flex items-center justify-center text-xs font-bold bg-amber-400 text-slate-950 ring-1 ring-amber-300/80"
+                      className="w-7 h-7 sm:w-8 sm:h-8 rounded flex items-center justify-center text-xs sm:text-sm font-bold bg-amber-400 text-slate-950 ring-1 ring-amber-300/80"
                     >
                       {bitVal}
                     </span>
@@ -491,7 +491,7 @@ export const AvalancheVisualizer: React.FC = () => {
                 </div>
               </div>
             ) : (
-              <div className="text-xs text-slate-400">
+              <div className="text-sm text-slate-300">
                 {isVi ? 'Hai thông điệp đang giống nhau hoàn toàn.' : 'Both messages are currently identical.'}
               </div>
             )}
@@ -500,9 +500,9 @@ export const AvalancheVisualizer: React.FC = () => {
 
         {/* 4. STEP 2: THE AVALANCHE HERO CONTRAST (ONE INTUITIVE GLANCE) */}
         {diffResult && (
-          <div className="rounded-xl bg-slate-900/90 border border-slate-800 p-4 sm:p-5 shadow-sm">
+          <div className="rounded-xl bg-slate-900/90 border border-slate-800 p-4 sm:p-5 shadow-sm font-sans">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
-              <span className="text-xs font-semibold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+              <span className="text-sm font-semibold uppercase tracking-wider text-slate-200 flex items-center gap-2">
                 <span className="w-1.5 h-4 bg-sky-400 rounded-full" />
                 <span>{isVi ? 'Bước 2: Cầu nối Hiệu ứng Thác Lũ (Đầu vào → Đầu ra)' : 'Step 2: The Avalanche Effect in Action'}</span>
               </span>
@@ -510,40 +510,40 @@ export const AvalancheVisualizer: React.FC = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
               {/* Left: Input Change */}
-              <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 text-center space-y-1">
-                <span className="text-xs text-slate-400 font-medium block">
+              <div className="bg-slate-950 p-4 sm:p-5 rounded-xl border border-slate-800 text-center space-y-1.5">
+                <span className="text-sm text-slate-300 font-medium block">
                   {isVi ? 'Biến thiên ở đầu vào' : 'Input Change'}
                 </span>
-                <div className="text-3xl font-extrabold text-amber-400 font-mono">
-                  {inputDiff.changedBits} <span className="text-sm font-normal text-slate-400 font-sans">bit</span>
+                <div className="text-3xl sm:text-4xl font-extrabold text-amber-400 font-mono tracking-tight">
+                  {inputDiff.changedBits} <span className="text-base font-normal text-slate-300 font-sans ml-1">bit</span>
                 </div>
-                <span className="text-[11px] text-slate-400 block">
+                <span className="text-xs sm:text-sm text-slate-300 block">
                   {isVi ? 'Chỉ một chi tiết cực nhỏ' : 'Minimal change'}
                 </span>
               </div>
 
               {/* Middle: SHA-256 Diffusion Machine */}
-              <div className="text-center space-y-1.5">
-                <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-800 border border-slate-700 text-sky-400 shadow-inner">
+              <div className="text-center space-y-2">
+                <div className="inline-flex items-center justify-center w-11 h-11 rounded-full bg-slate-800 border border-slate-700 text-sky-400 shadow-inner">
                   <ArrowRight className="w-5 h-5" />
                 </div>
-                <span className="block text-xs font-mono font-semibold text-slate-300">
+                <span className="block text-sm font-semibold text-slate-200">
                   SHA-256 (64 vòng nén)
                 </span>
-                <span className="block text-[11px] text-slate-400">
+                <span className="block text-xs sm:text-sm text-slate-300">
                   {isVi ? 'Khuếch tán toàn phần' : 'Complete diffusion'}
                 </span>
               </div>
 
               {/* Right: Output Avalanche */}
-              <div className="bg-slate-950 p-4 rounded-xl border border-sky-500/40 text-center space-y-1 shadow-sm">
-                <span className="text-xs text-sky-300 font-medium block">
+              <div className="bg-slate-950 p-4 sm:p-5 rounded-xl border border-sky-500/40 text-center space-y-1.5 shadow-sm">
+                <span className="text-sm text-sky-300 font-medium block">
                   {isVi ? 'Kết quả ở mã băm đầu ra' : 'Output Digest Divergence'}
                 </span>
-                <div className="text-3xl font-extrabold text-sky-400 font-mono">
-                  {changedBits} <span className="text-sm font-normal text-slate-400 font-sans">/ 256 bit</span>
+                <div className="text-3xl sm:text-4xl font-extrabold text-sky-400 font-mono tracking-tight">
+                  {changedBits} <span className="text-base font-normal text-slate-300 font-sans ml-1">/ 256 bit</span>
                 </div>
-                <span className="text-xs font-semibold text-sky-300 block">
+                <span className="text-sm font-semibold text-sky-300 block">
                   ~{percentage.toFixed(1)}% {isVi ? 'bị đảo ngẫu nhiên' : 'flipped'}
                 </span>
               </div>
@@ -553,9 +553,9 @@ export const AvalancheVisualizer: React.FC = () => {
 
         {/* 5. STEP 3: WORD DIFFUSION GAUGE (VISUAL COLOR TINT, NO NUMBER OVERLOAD) */}
         {diffResult && (
-          <div className="space-y-3">
+          <div className="space-y-3 font-sans">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-              <span className="text-xs font-semibold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+              <span className="text-sm font-semibold uppercase tracking-wider text-slate-200 flex items-center gap-2">
                 <span className="w-1.5 h-4 bg-sky-400 rounded-full" />
                 <span>{isVi ? 'Bước 3: Mức độ khuếch tán qua 8 từ (H₀…H₇)' : 'Step 3: Diffusion Across 8 Words (H₀…H₇)'}</span>
               </span>
@@ -564,7 +564,7 @@ export const AvalancheVisualizer: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setFocusedWordIndex(null)}
-                  className="text-xs text-sky-400 hover:text-sky-300 underline cursor-pointer"
+                  className="text-xs sm:text-sm text-sky-400 hover:text-sky-300 underline cursor-pointer"
                 >
                   {isVi ? 'Xem toàn bộ 8 từ' : 'Show all words'}
                 </button>
@@ -572,32 +572,32 @@ export const AvalancheVisualizer: React.FC = () => {
             </div>
 
             {/* 8 Visual Word Diffusion Cards */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2.5">
               {wordGroups.map((word) => {
                 const isFocused = focusedWordIndex === word.wordIdx;
                 const ratio = word.wordFlippedCount / 32;
-                const isBalanced = ratio >= 0.4 && ratio <= 0.6; // 40% - 60% is healthy balanced diffusion
+                const isBalanced = ratio >= 0.4 && ratio <= 0.6;
 
                 return (
                   <button
                     key={word.wordIdx}
                     type="button"
                     onClick={() => setFocusedWordIndex(isFocused ? null : word.wordIdx)}
-                    className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
+                    className={`p-3 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
                       isFocused
                         ? 'bg-sky-950/60 border-sky-400 text-white ring-2 ring-sky-400/50 shadow-sm'
-                        : 'bg-slate-900/80 border-slate-800 text-slate-300 hover:border-slate-700 hover:bg-slate-900'
+                        : 'bg-slate-900/80 border-slate-800 text-slate-200 hover:border-slate-700 hover:bg-slate-900'
                     }`}
                   >
                     <div className="flex items-center justify-between w-full">
-                      <span className="text-xs font-bold font-mono text-white">H{word.wordIdx}</span>
-                      <span className={`text-[10px] font-semibold font-mono ${isBalanced ? 'text-emerald-400' : 'text-sky-400'}`}>
+                      <span className="text-sm font-bold font-mono text-white">H{word.wordIdx}</span>
+                      <span className={`text-xs font-semibold font-mono ${isBalanced ? 'text-emerald-400' : 'text-sky-400'}`}>
                         {word.wordFlippedCount}/32
                       </span>
                     </div>
 
                     {/* Visual progress bar */}
-                    <div className="w-full h-1.5 bg-slate-800 rounded-full mt-2 overflow-hidden">
+                    <div className="w-full h-1.5 bg-slate-800 rounded-full mt-2.5 overflow-hidden">
                       <div
                         className={`h-full transition-all ${isBalanced ? 'bg-emerald-400' : 'bg-sky-400'}`}
                         style={{ width: `${Math.round(ratio * 100)}%` }}
@@ -612,13 +612,13 @@ export const AvalancheVisualizer: React.FC = () => {
 
         {/* 6. STEP 4: 256-BIT DIGEST FIREWORKS MATRIX & CLEAN INSPECTOR */}
         {diffResult && (
-          <div className="rounded-xl bg-slate-900/80 border border-slate-800 p-4 sm:p-5 space-y-4 shadow-sm">
+          <div className="rounded-xl bg-slate-900/80 border border-slate-800 p-4 sm:p-5 space-y-4 shadow-sm font-sans">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
               <div>
-                <h3 className="text-xs font-semibold uppercase tracking-wider text-white">
+                <h3 className="text-sm font-semibold uppercase tracking-wider text-white">
                   {isVi ? 'Ma trận 256 bit: Nổ tung như pháo hoa' : '256-Bit Output Digest Matrix'}
                 </h3>
-                <p className="text-xs text-slate-400 mt-0.5">
+                <p className="text-xs sm:text-sm text-slate-300 mt-1">
                   {isVi
                     ? 'Mỗi ô vuông là 1 bit đầu ra. Màu xanh là bit bị đảo, màu tối là bit giữ nguyên.'
                     : 'Each cell is 1 output bit. Blue indicates inverted bits; dark slate indicates unchanged bits.'}
@@ -626,17 +626,17 @@ export const AvalancheVisualizer: React.FC = () => {
               </div>
 
               {/* High Contrast Legend */}
-              <div className="flex items-center gap-4 text-xs font-mono shrink-0">
+              <div className="flex items-center gap-4 text-xs sm:text-sm shrink-0">
                 <div className="flex items-center gap-1.5">
                   <span className="w-3.5 h-3.5 rounded-xs bg-sky-400 inline-block" />
                   <span className="text-slate-200">
-                    {isVi ? 'Đổi bit:' : 'Flipped:'} <strong className="text-sky-300 font-bold">{changedBits}</strong>
+                    {isVi ? 'Đổi bit:' : 'Flipped:'} <strong className="text-sky-300 font-bold font-mono ml-0.5">{changedBits}</strong>
                   </span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <span className="w-3.5 h-3.5 rounded-xs bg-slate-800 border border-slate-600 inline-block" />
                   <span className="text-slate-300">
-                    {isVi ? 'Giữ nguyên:' : 'Unchanged:'} <strong className="text-slate-200 font-bold">{256 - changedBits}</strong>
+                    {isVi ? 'Giữ nguyên:' : 'Unchanged:'} <strong className="text-slate-200 font-bold font-mono ml-0.5">{256 - changedBits}</strong>
                   </span>
                 </div>
               </div>
@@ -669,7 +669,7 @@ export const AvalancheVisualizer: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => setFocusedWordIndex(isCurrentWordActive ? null : word.wordIdx)}
-                      className="w-16 shrink-0 font-mono text-xs text-left cursor-pointer"
+                      className="w-16 shrink-0 font-mono text-sm text-left cursor-pointer"
                     >
                       <span className={`font-bold ${isCurrentWordActive ? 'text-sky-300' : 'text-slate-300'}`}>
                         H{word.wordIdx}
@@ -721,11 +721,11 @@ export const AvalancheVisualizer: React.FC = () => {
             </div>
 
             {/* Clean, Human-Friendly Inspector */}
-            <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-200 shadow-inner flex flex-wrap items-center justify-between gap-3">
+            <div className="p-3.5 sm:p-4 rounded-xl bg-slate-950 border border-slate-800 text-sm text-slate-200 shadow-inner flex flex-wrap items-center justify-between gap-3">
               {activeBitIndex !== null && diffResult ? (
                 <div className="flex flex-wrap items-center gap-3">
-                  <div className="flex items-center gap-1.5 text-white font-bold bg-slate-800 px-2.5 py-1 rounded">
-                    <Pin className="w-3.5 h-3.5 text-sky-400" />
+                  <div className="flex items-center gap-1.5 text-white font-bold bg-slate-800 px-3 py-1 rounded">
+                    <Pin className="w-4 h-4 text-sky-400" />
                     <span>Bit số {activeBitIndex}</span>
                   </div>
                   <span className="text-slate-600">•</span>
@@ -737,7 +737,7 @@ export const AvalancheVisualizer: React.FC = () => {
                     Giá trị: <strong className="text-sky-300 font-mono">{diffResult.bitsA[activeBitIndex]}</strong> sang <strong className="text-violet-300 font-mono">{diffResult.bitsB[activeBitIndex]}</strong>
                   </span>
                   <span className="text-slate-600">•</span>
-                  <span className={`px-2 py-0.5 rounded text-[11px] font-bold ${
+                  <span className={`px-2.5 py-0.5 rounded text-xs font-bold ${
                     diffResult.diffIndices.includes(activeBitIndex)
                       ? 'bg-sky-950 text-sky-300 border border-sky-700'
                       : 'bg-slate-800 text-slate-300 border border-slate-700'
@@ -748,8 +748,8 @@ export const AvalancheVisualizer: React.FC = () => {
                   </span>
                 </div>
               ) : (
-                <div className="text-slate-400 flex items-center gap-2">
-                  <HelpCircle className="w-4 h-4 text-slate-500" />
+                <div className="text-slate-300 flex items-center gap-2">
+                  <HelpCircle className="w-4 h-4 text-slate-400" />
                   <span>
                     {isVi
                       ? 'Chạm/click hoặc dùng phím mũi tên để soi từng bit.'
@@ -762,34 +762,34 @@ export const AvalancheVisualizer: React.FC = () => {
         )}
 
         {/* 7. COLLAPSIBLE ACCORDION: MONTE CARLO TEST */}
-        <div className="rounded-xl bg-slate-900/80 border border-slate-800 overflow-hidden shadow-sm">
+        <div className="rounded-xl bg-slate-900/80 border border-slate-800 overflow-hidden shadow-sm font-sans">
           <button
             type="button"
             id="btn-accordion-monte-carlo"
             onClick={() => setShowMonteCarlo((prev) => !prev)}
             aria-expanded={showMonteCarlo}
-            className="w-full px-4 py-3.5 bg-slate-900/90 hover:bg-slate-800 flex items-center justify-between text-left text-xs font-semibold text-slate-200 transition-colors cursor-pointer"
+            className="w-full px-4 py-4 bg-slate-900/90 hover:bg-slate-800 flex items-center justify-between text-left text-sm sm:text-base font-semibold text-slate-200 transition-colors cursor-pointer"
           >
-            <span className="flex items-center gap-2 text-sm font-semibold">
-              <Activity className="w-4 h-4 text-sky-400" />
+            <span className="flex items-center gap-2.5">
+              <Activity className="w-5 h-5 text-sky-400" />
               <span>{isVi ? 'Kiểm định ngẫu nhiên nhiều mẫu (Monte Carlo)' : 'Monte Carlo Statistical Verification'}</span>
             </span>
-            <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${showMonteCarlo ? 'rotate-180' : ''}`} />
+            <ChevronDown className={`w-5 h-5 text-slate-400 transition-transform duration-200 ${showMonteCarlo ? 'rotate-180' : ''}`} />
           </button>
 
           {showMonteCarlo && (
-            <div className="p-4 sm:p-5 border-t border-slate-800 space-y-4 text-xs text-slate-300 leading-relaxed">
-              <p className="text-slate-300">
+            <div className="p-4 sm:p-6 border-t border-slate-800 space-y-5 text-slate-200 leading-relaxed">
+              <p className="text-sm sm:text-base text-slate-200 leading-relaxed font-sans">
                 {isVi
                   ? 'Máy tính sẽ tự động sinh ngẫu nhiên hàng nghìn thông điệp, lật đúng 1 bit ở mỗi thông điệp và đo xem hiệu ứng thác lũ có thực sự đảo quanh mức ~50% hay không.'
                   : 'Automated trial generates thousands of random inputs, flips exactly 1 bit per trial, and measures whether diffusion consistently stays around ~50%.'}
               </p>
 
               {/* Sample Size Controls & Trigger Workbench */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-950 p-3.5 rounded-xl border border-slate-800">
-                <div className="flex items-center gap-2.5">
-                  <span className="text-xs font-mono text-slate-300 font-semibold">
-                    {isVi ? 'Số lượng mẫu:' : 'Sample size:'}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-950 p-4 rounded-xl border border-slate-800">
+                <div className="flex items-center gap-3">
+                  <span className="text-sm font-medium text-slate-200">
+                    {isVi ? 'Số lượng mẫu thử:' : 'Sample size:'}
                   </span>
                   <div className="inline-flex rounded-lg p-0.5 bg-slate-900 border border-slate-800">
                     {[100, 1000, 5000].map((size) => (
@@ -798,7 +798,7 @@ export const AvalancheVisualizer: React.FC = () => {
                         type="button"
                         disabled={mcRunning}
                         onClick={() => setMcSampleSize(size)}
-                        className={`px-3 py-1 rounded-md text-xs font-mono transition-colors cursor-pointer ${
+                        className={`px-3.5 py-1.5 rounded-md text-xs sm:text-sm font-sans transition-colors cursor-pointer ${
                           mcSampleSize === size
                             ? 'bg-sky-500/20 text-sky-200 font-bold border border-sky-500/40 shadow-xs'
                             : 'text-slate-400 hover:text-slate-200'
@@ -815,13 +815,13 @@ export const AvalancheVisualizer: React.FC = () => {
                   id="btn-run-monte-carlo"
                   disabled={mcRunning}
                   onClick={() => handleRunMonteCarlo(mcSampleSize)}
-                  className={`px-4 py-2 rounded-lg text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                  className={`px-5 py-2.5 rounded-lg text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
                     mcRunning
                       ? 'bg-slate-800 text-slate-400 border border-slate-700 cursor-not-allowed'
                       : 'bg-sky-500 hover:bg-sky-400 text-slate-950 shadow-sm hover:shadow-sky-500/20'
                   }`}
                 >
-                  <Play className={`w-3.5 h-3.5 ${mcRunning ? 'animate-spin' : ''}`} />
+                  <Play className={`w-4 h-4 ${mcRunning ? 'animate-spin' : ''}`} />
                   <span>
                     {mcRunning
                       ? (isVi ? `Đang thử nghiệm: ${mcProgress?.completed ?? 0}/${mcProgress?.total ?? mcSampleSize}...` : `Testing: ${mcProgress?.completed ?? 0}/${mcProgress?.total ?? mcSampleSize}...`)
@@ -832,14 +832,14 @@ export const AvalancheVisualizer: React.FC = () => {
 
               {/* Progress Bar */}
               {mcRunning && mcProgress && (
-                <div className="space-y-1.5 bg-slate-950 p-3.5 rounded-xl border border-slate-800 font-mono">
-                  <div className="flex justify-between text-xs text-slate-300">
+                <div className="space-y-2 bg-slate-950 p-4 rounded-xl border border-slate-800">
+                  <div className="flex justify-between text-sm text-slate-200 font-medium">
                     <span>{isVi ? 'Tiến độ thử nghiệm:' : 'Progress:'}</span>
-                    <span className="font-bold text-sky-300">
+                    <span className="font-bold text-sky-300 font-mono">
                       {Math.round((mcProgress.completed / mcProgress.total) * 100)}% ({mcProgress.completed} / {mcProgress.total})
                     </span>
                   </div>
-                  <div className="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
+                  <div className="w-full h-2.5 rounded-full bg-slate-800 overflow-hidden">
                     <div
                       className="h-full bg-sky-400 transition-all duration-100"
                       style={{ width: `${(mcProgress.completed / mcProgress.total) * 100}%` }}
@@ -850,67 +850,215 @@ export const AvalancheVisualizer: React.FC = () => {
 
               {/* Monte Carlo Results */}
               {mcResult && !mcRunning && (
-                <div className="space-y-4 pt-2">
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-slate-950 p-3.5 rounded-xl border border-slate-800 font-mono">
-                    <div className="space-y-0.5">
-                      <span className="text-[11px] text-slate-400 block uppercase">
-                        {isVi ? 'Trung bình đổi' : 'Mean Bit Flips'}
+                <div className="space-y-5 pt-1 font-sans">
+                  {/* Results Grid with Clear Typographic Hierarchy */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    {/* Card 1: Mean */}
+                    <div className="bg-slate-950 p-4 sm:p-5 rounded-xl border border-slate-800 space-y-1.5">
+                      <span className="text-sm font-medium text-slate-300 block">
+                        {isVi ? 'Trung bình số bit đổi' : 'Mean Bit Flips'}
                       </span>
-                      <span className="text-lg font-bold text-sky-300">
-                        {mcResult.observedMean} <span className="text-xs font-normal text-slate-400">bit</span>
-                      </span>
-                      <span className="text-[11px] text-slate-400 block">
-                        {isVi ? 'Lý thuyết: 128 bit' : 'Expected: 128 bits'}
-                      </span>
-                    </div>
-
-                    <div className="space-y-0.5">
-                      <span className="text-[11px] text-slate-400 block uppercase">
-                        {isVi ? 'Độ lệch chuẩn' : 'Std Dev'}
-                      </span>
-                      <span className="text-lg font-bold text-white">
-                        {mcResult.observedStdDev} <span className="text-xs font-normal text-slate-400">bit</span>
-                      </span>
-                      <span className="text-[11px] text-slate-400 block">
-                        {isVi ? 'Lý thuyết: 8 bit' : 'Theoretical: 8 bits'}
+                      <div className="flex items-baseline">
+                        <span className="text-2xl sm:text-3xl font-extrabold font-mono text-sky-300 tracking-tight">
+                          {mcResult.observedMean}
+                        </span>
+                        <span className="text-sm font-normal text-slate-300 ml-1.5">bit</span>
+                      </div>
+                      <span className="text-xs sm:text-sm text-slate-300 mt-1 block">
+                        {isVi ? 'Kỳ vọng lý thuyết: 128 bit' : 'Expected: 128 bits'}
                       </span>
                     </div>
 
-                    <div className="space-y-0.5">
-                      <span className="text-[11px] text-slate-400 block uppercase">
-                        {isVi ? 'Khoảng min - max' : 'Min - Max'}
+                    {/* Card 2: Std Dev */}
+                    <div className="bg-slate-950 p-4 sm:p-5 rounded-xl border border-slate-800 space-y-1.5">
+                      <span className="text-sm font-medium text-slate-300 block">
+                        {isVi ? 'Độ lệch chuẩn' : 'Standard Deviation'}
                       </span>
-                      <span className="text-lg font-bold text-white">
-                        {mcResult.minDistance} - {mcResult.maxDistance}
-                      </span>
-                      <span className="text-[11px] text-slate-400 block">
-                        {mcResult.totalSamples.toLocaleString()} mẫu
+                      <div className="flex items-baseline">
+                        <span className="text-2xl sm:text-3xl font-extrabold font-mono text-white tracking-tight">
+                          {mcResult.observedStdDev}
+                        </span>
+                        <span className="text-sm font-normal text-slate-300 ml-1.5">bit</span>
+                      </div>
+                      <span className="text-xs sm:text-sm text-slate-300 mt-1 block">
+                        {isVi ? 'Lý thuyết: 8.00 bit' : 'Theoretical: 8.00 bits'}
                       </span>
                     </div>
 
-                    <div className="space-y-0.5">
-                      <span className="text-[11px] text-slate-400 block uppercase">
-                        {isVi ? 'Thời gian chạy' : 'Execution Time'}
+                    {/* Card 3: Min - Max Range */}
+                    <div className="bg-slate-950 p-4 sm:p-5 rounded-xl border border-slate-800 space-y-1.5">
+                      <span className="text-sm font-medium text-slate-300 block">
+                        {isVi ? 'Khoảng Min – Max' : 'Observed Range'}
                       </span>
-                      <span className="text-lg font-bold text-white">
-                        {mcResult.executionTimeMs} <span className="text-xs font-normal text-slate-400">ms</span>
+                      <div className="flex items-baseline">
+                        <span className="text-2xl sm:text-3xl font-extrabold font-mono text-white tracking-tight">
+                          {mcResult.minDistance} – {mcResult.maxDistance}
+                        </span>
+                        <span className="text-sm font-normal text-slate-300 ml-1.5">bit</span>
+                      </div>
+                      <span className="text-xs sm:text-sm text-slate-300 mt-1 block">
+                        {isVi ? `Cỡ mẫu: ${mcResult.totalSamples.toLocaleString()} phép thử` : `Sample size: ${mcResult.totalSamples.toLocaleString()} trials`}
                       </span>
-                      <span className="text-[11px] text-slate-400 block">
+                    </div>
+
+                    {/* Card 4: Execution Time */}
+                    <div className="bg-slate-950 p-4 sm:p-5 rounded-xl border border-slate-800 space-y-1.5">
+                      <span className="text-sm font-medium text-slate-300 block">
+                        {isVi ? 'Thời gian thực thi' : 'Execution Time'}
+                      </span>
+                      <div className="flex items-baseline">
+                        <span className="text-2xl sm:text-3xl font-extrabold font-mono text-white tracking-tight">
+                          {mcResult.executionTimeMs.toLocaleString()}
+                        </span>
+                        <span className="text-sm font-normal text-slate-300 ml-1.5">ms</span>
+                      </div>
+                      <span className="text-xs sm:text-sm text-slate-300 mt-1 block">
                         Web Crypto API
                       </span>
                     </div>
                   </div>
 
-                  <div className="p-3.5 bg-slate-950 rounded-xl border border-slate-800 text-slate-300 space-y-1">
-                    <div className="flex items-center gap-2 font-semibold text-sky-300">
-                      <CheckCircle2 className="w-4 h-4 text-sky-400 shrink-0" />
-                      <span>{isVi ? 'Kết luận thực nghiệm' : 'Empirical Conclusion'}</span>
+                  {/* Distribution Histogram Chart */}
+                  <div className="bg-slate-950 p-4 sm:p-5 rounded-xl border border-slate-800 space-y-3.5">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                      <span className="font-semibold text-sm sm:text-base text-white">
+                        {isVi
+                          ? 'Phân phối thực nghiệm vs. Phân phối nhị thức lý thuyết B(256, 0.5)'
+                          : 'Observed Distribution vs. Theoretical Binomial B(256, 0.5)'}
+                      </span>
+                      <div className="flex items-center gap-4 text-xs sm:text-sm">
+                        <div className="flex items-center gap-1.5">
+                          <span className="w-3 h-3 bg-sky-400 rounded-xs inline-block" />
+                          <span className="text-slate-200">{isVi ? 'Thực nghiệm' : 'Observed'}</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <span className="w-3 h-1 bg-amber-400 inline-block rounded-full" />
+                          <span className="text-slate-200">{isVi ? 'Lý thuyết' : 'Theoretical'}</span>
+                        </div>
+                      </div>
                     </div>
-                    <p className="text-slate-300 leading-relaxed">
-                      {isVi
-                        ? `Sau ${mcResult.totalSamples.toLocaleString()} lần thử ngẫu nhiên, trung bình số bit bị đảo là ${mcResult.observedMean} bit, khớp gần như hoàn hảo với kỳ vọng lý thuyết 128 bit (~50%). Tính khuếch tán của SHA-256 hoàn toàn đạt chuẩn.`
-                        : `Across ${mcResult.totalSamples.toLocaleString()} random trials, the average number of flipped bits is ${mcResult.observedMean}, closely matching the ideal theoretical target of 128 bits (~50%).`}
+
+                    {/* SVG Chart */}
+                    <div className="h-48 w-full pt-2">
+                      <svg className="w-full h-full" viewBox="0 0 600 160" preserveAspectRatio="none">
+                        {/* Guidelines */}
+                        <line x1="0" y1="40" x2="600" y2="40" stroke="#334155" strokeDasharray="3 3" />
+                        <line x1="0" y1="80" x2="600" y2="80" stroke="#334155" strokeDasharray="3 3" />
+                        <line x1="0" y1="120" x2="600" y2="120" stroke="#334155" strokeDasharray="3 3" />
+
+                        {(() => {
+                          const maxPct = Math.max(
+                            25,
+                            ...mcResult.bins.map((b) => Math.max(b.observedPercent, b.theoreticalPercent))
+                          );
+                          const barWidth = 600 / mcResult.bins.length;
+
+                          return (
+                            <>
+                              {/* Observed bars */}
+                              {mcResult.bins.map((bin, idx) => {
+                                const barHeight = (bin.observedPercent / maxPct) * 120;
+                                const x = idx * barWidth + barWidth * 0.15;
+                                const y = 140 - barHeight;
+                                return (
+                                  <g key={idx}>
+                                    <rect
+                                      x={x}
+                                      y={y}
+                                      width={barWidth * 0.7}
+                                      height={barHeight}
+                                      fill="#38bdf8"
+                                      opacity="0.85"
+                                      rx="2"
+                                    >
+                                      <title>{`${bin.label}: ${bin.observedCount} mẫu (${bin.observedPercent.toFixed(1)}%) - Lý thuyết: ${bin.theoreticalPercent.toFixed(1)}%`}</title>
+                                    </rect>
+                                  </g>
+                                );
+                              })}
+
+                              {/* Theoretical curve */}
+                              <polyline
+                                fill="none"
+                                stroke="#fbbf24"
+                                strokeWidth="2.5"
+                                points={mcResult.bins
+                                  .map((bin, idx) => {
+                                    const cx = idx * barWidth + barWidth * 0.5;
+                                    const cy = 140 - (bin.theoreticalPercent / maxPct) * 120;
+                                    return `${cx},${cy}`;
+                                  })
+                                  .join(' ')}
+                              />
+                              {mcResult.bins.map((bin, idx) => {
+                                const cx = idx * barWidth + barWidth * 0.5;
+                                const cy = 140 - (bin.theoreticalPercent / maxPct) * 120;
+                                return (
+                                  <circle
+                                    key={idx}
+                                    cx={cx}
+                                    cy={cy}
+                                    r="2.5"
+                                    fill="#fbbf24"
+                                  />
+                                );
+                              })}
+
+                              {/* X-axis labels */}
+                              {mcResult.bins.map((bin, idx) => {
+                                const cx = idx * barWidth + barWidth * 0.5;
+                                return (
+                                  <text
+                                    key={idx}
+                                    x={cx}
+                                    y="155"
+                                    textAnchor="middle"
+                                    fontSize="10"
+                                    fill="#cbd5e1"
+                                    fontFamily="sans-serif"
+                                  >
+                                    {bin.label}
+                                  </text>
+                                );
+                              })}
+                            </>
+                          );
+                        })()}
+                      </svg>
+                    </div>
+                  </div>
+
+                  {/* High-Grade Executive Report Synthesis */}
+                  <div className="p-4 sm:p-5 bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 rounded-xl border border-emerald-500/30 text-slate-200 space-y-2.5">
+                    <div className="flex items-center gap-2 font-bold text-emerald-400 text-sm sm:text-base">
+                      <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
+                      <span>{isVi ? 'Báo cáo tổng hợp đánh giá thực nghiệm' : 'Empirical Evaluation Report'}</span>
+                    </div>
+
+                    <p className="text-sm sm:text-base text-slate-200 leading-relaxed">
+                      {isVi ? (
+                        <>
+                          Sau <strong className="font-bold text-white">{mcResult.totalSamples.toLocaleString()} phép thử ngẫu nhiên</strong> có kiểm soát, 
+                          trung bình số bit bị đảo quan sát được là <strong className="font-bold text-sky-300">{mcResult.observedMean} bit</strong> (chiếm xấp xỉ <strong className="font-bold text-emerald-400">{((mcResult.observedMean / 256) * 100).toFixed(1)}%</strong>). 
+                          Kết quả này trùng khớp gần như tuyệt đối với kỳ vọng lý thuyết 128 bit của phân phối nhị thức, chứng minh hàm băm SHA-256 hoàn toàn thỏa mãn tiêu chuẩn khuếch tán thác lũ ngẫu nhiên.
+                        </>
+                      ) : (
+                        <>
+                          Across <strong className="font-bold text-white">{mcResult.totalSamples.toLocaleString()} controlled random trials</strong>, 
+                          the observed mean bit flip count is <strong className="font-bold text-sky-300">{mcResult.observedMean} bits</strong> (approximately <strong className="font-bold text-emerald-400">{((mcResult.observedMean / 256) * 100).toFixed(1)}%</strong>). 
+                          This empirical result closely aligns with the 128-bit expectation of the binomial distribution, confirming SHA-256 achieves robust avalanche diffusion.
+                        </>
+                      )}
                     </p>
+
+                    <div className="pt-2 border-t border-slate-800/80 flex items-center gap-2 text-xs sm:text-sm text-slate-300">
+                      <TrendingUp className="w-4 h-4 text-emerald-400 shrink-0" />
+                      <span>
+                        {isVi
+                          ? 'Độ lệch chuẩn thực tế đạt ' + mcResult.observedStdDev + ' bit so với chuẩn lý thuyết 8.00 bit.'
+                          : 'Observed standard deviation is ' + mcResult.observedStdDev + ' bits vs. theoretical standard 8.00 bits.'}
+                      </span>
+                    </div>
                   </div>
                 </div>
               )}
@@ -919,39 +1067,39 @@ export const AvalancheVisualizer: React.FC = () => {
         </div>
 
         {/* 8. COLLAPSIBLE ACCORDION: THEORETICAL FOUNDATIONS */}
-        <div className="rounded-xl bg-slate-900/80 border border-slate-800 overflow-hidden shadow-sm">
+        <div className="rounded-xl bg-slate-900/80 border border-slate-800 overflow-hidden shadow-sm font-sans">
           <button
             type="button"
             id="btn-accordion-theory"
             onClick={() => setShowTheory((prev) => !prev)}
             aria-expanded={showTheory}
-            className="w-full px-4 py-3.5 bg-slate-900/90 hover:bg-slate-800 flex items-center justify-between text-left text-xs font-semibold text-slate-200 transition-colors cursor-pointer"
+            className="w-full px-4 py-4 bg-slate-900/90 hover:bg-slate-800 flex items-center justify-between text-left text-sm sm:text-base font-semibold text-slate-200 transition-colors cursor-pointer"
           >
-            <span className="flex items-center gap-2 text-sm font-semibold">
-              <BookOpen className="w-4 h-4 text-amber-400" />
+            <span className="flex items-center gap-2.5">
+              <BookOpen className="w-5 h-5 text-amber-400" />
               <span>{isVi ? 'Cơ sở lý thuyết & Tiêu chuẩn SAC' : 'Strict Avalanche Criterion (SAC) Theory'}</span>
             </span>
-            <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${showTheory ? 'rotate-180' : ''}`} />
+            <ChevronDown className={`w-5 h-5 text-slate-400 transition-transform duration-200 ${showTheory ? 'rotate-180' : ''}`} />
           </button>
 
           {showTheory && (
-            <div className="p-4 sm:p-5 border-t border-slate-800 space-y-4 text-xs text-slate-300 leading-relaxed">
-              <div className="space-y-1.5">
-                <h4 className="font-semibold text-white text-sm">
-                  {isVi ? '1. Tiêu chuẩn Thác Đổ Nghiêm Ngặt (SAC)' : '1. Strict Avalanche Criterion (SAC)'}
+            <div className="p-4 sm:p-6 border-t border-slate-800 space-y-5 text-slate-200 leading-relaxed font-sans">
+              <div className="space-y-2">
+                <h4 className="font-bold text-white text-base">
+                  {isVi ? '1. Tiêu chuẩn Thác Đổ Nghiêm Ngặt (Strict Avalanche Criterion - SAC)' : '1. Strict Avalanche Criterion (SAC)'}
                 </h4>
-                <p className="text-slate-300">
+                <p className="text-sm sm:text-base text-slate-200 leading-relaxed">
                   {isVi
                     ? 'Được Webster & Tavares đề xuất năm 1985: Khi bất kỳ một bit đầu vào nào bị đảo, mỗi bit ở đầu ra phải thay đổi với xác suất đúng bằng 50%. Tính chất này đảm bảo kẻ tấn công không thể tìm ra bất kỳ quy luật nào giữa thông điệp gốc và mã băm.'
                     : 'Introduced by Webster & Tavares in 1985: When any single input bit is inverted, each output bit must change with exactly 50% probability. This ensures attackers cannot deduce any correlation between input and digest.'}
                 </p>
               </div>
 
-              <div className="space-y-1.5 pt-3 border-t border-slate-800">
-                <h4 className="font-semibold text-white text-sm">
+              <div className="space-y-2 pt-3 border-t border-slate-800">
+                <h4 className="font-bold text-white text-base">
                   {isVi ? '2. Tại sao đổi ~50% bit làm đổi gần hết ký tự Hex?' : '2. Why ~50% Bit Flips Change ~94% of Hex Digits'}
                 </h4>
-                <p className="text-slate-300">
+                <p className="text-sm sm:text-base text-slate-200 leading-relaxed">
                   {isVi
                     ? 'Một ký tự Hex đại diện cho 4 bit nhị phân. Ký tự đó chỉ giữ nguyên nếu cả 4 bit cùng không đổi (xác suất là (1/2)⁴ = 6.25%). Xác suất bị đổi là 93.75%. Vì vậy, 60/64 ký tự Hex khác biệt là hoàn toàn khớp với việc ~50% bit bị đảo.'
                     : 'Each Hex character represents 4 bits. A hex digit stays unchanged only if all 4 bits remain identical (probability (1/2)⁴ = 6.25%). The probability of changing is 93.75%, explaining why ~60 out of 64 hex characters differ when 50% of bits flip.'}

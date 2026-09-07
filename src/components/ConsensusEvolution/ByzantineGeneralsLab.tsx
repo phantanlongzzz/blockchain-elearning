@@ -40,7 +40,6 @@ export const ByzantineGeneralsLab: React.FC<ByzantineGeneralsLabProps> = ({
 
   // Threshold interactive experimenter
   const [toleratedTraitors, setToleratedTraitors] = useState<number>(1);
-  const [showExplanation, setShowExplanation] = useState<boolean>(false);
   const [isBftDeepDiveOpen, setIsBftDeepDiveOpen] = useState<boolean>(false);
 
   // Nodes initial setup
@@ -563,12 +562,6 @@ export const ByzantineGeneralsLab: React.FC<ByzantineGeneralsLabProps> = ({
               <Calculator className="w-3.5 h-3.5 text-slate-500" />
             </div>
 
-            <p className="text-xs text-slate-400 leading-relaxed">
-              {isVi
-                ? 'Để chịu được f nút gian lận trong mô hình truyền miệng, hệ thống cần tối thiểu 3f + 1 nút (tỉ lệ trung thực > 66.7%).'
-                : 'To tolerate f Byzantine nodes without digital signatures, the network requires at least 3f + 1 nodes (>66.7% honest).'}
-            </p>
-
             {/* Formula Block */}
             <div className="p-3 rounded-lg bg-[#080C10] border border-slate-800/80 text-center space-y-1">
               <div className="text-lg font-mono font-bold text-teach-1">
@@ -613,32 +606,6 @@ export const ByzantineGeneralsLab: React.FC<ByzantineGeneralsLabProps> = ({
                 </span>
               </div>
             </div>
-
-            {/* Collapsible Info */}
-            <div className="border border-slate-800/80 rounded-lg overflow-hidden bg-[#080C10]">
-              <button
-                type="button"
-                onClick={() => setShowExplanation((prev) => !prev)}
-                className="w-full p-2.5 flex items-center justify-between text-xs text-slate-300 hover:bg-slate-900/60 cursor-pointer"
-              >
-                <span className="flex items-center gap-1.5 text-[11px] text-amber-300">
-                  <AlertTriangle className="w-3 h-3" />
-                  {isVi ? 'Vì sao 3 nút không thể chịu 1 kẻ phản bội?' : 'Why 3 nodes cannot tolerate 1 traitor?'}
-                </span>
-                <ChevronDown
-                  className={`w-3.5 h-3.5 text-slate-500 transition-transform ${
-                    showExplanation ? 'rotate-180 text-slate-300' : ''
-                  }`}
-                />
-              </button>
-              {showExplanation && (
-                <div className="p-2.5 text-xs text-slate-400 bg-[#0B0E12] border-t border-slate-800/60 leading-relaxed">
-                  {isVi
-                    ? 'Với 3 nút (1 chỉ huy + 2 phó tướng) và 1 kẻ phản bội (f=1), N=3 < 3(1)+1 = 4. Tỉ lệ biểu quyết luôn là 1-1, không có cách nào xác định ai đang nói dối.'
-                    : 'With 3 nodes and 1 traitor (f=1), N=3 < 4. The vote results in a 1-1 tie with no way to determine who lied.'}
-                </div>
-              )}
-            </div>
           </div>
         </div>
       </div>
@@ -654,6 +621,7 @@ export const ByzantineGeneralsLab: React.FC<ByzantineGeneralsLabProps> = ({
           onClick={() => setIsBftDeepDiveOpen(!isBftDeepDiveOpen)}
           className="w-full p-4 sm:p-5 flex items-center justify-between text-left hover:bg-white/[0.02] transition-colors cursor-pointer group"
           aria-expanded={isBftDeepDiveOpen}
+          aria-controls="bft-deep-dive-content"
         >
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 shrink-0">
@@ -661,7 +629,7 @@ export const ByzantineGeneralsLab: React.FC<ByzantineGeneralsLabProps> = ({
             </div>
             <div>
               <h3 className="text-sm font-semibold text-slate-100 font-sans tracking-tight">
-                {isVi ? 'Chi tiết thuật toán đồng thuận & BFT' : 'Consensus Algorithm & BFT Details'}
+                {isVi ? 'Hiểu sâu: BFT & Byzantine Generals' : 'Deep Dive: BFT & Byzantine Generals'}
               </h3>
               <p className="text-xs text-slate-400 mt-0.5">
                 {isVi
@@ -682,7 +650,28 @@ export const ByzantineGeneralsLab: React.FC<ByzantineGeneralsLabProps> = ({
         </button>
 
         {isBftDeepDiveOpen && (
-          <div className="p-5 sm:p-6 border-t border-slate-800 bg-[#080C10] space-y-6 animate-in fade-in duration-200">
+          <div id="bft-deep-dive-content" className="p-5 sm:p-6 border-t border-slate-800 bg-[#080C10] space-y-6 animate-in fade-in duration-200">
+            {/* Added Explanatory Prose */}
+            <div className="text-xs text-slate-400 leading-relaxed bg-[#0B0E12] p-4 rounded-xl border border-slate-800 space-y-4">
+              <p>
+                {isVi
+                  ? 'Để chịu được f nút gian lận trong mô hình truyền miệng, hệ thống cần tối thiểu 3f + 1 nút (tỉ lệ trung thực > 66.7%).'
+                  : 'To tolerate f Byzantine nodes without digital signatures, the network requires at least 3f + 1 nodes (>66.7% honest).'}
+              </p>
+              
+              <div className="space-y-1.5 pt-2 border-t border-slate-800/60">
+                <h4 className="flex items-center gap-1.5 font-semibold text-amber-300">
+                  <AlertTriangle className="w-3.5 h-3.5" />
+                  {isVi ? 'Vì sao 3 nút không thể chịu 1 kẻ phản bội?' : 'Why 3 nodes cannot tolerate 1 traitor?'}
+                </h4>
+                <p>
+                  {isVi
+                    ? 'Với 3 nút (1 chỉ huy + 2 phó tướng) và 1 kẻ phản bội (f=1), N=3 < 3(1)+1 = 4. Tỉ lệ biểu quyết luôn là 1-1, không có cách nào xác định ai đang nói dối.'
+                    : 'With 3 nodes and 1 traitor (f=1), N=3 < 4. The vote results in a 1-1 tie with no way to determine who lied.'}
+                </p>
+              </div>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {/* Card 1: Lamport 3f+1 Proof */}
               <div className="p-4 rounded-xl border border-indigo-500/20 bg-indigo-950/10 space-y-2.5">

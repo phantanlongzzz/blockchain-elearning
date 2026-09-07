@@ -170,6 +170,7 @@ export const ExperimentLab: React.FC = () => {
   // ==========================================
   const [reducedBits, setReducedBits] = useState<number>(12);
   const [isSearchingCollision, setIsSearchingCollision] = useState(false);
+  const [showBirthdayDeepDive, setShowBirthdayDeepDive] = useState(false);
   const [collisionResult, setCollisionResult] = useState<{
     inputA: string;
     inputB: string;
@@ -1000,47 +1001,63 @@ export const ExperimentLab: React.FC = () => {
               )}
 
               {/* Scientific Comparison Cards */}
-              <div className="pt-2 grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs font-sans text-[#A5AFBF]">
-                <div className="p-3.5 rounded-xl bg-[#080C10] border border-[#1C2430]">
-                  <span className="text-[#717B8C] block mb-1 font-sans font-semibold">
-                    {strings.experiments.exp5Formula}
-                  </span>
-                  <div className="text-teach-1 font-bold text-sm font-mono">
-                    ≈ 1.17 × √(2ⁿ)
-                  </div>
-                  <p className="text-[11px] text-[#717B8C] mt-1 font-sans">
-                    {isVi
-                      ? 'Giảm độ phức tạp căn bậc hai cho bài toán va chạm'
-                      : 'Square root reduction for collision resistance'}
-                  </p>
-                </div>
-
-                <div className="p-3.5 rounded-xl bg-[#080C10] border border-[#1C2430]">
-                  <span className="text-[#717B8C] block mb-1 font-sans font-semibold">
-                    {strings.experiments.exp5FullWork}
-                  </span>
-                  <div className="text-teach-1 font-bold text-sm font-mono">
-                    2¹²⁸ ≈ 3.4 × 10³⁸
-                  </div>
-                  <p className="text-[11px] text-[#717B8C] mt-1 font-sans">
-                    {isVi ? 'phép toán băm độc lập' : 'independent hash operations'}
-                  </p>
-                </div>
-
-                <div className="p-3.5 rounded-xl bg-[#080C10] border border-[#1C2430]">
-                  <span className="text-[#717B8C] block mb-1 font-sans font-semibold">
-                    {strings.experiments.exp5Conclusion}
-                  </span>
-                  <span className="text-teach-2 font-bold text-sm font-sans">
-                    {isVi ? 'Bất khả thi về tính toán' : 'Computationally Infeasible'}
-                  </span>
-                  <p className="text-[11px] text-[#717B8C] mt-1 font-sans">
-                    {isVi
-                      ? 'Chưa từng có va chạm SHA-256 nào được ghi nhận'
-                      : 'No SHA-256 collision has ever been discovered'}
-                  </p>
-                </div>
+              <div className="pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowBirthdayDeepDive(!showBirthdayDeepDive)}
+                  aria-expanded={showBirthdayDeepDive}
+                  aria-controls="birthday-deep-dive"
+                  className="px-3 py-1.5 rounded-lg bg-[#0E1210] hover:bg-[#121713] border border-[#1C2430] text-xs font-mono text-[#A5AFBF] hover:text-[#F2F4F7] flex items-center gap-1.5 cursor-pointer transition-all"
+                >
+                  {showBirthdayDeepDive
+                    ? (isVi ? 'Ẩn chi tiết Toán học' : 'Hide Math Details')
+                    : (isVi ? 'Hiểu sâu hơn (Deep Dive)' : 'Deep Dive (Math)')}
+                </button>
               </div>
+
+              {showBirthdayDeepDive && (
+                <div id="birthday-deep-dive" className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs font-sans text-[#A5AFBF] mt-4">
+                  <div className="p-3.5 rounded-xl bg-[#080C10] border border-[#1C2430]">
+                    <span className="text-[#717B8C] block mb-1 font-sans font-semibold">
+                      {strings.experiments.exp5Formula}
+                    </span>
+                    <div className="text-teach-1 font-bold text-sm font-mono">
+                      ≈ 1.17 × √(2ⁿ)
+                    </div>
+                    <p className="text-[11px] text-[#717B8C] mt-1 font-sans">
+                      {isVi
+                        ? 'Giảm độ phức tạp căn bậc hai cho bài toán va chạm'
+                        : 'Square root reduction for collision resistance'}
+                    </p>
+                  </div>
+
+                  <div className="p-3.5 rounded-xl bg-[#080C10] border border-[#1C2430]">
+                    <span className="text-[#717B8C] block mb-1 font-sans font-semibold">
+                      {strings.experiments.exp5FullWork}
+                    </span>
+                    <div className="text-teach-1 font-bold text-sm font-mono">
+                      2¹²⁸ ≈ 3.4 × 10³⁸
+                    </div>
+                    <p className="text-[11px] text-[#717B8C] mt-1 font-sans">
+                      {isVi ? 'phép toán băm độc lập' : 'independent hash operations'}
+                    </p>
+                  </div>
+
+                  <div className="p-3.5 rounded-xl bg-[#080C10] border border-[#1C2430]">
+                    <span className="text-[#717B8C] block mb-1 font-sans font-semibold">
+                      {strings.experiments.exp5Conclusion}
+                    </span>
+                    <span className="text-teach-2 font-bold text-sm font-sans">
+                      {isVi ? 'Bất khả thi về tính toán' : 'Computationally Infeasible'}
+                    </span>
+                    <p className="text-[11px] text-[#717B8C] mt-1 font-sans">
+                      {isVi
+                        ? 'Chưa từng có va chạm SHA-256 nào được ghi nhận'
+                        : 'No SHA-256 collision has ever been discovered'}
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>

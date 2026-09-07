@@ -95,6 +95,7 @@ export const BitcoinEcosystemLab: React.FC<BitcoinEcosystemLabProps> = ({
 
   // Transaction Journey 7-Step Pipeline state
   const [pipelineStep, setPipelineStep] = useState<number>(1);
+  const [showLifecycleDetails, setShowLifecycleDetails] = useState<boolean>(false);
   const [isMining, setIsMining] = useState<boolean>(false);
 
   // Selected Role for Deep Dive Explorer
@@ -228,7 +229,7 @@ export const BitcoinEcosystemLab: React.FC<BitcoinEcosystemLabProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: Interactive Visual Animation Stage */}
         <div className="lg:col-span-8 p-6 rounded-2xl bg-[#090d16] border border-slate-800 space-y-6">
-          <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-slate-800">
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-amber-400" />
               <h4 className="text-sm font-bold font-mono text-white uppercase">
@@ -236,18 +237,33 @@ export const BitcoinEcosystemLab: React.FC<BitcoinEcosystemLabProps> = ({
               </h4>
             </div>
 
-            <button
-              type="button"
-              onClick={handleNextPipelineStep}
-              className="px-4 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-black font-mono text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-md transition-all"
-            >
-              <span>{pipelineStep < 7 ? (language === 'vi' ? 'Bước kế tiếp →' : 'Next Step →') : (language === 'vi' ? 'Bắt đầu lại' : 'Start Over')}</span>
-            </button>
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setShowLifecycleDetails(!showLifecycleDetails)}
+                aria-expanded={showLifecycleDetails}
+                aria-controls="bitcoin-transaction-lifecycle-details"
+                className="px-3 py-1.5 rounded-lg bg-[#0F1217] hover:bg-[#161D26] border border-slate-700 text-xs font-mono text-slate-300 flex items-center gap-1.5 cursor-pointer transition-all"
+              >
+                {showLifecycleDetails 
+                  ? (language === 'vi' ? 'Ẩn chi tiết vòng đời giao dịch' : 'Hide Transaction Lifecycle Details')
+                  : (language === 'vi' ? 'Hiển thị chi tiết vòng đời giao dịch' : 'Show Transaction Lifecycle Details')}
+              </button>
+
+              <button
+                type="button"
+                onClick={handleNextPipelineStep}
+                className="px-4 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-black font-mono text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-md transition-all"
+              >
+                <span>{pipelineStep < 7 ? (language === 'vi' ? 'Bước kế tiếp →' : 'Next Step →') : (language === 'vi' ? 'Bắt đầu lại' : 'Start Over')}</span>
+              </button>
+            </div>
           </div>
 
           {/* Dynamic Step Visualization Area */}
-          <div className="p-6 rounded-xl bg-[#05070c] border border-slate-900 min-h-[220px] flex flex-col justify-center items-center space-y-4">
-            {pipelineStep === 1 && (
+          {showLifecycleDetails && (
+            <div id="bitcoin-transaction-lifecycle-details" className="p-6 rounded-xl bg-[#05070c] border border-slate-900 min-h-[220px] flex flex-col justify-center items-center space-y-4">
+              {pipelineStep === 1 && (
               <div className="text-center space-y-3 animate-fadeIn max-w-md">
                 <div className="w-12 h-12 rounded-xl bg-pink-500/20 text-pink-400 border border-pink-500/40 mx-auto flex items-center justify-center">
                   <Wallet className="w-6 h-6" />
@@ -359,6 +375,7 @@ export const BitcoinEcosystemLab: React.FC<BitcoinEcosystemLabProps> = ({
               </div>
             )}
           </div>
+          )}
 
           {/* Interactive Peer Nodes Resiliency Sub-Section */}
           <div className="space-y-3 pt-2">

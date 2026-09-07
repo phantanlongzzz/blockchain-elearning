@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Code, ArrowRight, Flame, Play, Square, RotateCcw, Trophy, CheckCircle2, ShieldCheck, Layers, Copy, Check, Terminal, Share2 } from 'lucide-react';
+import { Code, ArrowRight, Flame, Play, Square, RotateCcw, Trophy, CheckCircle2, ShieldCheck, Layers, Copy, Check, Terminal, Share2, ChevronDown, ChevronUp, BookOpen } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { useSimulation } from '../../context/SimulationContext';
 import { useSimulationStore, SimMinedBlock } from '../../stores/simulationStore';
@@ -123,6 +123,7 @@ export const PoWConsensusSection: React.FC<PoWConsensusSectionProps> = ({
   const updateSandboxBlockNonce = useSandboxStore((s) => s.updateBlockNonce);
   const markLessonCompleted = useProgressStore((s) => s.markLessonCompleted);
 
+  const [isTheoryOpen, setIsTheoryOpen] = useState<boolean>(false);
   // User Configurable Parameters
   const [selectedDifficulty, setSelectedDifficulty] = useState<number>(2); // 1, 2, 3, 4
   const [durationSec, setDurationSec] = useState<number>(30); // 15, 30, 60, 300
@@ -634,22 +635,6 @@ export const PoWConsensusSection: React.FC<PoWConsensusSectionProps> = ({
         </div>
       </div>
 
-      {/* 2. 4 Core Pillars */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-        {pillars.map((p) => (
-          <div
-            key={p.num}
-            className="p-3.5 rounded-lg bg-[#0c101c] border border-slate-800 space-y-1.5"
-          >
-            <div className="flex items-center gap-2 text-xs font-semibold text-slate-200">
-              <span className="text-text-primary font-mono">{p.num}.</span>
-              <span>{p.title}</span>
-            </div>
-            <p className="text-xs text-slate-400 leading-relaxed">{p.desc}</p>
-          </div>
-        ))}
-      </div>
-
       {/* 3. PROOF OF WORK LABORATORY (EMBEDDED INTERACTIVE ARENA) */}
       <div
         id="interactive-pow-laboratory"
@@ -1077,60 +1062,6 @@ export const PoWConsensusSection: React.FC<PoWConsensusSectionProps> = ({
           </div>
         </div>
 
-        {/* 7. DATA FLOW INTEGRATION BADGES */}
-        <div className="p-3.5 rounded-lg bg-[#080c14] border border-slate-800 space-y-2">
-          <div className="text-[11px] font-mono uppercase tracking-wider text-slate-400 font-semibold flex items-center gap-1.5">
-            <Share2 className="w-3.5 h-3.5 text-text-muted" />
-            <span>
-              {isVi
-                ? 'Tích hợp luồng dữ liệu toàn hệ thống (Data Flow Connection)'
-                : 'System Data Flow Integration'}
-            </span>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 text-xs">
-            <div className="p-2 rounded bg-slate-900/60 border border-slate-800 text-slate-300">
-              <span className="text-text-primary font-semibold block mb-0.5">
-                05. Lan truyền P2P
-              </span>
-              <p className="text-[11px] text-slate-400">
-                {isVi
-                  ? 'Khối được đóng gói và phát tán qua mạng P2P Gossip.'
-                  : 'Block broadcasted across P2P Gossip network.'}
-              </p>
-            </div>
-
-            <div className="p-2 rounded bg-slate-900/60 border border-slate-800 text-slate-300">
-              <span className="text-text-primary font-semibold block mb-0.5">
-                06. Phân nhánh & LCR
-              </span>
-              <p className="text-[11px] text-slate-400">
-                {isVi
-                  ? 'Cập nhật trọng số độ khó tích lũy (Cumulative Difficulty).'
-                  : 'Updates cumulative difficulty weight.'}
-              </p>
-            </div>
-
-            <div className="p-2 rounded bg-slate-900/60 border border-slate-800 text-slate-300">
-              <span className="text-text-primary font-semibold block mb-0.5">07. Sổ cái chính</span>
-              <p className="text-[11px] text-slate-400">
-                {isVi
-                  ? 'Đồng bộ trực tiếp vào Blockchain Visualizer & Sandbox.'
-                  : 'Directly synchronized with Blockchain Visualizer.'}
-              </p>
-            </div>
-
-            <div className="p-2 rounded bg-slate-900/60 border border-slate-800 text-slate-300">
-              <span className="text-text-primary font-semibold block mb-0.5">08. Nhật ký sự kiện</span>
-              <p className="text-[11px] text-slate-400">
-                {isVi
-                  ? 'Ghi nhận hash, nonce và miner vào audit event logs.'
-                  : 'Appends hash, nonce, and miner to audit logs.'}
-              </p>
-            </div>
-          </div>
-        </div>
-
         {/* 8. Live Event Console Stream */}
         <div className="p-3.5 rounded-lg bg-[#080c14] border border-slate-800 flex flex-col h-40">
           <div className="flex items-center justify-between pb-2 border-b border-slate-800 mb-2">
@@ -1183,6 +1114,121 @@ export const PoWConsensusSection: React.FC<PoWConsensusSectionProps> = ({
             )}
           </div>
         </div>
+      </div>
+
+      {/* ========================================================
+          PROGRESSIVE DISCLOSURE: DEEP DIVE SECTION
+          ======================================================== */}
+      <div className="bg-[#0B0E12] border border-slate-800 rounded-xl overflow-hidden transition-all">
+        <button
+          type="button"
+          id="pow-theory-toggle"
+          onClick={() => setIsTheoryOpen(!isTheoryOpen)}
+          className="w-full p-4 sm:p-5 flex items-center justify-between text-left hover:bg-white/[0.02] transition-colors cursor-pointer group"
+          aria-expanded={isTheoryOpen}
+          aria-controls="pow-theory-content"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0">
+              <BookOpen className="w-4 h-4" />
+            </div>
+            <div>
+              <h3 className="text-sm font-semibold text-slate-100 font-sans tracking-tight">
+                {isVi ? 'Hiểu sâu: Cơ chế Proof of Work' : 'Deep Dive: Proof of Work Mechanics'}
+              </h3>
+              <p className="text-xs text-slate-400 mt-0.5">
+                {isVi
+                  ? 'Chi tiết 4 trụ cột kiến trúc, luồng dữ liệu P2P và các bước lan truyền mạng lưới'
+                  : '4 core architectural pillars, P2P data flow, and network propagation steps'}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 text-xs font-mono text-slate-400">
+            <span className="hidden sm:inline">
+              {isTheoryOpen ? (isVi ? 'Thu gọn' : 'Collapse') : (isVi ? 'Xem chi tiết' : 'Expand')}
+            </span>
+            <div className="w-7 h-7 rounded-lg bg-white/[0.04] border border-white/[0.06] flex items-center justify-center text-slate-400 group-hover:text-slate-200 transition-colors">
+              {isTheoryOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+            </div>
+          </div>
+        </button>
+
+        {isTheoryOpen && (
+          <div id="pow-theory-content" className="p-5 sm:p-6 border-t border-slate-800 bg-[#080C10] space-y-6 animate-in fade-in duration-200">
+            {/* 4 Core Pillars */}
+            <div className="space-y-3">
+              <h4 className="text-xs font-semibold text-slate-300 uppercase tracking-wider font-mono">
+                {isVi ? '4 Trụ cột Kiến trúc (Nakamoto)' : '4 Core Architectural Pillars'}
+              </h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                {pillars.map((p) => (
+                  <div
+                    key={p.num}
+                    className="p-3.5 rounded-lg bg-[#0c101c] border border-slate-800 space-y-1.5"
+                  >
+                    <div className="flex items-center gap-2 text-xs font-semibold text-slate-200">
+                      <span className="text-text-primary font-mono">0{p.num}.</span>
+                      <span>{p.title}</span>
+                    </div>
+                    <p className="text-xs text-slate-400 leading-relaxed">{p.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* DATA FLOW INTEGRATION BADGES */}
+            <div className="space-y-3 pt-4 border-t border-slate-800/60">
+              <h4 className="text-xs font-semibold text-slate-300 uppercase tracking-wider font-mono flex items-center gap-1.5">
+                <Share2 className="w-3.5 h-3.5 text-text-muted" />
+                {isVi
+                  ? 'Tích hợp luồng dữ liệu toàn hệ thống (Data Flow Connection)'
+                  : 'System Data Flow Integration'}
+              </h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+                <div className="p-3 rounded-lg bg-slate-900/60 border border-slate-800 text-slate-300 space-y-1.5">
+                  <span className="text-text-primary font-semibold block">
+                    05. Lan truyền P2P
+                  </span>
+                  <p className="text-[11px] text-slate-400">
+                    {isVi
+                      ? 'Khối được đóng gói và phát tán qua mạng P2P Gossip.'
+                      : 'Block broadcasted across P2P Gossip network.'}
+                  </p>
+                </div>
+
+                <div className="p-3 rounded-lg bg-slate-900/60 border border-slate-800 text-slate-300 space-y-1.5">
+                  <span className="text-text-primary font-semibold block">
+                    06. Phân nhánh & LCR
+                  </span>
+                  <p className="text-[11px] text-slate-400">
+                    {isVi
+                      ? 'Cập nhật trọng số độ khó tích lũy (Cumulative Difficulty).'
+                      : 'Updates cumulative difficulty weight.'}
+                  </p>
+                </div>
+
+                <div className="p-3 rounded-lg bg-slate-900/60 border border-slate-800 text-slate-300 space-y-1.5">
+                  <span className="text-text-primary font-semibold block">07. Sổ cái chính</span>
+                  <p className="text-[11px] text-slate-400">
+                    {isVi
+                      ? 'Đồng bộ trực tiếp vào Blockchain Visualizer & Sandbox.'
+                      : 'Directly synchronized with Blockchain Visualizer.'}
+                  </p>
+                </div>
+
+                <div className="p-3 rounded-lg bg-slate-900/60 border border-slate-800 text-slate-300 space-y-1.5">
+                  <span className="text-text-primary font-semibold block">08. Nhật ký sự kiện</span>
+                  <p className="text-[11px] text-slate-400">
+                    {isVi
+                      ? 'Ghi nhận hash, nonce và miner vào audit event logs.'
+                      : 'Appends hash, nonce, and miner to audit logs.'}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* 4. Navigation Footer */}

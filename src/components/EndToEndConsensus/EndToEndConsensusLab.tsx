@@ -19,6 +19,7 @@ import {
   Sparkles,
   Compass,
   Zap,
+  SlidersHorizontal,
 } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import {
@@ -142,39 +143,27 @@ function getContextualMetrics(
 ): string {
   switch (step) {
     case 1:
+      return '';
+    case 2:
       return lang === 'vi'
-        ? `Mempool: ${mempool.length} giao dịch chờ · Ví nguồn sẵn sàng`
-        : `Mempool: ${mempool.length} pending txs · Sender wallet ready`;
-    case 2: {
-      const selectedBTC = mempool
-        .filter((t) => selectedTxIds.includes(t.id))
-        .reduce((a, c) => a + c.amount, 0);
-      return lang === 'vi'
-        ? `${mempool.length} giao dịch · ${selectedTxIds.length} đã chọn · ${selectedBTC.toFixed(3)} BTC`
-        : `${mempool.length} txs · ${selectedTxIds.length} selected · ${selectedBTC.toFixed(3)} BTC`;
-    }
+        ? `${selectedTxIds.length} TX đã chọn`
+        : `${selectedTxIds.length} selected`;
     case 3:
-      return lang === 'vi'
-        ? `Khối #${nextBlockHeight} · ${selectedTxs.length} giao dịch · PrevHash: ${previousHash.substring(0, 8)}...`
-        : `Block #${nextBlockHeight} · ${selectedTxs.length} txs · PrevHash: ${previousHash.substring(0, 8)}...`;
+      return '';
     case 4:
       return lang === 'vi'
-        ? `Độ khó: ${config.difficulty} zeroes · ${config.minerCount} thợ đào · ${totalMiningAttempts.toLocaleString()} băm`
-        : `Difficulty: ${config.difficulty} zeroes · ${config.minerCount} miners · ${totalMiningAttempts.toLocaleString()} hashes`;
+        ? `Độ khó: ${config.difficulty}`
+        : `Difficulty: ${config.difficulty}`;
     case 5: {
       const verifiedCount = nodes.filter((n) => n.validationState.isAccepted !== null).length;
       return lang === 'vi'
-        ? `${verifiedCount}/${nodes.length} nút đã thẩm định 4 điều kiện · Độ trễ: ${config.networkLatencyMs}ms`
-        : `${verifiedCount}/${nodes.length} nodes verified 4 rules · ${config.networkLatencyMs}ms latency`;
+        ? `${verifiedCount}/${nodes.length} nút thẩm định`
+        : `${verifiedCount}/${nodes.length} nodes verified`;
     }
     case 6:
-      return lang === 'vi'
-        ? `Chuỗi A: ${cumulativeWorkA} work · Chuỗi B: ${cumulativeWorkB} work · Quy tắc: Chuỗi nặng nhất`
-        : `Chain A: ${cumulativeWorkA} work · Chain B: ${cumulativeWorkB} work · Rule: Heaviest Chain`;
+      return `Work: A=${cumulativeWorkA} · B=${cumulativeWorkB}`;
     case 7:
-      return lang === 'vi'
-        ? `${blockchain.length} khối chính thức · Đỉnh chuỗi: #${blockchain[blockchain.length - 1]?.height ?? 0} · 100% toàn vẹn`
-        : `${blockchain.length} canonical blocks · Tip: #${blockchain[blockchain.length - 1]?.height ?? 0} · 100% intact`;
+      return '';
     default:
       return '';
   }
@@ -433,6 +422,25 @@ export const EndToEndConsensusLab: React.FC = () => {
 
   // Drawer & Laboratory Tray State (Collapsed by default, opens contextual lab panels)
   const [activeDrawerTab, setActiveDrawerTab] = useState<DrawerTab>('none');
+
+  // Options Popover Menu State
+  const [isOptionsMenuOpen, setIsOptionsMenuOpen] = useState<boolean>(false);
+  const optionsMenuRef = useRef<HTMLDivElement>(null);
+
+  // Close options menu on outside click
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (optionsMenuRef.current && !optionsMenuRef.current.contains(event.target as Node)) {
+        setIsOptionsMenuOpen(false);
+      }
+    };
+    if (isOptionsMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOptionsMenuOpen]);
 
   // Auto-open faults tab when a tampering event is injected so causality is clear
   useEffect(() => {
@@ -1454,114 +1462,162 @@ export const EndToEndConsensusLab: React.FC = () => {
   return (
     <section id="end-to-end-consensus" className="py-5 sm:py-8 bg-[#090d16] border-t border-zinc-800 text-zinc-100 font-sans">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-3.5">
-        {/* 1. TOP HEADER & COMPACT CONTROLS */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2.5 border-b border-zinc-800/80">
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.7)]" />
-              <h2 className="text-xl sm:text-2xl font-bold text-zinc-100 font-sans tracking-tight">
-                {language === 'vi' ? 'Mô phỏng → Đồng thuận Blockchain' : 'Simulation → Blockchain Consensus'}
-              </h2>
-              <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-cyan-950/60 text-cyan-300 border border-cyan-800/60 hidden sm:inline-block">
-                Nakamoto Protocol
-              </span>
-            </div>
-            <p className="text-xs text-zinc-400 mt-0.5">
-              {language === 'vi'
-                ? 'Dòng chảy 3 giai đoạn: Đề xuất khối → Thẩm định độc lập P2P → Đồng thuận chuỗi nặng nhất'
-                : '3-Phase Flow: Block Proposal → P2P Independent Validation → Heaviest Chain Consensus'}
-            </p>
-          </div>
+        {/* 1. TOP HEADER */}
+        <div className="flex items-center justify-between gap-3 pb-2 border-b border-zinc-800/80">
+          <h2 className="text-xl sm:text-2xl font-bold text-zinc-100 font-sans tracking-tight">
+            {language === 'vi' ? 'Mô phỏng → Đồng thuận Blockchain' : 'Simulation → Blockchain Consensus'}
+          </h2>
 
-          {/* Compact Top Utilities (Muted, low visual weight) */}
-          <div className="flex items-center gap-2 flex-wrap self-start sm:self-auto">
-            {/* Simulation Speed (0.5x, 1x, 2x, 4x) - ONLY on Step 4 (Mining) and Step 5 (P2P Broadcast) */}
-            {(guidedStep === 4 || guidedStep === 5) && (
-              <div className="flex items-center bg-zinc-900/90 rounded-lg p-0.5 border border-zinc-800 text-[11px] font-mono">
-                {([0.5, 1, 2, 4] as SimulationSpeed[]).map((spd) => (
+          {/* Menu Tùy chọn (Options Popover) */}
+          <div className="relative" ref={optionsMenuRef}>
+            <button
+              type="button"
+              id="btn-options-menu"
+              onClick={() => setIsOptionsMenuOpen((prev) => !prev)}
+              className="px-2.5 py-1.5 rounded-lg text-xs font-medium border border-zinc-800 bg-zinc-900/90 hover:bg-zinc-800 text-zinc-300 transition-colors cursor-pointer flex items-center gap-1.5"
+              aria-expanded={isOptionsMenuOpen}
+              aria-label={language === 'vi' ? 'Tùy chọn' : 'Options'}
+            >
+              <SlidersHorizontal className="w-3.5 h-3.5 text-zinc-400" />
+              <span>{language === 'vi' ? 'Tùy chọn' : 'Options'}</span>
+              <ChevronDown className={`w-3 h-3 text-zinc-500 transition-transform ${isOptionsMenuOpen ? 'rotate-180' : ''}`} />
+            </button>
+
+            {/* Dropdown Menu */}
+            {isOptionsMenuOpen && (
+              <div
+                className="absolute right-0 mt-1.5 w-64 bg-[#0d121f] border border-zinc-700/80 rounded-xl shadow-2xl p-3 z-50 space-y-3 text-xs text-zinc-200"
+              >
+                {/* 1. Chế độ mô phỏng */}
+                <div className="space-y-1">
+                  <label className="text-[11px] font-medium text-zinc-400 block">
+                    {language === 'vi' ? 'Chế độ mô phỏng:' : 'Simulation Mode:'}
+                  </label>
+                  <div className="grid grid-cols-3 gap-1 bg-zinc-900 p-1 rounded-lg border border-zinc-800 text-[11px]">
+                    {(['guided', 'free', 'debug'] as SimulationMode[]).map((mode) => (
+                      <button
+                        key={mode}
+                        type="button"
+                        onClick={() => {
+                          setSimulationMode(mode);
+                        }}
+                        className={`py-1 rounded font-medium transition-colors cursor-pointer text-center ${
+                          simulationMode === mode
+                            ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
+                            : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800'
+                        }`}
+                      >
+                        {mode === 'guided'
+                          ? (language === 'vi' ? 'Hướng dẫn' : 'Guided')
+                          : mode === 'free'
+                          ? (language === 'vi' ? 'Tự do' : 'Free')
+                          : (language === 'vi' ? 'Gỡ lỗi' : 'Debug')}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 2. Tốc độ mô phỏng */}
+                <div className="space-y-1">
+                  <div className="flex items-center justify-between text-[11px] text-zinc-400">
+                    <span>{language === 'vi' ? 'Tốc độ mô phỏng:' : 'Simulation Speed:'}</span>
+                    <span className="font-mono text-cyan-300">{simulationSpeed}x</span>
+                  </div>
+                  <div className="grid grid-cols-4 gap-1 bg-zinc-900 p-1 rounded-lg border border-zinc-800 text-[11px] font-mono">
+                    {([0.5, 1, 2, 4] as SimulationSpeed[]).map((spd) => (
+                      <button
+                        key={spd}
+                        type="button"
+                        onClick={() => setSimulationSpeed(spd)}
+                        className={`py-1 rounded transition-colors cursor-pointer text-center ${
+                          simulationSpeed === spd
+                            ? 'bg-zinc-800 text-cyan-300 font-bold'
+                            : 'text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/60'
+                        }`}
+                      >
+                        {spd}x
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="h-px bg-zinc-800/80 my-1" />
+
+                {/* 3. Action Utilities */}
+                <div className="space-y-1">
                   <button
-                    key={spd}
                     type="button"
-                    onClick={() => setSimulationSpeed(spd)}
-                    className={`px-1.5 py-0.5 rounded transition-colors cursor-pointer ${
-                      simulationSpeed === spd ? 'bg-zinc-800 text-cyan-300 font-bold' : 'text-zinc-500 hover:text-zinc-300'
-                    }`}
-                    title={`${spd}x speed`}
+                    id="btn-opt-audit"
+                    onClick={() => {
+                      setIsOptionsMenuOpen(false);
+                      setIsAuditModalOpen(true);
+                    }}
+                    className="w-full px-2.5 py-1.5 rounded-lg bg-zinc-900/80 hover:bg-zinc-800 text-zinc-300 hover:text-zinc-100 flex items-center justify-between transition-colors cursor-pointer"
                   >
-                    {spd}x
+                    <span className="flex items-center gap-2">
+                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                      <span>{language === 'vi' ? 'Kiểm tra hệ thống' : 'Consensus Audit'}</span>
+                    </span>
+                    <span className="text-[10px] font-mono text-zinc-500">Self-Test</span>
                   </button>
-                ))}
+
+                  <button
+                    type="button"
+                    id="btn-opt-config"
+                    onClick={() => {
+                      setIsOptionsMenuOpen(false);
+                      setIsConfigModalOpen(true);
+                    }}
+                    className="w-full px-2.5 py-1.5 rounded-lg bg-zinc-900/80 hover:bg-zinc-800 text-zinc-300 hover:text-zinc-100 flex items-center justify-between transition-colors cursor-pointer"
+                  >
+                    <span className="flex items-center gap-2">
+                      <FlaskConical className="w-3.5 h-3.5 text-cyan-400" />
+                      <span>{language === 'vi' ? 'Cấu hình tham số' : 'Parameters'}</span>
+                    </span>
+                    <span className="text-[10px] font-mono text-zinc-500">Config</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    id="btn-opt-theory"
+                    onClick={() => {
+                      setIsOptionsMenuOpen(false);
+                      setActiveDrawerTab('insights');
+                    }}
+                    className="w-full px-2.5 py-1.5 rounded-lg bg-zinc-900/80 hover:bg-zinc-800 text-zinc-300 hover:text-zinc-100 flex items-center justify-between transition-colors cursor-pointer"
+                  >
+                    <span className="flex items-center gap-2">
+                      <BookOpen className="w-3.5 h-3.5 text-amber-400" />
+                      <span>{language === 'vi' ? 'Lý thuyết' : 'Theory'}</span>
+                    </span>
+                  </button>
+
+                  <button
+                    type="button"
+                    id="btn-opt-reset"
+                    onClick={() => {
+                      setIsOptionsMenuOpen(false);
+                      handleResetAll();
+                    }}
+                    className="w-full px-2.5 py-1.5 rounded-lg bg-zinc-900/80 hover:bg-rose-950/40 text-zinc-400 hover:text-rose-300 flex items-center justify-between transition-colors cursor-pointer"
+                  >
+                    <span className="flex items-center gap-2">
+                      <RotateCcw className="w-3.5 h-3.5 text-zinc-400" />
+                      <span>{language === 'vi' ? 'Đặt lại phòng lab' : 'Reset Lab'}</span>
+                    </span>
+                    <span className="text-[10px] font-mono text-zinc-500">Phím R</span>
+                  </button>
+                </div>
               </div>
             )}
-
-            {/* Simulation Mode Selector: Compact dropdown (Guided default, Free & Debug preserved) */}
-            <div className="relative">
-              <select
-                value={simulationMode}
-                onChange={(e) => setSimulationMode(e.target.value as SimulationMode)}
-                className="bg-zinc-900/90 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 text-xs rounded-lg px-2 py-1 cursor-pointer focus:outline-hidden focus:border-cyan-500 font-medium"
-                aria-label={language === 'vi' ? 'Chế độ mô phỏng' : 'Simulation Mode'}
-              >
-                <option value="guided">{language === 'vi' ? 'Hướng dẫn (Guided)' : 'Guided Mode'}</option>
-                <option value="free">{language === 'vi' ? 'Tự do (Free)' : 'Free Mode'}</option>
-                <option value="debug">{language === 'vi' ? 'Gỡ lỗi (Debug)' : 'Debug Mode'}</option>
-              </select>
-            </div>
-
-            {/* Theory Quick Entry */}
-            <button
-              type="button"
-              onClick={() => setActiveDrawerTab(activeDrawerTab === 'insights' ? 'none' : 'insights')}
-              className={`px-2.5 py-1 rounded-lg text-xs font-medium border transition-colors cursor-pointer flex items-center gap-1.5 ${
-                activeDrawerTab === 'insights'
-                  ? 'bg-amber-950/60 border-amber-600/80 text-amber-300'
-                  : 'bg-zinc-900/90 hover:bg-zinc-800 border-zinc-800 text-zinc-400 hover:text-zinc-200'
-              }`}
-            >
-              <BookOpen className="w-3.5 h-3.5 text-amber-400" />
-              <span>{language === 'vi' ? 'Lý thuyết' : 'Theory'}</span>
-            </button>
-
-            {/* Audit Modal */}
-            <button
-              type="button"
-              id="btn-open-audit-modal"
-              onClick={() => setIsAuditModalOpen(true)}
-              className="p-1.5 rounded-lg bg-zinc-900/90 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 hover:text-zinc-200 transition-colors cursor-pointer"
-              title={language === 'vi' ? 'Kiểm tra hệ thống' : 'Consensus Audit'}
-            >
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-            </button>
-
-            {/* Config Modal */}
-            <button
-              type="button"
-              id="btn-open-experiment-config"
-              onClick={() => setIsConfigModalOpen(true)}
-              className="p-1.5 rounded-lg bg-zinc-900/90 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 hover:text-zinc-200 transition-colors cursor-pointer"
-              title={language === 'vi' ? 'Cấu hình tham số' : 'Simulation Parameters'}
-            >
-              <FlaskConical className="w-3.5 h-3.5" />
-            </button>
-
-            {/* Reset Lab */}
-            <button
-              type="button"
-              id="btn-e2e-reset-lab"
-              onClick={handleResetAll}
-              className="p-1.5 rounded-lg bg-zinc-900/90 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 hover:text-zinc-200 transition-colors cursor-pointer"
-              title={language === 'vi' ? 'Đặt lại phòng lab' : 'Reset Lab'}
-            >
-              <RotateCcw className="w-3.5 h-3.5" />
-            </button>
           </div>
         </div>
 
-        {/* 2. UNIFIED COMPACT NAVIGATION: COMBINED PHASE + STEP + STEPPER + CONTEXTUAL METRIC */}
+        {/* 2. UNIFIED COMPACT NAVIGATION */}
         <div className="bg-[#0b0f19] border border-zinc-800/80 rounded-xl px-3 py-2 flex flex-col md:flex-row md:items-center justify-between gap-2.5 text-xs">
-          {/* Left: Phase (most prominent) + Step (2nd prominent) + Subtitle */}
+          {/* Left: Phase (most prominent) + Step (2nd prominent) */}
           <div className="flex items-center gap-2 flex-wrap min-w-0">
-            {/* Current Phase Badge (Most prominent) */}
+            {/* Current Phase Badge */}
             <button
               type="button"
               onClick={() => {
@@ -1571,20 +1627,20 @@ export const EndToEndConsensusLab: React.FC = () => {
               }}
               className={`px-2.5 py-0.5 rounded-md text-[11px] font-mono font-bold uppercase tracking-wider shrink-0 transition-all cursor-pointer flex items-center gap-1.5 ${
                 currentPhase.id === 'proposal'
-                  ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-xs'
+                  ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
                   : currentPhase.id === 'validation'
-                  ? 'bg-purple-500/20 text-purple-300 border border-purple-500/40 shadow-xs'
-                  : 'bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-xs'
+                  ? 'bg-purple-500/20 text-purple-300 border border-purple-500/40'
+                  : 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
               }`}
               title={language === 'vi' ? 'Bấm để về đầu Pha này' : 'Click to jump to Phase start'}
             >
               <span
                 className={`w-1.5 h-1.5 rounded-full ${
                   currentPhase.id === 'proposal'
-                    ? 'bg-cyan-400 animate-pulse'
+                    ? 'bg-cyan-400'
                     : currentPhase.id === 'validation'
-                    ? 'bg-purple-400 animate-pulse'
-                    : 'bg-amber-400 animate-pulse'
+                    ? 'bg-purple-400'
+                    : 'bg-amber-400'
                 }`}
               />
               <span>{language === 'vi' ? currentPhase.nameVi : currentPhase.nameEn}</span>
@@ -1592,10 +1648,10 @@ export const EndToEndConsensusLab: React.FC = () => {
 
             <span className="text-zinc-600 select-none hidden sm:inline">·</span>
 
-            {/* Current Step (2nd most prominent) */}
+            {/* Current Step */}
             <div className="flex items-center gap-1.5 min-w-0">
               <span className="text-zinc-400 font-mono text-[11px] shrink-0">
-                {language === 'vi' ? `Bước ${guidedStep}/7:` : `Step ${guidedStep}/7:`}
+                {language === 'vi' ? `Bước ${guidedStep}/7 ·` : `Step ${guidedStep}/7 ·`}
               </span>
               <span className="text-zinc-100 font-semibold text-sm truncate">
                 {language === 'vi' ? LAB_STEPS[guidedStep - 1]?.nameVi : LAB_STEPS[guidedStep - 1]?.nameEn}
@@ -1603,9 +1659,34 @@ export const EndToEndConsensusLab: React.FC = () => {
             </div>
           </div>
 
-          {/* Right: Stepper (Prev, Minimal Steps, Next) + Contextual Metric */}
-          <div className="flex items-center gap-2.5 shrink-0 self-start md:self-auto flex-wrap sm:flex-nowrap">
-            {/* Stepper with Previous/Next and minimal step indicators */}
+          {/* Right: Stepper + Contextual Metric (only if directly supporting current action) */}
+          <div className="flex items-center gap-2.5 shrink-0 self-start md:self-auto">
+            {/* Relevant contextual metric (Step 2: TX đã chọn, Step 4: độ khó, Step 5: node xác thực, Step 6: Work A/B) */}
+            {(() => {
+              const metricText = getContextualMetrics(
+                guidedStep,
+                language,
+                mempool,
+                selectedTxIds,
+                nextBlockHeight,
+                selectedTxs,
+                previousHash,
+                config,
+                miners,
+                totalMiningAttempts,
+                nodes,
+                cumulativeWorkA,
+                cumulativeWorkB,
+                blockchain
+              );
+              return metricText ? (
+                <span className="font-mono text-zinc-400 text-[11px] bg-zinc-900/80 px-2 py-0.5 rounded border border-zinc-800/80 hidden lg:inline-block">
+                  {metricText}
+                </span>
+              ) : null;
+            })()}
+
+            {/* Stepper with Previous/Next and minimal step indicators: ● ● ● ● ● ● [7] */}
             <div className="flex items-center gap-1 bg-zinc-900/90 px-1.5 py-0.5 rounded-lg border border-zinc-800/80 font-mono text-[11px]">
               <button
                 type="button"
@@ -1616,7 +1697,7 @@ export const EndToEndConsensusLab: React.FC = () => {
                   startNextStep(`step-${prev}`);
                 }}
                 className="w-5 h-5 rounded flex items-center justify-center text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 disabled:opacity-25 disabled:cursor-not-allowed cursor-pointer"
-                title={language === 'vi' ? 'Bước trước (Phím 1-7)' : 'Previous Step (Keys 1-7)'}
+                title={language === 'vi' ? 'Bước trước' : 'Previous Step'}
                 aria-label="Previous Step"
               >
                 ‹
@@ -1645,7 +1726,7 @@ export const EndToEndConsensusLab: React.FC = () => {
                       isActive
                         ? 'bg-cyan-500 text-zinc-950 font-bold shadow-xs'
                         : isTarget
-                        ? 'guidance-amber-pulse bg-amber-500/20 text-amber-300 border border-amber-400 font-semibold text-[10px]'
+                        ? 'bg-amber-500/20 text-amber-300 border border-amber-400 font-semibold text-[10px]'
                         : isCompleted
                         ? 'hover:bg-zinc-800/80'
                         : 'text-zinc-600 hover:text-zinc-400 hover:bg-zinc-800/60 text-[10px]'
@@ -1674,34 +1755,11 @@ export const EndToEndConsensusLab: React.FC = () => {
                   startNextStep(`step-${next}`);
                 }}
                 className="w-5 h-5 rounded flex items-center justify-center text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 disabled:opacity-25 disabled:cursor-not-allowed cursor-pointer"
-                title={language === 'vi' ? 'Bước kế tiếp (Phím N)' : 'Next Step (Key N)'}
+                title={language === 'vi' ? 'Bước kế tiếp' : 'Next Step'}
                 aria-label="Next Step"
               >
                 ›
               </button>
-            </div>
-
-            {/* Contextual Metric (Only step-relevant metric) */}
-            <div className="font-mono text-zinc-400 text-[11px] bg-zinc-900/60 px-2.5 py-1 rounded-md border border-zinc-800/60 flex items-center gap-1.5 whitespace-nowrap">
-              <Activity className="w-3 h-3 text-cyan-400 shrink-0" />
-              <span>
-                {getContextualMetrics(
-                  guidedStep,
-                  language,
-                  mempool,
-                  selectedTxIds,
-                  nextBlockHeight,
-                  selectedTxs,
-                  previousHash,
-                  config,
-                  miners,
-                  totalMiningAttempts,
-                  nodes,
-                  cumulativeWorkA,
-                  cumulativeWorkB,
-                  blockchain
-                )}
-              </span>
             </div>
           </div>
         </div>
@@ -2171,6 +2229,39 @@ export const EndToEndConsensusLab: React.FC = () => {
               >
                 <BookOpen className="w-3.5 h-3.5 text-amber-400" />
                 <span>{language === 'vi' ? 'Lý thuyết & Mật mã' : 'Theory & Cryptography'}</span>
+              </button>
+
+              {/* Quick Utilities */}
+              <div className="h-3.5 w-px bg-zinc-800 mx-1 hidden sm:block" />
+              <button
+                type="button"
+                id="btn-drawer-audit"
+                onClick={() => setIsAuditModalOpen(true)}
+                className="px-2 py-1 rounded-md text-[11px] font-medium text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900 transition-colors cursor-pointer flex items-center gap-1"
+                title={language === 'vi' ? 'Kiểm tra hệ thống' : 'Consensus Audit'}
+              >
+                <ShieldCheck className="w-3 h-3 text-emerald-400" />
+                <span className="hidden sm:inline">{language === 'vi' ? 'Kiểm tra' : 'Audit'}</span>
+              </button>
+              <button
+                type="button"
+                id="btn-drawer-config"
+                onClick={() => setIsConfigModalOpen(true)}
+                className="px-2 py-1 rounded-md text-[11px] font-medium text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900 transition-colors cursor-pointer flex items-center gap-1"
+                title={language === 'vi' ? 'Cấu hình tham số' : 'Parameters'}
+              >
+                <FlaskConical className="w-3 h-3 text-cyan-400" />
+                <span className="hidden sm:inline">{language === 'vi' ? 'Cấu hình' : 'Config'}</span>
+              </button>
+              <button
+                type="button"
+                id="btn-drawer-reset"
+                onClick={handleResetAll}
+                className="px-2 py-1 rounded-md text-[11px] font-medium text-zinc-400 hover:text-rose-300 hover:bg-zinc-900 transition-colors cursor-pointer flex items-center gap-1"
+                title={language === 'vi' ? 'Đặt lại phòng lab' : 'Reset Lab'}
+              >
+                <RotateCcw className="w-3 h-3 text-zinc-400" />
+                <span className="hidden sm:inline">{language === 'vi' ? 'Đặt lại' : 'Reset'}</span>
               </button>
             </div>
 

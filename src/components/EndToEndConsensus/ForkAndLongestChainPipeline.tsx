@@ -98,7 +98,7 @@ export const ForkAndLongestChainPipeline: React.FC<ForkAndLongestChainPipelinePr
           <div className="flex items-center gap-2">
             <h3 className="text-base sm:text-lg font-semibold text-zinc-100">
               {language === 'vi'
-                ? 'Phân nhánh & Giải quyết xung đột (Fork & Heaviest Chain)'
+                ? 'Phân nhánh & Chuỗi nặng nhất'
                 : 'Fork Competition & Heaviest Chain Rule'}
             </h3>
             {forkActive ? (

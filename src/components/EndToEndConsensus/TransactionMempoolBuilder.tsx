@@ -112,7 +112,7 @@ export const TransactionMempoolBuilder: React.FC<TransactionMempoolBuilderProps>
               {/* Sender */}
               <div>
                 <label className="block text-[11px] font-sans font-medium text-slate-400 mb-1">
-                  {language === 'vi' ? 'Người gửi (Sender)' : 'Sender'}
+                  {language === 'vi' ? 'Người gửi' : 'Sender'}
                 </label>
                 <input
                   type="text"
@@ -128,7 +128,7 @@ export const TransactionMempoolBuilder: React.FC<TransactionMempoolBuilderProps>
               {/* Recipient */}
               <div>
                 <label className="block text-[11px] font-sans font-medium text-slate-400 mb-1">
-                  {language === 'vi' ? 'Người nhận (Recipient)' : 'Recipient'}
+                  {language === 'vi' ? 'Người nhận' : 'Recipient'}
                 </label>
                 <input
                   type="text"

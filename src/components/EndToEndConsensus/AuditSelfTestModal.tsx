@@ -349,7 +349,7 @@ export const AuditSelfTestModal: React.FC<AuditSelfTestModalProps> = ({
             <div>
               <h3 className="text-base font-bold text-white font-display">
                 {language === 'vi'
-                  ? 'Kiểm Thử Toàn Diện Thuật Toán (Automated Consensus Audit)'
+                  ? 'Kiểm thử toàn diện thuật toán'
                   : 'Deterministic Consensus Engine Audit & Self-Test'}
               </h3>
               <p className="text-xs text-[#94A3B8]">
@@ -410,7 +410,7 @@ export const AuditSelfTestModal: React.FC<AuditSelfTestModalProps> = ({
                   <span className="font-bold text-xs sm:text-sm">
                     {allPassed
                       ? language === 'vi'
-                        ? 'TẤT CẢ 7 BÀI TEST ĐẠT CHUẨN (ALL PASS)'
+                        ? 'TẤT CẢ 7 BÀI TEST ĐẠT CHUẨN'
                         : 'ALL 7 AUDIT CRITERIA PASSED'
                       : language === 'vi'
                       ? 'CÓ LỖI TRONG BÀI TEST'

@@ -48,10 +48,10 @@ export const ConcurrentMiningArena: React.FC<ConcurrentMiningArenaProps> = ({
         <div>
           <div className="flex items-center gap-2">
             <h3 className="text-base sm:text-lg font-semibold text-zinc-100">
-              {language === 'vi' ? 'Đua khai thác song song (Mining Race)' : 'Multi-Miner Mining Race'}
+              {language === 'vi' ? 'Đua khai thác song song' : 'Multi-Miner Mining Race'}
             </h3>
             <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-amber-950/60 text-amber-300 border border-amber-800/60">
-              {language === 'vi' ? 'Vai trò: Miner (Thợ đào)' : 'Role: Miner (Proof-of-Work)'}
+              {language === 'vi' ? 'Vai trò: Thợ đào' : 'Role: Miner'}
             </span>
           </div>
         </div>

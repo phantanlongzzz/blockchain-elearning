@@ -13,7 +13,8 @@ import { useLanguage } from '../i18n/LanguageContext';
 import { InlineMath } from './MathView';
 
 export const PropertiesSection: React.FC = () => {
-  const { strings } = useLanguage();
+  const { strings, language } = useLanguage();
+  const isVi = language === 'vi';
 
   const fixedLengthExamples = [
     { label: 'Single Char "A"', input: 'A', bits: 8, hex: '559aead08264d5795d3909718cdd05abd49572e84fe55590eef31a88a08fdffd' },
@@ -54,8 +55,10 @@ export const PropertiesSection: React.FC = () => {
               <h3 className="text-xl font-bold text-[#F2F4F7] font-sans mb-2">
                 {strings.properties.prop1Title}
               </h3>
-              <p className="text-sm text-[#A5AFBF] mb-6 leading-relaxed font-sans">
-                {strings.properties.prop1Desc} <InlineMath math="|H(m)| = 256 \text{ bits}" className="text-teach-1 ml-1" />.
+              <p className="text-sm text-[#A5AFBF] mb-5 leading-relaxed font-sans">
+                {isVi
+                  ? 'Mọi kích thước đầu vào đều được nén thành bản băm chuẩn cố định 256 bit (32 byte).'
+                  : 'Every input size is compressed into a fixed 256-bit (32-byte) digest.'}
               </p>
             </div>
 
@@ -96,8 +99,10 @@ export const PropertiesSection: React.FC = () => {
               <h3 className="text-xl font-bold text-[#F2F4F7] font-sans mb-2">
                 {strings.properties.prop2Title}
               </h3>
-              <p className="text-sm text-[#A5AFBF] mb-6 leading-relaxed font-sans">
-                {strings.properties.prop2Desc} Given <InlineMath math="y = H(x)" />, finding <InlineMath math="x" /> such that <InlineMath math="H(x) = y" /> is computationally infeasible.
+              <p className="text-sm text-[#A5AFBF] mb-5 leading-relaxed font-sans">
+                {isVi
+                  ? 'Tính toán thuận tức thì, nhưng tìm ngược lại dữ liệu gốc từ bản băm là bất khả thi.'
+                  : 'Forward computation is instantaneous, while reversing from digest back to input is computationally infeasible.'}
               </p>
             </div>
 
@@ -137,8 +142,10 @@ export const PropertiesSection: React.FC = () => {
               <h3 className="text-xl font-bold text-[#F2F4F7] font-sans mb-2">
                 {strings.properties.prop3Title}
               </h3>
-              <p className="text-sm text-[#A5AFBF] mb-6 leading-relaxed font-sans">
-                {strings.properties.prop3Desc}
+              <p className="text-sm text-[#A5AFBF] mb-5 leading-relaxed font-sans">
+                {isVi
+                  ? 'Thay đổi dù chỉ 1 bit đầu vào sẽ làm đảo ngẫu nhiên xấp xỉ 50% số bit đầu ra.'
+                  : 'Changing a single input bit randomly flips approximately 50% of all output bits.'}
               </p>
             </div>
 
@@ -173,8 +180,10 @@ export const PropertiesSection: React.FC = () => {
               <h3 className="text-xl font-bold text-[#F2F4F7] font-sans mb-2">
                 {strings.properties.prop4Title}
               </h3>
-              <p className="text-sm text-[#A5AFBF] mb-6 leading-relaxed font-sans">
-                {strings.properties.prop4Desc}
+              <p className="text-sm text-[#A5AFBF] mb-5 leading-relaxed font-sans">
+                {isVi
+                  ? 'Bất khả thi về mặt tính toán để tìm thấy hai đầu vào khác nhau có cùng giá trị hàm băm.'
+                  : 'Computationally infeasible to find two distinct inputs yielding the identical hash output.'}
               </p>
             </div>
 

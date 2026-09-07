@@ -19,6 +19,7 @@ export interface MerkleAnimStep {
 
 export const MerkleTreeLab: React.FC = () => {
   const { strings, language } = useLanguage();
+  const isVi = language === 'vi';
   const [transactions, setTransactions] = useState<MerkleTransaction[]>(INITIAL_MERKLE_TRANSACTIONS);
   const [isTechnicalMode, setIsTechnicalMode] = useState(false);
   const [selectedTxId, setSelectedTxId] = useState<string | null>(null);
@@ -177,10 +178,12 @@ export const MerkleTreeLab: React.FC = () => {
       {/* Header */}
       <div className="text-center space-y-2 mb-6">
         <h2 className="text-xl sm:text-2xl font-bold text-[#F2F4F7] tracking-tight font-sans">
-          Cây Merkle
+          {isVi ? 'Phòng Thí Nghiệm Cây Merkle' : 'Merkle Tree Lab'}
         </h2>
         <p className="text-[#A5AFBF] text-xs sm:text-sm max-w-2xl mx-auto leading-relaxed font-sans">
-          Trải nghiệm quá trình xây dựng Cây Merkle thông qua mã băm SHA-256 từ dưới lên trên.
+          {isVi
+            ? 'Xây dựng cấu trúc cây băm từ các giao dịch lá và kiểm tra xác thực bằng chứng Merkle Proof.'
+            : 'Build cryptographic hash trees from transaction leaves and verify Merkle proofs.'}
         </p>
       </div>
 
@@ -199,7 +202,7 @@ export const MerkleTreeLab: React.FC = () => {
               }`}
             >
               <Eye className="w-4 h-4" />
-              <span>Chế độ Tương tác</span>
+              <span>{isVi ? 'Chế độ Tương tác' : 'Interactive'}</span>
             </button>
             <button
               type="button"
@@ -211,7 +214,7 @@ export const MerkleTreeLab: React.FC = () => {
               }`}
             >
               <Sliders className="w-4 h-4" />
-              <span>Chế độ Kỹ thuật</span>
+              <span>{isVi ? 'Chế độ Kỹ thuật' : 'Technical'}</span>
             </button>
           </div>
 
@@ -224,7 +227,7 @@ export const MerkleTreeLab: React.FC = () => {
                 className="px-3.5 py-2 rounded-lg bg-teach-1/10 hover:bg-teach-1/20 text-teach-1 border border-teach-1/30 text-[13px] transition-colors flex items-center gap-1.5 cursor-pointer font-medium h-[36px]"
               >
                 <Zap className="w-4 h-4" />
-                <span>Khởi tạo & Băm Cây Merkle</span>
+                <span>{isVi ? 'Khởi tạo & Băm Cây Merkle' : 'Build & Hash Tree'}</span>
               </button>
             ) : (
               <>
@@ -237,7 +240,7 @@ export const MerkleTreeLab: React.FC = () => {
                   className="px-3.5 py-2 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 text-[13px] transition-colors flex items-center gap-1.5 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed font-medium h-[36px]"
                 >
                   <Flame className="w-4 h-4" />
-                  <span>Sửa dữ liệu</span>
+                  <span>{isVi ? 'Sửa dữ liệu' : 'Tamper'}</span>
                 </button>
 
                 <button
@@ -249,7 +252,7 @@ export const MerkleTreeLab: React.FC = () => {
                   className="px-3.5 py-2 rounded-lg bg-teach-1/10 hover:bg-teach-1/20 text-teach-1 border border-teach-1/30 text-[13px] transition-colors flex items-center gap-1.5 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed font-medium h-[36px]"
                 >
                   <Check className="w-4 h-4" />
-                  <span>Kiểm tra</span>
+                  <span>{isVi ? 'Kiểm tra' : 'Verify'}</span>
                 </button>
               </>
             )}
@@ -260,7 +263,7 @@ export const MerkleTreeLab: React.FC = () => {
               className="px-3.5 py-2 rounded-lg bg-[#0F131A] hover:bg-[#11161E] text-[#F2F4F7] border border-[#1C2430] text-[13px] transition-colors flex items-center gap-1.5 cursor-pointer font-medium h-[36px]"
             >
               <RotateCcw className="w-4 h-4" />
-              <span>Đặt lại</span>
+              <span>{isVi ? 'Đặt lại' : 'Reset'}</span>
             </button>
           </div>
         </div>
@@ -269,28 +272,28 @@ export const MerkleTreeLab: React.FC = () => {
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-3 pt-3 border-t border-[#1C2430]/60">
           <div>
             <span className="text-[10px] text-[#717B8C] uppercase block mb-1">
-              Số lượng giao dịch
+              {isVi ? 'Số lượng giao dịch' : 'Transactions'}
             </span>
             <span className="font-sans font-semibold text-[#F2F4F7] text-sm">{totalLeaves}</span>
           </div>
 
           <div>
             <span className="text-[10px] text-[#717B8C] uppercase block mb-1">
-              Chiều cao cây
+              {isVi ? 'Chiều cao cây' : 'Tree Height'}
             </span>
-            <span className="font-sans font-semibold text-[#F2F4F7] text-sm">{treeHeight} tầng</span>
+            <span className="font-sans font-semibold text-[#F2F4F7] text-sm">{treeHeight} {isVi ? 'tầng' : 'levels'}</span>
           </div>
 
           <div>
             <span className="text-[10px] text-[#717B8C] uppercase block mb-1">
-              Tổng số nút
+              {isVi ? 'Tổng số nút' : 'Total Nodes'}
             </span>
             <span className="font-sans font-semibold text-[#F2F4F7] text-sm">{totalNodes}</span>
           </div>
 
           <div>
             <span className="text-[10px] text-[#717B8C] uppercase block mb-1">
-              Độ phức tạp
+              {isVi ? 'Độ phức tạp' : 'Complexity'}
             </span>
             <span className="font-sans font-semibold text-[#F2F4F7] text-sm">O(log {totalLeaves})</span>
           </div>
@@ -298,7 +301,7 @@ export const MerkleTreeLab: React.FC = () => {
           <div className="col-span-2 sm:col-span-4 lg:col-span-1 flex items-center justify-between gap-1">
             <div className="min-w-0">
               <span className="text-[10px] text-[#717B8C] uppercase block mb-1">
-                Gốc Merkle
+                {isVi ? 'Gốc Merkle' : 'Merkle Root'}
               </span>
               <span className="font-mono text-[#F59E0B] text-[12px] truncate block font-medium">
                 {rootHash ? `${rootHash.slice(0, 8)}...${rootHash.slice(-4)}` : '---'}
@@ -312,7 +315,7 @@ export const MerkleTreeLab: React.FC = () => {
           <div className="p-3.5 rounded-lg bg-rose-950/20 border border-rose-500/40 text-[13px] font-sans space-y-2 mt-4">
             <div className="flex items-center gap-2 text-rose-400 font-medium">
               <AlertTriangle className="w-4 h-4 shrink-0" />
-              <span>Gốc Merkle đã bị thay đổi do dữ liệu nhánh bị sửa đổi</span>
+              <span>{isVi ? 'Gốc Merkle đã bị thay đổi do dữ liệu nhánh bị sửa đổi' : 'Merkle root altered due to tampered branch data'}</span>
             </div>
           </div>
         )}
@@ -349,6 +352,52 @@ export const MerkleTreeLab: React.FC = () => {
           />
         </div>
       </div>
+
+      {/* Theory on Demand: Merkle Tree & O(log N) Proofs */}
+      <details className="mt-6 border border-[#1C2430] rounded-xl bg-[#0C0F14] text-xs overflow-hidden font-sans">
+        <summary className="px-4 py-2.5 flex items-center justify-between text-[#A5AFBF] hover:text-[#F2F4F7] cursor-pointer select-none font-medium transition-colors">
+          <span>
+            {isVi
+              ? 'Hiểu thêm về Cây Merkle, Lan truyền mã băm & Bằng chứng O(log N)'
+              : 'Learn more about Merkle Trees, Hash Propagation & O(log N) Proofs'}
+          </span>
+          <span className="text-[11px] text-[#717B8C] font-mono">
+            ▼
+          </span>
+        </summary>
+        <div className="p-4 border-t border-[#1C2430] grid grid-cols-1 md:grid-cols-3 gap-3.5 text-xs text-[#A5AFBF]">
+          <div className="p-3 rounded-lg bg-[#090A0F] border border-[#1C2430] space-y-1">
+            <span className="text-[#F2F4F7] font-semibold block font-sans">
+              {isVi ? '1. Nén Dữ Liệu O(1) Root' : '1. O(1) Root Compression'}
+            </span>
+            <p className="text-[11px] text-[#717B8C] leading-relaxed">
+              {isVi
+                ? 'Hàng ngàn giao dịch được băm theo cặp từ dưới lên tạo thành một Merkle Root duy nhất 32 byte nằm trong Block Header.'
+                : 'Thousands of transactions are hashed in pairs from leaves upward into a single 32-byte Merkle Root stored in the Block Header.'}
+            </p>
+          </div>
+          <div className="p-3 rounded-lg bg-[#090A0F] border border-[#1C2430] space-y-1">
+            <span className="text-[#F2F4F7] font-semibold block font-sans">
+              {isVi ? '2. Bằng Chứng Siêu Nhẹ O(log N)' : '2. Lightweight O(log N) Proofs'}
+            </span>
+            <p className="text-[11px] text-[#717B8C] leading-relaxed">
+              {isVi
+                ? 'Nút mạng nhẹ (SPV Client) chỉ cần log₂(N) hàm băm anh em để kiểm toán một giao dịch mà không cần tải toàn bộ khối.'
+                : 'Light clients (SPV) only require log₂(N) sibling hashes to audit transaction inclusion without downloading the whole block.'}
+            </p>
+          </div>
+          <div className="p-3 rounded-lg bg-[#090A0F] border border-[#1C2430] space-y-1">
+            <span className="text-[#F2F4F7] font-semibold block font-sans">
+              {isVi ? '3. Lan Truyền Phát Hiện Giả Mạo' : '3. Tamper Detection Cascade'}
+            </span>
+            <p className="text-[11px] text-[#717B8C] leading-relaxed">
+              {isVi
+                ? 'Thay đổi dù chỉ 1 ký tự ở nút lá lập tức làm đổi mã băm các tầng cha và làm hỏng toàn bộ Merkle Root của khối.'
+                : 'Modifying a single bit in a leaf transaction immediately invalidates all parent hashes up to the Merkle Root.'}
+            </p>
+          </div>
+        </div>
+      </details>
 
       {/* Modals (On-Demand Inspection) */}
       <MerkleProofModal

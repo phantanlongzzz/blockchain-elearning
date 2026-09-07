@@ -363,8 +363,8 @@ export const MoneyEvolutionSection: React.FC<MoneyEvolutionSectionProps> = ({
             </h3>
             <p className="text-xs sm:text-sm text-zinc-400 max-w-3xl leading-relaxed">
               {language === 'vi'
-                ? 'Tiền tệ không phải là một phát minh tĩnh. Mỗi khi một hình thái tiền tệ ra đời để giải quyết hạn chế của hình thái cũ, nó lại vô tình tạo ra một "Giả định niềm tin mới" — cho đến khi niềm tin đó bị lạm dụng và dẫn tới khủng hoảng.'
-                : 'Money is an evolving technology. Whenever a new form solved an old limitation, it introduced a new trust assumption — until that trust was exploited.'}
+                ? 'Khám phá cách mỗi hình thái tiền tệ giải quyết hạn chế cũ nhưng tạo ra giả định niềm tin mới.'
+                : 'Explore how each monetary form solved prior constraints while introducing new trust assumptions.'}
             </p>
           </div>
 
@@ -440,16 +440,7 @@ export const MoneyEvolutionSection: React.FC<MoneyEvolutionSectionProps> = ({
             </div>
 
             <div className="space-y-2.5">
-              {/* 1. Problem */}
-              <div className="p-3.5 rounded-lg bg-zinc-900/60 border-l-2 border-rose-500/70 space-y-1">
-                <div className="flex items-center gap-1.5 text-rose-400 text-xs font-medium">
-                  <AlertTriangle className="w-3.5 h-3.5" />
-                  <span>{language === 'vi' ? 'Vấn đề tồn tại lúc đó' : 'Existing Problem'}</span>
-                </div>
-                <p className="text-xs text-zinc-300 leading-relaxed">{selectedEra.problem[language]}</p>
-              </div>
-
-              {/* 2. Improvement */}
+              {/* 1. Improvement (Immediate visible gain) */}
               <div className="p-3.5 rounded-lg bg-zinc-900/60 border border-border-primary space-y-1">
                 <div className="flex items-center gap-1.5 text-text-primary text-xs font-medium">
                   <Sparkles className="w-3.5 h-3.5" />
@@ -458,16 +449,7 @@ export const MoneyEvolutionSection: React.FC<MoneyEvolutionSectionProps> = ({
                 <p className="text-xs text-zinc-300 leading-relaxed">{selectedEra.improvement[language]}</p>
               </div>
 
-              {/* 3. New Trust Assumption */}
-              <div className="p-3.5 rounded-lg bg-zinc-900/60 border-l-2 border-amber-500/70 space-y-1">
-                <div className="flex items-center gap-1.5 text-amber-400 text-xs font-medium">
-                  <ShieldAlert className="w-3.5 h-3.5" />
-                  <span>{language === 'vi' ? 'Giả định niềm tin mới xuất hiện' : 'New Trust Assumption'}</span>
-                </div>
-                <p className="text-xs text-zinc-300 leading-relaxed">{selectedEra.newTrustAssumption[language]}</p>
-              </div>
-
-              {/* 4. Remaining Limitation */}
+              {/* 2. Remaining Limitation (Immediate visible trade-off) */}
               <div className="p-3.5 rounded-lg bg-zinc-900/60 border-l-2 border-zinc-600 space-y-1">
                 <div className="flex items-center gap-1.5 text-zinc-400 text-xs font-medium">
                   <XCircle className="w-3.5 h-3.5 text-zinc-400" />
@@ -475,6 +457,40 @@ export const MoneyEvolutionSection: React.FC<MoneyEvolutionSectionProps> = ({
                 </div>
                 <p className="text-xs text-zinc-300 leading-relaxed">{selectedEra.limitation[language]}</p>
               </div>
+
+              {/* 3. Learn More Disclosure: Historical Context & New Trust Assumptions */}
+              <details className="group border border-zinc-800 rounded-lg bg-zinc-900/40 text-xs overflow-hidden">
+                <summary className="px-3.5 py-2.5 flex items-center justify-between text-zinc-400 hover:text-zinc-200 cursor-pointer select-none font-medium transition-colors">
+                  <span className="flex items-center gap-2">
+                    <History className="w-3.5 h-3.5 text-text-primary" />
+                    <span>
+                      {language === 'vi'
+                        ? 'Hiểu thêm về tiến hóa tiền tệ & Giả định niềm tin'
+                        : 'Learn more about monetary evolution & trust assumptions'}
+                    </span>
+                  </span>
+                  <span className="text-[11px] text-zinc-500 font-mono group-open:rotate-180 transition-transform">
+                    ▼
+                  </span>
+                </summary>
+                <div className="p-3.5 space-y-2.5 border-t border-zinc-800/80">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-1.5 text-rose-400 text-xs font-medium">
+                      <AlertTriangle className="w-3.5 h-3.5" />
+                      <span>{language === 'vi' ? 'Bối cảnh & Vấn đề tồn tại lúc đó' : 'Historical Context & Problem'}</span>
+                    </div>
+                    <p className="text-xs text-zinc-300 leading-relaxed pl-5">{selectedEra.problem[language]}</p>
+                  </div>
+
+                  <div className="space-y-1 pt-2 border-t border-zinc-800/60">
+                    <div className="flex items-center gap-1.5 text-amber-400 text-xs font-medium">
+                      <ShieldAlert className="w-3.5 h-3.5" />
+                      <span>{language === 'vi' ? 'Giả định niềm tin mới xuất hiện' : 'New Trust Assumption'}</span>
+                    </div>
+                    <p className="text-xs text-zinc-300 leading-relaxed pl-5">{selectedEra.newTrustAssumption[language]}</p>
+                  </div>
+                </div>
+              </details>
             </div>
 
             <div className="flex items-center justify-between pt-2">

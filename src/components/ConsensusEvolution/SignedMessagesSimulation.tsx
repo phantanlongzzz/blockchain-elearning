@@ -53,8 +53,8 @@ export const SignedMessagesSimulation: React.FC<SignedMessagesSimulationProps> =
             </h2>
             <p className="text-sm text-slate-400 mt-1">
               {isVi
-                ? 'Chữ ký số mật mã ngăn chặn giả mạo dữ liệu trong quá trình truyền tải.'
-                : 'Digital signatures mathematically protect message integrity across untrusted networks.'}
+                ? 'Thử nghiệm sửa đổi dữ liệu để quan sát chữ ký số mật mã phát hiện gian lận tức thì.'
+                : 'Tamper with the payload to observe how cryptographic signatures instantly detect manipulation.'}
             </p>
           </div>
 
@@ -199,41 +199,54 @@ export const SignedMessagesSimulation: React.FC<SignedMessagesSimulationProps> =
             <p className="text-xs text-slate-400 leading-relaxed">
               {isVi
                 ? 'Chữ ký số giải quyết danh tính và tính toàn vẹn, nhưng mạng phi tập trung mở cần giải quyết 2 bài toán lớn khác:'
-                : 'Digital signatures verify identity and integrity, but decentralized networks face two additional challenges:'}
+                : 'Signatures guarantee authenticity, but open peer-to-peer networks still face two critical problems:'}
             </p>
 
             <div className="space-y-2.5">
               <div className="p-3 rounded-lg bg-[#080C10] border border-slate-800/80 space-y-1">
                 <div className="text-xs font-medium text-slate-200">
-                  {isVi ? '1. Chi tiêu kép' : '1. Double spending'}
+                  {isVi ? '1. Chi tiêu kép (Double Spending)' : '1. Double Spending'}
                 </div>
                 <p className="text-[11px] text-slate-400 leading-relaxed">
                   {isVi
-                    ? 'Người dùng có thể ký 2 giao dịch hợp lệ cùng tiêu 1 số tiền gửi cho 2 nút khác nhau.'
+                    ? 'Người dùng có thể ký 2 giao dịch hợp lệ cùng tiêu một khoản tiền cho 2 nút khác nhau.'
                     : 'A user can sign two valid transactions spending the same coin to different nodes.'}
                 </p>
               </div>
 
               <div className="p-3 rounded-lg bg-[#080C10] border border-slate-800/80 space-y-1">
                 <div className="text-xs font-medium text-slate-200">
-                  {isVi ? '2. Tấn công Sybil' : '2. Sybil attack'}
+                  {isVi ? '2. Tấn công Sybil (Sybil Attack)' : '2. Sybil Attack'}
                 </div>
                 <p className="text-[11px] text-slate-400 leading-relaxed">
                   {isVi
                     ? 'Kẻ tấn công có thể tạo hàng triệu danh tính ảo để chiếm đa số biểu quyết.'
-                    : 'An attacker can create millions of virtual identities to dominate simple voting.'}
+                    : 'An attacker can create millions of virtual nodes to dominate voting.'}
                 </p>
               </div>
             </div>
 
-            <div className="p-3 rounded-lg bg-[#080C10] border border-border-secondary text-slate-400 text-xs leading-relaxed">
-              <span className="font-medium text-text-secondary">
-                {isVi ? 'Đột phá của Nakamoto: ' : 'Nakamoto’s breakthrough: '}
-              </span>
-              {isVi
-                ? 'Gắn quyền đề xuất khối với tài nguyên hữu hạn (năng lượng tính toán trong PoW hoặc tiền ký quỹ trong PoS).'
-                : 'Tie block proposal power to scarce resources (computational work in PoW or capital stake in PoS).'}
-            </div>
+            {/* Learn More Disclosure */}
+            <details className="group border border-slate-800 rounded-lg bg-[#080C10] text-xs overflow-hidden">
+              <summary className="px-3 py-2 flex items-center justify-between text-slate-400 hover:text-slate-200 cursor-pointer select-none font-medium transition-colors">
+                <span>
+                  {isVi
+                    ? 'Hiểu thêm: Đột phá đồng thuận Nakamoto'
+                    : 'Learn more: Nakamoto consensus breakthrough'}
+                </span>
+                <span className="text-[11px] text-slate-500 font-mono group-open:rotate-180 transition-transform">
+                  ▼
+                </span>
+              </summary>
+              <div className="p-3 border-t border-slate-800/80 text-slate-400 text-xs leading-relaxed">
+                <span className="font-medium text-text-secondary block mb-1">
+                  {isVi ? 'Giải pháp cho mạng mở không cần cấp phép:' : 'Permissionless open network solution:'}
+                </span>
+                {isVi
+                  ? 'Gắn quyền đề xuất khối với tài nguyên hữu hạn thực tế (năng lượng tính toán trong PoW hoặc vốn ký quỹ trong PoS) thay vì danh tính số thuần túy.'
+                  : 'Ties block proposal authority to verifiable scarce resources (computational power in PoW or staked capital in PoS) rather than virtual identities.'}
+              </div>
+            </details>
           </div>
         </div>
       </div>

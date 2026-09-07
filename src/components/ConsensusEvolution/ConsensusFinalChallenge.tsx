@@ -602,6 +602,50 @@ export const ConsensusFinalChallenge: React.FC<ConsensusFinalChallengeProps> = (
             </div>
           </div>
 
+          {/* Theory on Demand: Consensus Validation & Fault Tolerance */}
+          <details className="border border-slate-800 rounded-lg bg-[#080C10] text-xs overflow-hidden font-sans">
+            <summary className="px-4 py-2.5 flex items-center justify-between text-slate-400 hover:text-slate-200 cursor-pointer select-none font-medium transition-colors">
+              <span>
+                {isVi
+                  ? 'Hiểu thêm về Xác thực đồng thuận & Khả năng chịu lỗi Byzantine'
+                  : 'Learn more about Consensus Validation & Byzantine Fault Tolerance'}
+              </span>
+              <span className="text-[11px] text-slate-500 font-mono">▼</span>
+            </summary>
+            <div className="p-4 border-t border-slate-800/80 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-slate-400">
+              <div className="p-3 rounded-lg bg-[#0B0E12] border border-slate-800/80 space-y-1">
+                <span className="text-slate-200 font-medium block">
+                  {isVi ? '1. Xác thực độc lập' : '1. Independent Validation'}
+                </span>
+                <p className="text-[11px] text-slate-400 leading-relaxed">
+                  {isVi
+                    ? 'Mỗi node độc lập xác minh chữ ký ECDSA và số dư nguồn của từng giao dịch trước khi thêm block vào chuỗi.'
+                    : 'Each node independently verifies ECDSA signatures and account balances before adding a block to the chain.'}
+                </p>
+              </div>
+              <div className="p-3 rounded-lg bg-[#0B0E12] border border-slate-800/80 space-y-1">
+                <span className="text-slate-200 font-medium block">
+                  {isVi ? '2. Từ chối & Trừng phạt' : '2. Rejection & Slashing'}
+                </span>
+                <p className="text-[11px] text-slate-400 leading-relaxed">
+                  {isVi
+                    ? 'Trong PoW, block sai chữ ký bị loại bỏ hoàn toàn. Trong PoS, người đề xuất gian lận sẽ bị phạt cắt stake (slash).'
+                    : 'In PoW, invalid blocks are discarded. In PoS, dishonest proposers have their stake slashed by the attestation committee.'}
+                </p>
+              </div>
+              <div className="p-3 rounded-lg bg-[#0B0E12] border border-slate-800/80 space-y-1">
+                <span className="text-slate-200 font-medium block">
+                  {isVi ? '3. Bất biến sổ cái' : '3. Ledger Invariance'}
+                </span>
+                <p className="text-[11px] text-slate-400 leading-relaxed">
+                  {isVi
+                    ? 'Nhờ cơ chế đồng thuận mật mã, các nút trung thực luôn hội tụ về trạng thái sổ cái chính xác và loại trừ gian lận.'
+                    : 'Cryptographic consensus ensures honest nodes converge on the exact valid ledger state, rejecting any tampering.'}
+                </p>
+              </div>
+            </div>
+          </details>
+
           {/* Action footer */}
           <div className="flex items-center justify-between pt-2">
             <button

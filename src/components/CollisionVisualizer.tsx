@@ -132,8 +132,8 @@ export const CollisionVisualizer: React.FC = () => {
           </div>
           <p className="text-xs text-[#A5AFBF] mt-1 font-sans">
             {isVi
-              ? 'Thử nghiệm cách tấn công sinh nhật tìm thấy va chạm nhanh chóng trong không gian rút gọn, và lý do tại sao SHA-256 256-bit hoàn chỉnh hoàn toàn bất khả thi để phá vỡ bằng tính toán.'
-              : 'Test how birthday attacks find collisions rapidly in reduced bit spaces, and why 256-bit full SHA-256 remains computationally unbreakable.'}
+              ? 'Chọn không gian bit rút gọn và tìm kiếm va chạm trong không gian mẫu nhỏ.'
+              : 'Select a reduced bit space and search to observe collisions in small sample spaces.'}
           </p>
         </div>
 
@@ -244,48 +244,60 @@ export const CollisionVisualizer: React.FC = () => {
           </p>
           <p className="text-[#717B8C] max-w-md mx-auto leading-relaxed">
             {isVi
-              ? 'Chọn không gian bit rút gọn (ví dụ: 12-bit hoặc 16-bit) và nhấn "Tìm Va Chạm" để quan sát cách va chạm xảy ra trong không gian nhỏ so với không gian thực 256-bit.'
-              : 'Select a truncated bit space (e.g. 12-bit or 16-bit) and click "Find Collision" to see how hashing collisions occur in reduced spaces versus true 256-bit spaces.'}
+              ? 'Nhấn "Tìm Va Chạm" để bắt đầu tìm kiếm hai thông điệp có cùng tiền tố băm.'
+              : 'Click "Find Collision" to search for two messages sharing the same prefix digest.'}
           </p>
         </div>
       )}
 
-      {/* Comparison Table: Truncated vs Full 256-bit */}
-      <div className="mt-6 pt-5 border-t border-[#1C2430] grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs font-sans text-[#A5AFBF]">
-        <div className="p-3.5 rounded-lg bg-[#090A0F] border border-[#1C2430]">
-          <span className="text-[#717B8C] block mb-1 font-sans font-semibold">
-            {isVi ? 'Công Thức Giới Hạn Sinh Nhật:' : 'Birthday Bound Formula:'}
+      {/* Theory on Demand: Collision Resistance & Birthday Bound */}
+      <details className="mt-5 border border-[#1C2430] rounded-xl bg-[#090A0F] text-xs overflow-hidden">
+        <summary className="px-4 py-2.5 flex items-center justify-between text-[#A5AFBF] hover:text-[#F2F4F7] cursor-pointer select-none font-medium transition-colors">
+          <span>
+            {isVi
+              ? 'Hiểu thêm về Collision Resistance & Nghịch lý sinh nhật'
+              : 'Learn more about Collision Resistance & Birthday Paradox'}
           </span>
-          <div className="text-teach-1 font-bold text-sm">
-            <InlineMath math="\approx 1.17 \times \sqrt{2^n}" />
+          <span className="text-[11px] text-[#717B8C] font-mono group-open:rotate-180 transition-transform">
+            ▼
+          </span>
+        </summary>
+        <div className="p-4 border-t border-[#1C2430] grid grid-cols-1 sm:grid-cols-3 gap-3.5 text-xs font-sans text-[#A5AFBF]">
+          <div className="p-3 rounded-lg bg-[#0C0F14] border border-[#1C2430]">
+            <span className="text-[#717B8C] block mb-1 font-sans font-semibold">
+              {isVi ? 'Công Thức Giới Hạn Sinh Nhật:' : 'Birthday Bound Formula:'}
+            </span>
+            <div className="text-teach-1 font-bold text-sm">
+              <InlineMath math="\approx 1.17 \times \sqrt{2^n}" />
+            </div>
+            <p className="text-[11px] text-[#717B8C] mt-1 font-sans">
+              {isVi ? 'Độ phức tạp căn bậc hai cho va chạm' : 'Square root complexity for collisions'}
+            </p>
           </div>
-          <p className="text-[11px] text-[#717B8C] mt-1 font-sans">
-            {isVi ? 'Giảm độ phức tạp căn bậc hai cho va chạm' : 'Square root reduction for collisions'}
-          </p>
-        </div>
-        <div className="p-3.5 rounded-lg bg-[#090A0F] border border-[#1C2430]">
-          <span className="text-[#717B8C] block mb-1 font-sans font-semibold">
-            {isVi ? 'Khối Lượng Tính Toán SHA-256 Gốc:' : 'Full SHA-256 Collision Work:'}
-          </span>
-          <div className="text-teach-1 font-bold text-sm">
-            <InlineMath math="2^{128} \text{ Operations}" />
+          <div className="p-3 rounded-lg bg-[#0C0F14] border border-[#1C2430]">
+            <span className="text-[#717B8C] block mb-1 font-sans font-semibold">
+              {isVi ? 'Khối Lượng Tính Toán SHA-256 Gốc:' : 'Full SHA-256 Collision Work:'}
+            </span>
+            <div className="text-teach-1 font-bold text-sm">
+              <InlineMath math="2^{128} \text{ Operations}" />
+            </div>
+            <p className="text-[11px] text-[#717B8C] mt-1 font-sans">
+              <InlineMath math="\approx 3.4 \times 10^{38}" /> {isVi ? 'phép tính băm' : 'hash computations'}
+            </p>
           </div>
-          <p className="text-[11px] text-[#717B8C] mt-1 font-sans">
-            <InlineMath math="\approx 3.4 \times 10^{38}" /> {isVi ? 'phép tính băm' : 'hash computations'}
-          </p>
+          <div className="p-3 rounded-lg bg-[#0C0F14] border border-[#1C2430]">
+            <span className="text-[#717B8C] block mb-1 font-sans font-semibold">
+              {isVi ? 'Kết Luận Bảo Mật:' : 'Security Conclusion:'}
+            </span>
+            <span className="text-success font-bold text-sm font-sans">
+              {isVi ? 'Bất Khả Thi Về Tính Toán' : 'Computationally Infeasible'}
+            </span>
+            <p className="text-[11px] text-[#717B8C] mt-1 font-sans">
+              {isVi ? 'Chưa từng có va chạm SHA-256 nào được phát hiện' : 'No SHA-256 collision has ever been found'}
+            </p>
+          </div>
         </div>
-        <div className="p-3.5 rounded-lg bg-[#090A0F] border border-[#1C2430]">
-          <span className="text-[#717B8C] block mb-1 font-sans font-semibold">
-            {isVi ? 'Kết Luận Khoa Học:' : 'Scientific Conclusion:'}
-          </span>
-          <span className="text-success font-bold text-sm font-sans">
-            {isVi ? 'Bất Khả Thi Về Tính Toán' : 'Computationally Infeasible'}
-          </span>
-          <p className="text-[11px] text-[#717B8C] mt-1 font-sans">
-            {isVi ? 'Chưa từng có va chạm SHA-256 nào được phát hiện' : 'No SHA-256 collision has ever been found'}
-          </p>
-        </div>
-      </div>
+      </details>
     </div>
   );
 };

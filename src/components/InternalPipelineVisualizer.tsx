@@ -12,13 +12,13 @@ export const InternalPipelineVisualizer: React.FC = () => {
   const labels = {
     compressionRound: isVi ? 'Vòng nén' : 'Compression Round',
     inspectVariables: isVi
-      ? 'Quan sát sự thay đổi của 8 biến làm việc qua từng vòng.'
-      : 'Inspect the transformation of 8 working variables across rounds.',
+      ? 'Quan sát sự thay đổi của 8 biến làm việc qua từng vòng nén.'
+      : 'Inspect the transformation of 8 working variables across compression rounds.',
     initialState: isVi ? 'Trạng thái ban đầu (Vòng 0)' : 'Initial State (Round 0)',
     roundPrefix: isVi ? 'Vòng' : 'Round',
     finalRound: isVi ? 'Vòng cuối cùng (Vòng 63)' : 'Final Round (Round 63)',
     roundConstant: isVi ? 'Hằng số vòng' : 'Round Constant',
-    scheduleWord: isVi ? 'Từ thông điệp W' : 'Schedule Word',
+    scheduleWord: isVi ? 'Từ thông điệp' : 'Schedule Word',
     workingVar: isVi ? 'Biến' : 'Var',
     resetRound: isVi ? 'Quay lại Vòng 0' : 'Reset to Round 0',
     nextRound: isVi ? 'Vòng tiếp theo' : 'Next Round',
@@ -31,16 +31,16 @@ export const InternalPipelineVisualizer: React.FC = () => {
     appended1: isVi ? 'Bit 1 đệm (0x80)' : 'Appended 1-bit (0x80)',
     zeroPadding: isVi ? 'Đệm bit 0 (0x00)' : 'Zero Padding (0x00)',
     lengthBits: (bits: number) => (isVi ? `Độ dài 64-bit (${bits} bit)` : `64-bit Length (${bits} bits)`),
-    wordsRange: isVi ? 'Từ W[0] đến W[63]' : 'W[0] through W[63]',
-    stage2IntroPre: isVi ? '16 từ 32 bit ban đầu ' : 'The 16 initial 32-bit words ',
+    wordsRange: isVi ? '64 từ: W[0] → W[63]' : '64 words: W[0] → W[63]',
+    stage2IntroPre: isVi ? '16 từ 32-bit ban đầu ' : 'The 16 initial 32-bit words ',
     stage2IntroPost: isVi
-      ? ' từ khối 512 bit được mở rộng thành 64 từ bằng công thức truy hồi:'
+      ? ' từ khối 512 bit được mở rộng thành 64 từ bằng công thức truy hồi mật mã:'
       : ' from the 512-bit block are expanded into 64 words using the recurrence:',
-    outputBadge: isVi ? 'Đầu ra 256-bit' : '256-Bit Output',
-    stage4IntroPre: isVi ? 'Sau vòng 63, 8 biến làm việc (' : 'After round 63, the 8 working variables (',
+    outputBadge: isVi ? 'Đầu ra 256 bit' : '256-Bit Output',
+    stage4IntroPre: isVi ? 'Sau 64 vòng nén (vòng 0 đến 63), 8 biến làm việc (' : 'After round 63, the 8 working variables (',
     stage4IntroMid: isVi ? ') được cộng theo modulo ' : ') are added modulo ',
     stage4IntroPost: isVi ? ' với trạng thái băm trung gian trước đó:' : ' to the previous intermediate hash state:',
-    synthesizedDigest: isVi ? 'Mã băm tổng hợp 64 ký tự Hex:' : 'Synthesized 64-Hex Digest:',
+    synthesizedDigest: isVi ? 'Mã băm tổng hợp 64 ký tự Hex (256 bit):' : 'Synthesized 64-Hex Digest (256-bit):',
   };
 
   const [pipelineInput, setPipelineInput] = useState('abc');
@@ -80,80 +80,99 @@ export const InternalPipelineVisualizer: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-10 font-sans">
-          <div className="flex items-center justify-center gap-2 text-text-muted text-xs font-mono tracking-wider uppercase mb-3 font-semibold">
+          <div className="flex items-center justify-center gap-2 text-sky-400 text-xs tracking-wider uppercase mb-3 font-semibold font-sans">
+            <span className="w-2 h-2 rounded-full bg-sky-400" />
             <span>{strings.pipeline.badge}</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-bold text-[#F2F4F7] tracking-tight font-sans mb-2">
+          <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight font-sans mb-3">
             {strings.pipeline.title}
           </h2>
-          <p className="text-sm text-[#A5AFBF] leading-relaxed font-sans">
+          <p className="text-sm sm:text-base text-slate-300 leading-relaxed font-sans">
             {strings.pipeline.description}
           </p>
         </div>
 
         {/* Interactive Pipeline Stages Navigation Bar */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-6 font-sans">
           {[
             { id: 'padding', label: strings.pipeline.stage1Label, desc: strings.pipeline.stage1Desc },
             { id: 'schedule', label: strings.pipeline.stage2Label, desc: strings.pipeline.stage2Desc },
             { id: 'compression', label: strings.pipeline.stage3Label, desc: strings.pipeline.stage3Desc },
             { id: 'output', label: strings.pipeline.stage4Label, desc: strings.pipeline.stage4Desc },
-          ].map((stage) => (
-            <button
-              key={stage.id}
-              onClick={() => setActiveStage(stage.id as any)}
-              className={`p-3.5 rounded-lg text-left border transition-all cursor-pointer ${
-                activeStage === stage.id
-                  ? 'bg-bg-elevated border-border-primary shadow-sm text-text-primary'
-                  : 'bg-[#0C0F14] border-[#1C2430] text-[#A5AFBF] hover:border-[#2A3649] hover:text-[#F2F4F7]'
-              }`}
-            >
-              <span className="font-sans text-xs font-bold block">{stage.label}</span>
-              <span className="text-[11px] text-[#717B8C] block mt-0.5 font-sans">{stage.desc}</span>
-            </button>
-          ))}
+          ].map((stage) => {
+            const isActive = activeStage === stage.id;
+            return (
+              <button
+                key={stage.id}
+                id={`btn-stage-${stage.id}`}
+                type="button"
+                onClick={() => setActiveStage(stage.id as any)}
+                className={`p-4 rounded-xl text-left border transition-all cursor-pointer font-sans ${
+                  isActive
+                    ? 'bg-slate-900 border-sky-500 ring-1 ring-sky-500/40 shadow-sm text-white'
+                    : 'bg-slate-950/80 border-slate-800 text-slate-300 hover:border-slate-700 hover:text-white'
+                }`}
+              >
+                <span className="font-sans text-sm sm:text-base font-bold text-white block">
+                  {stage.label}
+                </span>
+                <span className="text-xs sm:text-sm text-slate-300 block mt-1 leading-normal font-sans">
+                  {stage.desc}
+                </span>
+              </button>
+            );
+          })}
         </div>
 
         {/* Input Controller inside Pipeline */}
-        <div className="rounded-lg bg-[#0C0F14] border border-[#1C2430] p-4 mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-sans">
-          <div className="flex items-center gap-2">
-            <span className="text-text-secondary font-bold uppercase font-sans">{strings.pipeline.testMessage}:</span>
+        <div className="rounded-xl bg-slate-900/90 border border-slate-800 p-4 mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-sm font-sans shadow-xs">
+          <div className="flex items-center gap-3">
+            <span className="text-slate-200 font-semibold font-sans whitespace-nowrap">
+              {strings.pipeline.testMessage.replace(/:+$/, '')}:
+            </span>
             <input
               type="text"
+              id="pipeline-test-input"
               value={pipelineInput}
               onChange={(e) => {
                 setPipelineInput(e.target.value);
                 setSelectedRound(0);
               }}
               placeholder={labels.placeholder}
-              className="bg-[#0B0F15] border border-[#1C2430] rounded-md px-3 py-1.5 text-[#F2F4F7] focus:outline-none focus:border-teach-1 w-48 font-mono"
+              className="bg-slate-950 border border-slate-800 rounded-lg px-3.5 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 w-52 font-mono text-sm"
             />
           </div>
-          <div className="text-[#A5AFBF] flex items-center gap-3 font-sans">
-            <span>{strings.pipeline.originalBits}: <strong className="text-text-primary font-mono">{breakdown.originalBitsLength}</strong></span>
-            <span>{strings.pipeline.paddedBits}: <strong className="text-text-primary font-mono">{breakdown.paddedBitsLength}</strong></span>
-            <span>{strings.pipeline.blocksCount}: <strong className="text-text-primary font-mono">{breakdown.blockCount} × 512b</strong></span>
+          <div className="text-slate-300 flex flex-wrap items-center gap-4 sm:gap-6 font-sans text-sm">
+            <span>
+              {strings.pipeline.originalBits.replace(/:+$/, '')}: <strong className="text-white font-mono font-semibold ml-1">{breakdown.originalBitsLength}</strong>
+            </span>
+            <span>
+              {strings.pipeline.paddedBits.replace(/:+$/, '')}: <strong className="text-white font-mono font-semibold ml-1">{breakdown.paddedBitsLength}</strong>
+            </span>
+            <span>
+              {strings.pipeline.blocksCount.replace(/:+$/, '')}: <strong className="text-white font-mono font-semibold ml-1">{breakdown.blockCount} × 512b</strong>
+            </span>
           </div>
         </div>
 
         {/* Stage 1: Padding & 512-bit Alignment Inspector */}
         {activeStage === 'padding' && (
-          <div className="rounded-xl bg-[#0C0F14] border border-[#1C2430] p-6 sm:p-7 shadow-sm space-y-5 font-sans">
-            <div className="flex items-center justify-between border-b border-[#1C2430] pb-3">
-              <h3 className="font-sans text-base font-bold text-text-primary">
+          <div className="rounded-xl bg-slate-900/90 border border-slate-800 p-6 sm:p-7 shadow-sm space-y-5 font-sans">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              <h3 className="font-sans text-base sm:text-lg font-bold text-white">
                 {strings.pipeline.stage1Title}
               </h3>
-              <span className="text-xs font-mono px-2.5 py-0.5 rounded-md bg-[#0F131A] text-[#A5AFBF] border border-[#1C2430]">
-                {labels.totalBytes} {breakdown.paddedMessageBytes.length}
+              <span className="text-xs sm:text-sm font-sans px-3 py-1 rounded-lg bg-slate-950 text-slate-300 border border-slate-800">
+                {labels.totalBytes} <strong className="font-mono font-bold text-sky-400">{breakdown.paddedMessageBytes.length} byte</strong>
               </span>
             </div>
 
-            <p className="text-xs text-[#A5AFBF] leading-relaxed font-sans">
+            <p className="text-sm sm:text-base text-slate-300 leading-relaxed font-sans">
               {strings.pipeline.stage1Explanation}
             </p>
 
-            <div className="p-4 rounded-lg bg-[#090A0F] border border-[#1C2430] font-sans text-xs space-y-3">
-              <div className="text-[#F2F4F7] font-semibold mb-2 font-sans">
+            <div className="p-4 sm:p-5 rounded-xl bg-slate-950 border border-slate-800 font-sans space-y-4">
+              <div className="text-white font-semibold text-sm sm:text-base font-sans">
                 {labels.byteBreakdown}
               </div>
               <div className="grid grid-cols-8 sm:grid-cols-16 gap-1 text-center font-mono">
@@ -166,14 +185,14 @@ export const InternalPipelineVisualizer: React.FC = () => {
                   return (
                     <div
                       key={idx}
-                      className={`p-1 rounded text-[10px] border ${
+                      className={`p-1.5 rounded text-xs border font-mono ${
                         isMsg
-                          ? 'bg-teach-1/20 border-teach-1/50 text-teach-1 font-medium'
+                          ? 'bg-sky-950/80 border-sky-500/50 text-sky-300 font-bold'
                           : isOneBit
-                            ? 'bg-amber-950/80 border-amber-500/50 text-amber-200 font-bold'
+                            ? 'bg-amber-950/80 border-amber-500/50 text-amber-300 font-bold'
                             : isLength
-                              ? 'bg-[#11161E] border-[#1C2430] text-[#F2F4F7] font-bold'
-                              : 'bg-[#0F131A] border-[#1C2430] text-[#717B8C]'
+                              ? 'bg-indigo-950/80 border-indigo-500/50 text-indigo-300 font-bold'
+                              : 'bg-slate-900 border-slate-800 text-slate-400'
                       }`}
                       title={`Byte #${idx}: 0x${hexStr}`}
                     >
@@ -183,18 +202,18 @@ export const InternalPipelineVisualizer: React.FC = () => {
                 })}
               </div>
 
-              <div className="flex flex-wrap items-center gap-4 text-[11px] pt-3 border-t border-[#1C2430] text-[#A5AFBF] font-sans">
-                <span className="flex items-center gap-1">
-                  <span className="w-2.5 h-2.5 rounded-sm bg-teach-1 inline-block" /> {labels.msgBytes} ({new TextEncoder().encode(pipelineInput).length})
+              <div className="flex flex-wrap items-center gap-4 text-xs sm:text-sm pt-3 border-t border-slate-800 text-slate-300 font-sans">
+                <span className="flex items-center gap-1.5">
+                  <span className="w-3 h-3 rounded-sm bg-sky-400 inline-block" /> {labels.msgBytes} ({new TextEncoder().encode(pipelineInput).length})
                 </span>
-                <span className="flex items-center gap-1">
-                  <span className="w-2.5 h-2.5 rounded-sm bg-amber-500 inline-block" /> {labels.appended1}
+                <span className="flex items-center gap-1.5">
+                  <span className="w-3 h-3 rounded-sm bg-amber-400 inline-block" /> {labels.appended1}
                 </span>
-                <span className="flex items-center gap-1">
-                  <span className="w-2.5 h-2.5 rounded-sm bg-[#0F131A] inline-block border border-[#1C2430]" /> {labels.zeroPadding}
+                <span className="flex items-center gap-1.5">
+                  <span className="w-3 h-3 rounded-sm bg-slate-700 inline-block border border-slate-600" /> {labels.zeroPadding}
                 </span>
-                <span className="flex items-center gap-1">
-                  <span className="w-2.5 h-2.5 rounded-sm bg-[#11161E] inline-block border border-[#1C2430]" /> {labels.lengthBits(breakdown.originalBitsLength)}
+                <span className="flex items-center gap-1.5">
+                  <span className="w-3 h-3 rounded-sm bg-indigo-400 inline-block" /> {labels.lengthBits(breakdown.originalBitsLength)}
                 </span>
               </div>
             </div>
@@ -203,35 +222,35 @@ export const InternalPipelineVisualizer: React.FC = () => {
 
         {/* Stage 2: Message Schedule Expansion W[0..63] */}
         {activeStage === 'schedule' && (
-          <div className="rounded-xl bg-[#0C0F14] border border-[#1C2430] p-6 sm:p-7 shadow-sm space-y-5 font-sans">
-            <div className="flex items-center justify-between border-b border-[#1C2430] pb-3">
-              <h3 className="font-sans text-base font-bold text-text-primary">
+          <div className="rounded-xl bg-slate-900/90 border border-slate-800 p-6 sm:p-7 shadow-sm space-y-5 font-sans">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              <h3 className="font-sans text-base sm:text-lg font-bold text-white">
                 {strings.pipeline.stage2Title}
               </h3>
-              <span className="text-xs font-mono px-2.5 py-0.5 rounded-md bg-[#0F131A] text-[#A5AFBF] border border-[#1C2430]">
+              <span className="text-xs sm:text-sm font-sans px-3 py-1 rounded-lg bg-slate-950 text-slate-300 border border-slate-800">
                 {labels.wordsRange}
               </span>
             </div>
 
-            <div className="text-xs text-[#A5AFBF] leading-relaxed font-sans">
+            <div className="text-sm sm:text-base text-slate-300 leading-relaxed font-sans">
               {labels.stage2IntroPre}<InlineMath math="W_0 \dots W_{15}" />{labels.stage2IntroPost}
-              <div className="mt-2 p-2.5 bg-[#090A0F] rounded-lg border border-[#1C2430] text-teach-1">
+              <div className="mt-3 p-3.5 bg-slate-950 rounded-xl border border-slate-800 text-sky-300 overflow-x-auto font-sans">
                 <InlineMath math="W[t] = \sigma_1(W[t-2]) + W[t-7] + \sigma_0(W[t-15]) + W[t-16] \pmod{2^{32}}" />
               </div>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2 font-mono text-xs max-h-72 overflow-y-auto p-1">
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2.5 max-h-80 overflow-y-auto p-1 font-sans">
               {block0?.w.map((word, idx) => (
                 <div
                   key={idx}
-                  className={`p-2 rounded-lg border ${
+                  className={`p-2.5 rounded-xl border transition-colors ${
                     idx < 16
-                      ? 'bg-teach-1/10 border-teach-1/30 text-teach-1'
-                      : 'bg-[#090A0F] border-[#1C2430] text-[#F2F4F7]'
+                      ? 'bg-sky-950/40 border-sky-500/40 text-sky-300'
+                      : 'bg-slate-950 border-slate-800/90 text-slate-200'
                   }`}
                 >
-                  <span className="text-[10px] text-[#717B8C] block">W[{idx}]</span>
-                  <span className="font-bold text-[11px]">0x{uint32ToHex(word)}</span>
+                  <span className="text-xs text-slate-400 font-sans font-medium block">W[{idx}]</span>
+                  <span className="font-mono font-bold text-xs sm:text-[13px] text-white block select-all">0x{uint32ToHex(word)}</span>
                 </div>
               ))}
             </div>
@@ -240,14 +259,14 @@ export const InternalPipelineVisualizer: React.FC = () => {
 
         {/* Stage 3: 64 Compression Rounds Visualizer */}
         {activeStage === 'compression' && (
-          <div className="rounded-xl bg-[#0C0F14] border border-[#1C2430] p-6 sm:p-7 shadow-sm space-y-6 font-sans">
+          <div className="rounded-xl bg-slate-900/90 border border-slate-800 p-6 sm:p-7 shadow-sm space-y-6 font-sans">
             {/* Header & Round Selector Controls */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#1C2430] pb-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
               <div>
-                <h3 className="font-sans text-base font-bold text-text-primary flex items-center gap-2">
+                <h3 className="font-sans text-base sm:text-lg font-bold text-white flex items-center gap-2">
                   <span>{labels.compressionRound} #{selectedRound} / 63</span>
                 </h3>
-                <p className="text-xs text-[#A5AFBF] mt-0.5 font-sans">
+                <p className="text-sm text-slate-300 mt-1 font-sans leading-relaxed">
                   {labels.inspectVariables}
                 </p>
               </div>
@@ -255,38 +274,49 @@ export const InternalPipelineVisualizer: React.FC = () => {
               {/* Playback controls */}
               <div className="flex items-center gap-2 font-sans">
                 <button
+                  type="button"
+                  id="btn-pipeline-autoplay"
                   onClick={() => setIsPlaying(!isPlaying)}
-                  className="px-3 py-1.5 rounded-lg bg-teach-1/15 hover:bg-teach-1/25 border border-teach-1/40 text-teach-1 text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer"
+                  className="px-3.5 py-2 rounded-lg bg-sky-950 hover:bg-sky-900 border border-sky-500/40 text-sky-300 text-xs sm:text-sm font-semibold transition-all flex items-center gap-2 cursor-pointer shadow-xs"
                 >
-                  {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
+                  {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
                   <span>{isPlaying ? strings.pipeline.pause : strings.pipeline.autoPlay}</span>
                 </button>
                 <button
+                  type="button"
+                  id="btn-pipeline-reset"
                   onClick={() => setSelectedRound(0)}
-                  className="p-2 rounded-lg bg-[#0F131A] text-[#A5AFBF] hover:text-[#F2F4F7] border border-[#1C2430] cursor-pointer"
+                  className="p-2 sm:px-3 sm:py-2 rounded-lg bg-slate-950 text-slate-300 hover:text-white border border-slate-800 hover:border-slate-700 transition-colors cursor-pointer text-xs sm:text-sm flex items-center gap-1.5"
                   title={labels.resetRound}
                 >
-                  <RotateCcw className="w-3.5 h-3.5" />
+                  <RotateCcw className="w-4 h-4" />
+                  <span className="hidden sm:inline font-sans">{labels.resetRound}</span>
                 </button>
                 <button
+                  type="button"
+                  id="btn-pipeline-next"
                   onClick={() => setSelectedRound((prev) => Math.min(63, prev + 1))}
-                  className="p-2 rounded-lg bg-[#0F131A] text-[#A5AFBF] hover:text-[#F2F4F7] border border-[#1C2430] cursor-pointer"
+                  className="p-2 sm:px-3 sm:py-2 rounded-lg bg-slate-950 text-slate-300 hover:text-white border border-slate-800 hover:border-slate-700 transition-colors cursor-pointer text-xs sm:text-sm flex items-center gap-1.5"
                   title={labels.nextRound}
                 >
-                  <SkipForward className="w-3.5 h-3.5" />
+                  <SkipForward className="w-4 h-4" />
+                  <span className="hidden sm:inline font-sans">{labels.nextRound}</span>
                 </button>
               </div>
             </div>
 
             {/* Interactive Round Slider */}
-            <div className="font-sans">
-              <div className="flex justify-between text-xs text-[#A5AFBF] mb-1.5">
-                <span>{labels.initialState}</span>
-                <span className="text-teach-1 font-bold font-mono">{labels.roundPrefix} {selectedRound}</span>
-                <span>{labels.finalRound}</span>
+            <div className="font-sans space-y-2">
+              <div className="flex justify-between text-xs sm:text-sm text-slate-300 font-sans">
+                <span className="font-medium">{labels.initialState}</span>
+                <span className="text-sky-400 font-bold font-sans">
+                  {labels.roundPrefix} <span className="font-mono">{selectedRound}</span> / 63
+                </span>
+                <span className="font-medium">{labels.finalRound}</span>
               </div>
               <input
                 type="range"
+                id="pipeline-round-slider"
                 min={0}
                 max={63}
                 value={selectedRound}
@@ -294,56 +324,134 @@ export const InternalPipelineVisualizer: React.FC = () => {
                   setSelectedRound(Number(e.target.value));
                   setIsPlaying(false);
                 }}
-                className="w-full accent-teach-1 bg-[#0F131A] h-2 rounded-lg cursor-pointer"
+                className="w-full accent-sky-400 bg-slate-950 h-2.5 rounded-lg cursor-pointer border border-slate-800"
               />
             </div>
 
             {/* 8 Working Variables Grid */}
             {currentRoundState && (
-              <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2.5 font-sans">
-                {[
-                  { label: 'a', val: currentRoundState.a, color: 'text-teach-1' },
-                  { label: 'b', val: currentRoundState.b, color: 'text-teach-1' },
-                  { label: 'c', val: currentRoundState.c, color: 'text-teach-5' },
-                  { label: 'd', val: currentRoundState.d, color: 'text-teach-6' },
-                  { label: 'e', val: currentRoundState.e, color: 'text-teach-2' },
-                  { label: 'f', val: currentRoundState.f, color: 'text-teach-2' },
-                  { label: 'g', val: currentRoundState.g, color: 'text-teach-5' },
-                  { label: 'h', val: currentRoundState.h, color: 'text-teach-6' },
-                ].map((item) => (
-                  <div
-                    key={item.label}
-                    className="p-3 rounded-lg bg-[#090A0F] border border-[#1C2430] text-center"
-                  >
-                    <span className="text-xs text-[#717B8C] font-bold font-mono block mb-1">
-                      {labels.workingVar} {item.label}
-                    </span>
-                    <span className={`text-xs sm:text-sm font-bold font-mono ${item.color} block tracking-wider`}>
-                      {uint32ToHex(item.val)}
-                    </span>
-                  </div>
-                ))}
+              <div className="space-y-3 font-sans">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-semibold uppercase tracking-wider text-slate-200 flex items-center gap-2">
+                    <span className="w-1.5 h-4 bg-sky-400 rounded-full" />
+                    <span>{isVi ? '8 biến làm việc (32 bit mỗi biến)' : '8 Working Variables (32-bit each)'}</span>
+                  </span>
+                  <span className="text-xs text-slate-400 font-sans hidden sm:inline">
+                    {isVi ? 'a, e nhận giá trị tính toán mới; b..d và f..h dịch chuyển trạng thái' : 'a, e receive new inputs; b..d and f..h cascade'}
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2.5 sm:gap-3 font-sans">
+                  {[
+                    { label: 'a', val: currentRoundState.a, roleVi: 'Mới (T₁ + T₂)', roleEn: 'New (T₁ + T₂)', isNew: true },
+                    { label: 'b', val: currentRoundState.b, roleVi: 'Dịch từ a', roleEn: 'From a', isNew: false },
+                    { label: 'c', val: currentRoundState.c, roleVi: 'Dịch từ b', roleEn: 'From b', isNew: false },
+                    { label: 'd', val: currentRoundState.d, roleVi: 'Dịch từ c', roleEn: 'From c', isNew: false },
+                    { label: 'e', val: currentRoundState.e, roleVi: 'Mới (d + T₁)', roleEn: 'New (d + T₁)', isNew: true },
+                    { label: 'f', val: currentRoundState.f, roleVi: 'Dịch từ e', roleEn: 'From e', isNew: false },
+                    { label: 'g', val: currentRoundState.g, roleVi: 'Dịch từ f', roleEn: 'From f', isNew: false },
+                    { label: 'h', val: currentRoundState.h, roleVi: 'Dịch từ g', roleEn: 'From g', isNew: false },
+                  ].map((item) => (
+                    <div
+                      key={item.label}
+                      className={`p-3 sm:p-3.5 rounded-xl border text-center transition-all bg-slate-900/90 ${
+                        item.isNew
+                          ? 'border-sky-500/40 shadow-xs ring-1 ring-sky-500/20'
+                          : 'border-slate-800'
+                      }`}
+                    >
+                      {/* Label in clean Sans-serif */}
+                      <div className="flex items-center justify-center gap-1.5 mb-1.5">
+                        <span className="text-xs sm:text-sm font-semibold text-slate-300 font-sans">
+                          {labels.workingVar}
+                        </span>
+                        <span className="font-serif italic font-bold text-sm sm:text-base text-white">
+                          {item.label}
+                        </span>
+                      </div>
+
+                      {/* Semantic role badge */}
+                      <div className="mb-2">
+                        <span
+                          className={`inline-block px-1.5 py-0.5 rounded text-[11px] font-sans font-medium ${
+                            item.isNew
+                              ? 'bg-sky-950/80 text-sky-300 border border-sky-500/30'
+                              : 'bg-slate-950/80 text-slate-400 border border-slate-800'
+                          }`}
+                        >
+                          {isVi ? item.roleVi : item.roleEn}
+                        </span>
+                      </div>
+
+                      {/* Hex value in clean, crisp Monospace */}
+                      <div className="bg-slate-950 rounded-lg py-1.5 px-2 border border-slate-800/80">
+                        <span className="text-xs sm:text-sm font-bold font-mono text-white tracking-wider block select-all">
+                          {uint32ToHex(item.val)}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
 
             {/* Round Intermediate Arithmetic Formulas */}
             {currentRoundState && (
-              <div className="p-4 rounded-lg bg-[#090A0F] border border-[#1C2430] text-xs grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 font-sans">
-                <div>
-                  <span className="text-[#A5AFBF] block mb-0.5">{labels.roundConstant} <span className="font-mono">K[{selectedRound}]</span>:</span>
-                  <span className="text-[#F59E0B] font-bold font-mono">0x{uint32ToHex(currentRoundState.k)}</span>
+              <div className="p-4 sm:p-5 rounded-xl bg-slate-900/90 border border-slate-800 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 font-sans">
+                {/* 1. Round constant K_t */}
+                <div className="bg-slate-950 p-3.5 rounded-lg border border-slate-800/80 space-y-1.5">
+                  <div className="flex items-center justify-between text-xs sm:text-sm text-slate-300 font-sans">
+                    <span className="font-semibold">{labels.roundConstant}</span>
+                    <span className="font-mono text-amber-400 font-bold">K[{selectedRound}]</span>
+                  </div>
+                  <div className="text-xs text-slate-400 font-sans">
+                    <InlineMath math={`K_{${selectedRound}}`} /> (NIST FIPS 180-4)
+                  </div>
+                  <div className="text-sm sm:text-base font-bold font-mono text-amber-300 select-all tracking-wide pt-1 border-t border-slate-800/60">
+                    0x{uint32ToHex(currentRoundState.k)}
+                  </div>
                 </div>
-                <div>
-                  <span className="text-[#A5AFBF] block mb-0.5">{labels.scheduleWord} <span className="font-mono">W[{selectedRound}]</span>:</span>
-                  <span className="text-teach-3 font-bold font-mono">0x{uint32ToHex(currentRoundState.w)}</span>
+
+                {/* 2. Schedule word W_t */}
+                <div className="bg-slate-950 p-3.5 rounded-lg border border-slate-800/80 space-y-1.5">
+                  <div className="flex items-center justify-between text-xs sm:text-sm text-slate-300 font-sans">
+                    <span className="font-semibold">{labels.scheduleWord}</span>
+                    <span className="font-mono text-teal-400 font-bold">W[{selectedRound}]</span>
+                  </div>
+                  <div className="text-xs text-slate-400 font-sans">
+                    <InlineMath math={`W_{${selectedRound}}`} /> ({isVi ? 'Từ thông điệp mở rộng' : 'Expanded word'})
+                  </div>
+                  <div className="text-sm sm:text-base font-bold font-mono text-teal-300 select-all tracking-wide pt-1 border-t border-slate-800/60">
+                    0x{uint32ToHex(currentRoundState.w)}
+                  </div>
                 </div>
-                <div>
-                  <span className="text-[#A5AFBF] block mb-0.5"><InlineMath math="T_1 = h + \Sigma_1 + \text{Ch} + K + W" />:</span>
-                  <span className="text-[#F2F4F7] font-bold font-mono">0x{uint32ToHex(currentRoundState.t1)}</span>
+
+                {/* 3. Intermediate sum T1 */}
+                <div className="bg-slate-950 p-3.5 rounded-lg border border-slate-800/80 space-y-1.5">
+                  <div className="flex items-center justify-between text-xs sm:text-sm text-slate-300 font-sans">
+                    <span className="font-semibold">{isVi ? 'Biến phụ T₁' : 'Temporary Var T₁'}</span>
+                    <span className="font-mono text-sky-400 font-bold">T₁</span>
+                  </div>
+                  <div className="text-xs text-slate-300 font-sans overflow-x-auto no-scrollbar">
+                    <InlineMath math="T_1 = h + \Sigma_1 + \text{Ch} + K + W" />
+                  </div>
+                  <div className="text-sm sm:text-base font-bold font-mono text-sky-300 select-all tracking-wide pt-1 border-t border-slate-800/60">
+                    0x{uint32ToHex(currentRoundState.t1)}
+                  </div>
                 </div>
-                <div>
-                  <span className="text-[#A5AFBF] block mb-0.5"><InlineMath math="T_2 = \Sigma_0 + \text{Maj}" />:</span>
-                  <span className="text-teach-1 font-bold font-mono">0x{uint32ToHex(currentRoundState.t2)}</span>
+
+                {/* 4. Intermediate sum T2 */}
+                <div className="bg-slate-950 p-3.5 rounded-lg border border-slate-800/80 space-y-1.5">
+                  <div className="flex items-center justify-between text-xs sm:text-sm text-slate-300 font-sans">
+                    <span className="font-semibold">{isVi ? 'Biến phụ T₂' : 'Temporary Var T₂'}</span>
+                    <span className="font-mono text-indigo-400 font-bold">T₂</span>
+                  </div>
+                  <div className="text-xs text-slate-300 font-sans overflow-x-auto no-scrollbar">
+                    <InlineMath math="T_2 = \Sigma_0 + \text{Maj}" />
+                  </div>
+                  <div className="text-sm sm:text-base font-bold font-mono text-indigo-300 select-all tracking-wide pt-1 border-t border-slate-800/60">
+                    0x{uint32ToHex(currentRoundState.t2)}
+                  </div>
                 </div>
               </div>
             )}
@@ -352,28 +460,28 @@ export const InternalPipelineVisualizer: React.FC = () => {
 
         {/* Stage 4: Final Digest Synthesis */}
         {activeStage === 'output' && (
-          <div className="rounded-xl bg-[#0C0F14] border border-[#1C2430] p-6 sm:p-7 shadow-sm space-y-5 font-sans">
-            <div className="flex items-center justify-between border-b border-[#1C2430] pb-3">
-              <h3 className="font-sans text-base font-bold text-text-primary">
+          <div className="rounded-xl bg-slate-900/90 border border-slate-800 p-6 sm:p-7 shadow-sm space-y-5 font-sans">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              <h3 className="font-sans text-base sm:text-lg font-bold text-white">
                 {strings.pipeline.stage4Title}
               </h3>
-              <span className="text-xs font-mono px-2.5 py-0.5 rounded-md bg-bg-elevated text-text-secondary border border-border-primary">
+              <span className="text-xs sm:text-sm font-sans px-3 py-1 rounded-lg bg-sky-950/60 text-sky-300 border border-sky-500/40 font-semibold">
                 {labels.outputBadge}
               </span>
             </div>
 
-            <div className="text-xs text-[#A5AFBF] leading-relaxed font-sans">
+            <div className="text-sm sm:text-base text-slate-300 leading-relaxed font-sans">
               {labels.stage4IntroPre}<InlineMath math="a \dots h" />{labels.stage4IntroMid}<InlineMath math="2^{32}" />{labels.stage4IntroPost}
-              <div className="mt-2 p-2.5 bg-[#090A0F] rounded-lg border border-[#1C2430] text-teach-1 font-mono text-xs">
+              <div className="mt-3 p-3.5 bg-slate-950 rounded-xl border border-slate-800 text-sky-300 font-sans overflow-x-auto">
                 <InlineMath math="H_0 = H_0 + a, \quad H_1 = H_1 + b, \quad \dots, \quad H_7 = H_7 + h \pmod{2^{32}}" />
               </div>
             </div>
 
-            <div className="p-4 rounded-lg bg-[#090A0F] border border-[#1C2430]">
-              <span className="text-[11px] font-sans text-[#A5AFBF] uppercase font-semibold block mb-2">
+            <div className="p-4 sm:p-5 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+              <span className="text-xs sm:text-sm font-sans text-slate-300 uppercase font-semibold tracking-wider block">
                 {labels.synthesizedDigest}
               </span>
-              <div className="font-mono text-base sm:text-xl font-bold text-teach-1 break-all select-all">
+              <div className="font-mono text-base sm:text-xl font-bold text-sky-400 break-all select-all tracking-wider bg-slate-900/80 p-3.5 rounded-lg border border-sky-500/30">
                 {breakdown.finalHashHex}
               </div>
             </div>
@@ -383,4 +491,3 @@ export const InternalPipelineVisualizer: React.FC = () => {
     </section>
   );
 };
-

@@ -521,26 +521,26 @@ export const NetworkBroadcastGraph: React.FC<NetworkBroadcastGraphProps> = ({
             </h3>
 
             {isCompleted && !isPropagating && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-sans bg-success/10 text-success border border-success/30">
-                <CheckCircle2 className="w-3 h-3 text-success" />
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-sans bg-emerald-950/40 text-emerald-300 border border-emerald-500/30">
+                <CheckCircle2 className="w-3 h-3 text-emerald-400" />
                 {language === 'vi'
-                  ? `Toàn mạng đã đồng bộ (${validatedNodesCount}/${onlineNodes.length})`
-                  : `Network synchronized (${validatedNodesCount}/${onlineNodes.length})`}
+                  ? `Đã thẩm định độc lập (${validatedNodesCount}/${onlineNodes.length} nút - Chờ đồng thuận chuỗi)`
+                  : `Locally Validated (${validatedNodesCount}/${onlineNodes.length} nodes - Pending chain consensus)`}
               </span>
             )}
 
             {forkActive && (
               <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-sans bg-amber-950/40 text-amber-300 border border-amber-500/30">
                 <GitFork className="w-3 h-3 text-amber-400" />
-                {language === 'vi' ? 'Phân nhánh tạm thời' : 'Fork state'}
+                {language === 'vi' ? 'Phân nhánh cạnh tranh' : 'Competing fork'}
               </span>
             )}
           </div>
 
           <p className="text-xs sm:text-sm text-zinc-400 mt-0.5">
             {language === 'vi'
-              ? 'Khối được phát tán qua mạng P2P Gossip. Mỗi nút nhận khối độc lập kiểm tra mã băm của khối trước, Cây Merkle và PoW.'
-              : 'Blocks propagate via P2P Gossip protocol. Each peer independently verifies Previous Hash, Merkle Root, and PoW.'}
+              ? 'Khối ứng viên do thợ đào đề xuất được phát tán qua mạng P2P Gossip. Mỗi nút đầy đủ (Validator) độc lập thẩm định 4 điều kiện mật mã trước khi chấp nhận vào đỉnh chuỗi cục bộ (Active Tip). Khối chỉ đạt Finality sau khi mạng hội tụ theo Nakamoto Consensus.'
+              : 'Candidate block proposed by the miner propagates via P2P Gossip. Each validator node independently validates 4 cryptographic checks before accepting into its local active tip. Finality is only achieved after Nakamoto chain convergence.'}
           </p>
         </div>
 
@@ -552,25 +552,25 @@ export const NetworkBroadcastGraph: React.FC<NetworkBroadcastGraphProps> = ({
               id="btn-start-p2p-propagation"
               onClick={handleStartPropagation}
               disabled={isPropagating}
- className="px-4 py-2 rounded-lg bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-medium text-xs flex items-center gap-1.5 transition-all active:scale-95 disabled:opacity-60 cursor-pointer shadow-sm"
+              className="px-4 py-2 rounded-lg bg-text-primary hover:bg-white/90 text-bg-primary font-semibold font-medium text-xs flex items-center gap-1.5 transition-all active:scale-95 disabled:opacity-60 cursor-pointer shadow-sm"
             >
               {isPropagating ? (
                 <>
                   <Activity className="w-3.5 h-3.5 animate-spin" />
-                  <span>{language === 'vi' ? 'Đang phát tán...' : 'Broadcasting...'}</span>
+                  <span>{language === 'vi' ? 'Đang phát tán qua Gossip...' : 'Gossiping Block...'}</span>
                 </>
               ) : (
                 <>
                   <Radio className="w-3.5 h-3.5" />
-                  <span>{language === 'vi' ? 'Phát tán khối' : 'Broadcast Block'}</span>
+                  <span>{language === 'vi' ? 'Phát tán khối qua P2P' : 'Broadcast Block'}</span>
                 </>
               )}
             </button>
           ) : (
             <div className="flex items-center gap-2">
-              <div className="px-3.5 py-2 rounded-lg bg-success/10 border border-success/30 text-success text-xs flex items-center gap-1.5 font-medium">
-                <CheckCircle2 className="w-3.5 h-3.5 text-success" />
-                <span>{language === 'vi' ? '✓ Mạng đã đồng bộ' : '✓ Network Synchronized'}</span>
+              <div className="px-3.5 py-2 rounded-lg bg-emerald-950/40 border border-emerald-500/30 text-emerald-300 text-xs flex items-center gap-1.5 font-medium">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                <span>{language === 'vi' ? '✓ Đã thẩm định độc lập' : '✓ Independently Validated'}</span>
               </div>
               <button
                 type="button"
@@ -680,7 +680,7 @@ export const NetworkBroadcastGraph: React.FC<NetworkBroadcastGraphProps> = ({
 
           <span className="text-zinc-600">→</span>
 
-          {/* Step 5: Đồng bộ */}
+          {/* Step 5: Đỉnh chuỗi cục bộ (Active Tip) */}
           <div
             className={`flex items-center gap-1.5 font-medium transition-colors ${
               isCompleted || timelineStage === 'sync' ? 'text-text-primary font-semibold' : 'text-zinc-500'
@@ -695,7 +695,7 @@ export const NetworkBroadcastGraph: React.FC<NetworkBroadcastGraphProps> = ({
             >
               {isCompleted ? '✓' : '5'}
             </span>
-            <span>{language === 'vi' ? '5. Đồng bộ' : '5. Consensus'}</span>
+            <span>{language === 'vi' ? '5. Đỉnh chuỗi cục bộ' : '5. Active Tip'}</span>
           </div>
         </div>
 

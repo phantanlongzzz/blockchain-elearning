@@ -1,5 +1,25 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { ShieldCheck, FlaskConical, RotateCcw, ArrowRight, ArrowLeft } from 'lucide-react';
+import {
+  ShieldCheck,
+  FlaskConical,
+  RotateCcw,
+  ArrowRight,
+  ArrowLeft,
+  ChevronDown,
+  ChevronUp,
+  AlertTriangle,
+  Layers,
+  Radio,
+  Pickaxe,
+  GitFork,
+  BookOpen,
+  Terminal,
+  Activity,
+  CheckCircle2,
+  Sparkles,
+  Compass,
+  Zap,
+} from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import {
   E2ETransaction,
@@ -33,14 +53,132 @@ import { ExperimentParametersModal } from './ExperimentParametersModal';
 import { AuditSelfTestModal } from './AuditSelfTestModal';
 
 // Laboratory Upgraded Modules
-import { NetworkHealthHUD } from './NetworkHealthHUD';
-import { SimulationTimeControls } from './SimulationTimeControls';
 import { FaultInjectionPanel } from './FaultInjectionPanel';
 import { NodeInspectorModal } from './NodeInspectorModal';
 import { EducationalInsightBanner } from './EducationalInsightBanner';
 import { LabRecorderTimeline } from './LabRecorderTimeline';
 import { useNextStepGuidance } from '../../guidance/useNextStepGuidance';
-import { StepCompletionFeedback } from '../common/StepCompletionFeedback';
+
+export type ConsensusPhaseId = 'proposal' | 'validation' | 'consensus';
+
+export interface ConsensusPhaseInfo {
+  id: ConsensusPhaseId;
+  number: string;
+  nameVi: string;
+  nameEn: string;
+  descVi: string;
+  descEn: string;
+  steps: number[];
+}
+
+export const CONSENSUS_PHASES: ConsensusPhaseInfo[] = [
+  {
+    id: 'proposal',
+    number: 'PHASE 1',
+    nameVi: 'Đề xuất khối',
+    nameEn: 'Block Proposal',
+    descVi: 'Mempool → Đóng gói Header → Đua tính toán Proof-of-Work',
+    descEn: 'Mempool → Header Packing → Proof-of-Work Mining Race',
+    steps: [1, 2, 3, 4],
+  },
+  {
+    id: 'validation',
+    number: 'PHASE 2',
+    nameVi: 'Lan truyền & Thẩm định',
+    nameEn: 'P2P Gossip & Validation',
+    descVi: 'Mạng P2P Gossip → Từng nút độc lập kiểm tra 4 điều kiện mật mã',
+    descEn: 'P2P Gossip Relay → Nodes independently verify 4 crypto checks',
+    steps: [5],
+  },
+  {
+    id: 'consensus',
+    number: 'PHASE 3',
+    nameVi: 'Đồng thuận Nakamoto & Sổ cái',
+    nameEn: 'Nakamoto Consensus & Ledger',
+    descVi: 'Phân nhánh chuỗi (Fork) → Quy tắc chuỗi nặng nhất → Sổ cái bất biến',
+    descEn: 'Fork Resolution → Heaviest Chain Rule → Canonical Ledger',
+    steps: [6, 7],
+  },
+];
+
+export type DrawerTab = 'none' | 'faults' | 'logs' | 'insights';
+
+function getStepSubtitle(step: number, lang: 'vi' | 'en'): string {
+  switch (step) {
+    case 1:
+      return lang === 'vi' ? 'Tạo giao dịch mẫu và tính toán mã băm SHA-256' : 'Create sample transaction and calculate SHA-256 hash';
+    case 2:
+      return lang === 'vi' ? 'Chọn giao dịch có phí ưu tiên cao để đóng gói vào khối' : 'Select high-fee transactions for candidate block';
+    case 3:
+      return lang === 'vi' ? 'Xây dựng cây Merkle và cấu trúc Block Header hoàn chỉnh' : 'Build Merkle tree and pack complete Block Header';
+    case 4:
+      return lang === 'vi' ? 'Đua tính toán song song thay đổi Nonce để thỏa mãn độ khó' : 'Concurrent multi-miner race finding valid Nonce target';
+    case 5:
+      return lang === 'vi' ? 'Lan truyền Gossip qua mạng P2P và từng nút độc lập thẩm định' : 'Gossip relay through P2P network with independent node verification';
+    case 6:
+      return lang === 'vi' ? 'Mô phỏng phân nhánh chuỗi cạnh tranh và áp dụng chuỗi nặng nhất' : 'Simulate competing chain fork and apply Heaviest Chain rule';
+    case 7:
+      return lang === 'vi' ? 'Khối đạt tính bất biến và được ghi vĩnh viễn vào sổ cái phân tán' : 'Block achieves finality and is permanently recorded in distributed ledger';
+    default:
+      return '';
+  }
+}
+
+function getContextualMetrics(
+  step: number,
+  lang: 'vi' | 'en',
+  mempool: E2ETransaction[],
+  selectedTxIds: string[],
+  nextBlockHeight: number,
+  selectedTxs: E2ETransaction[],
+  previousHash: string,
+  config: { difficulty: number; minerCount: number; networkLatencyMs: number },
+  miners: E2EMiner[],
+  totalMiningAttempts: number,
+  nodes: E2ENetworkNode[],
+  cumulativeWorkA: number,
+  cumulativeWorkB: number,
+  blockchain: E2EBlock[]
+): string {
+  switch (step) {
+    case 1:
+      return lang === 'vi'
+        ? `Mempool: ${mempool.length} giao dịch chờ · Ví nguồn sẵn sàng`
+        : `Mempool: ${mempool.length} pending txs · Sender wallet ready`;
+    case 2: {
+      const selectedBTC = mempool
+        .filter((t) => selectedTxIds.includes(t.id))
+        .reduce((a, c) => a + c.amount, 0);
+      return lang === 'vi'
+        ? `${mempool.length} giao dịch · ${selectedTxIds.length} đã chọn · ${selectedBTC.toFixed(3)} BTC`
+        : `${mempool.length} txs · ${selectedTxIds.length} selected · ${selectedBTC.toFixed(3)} BTC`;
+    }
+    case 3:
+      return lang === 'vi'
+        ? `Khối #${nextBlockHeight} · ${selectedTxs.length} giao dịch · PrevHash: ${previousHash.substring(0, 8)}...`
+        : `Block #${nextBlockHeight} · ${selectedTxs.length} txs · PrevHash: ${previousHash.substring(0, 8)}...`;
+    case 4:
+      return lang === 'vi'
+        ? `Độ khó: ${config.difficulty} zeroes · ${config.minerCount} thợ đào · ${totalMiningAttempts.toLocaleString()} băm`
+        : `Difficulty: ${config.difficulty} zeroes · ${config.minerCount} miners · ${totalMiningAttempts.toLocaleString()} hashes`;
+    case 5: {
+      const verifiedCount = nodes.filter((n) => n.validationState.isAccepted !== null).length;
+      return lang === 'vi'
+        ? `${verifiedCount}/${nodes.length} nút đã thẩm định 4 điều kiện · Độ trễ: ${config.networkLatencyMs}ms`
+        : `${verifiedCount}/${nodes.length} nodes verified 4 rules · ${config.networkLatencyMs}ms latency`;
+    }
+    case 6:
+      return lang === 'vi'
+        ? `Chuỗi A: ${cumulativeWorkA} work · Chuỗi B: ${cumulativeWorkB} work · Quy tắc: Chuỗi nặng nhất`
+        : `Chain A: ${cumulativeWorkA} work · Chain B: ${cumulativeWorkB} work · Rule: Heaviest Chain`;
+    case 7:
+      return lang === 'vi'
+        ? `${blockchain.length} khối chính thức · Đỉnh chuỗi: #${blockchain[blockchain.length - 1]?.height ?? 0} · 100% toàn vẹn`
+        : `${blockchain.length} canonical blocks · Tip: #${blockchain[blockchain.length - 1]?.height ?? 0} · 100% intact`;
+    default:
+      return '';
+  }
+}
 
 function formatTimestamp(): string {
   const now = new Date();
@@ -255,21 +393,20 @@ const LAB_STEPS = [
   { step: 2, labelVi: '02 Mempool', labelEn: '02 Mempool', nameVi: 'Bể giao dịch chờ', nameEn: 'Mempool' },
   { step: 3, labelVi: '03 Khối', labelEn: '03 Block', nameVi: 'Khối ứng viên', nameEn: 'Candidate Block' },
   { step: 4, labelVi: '04 Khai thác', labelEn: '04 Mining', nameVi: 'Đua khai thác', nameEn: 'Mining Race' },
-  { step: 5, labelVi: '05 Lan truyền', labelEn: '05 P2P', nameVi: 'Mạng P2P', nameEn: 'P2P Network' },
+  { step: 5, labelVi: '05 Lan truyền', labelEn: '05 P2P', nameVi: 'Mạng P2P Gossip', nameEn: 'P2P Gossip' },
   { step: 6, labelVi: '06 Phân nhánh', labelEn: '06 Fork', nameVi: 'Phân nhánh chuỗi', nameEn: 'Fork Resolution' },
   { step: 7, labelVi: '07 Sổ cái', labelEn: '07 Ledger', nameVi: 'Sổ cái chính thức', nameEn: 'Canonical Ledger' },
-  { step: 8, labelVi: '08 Nhật ký', labelEn: '08 Events', nameVi: 'Nhật ký sự kiện', nameEn: 'Event Log' },
 ];
 
 export const EndToEndConsensusLab: React.FC = () => {
   const { language } = useLanguage();
 
-  // Active Guided Step (1 - 8)
+  // Active Guided Step (1 - 7)
   const [guidedStep, setGuidedStep] = useState<number>(1);
   const [simulationMode, setSimulationMode] = useState<SimulationMode>('guided');
   const [simulationSpeed, setSimulationSpeed] = useState<SimulationSpeed>(1);
-  const [isSimPlaying, setIsSimPlaying] = useState<boolean>(false);
   const [isTimelinePaused, setIsTimelinePaused] = useState<boolean>(false);
+  const [logViewMode, setLogViewMode] = useState<'timeline' | 'events'>('timeline');
 
   // Global Next-Step Guidance Hook
   const {
@@ -293,6 +430,23 @@ export const EndToEndConsensusLab: React.FC = () => {
 
   // Fault Injection State
   const [tamperedBlockHeight, setTamperedBlockHeight] = useState<number | null>(null);
+
+  // Drawer & Laboratory Tray State (Collapsed by default, opens contextual lab panels)
+  const [activeDrawerTab, setActiveDrawerTab] = useState<DrawerTab>('none');
+
+  // Auto-open faults tab when a tampering event is injected so causality is clear
+  useEffect(() => {
+    if (tamperedBlockHeight !== null) {
+      setActiveDrawerTab('faults');
+    }
+  }, [tamperedBlockHeight]);
+
+  // Current Active Phase
+  const currentPhase = useMemo(() => {
+    if (guidedStep <= 4) return CONSENSUS_PHASES[0];
+    if (guidedStep === 5) return CONSENSUS_PHASES[1];
+    return CONSENSUS_PHASES[2];
+  }, [guidedStep]);
 
   // Configuration
   const [config, setConfig] = useState<E2EExperimentConfig>({
@@ -548,7 +702,6 @@ export const EndToEndConsensusLab: React.FC = () => {
     stopAllMiningWorkers();
     if (broadcastIntervalRef.current) clearInterval(broadcastIntervalRef.current);
     setIsMining(false);
-    setIsSimPlaying(false);
     setMiningElapsedTimeSec(0);
     setWinnerBlock(null);
     setBroadcastActive(false);
@@ -1115,6 +1268,44 @@ export const EndToEndConsensusLab: React.FC = () => {
     });
   };
 
+  // Finalize Single Candidate Block into Canonical (When no fork exists)
+  const handleFinalizeCandidateBlock = () => {
+    let finalizedMinerName = 'Alice Node';
+    let finalizedHeight = nextBlockHeight;
+    let rewardAmount = config.baseRewardBTC;
+
+    setBlockchain((prev) =>
+      prev.map((b) => {
+        if (b.status === 'candidate') {
+          finalizedMinerName = b.minerName;
+          finalizedHeight = b.height;
+          rewardAmount = b.rewardBTC;
+          return { ...b, status: 'canonical' as const };
+        }
+        return b;
+      })
+    );
+
+    addLog(
+      'consensus',
+      `🏆 ĐỒNG THUẬN NAKAMOTO: Khối #${finalizedHeight} đã được toàn mạng chấp nhận làm Chuỗi chính thức (Canonical)!`,
+      'Không có nhánh cạnh tranh hoặc khối đã vượt qua kiểm tra chuỗi nặng nhất. Khối chính thức đạt Finality.'
+    );
+
+    addLog(
+      'reward',
+      `💰 Quyết toán phần thưởng: ${finalizedMinerName} nhận +${rewardAmount.toFixed(4)} BTC (+${config.baseRewardBTC} coinbase + phí giao dịch)`
+    );
+
+    triggerStepCompleted({
+      completedSummaryVi: `Đã hoàn tất đồng thuận Nakamoto cho Khối #${finalizedHeight}`,
+      completedSummaryEn: `Completed Nakamoto consensus for Block #${finalizedHeight}`,
+      nextActionVi: 'Xem sổ cái chính thức →',
+      nextActionEn: 'Inspect Canonical Ledger →',
+      nextStepId: 'step-7',
+    });
+  };
+
   // Failure Injection Handlers
   const handleTamperBlockData = (height: number) => {
     setTamperedBlockHeight(height);
@@ -1229,7 +1420,7 @@ export const EndToEndConsensusLab: React.FC = () => {
     addLog('consensus', '✅ Đã khôi phục tính toàn vẹn 100% của chuỗi khối.');
   };
 
-  // Keyboard Shortcuts (Space for Play/Pause, R for Reset, N for Next Step, 1..8 for Steps)
+  // Keyboard Shortcuts (Space for Play/Pause, R for Reset, N for Next Step, 1..7 for Steps)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Don't trigger if typing in an input
@@ -1249,8 +1440,8 @@ export const EndToEndConsensusLab: React.FC = () => {
         handleResetAll();
       } else if (e.key === 'n' || e.key === 'N') {
         e.preventDefault();
-        setGuidedStep((prev) => Math.min(8, prev + 1));
-      } else if (e.key >= '1' && e.key <= '8') {
+        setGuidedStep((prev) => Math.min(7, prev + 1));
+      } else if (e.key >= '1' && e.key <= '7') {
         const stepNum = parseInt(e.key, 10);
         setGuidedStep(stepNum);
       }
@@ -1261,46 +1452,101 @@ export const EndToEndConsensusLab: React.FC = () => {
   }, [isMining]);
 
   return (
-    <section id="end-to-end-consensus" className="py-6 sm:py-10 bg-[#090d16] border-t border-zinc-800 text-zinc-100 font-sans">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-5">
-        {/* Module Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-zinc-800">
+    <section id="end-to-end-consensus" className="py-5 sm:py-8 bg-[#090d16] border-t border-zinc-800 text-zinc-100 font-sans">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-3.5">
+        {/* 1. TOP HEADER & COMPACT CONTROLS */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2.5 border-b border-zinc-800/80">
           <div>
             <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-sm" />
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.7)]" />
               <h2 className="text-xl sm:text-2xl font-bold text-zinc-100 font-sans tracking-tight">
-                {language === 'vi' ? 'Đồng thuận Blockchain' : 'Blockchain Consensus'}
+                {language === 'vi' ? 'Mô phỏng → Đồng thuận Blockchain' : 'Simulation → Blockchain Consensus'}
               </h2>
             </div>
+            <p className="text-xs text-zinc-400 mt-0.5">
+              {language === 'vi'
+                ? 'Giao thức Nakamoto: Từ giao dịch, khai thác PoW đến thẩm định P2P và chuỗi nặng nhất'
+                : 'Nakamoto Protocol: Transactions, PoW mining, P2P validation, and heaviest chain consensus'}
+            </p>
           </div>
 
-          {/* Top Utility Actions */}
-          <div className="flex items-center gap-2">
+          {/* Compact Top Utilities (Muted, low visual weight) */}
+          <div className="flex items-center gap-2 flex-wrap self-start sm:self-auto">
+            {/* Simulation Speed (0.5x, 1x, 2x, 4x) - ONLY on Step 4 (Mining) and Step 5 (P2P Broadcast) */}
+            {(guidedStep === 4 || guidedStep === 5) && (
+              <div className="flex items-center bg-zinc-900/90 rounded-lg p-0.5 border border-zinc-800 text-[11px] font-mono">
+                {([0.5, 1, 2, 4] as SimulationSpeed[]).map((spd) => (
+                  <button
+                    key={spd}
+                    type="button"
+                    onClick={() => setSimulationSpeed(spd)}
+                    className={`px-1.5 py-0.5 rounded transition-colors cursor-pointer ${
+                      simulationSpeed === spd ? 'bg-zinc-800 text-cyan-300 font-bold' : 'text-zinc-500 hover:text-zinc-300'
+                    }`}
+                    title={`${spd}x speed`}
+                  >
+                    {spd}x
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {/* Simulation Mode Selector: Compact dropdown (Guided default, Free & Debug preserved) */}
+            <div className="relative">
+              <select
+                value={simulationMode}
+                onChange={(e) => setSimulationMode(e.target.value as SimulationMode)}
+                className="bg-zinc-900/90 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 text-xs rounded-lg px-2 py-1 cursor-pointer focus:outline-hidden focus:border-cyan-500 font-medium"
+                aria-label={language === 'vi' ? 'Chế độ mô phỏng' : 'Simulation Mode'}
+              >
+                <option value="guided">{language === 'vi' ? 'Hướng dẫn (Guided)' : 'Guided Mode'}</option>
+                <option value="free">{language === 'vi' ? 'Tự do (Free)' : 'Free Mode'}</option>
+                <option value="debug">{language === 'vi' ? 'Gỡ lỗi (Debug)' : 'Debug Mode'}</option>
+              </select>
+            </div>
+
+            {/* Theory Quick Entry */}
+            <button
+              type="button"
+              onClick={() => setActiveDrawerTab(activeDrawerTab === 'insights' ? 'none' : 'insights')}
+              className={`px-2.5 py-1 rounded-lg text-xs font-medium border transition-colors cursor-pointer flex items-center gap-1.5 ${
+                activeDrawerTab === 'insights'
+                  ? 'bg-amber-950/60 border-amber-600/80 text-amber-300'
+                  : 'bg-zinc-900/90 hover:bg-zinc-800 border-zinc-800 text-zinc-400 hover:text-zinc-200'
+              }`}
+            >
+              <BookOpen className="w-3.5 h-3.5 text-amber-400" />
+              <span>{language === 'vi' ? 'Lý thuyết' : 'Theory'}</span>
+            </button>
+
+            {/* Audit Modal */}
             <button
               type="button"
               id="btn-open-audit-modal"
               onClick={() => setIsAuditModalOpen(true)}
-              className="px-3 py-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 hover:text-zinc-100 text-xs font-medium transition-colors flex items-center gap-1.5 cursor-pointer"
+              className="p-1.5 rounded-lg bg-zinc-900/90 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 hover:text-zinc-200 transition-colors cursor-pointer"
+              title={language === 'vi' ? 'Kiểm tra hệ thống' : 'Consensus Audit'}
             >
-              <ShieldCheck className="w-3.5 h-3.5 text-success" />
-              <span>{language === 'vi' ? 'Kiểm tra hệ thống' : 'Consensus Audit'}</span>
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
             </button>
 
+            {/* Config Modal */}
             <button
               type="button"
               id="btn-open-experiment-config"
               onClick={() => setIsConfigModalOpen(true)}
-              className="p-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 hover:text-zinc-200 transition-colors cursor-pointer"
+              className="p-1.5 rounded-lg bg-zinc-900/90 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 hover:text-zinc-200 transition-colors cursor-pointer"
               title={language === 'vi' ? 'Cấu hình tham số' : 'Simulation Parameters'}
             >
               <FlaskConical className="w-3.5 h-3.5" />
             </button>
 
+            {/* Reset Lab */}
             <button
               type="button"
               id="btn-e2e-reset-lab"
               onClick={handleResetAll}
-              className="p-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 hover:text-zinc-200 transition-colors cursor-pointer"
+              className="p-1.5 rounded-lg bg-zinc-900/90 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 hover:text-zinc-200 transition-colors cursor-pointer"
               title={language === 'vi' ? 'Đặt lại phòng lab' : 'Reset Lab'}
             >
               <RotateCcw className="w-3.5 h-3.5" />
@@ -1308,143 +1554,176 @@ export const EndToEndConsensusLab: React.FC = () => {
           </div>
         </div>
 
-        {/* Educational Insight Banner Toggle */}
-        <div className="flex justify-end">
-          <button
-            type="button"
-            onClick={() => setShowInsights(!showInsights)}
-            aria-expanded={showInsights}
-            aria-controls="educational-insight-banner"
-            className="px-3 py-1.5 rounded-lg bg-zinc-900/50 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 hover:text-zinc-200 text-xs font-mono transition-colors flex items-center gap-1.5 cursor-pointer"
-          >
-            {showInsights
-              ? (language === 'vi' ? 'Ẩn Lý thuyết' : 'Hide Educational Insights')
-              : (language === 'vi' ? 'Hiển thị Lý thuyết' : 'Show Educational Insights')
-            }
-          </button>
+        {/* 2. UNIFIED COMPACT NAVIGATION: COMBINED PHASE + STEP + STEPPER + CONTEXTUAL METRIC */}
+        <div className="bg-[#0b0f19] border border-zinc-800/80 rounded-xl px-3 py-2 flex flex-col md:flex-row md:items-center justify-between gap-2.5 text-xs">
+          {/* Left: Phase (most prominent) + Step (2nd prominent) + Subtitle */}
+          <div className="flex items-center gap-2 flex-wrap min-w-0">
+            {/* Current Phase Badge (Most prominent) */}
+            <button
+              type="button"
+              onClick={() => {
+                const targetStep = currentPhase.steps[0];
+                setGuidedStep(targetStep);
+                startNextStep(`step-${targetStep}`);
+              }}
+              className={`px-2.5 py-0.5 rounded-md text-[11px] font-mono font-bold uppercase tracking-wider shrink-0 transition-all cursor-pointer flex items-center gap-1.5 ${
+                currentPhase.id === 'proposal'
+                  ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-xs'
+                  : currentPhase.id === 'validation'
+                  ? 'bg-purple-500/20 text-purple-300 border border-purple-500/40 shadow-xs'
+                  : 'bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-xs'
+              }`}
+              title={language === 'vi' ? 'Bấm để về đầu Pha này' : 'Click to jump to Phase start'}
+            >
+              <span
+                className={`w-1.5 h-1.5 rounded-full ${
+                  currentPhase.id === 'proposal'
+                    ? 'bg-cyan-400 animate-pulse'
+                    : currentPhase.id === 'validation'
+                    ? 'bg-purple-400 animate-pulse'
+                    : 'bg-amber-400 animate-pulse'
+                }`}
+              />
+              <span>{language === 'vi' ? currentPhase.nameVi : currentPhase.nameEn}</span>
+            </button>
+
+            <span className="text-zinc-600 select-none hidden sm:inline">·</span>
+
+            {/* Current Step (2nd most prominent) */}
+            <div className="flex items-center gap-1.5 min-w-0">
+              <span className="text-zinc-400 font-mono text-[11px] shrink-0">
+                {language === 'vi' ? `Bước ${guidedStep}/7:` : `Step ${guidedStep}/7:`}
+              </span>
+              <span className="text-zinc-100 font-semibold text-sm truncate">
+                {language === 'vi' ? LAB_STEPS[guidedStep - 1]?.nameVi : LAB_STEPS[guidedStep - 1]?.nameEn}
+              </span>
+              <span className="text-zinc-400 text-xs hidden xl:inline truncate">
+                — {getStepSubtitle(guidedStep, language)}
+              </span>
+            </div>
+          </div>
+
+          {/* Right: Stepper (Prev, Minimal Steps, Next) + Contextual Metric */}
+          <div className="flex items-center gap-2.5 shrink-0 self-start md:self-auto flex-wrap sm:flex-nowrap">
+            {/* Stepper with Previous/Next and minimal step indicators */}
+            <div className="flex items-center gap-1 bg-zinc-900/90 px-1.5 py-0.5 rounded-lg border border-zinc-800/80 font-mono text-[11px]">
+              <button
+                type="button"
+                disabled={guidedStep <= 1}
+                onClick={() => {
+                  const prev = Math.max(1, guidedStep - 1);
+                  setGuidedStep(prev);
+                  startNextStep(`step-${prev}`);
+                }}
+                className="w-5 h-5 rounded flex items-center justify-center text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 disabled:opacity-25 disabled:cursor-not-allowed cursor-pointer"
+                title={language === 'vi' ? 'Bước trước (Phím 1-7)' : 'Previous Step (Keys 1-7)'}
+                aria-label="Previous Step"
+              >
+                ‹
+              </button>
+
+              {LAB_STEPS.map((s) => {
+                const isActive = guidedStep === s.step;
+                const isCompleted = guidedStep > s.step;
+                const isTarget = isReadyForNext && nextActionTargetId === `step-${s.step}`;
+
+                return (
+                  <button
+                    key={s.step}
+                    type="button"
+                    onClick={() => {
+                      setGuidedStep(s.step);
+                      startNextStep(`step-${s.step}`);
+                    }}
+                    className={`w-6 h-5 rounded flex items-center justify-center transition-all cursor-pointer ${
+                      isActive
+                        ? 'bg-cyan-500 text-zinc-950 font-bold shadow-xs'
+                        : isTarget
+                        ? 'guidance-amber-pulse bg-amber-500/20 text-amber-300 border border-amber-400 font-semibold'
+                        : isCompleted
+                        ? 'text-emerald-400/90 hover:bg-zinc-800 hover:text-emerald-300 text-[10px]'
+                        : 'text-zinc-600 hover:text-zinc-400 hover:bg-zinc-800/60 text-[10px]'
+                    }`}
+                    title={`${s.step}. ${language === 'vi' ? s.nameVi : s.nameEn}`}
+                    aria-label={`Step ${s.step}`}
+                  >
+                    {isCompleted && !isActive ? '✓' : s.step}
+                  </button>
+                );
+              })}
+
+              <button
+                type="button"
+                disabled={guidedStep >= 7}
+                onClick={() => {
+                  const next = Math.min(7, guidedStep + 1);
+                  setGuidedStep(next);
+                  startNextStep(`step-${next}`);
+                }}
+                className="w-5 h-5 rounded flex items-center justify-center text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 disabled:opacity-25 disabled:cursor-not-allowed cursor-pointer"
+                title={language === 'vi' ? 'Bước kế tiếp (Phím N)' : 'Next Step (Key N)'}
+                aria-label="Next Step"
+              >
+                ›
+              </button>
+            </div>
+
+            {/* Contextual Metric (Only step-relevant metric) */}
+            <div className="font-mono text-zinc-400 text-[11px] bg-zinc-900/60 px-2.5 py-1 rounded-md border border-zinc-800/60 flex items-center gap-1.5 whitespace-nowrap">
+              <Activity className="w-3 h-3 text-cyan-400 shrink-0" />
+              <span>
+                {getContextualMetrics(
+                  guidedStep,
+                  language,
+                  mempool,
+                  selectedTxIds,
+                  nextBlockHeight,
+                  selectedTxs,
+                  previousHash,
+                  config,
+                  miners,
+                  totalMiningAttempts,
+                  nodes,
+                  cumulativeWorkA,
+                  cumulativeWorkB,
+                  blockchain
+                )}
+              </span>
+            </div>
+          </div>
         </div>
 
-        {showInsights && (
-          <div id="educational-insight-banner" className="animate-in slide-in-from-top-2">
-            <EducationalInsightBanner
-              currentStep={guidedStep}
-              language={language}
-            />
+        {/* 4. COMPACT FAULT WARNING STATE (Only rendered if tampering occurred, doesn't push workspace down) */}
+        {tamperedBlockHeight !== null && (
+          <div className="flex items-center justify-between px-3 py-1.5 rounded-lg bg-rose-950/60 border border-rose-600/70 text-xs text-rose-300 font-mono">
+            <div className="flex items-center gap-2">
+              <AlertTriangle className="w-4 h-4 text-rose-400 animate-pulse flex-shrink-0" />
+              <span>
+                {language === 'vi'
+                  ? `CẢNH BÁO TIÊM LỖI: Dữ liệu Khối #${tamperedBlockHeight} đã bị thay đổi! Mạng P2P sẽ phát hiện sai lệch khi thẩm định.`
+                  : `FAULT ALERT: Block #${tamperedBlockHeight} tampered! P2P validators will reject this upon validation.`}
+              </span>
+            </div>
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <button
+                type="button"
+                onClick={() => setActiveDrawerTab('faults')}
+                className="text-xs text-rose-200 underline hover:text-white cursor-pointer"
+              >
+                {language === 'vi' ? 'Xem tác động' : 'Inspect'}
+              </button>
+              <button
+                type="button"
+                onClick={handleResetFaults}
+                className="px-2 py-0.5 rounded bg-rose-800 hover:bg-rose-700 text-zinc-100 text-[11px] cursor-pointer"
+              >
+                {language === 'vi' ? 'Khôi phục' : 'Revert'}
+              </button>
+            </div>
           </div>
         )}
 
-        {/* Network Health HUD & Chain Health Ribbon */}
-        <NetworkHealthHUD
-          nodes={nodes}
-          blockchain={blockchain}
-          forkActive={forkActive}
-          tamperedBlockHeight={tamperedBlockHeight}
-          latencyMs={config.networkLatencyMs}
-          isMining={isMining}
-          language={language}
-        />
-
-        {/* Global Simulation Time Controls (Play/Pause, Step, Reset, Speed, Mode) */}
-        <SimulationTimeControls
-          isPlaying={isMining}
-          onTogglePlayPause={() => {
-            if (isMining) {
-              handleStopMining();
-            } else {
-              handleStartMining();
-            }
-          }}
-          onStepForward={() => {
-            setGuidedStep((prev) => Math.min(8, prev + 1));
-          }}
-          onReset={handleResetAll}
-          speed={simulationSpeed}
-          onChangeSpeed={setSimulationSpeed}
-          mode={simulationMode}
-          onChangeMode={setSimulationMode}
-          language={language}
-        />
-
-        {/* Compact Stepper (Visible in Guided & Free Modes) */}
-        <div className="grid grid-cols-4 md:grid-cols-8 gap-1.5">
-          {LAB_STEPS.map((s) => {
-            const isActive = guidedStep === s.step;
-            const isCompleted = guidedStep > s.step;
-            const isNextTarget = isReadyForNext && nextActionTargetId === `step-${s.step}`;
-
-            let stepButtonClasses = 'bg-[#0c101c]/50 border-zinc-800/60 text-zinc-500 hover:text-zinc-300 hover:border-zinc-700 rounded-xl p-2.5';
-            if (isActive) {
-              stepButtonClasses = 'bg-cyan-500/15 border border-cyan-400/50 text-cyan-300 rounded-xl p-2.5 font-semibold';
-            } else if (isNextTarget) {
-              stepButtonClasses = 'guidance-amber-pulse bg-amber-950/40 border-amber-400 text-amber-200 ring-1 ring-amber-400/80 font-medium rounded-xl p-2.5';
-            } else if (isCompleted) {
-              stepButtonClasses = 'bg-[#0c101c] border-zinc-800 text-zinc-300 hover:text-cyan-300 hover:border-cyan-500/40 rounded-xl p-2.5';
-            }
-
-            return (
-              <button
-                key={s.step}
-                type="button"
-                onClick={() => {
-                  setGuidedStep(s.step);
-                  startNextStep(`step-${s.step}`);
-                }}
-                className={`border text-left transition-all cursor-pointer text-xs relative ${stepButtonClasses}`}
-              >
-                {isNextTarget && (
-                  <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-amber-400" />
-                )}
-                <div className="text-[11px] font-mono text-zinc-400 flex items-center justify-between">
-                  <span>{language === 'vi' ? s.labelVi : s.labelEn}</span>
-                  {isNextTarget && <span className="text-amber-400 text-[10px] font-bold">✦ Tiếp</span>}
-                </div>
-                <div className="text-xs truncate text-zinc-200 mt-0.5 font-medium">
-                  {language === 'vi' ? s.nameVi : s.nameEn}
-                </div>
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Global Next-Step Feedback Banner when an action was completed */}
-        {isReadyForNext && lastCompletedActionVi && (
-          <StepCompletionFeedback
-            completedTextVi={lastCompletedActionVi}
-            completedTextEn={lastCompletedActionEn || lastCompletedActionVi}
-            nextActionTextVi={nextRecommendedActionVi || undefined}
-            nextActionTextEn={nextRecommendedActionEn || undefined}
-            onProceedNext={() => {
-              if (nextActionTargetId) {
-                const targetNum = parseInt(nextActionTargetId.replace('step-', ''), 10);
-                if (!isNaN(targetNum)) {
-                  setGuidedStep(targetNum);
-                  startNextStep(nextActionTargetId);
-                  return;
-                }
-              }
-              setGuidedStep((prev) => Math.min(8, prev + 1));
-              startNextStep();
-            }}
-          />
-        )}
-
-        {/* Failure Injection System & Causality Graph (Rendered in Sandbox & Debug mode, or when faults are active) */}
-        {(simulationMode === 'debug' || simulationMode === 'free' || tamperedBlockHeight !== null) && (
-          <FaultInjectionPanel
-            blockchain={blockchain}
-            nodes={nodes}
-            onTamperBlockData={handleTamperBlockData}
-            onCorruptHash={handleCorruptHash}
-            onCorruptMerkle={handleCorruptMerkle}
-            onCorruptPoW={handleCorruptPoW}
-            onToggleNodeOnline={handleToggleNodeOnline}
-            onResetFaults={handleResetFaults}
-            tamperedBlockHeight={tamperedBlockHeight}
-            language={language}
-          />
-        )}
-
-        {/* Main Stage: Step Visualizer */}
+        {/* 5. PRIMARY WORKSPACE: STEP VISUALIZER */}
         <div className="min-h-[420px]">
           {guidedStep === 1 && (
             <TransactionCreateStep
@@ -1513,31 +1792,32 @@ export const EndToEndConsensusLab: React.FC = () => {
               forkActive={forkActive}
               onPropagationComplete={(finalBlock) => {
                 setConsensusReached(true);
-                const finalizedBlock: E2EBlock = {
+                const validatedCandidateBlock: E2EBlock = {
                   ...finalBlock,
-                  status: 'canonical',
+                  status: 'candidate',
                 };
                 setBlockchain((prev) => {
                   const withoutFutureOrSame = prev.filter(
-                    (b) => b.height < finalizedBlock.height && b.hash !== finalizedBlock.hash
+                    (b) => b.height < validatedCandidateBlock.height && b.hash !== validatedCandidateBlock.hash
                   );
-                  return [...withoutFutureOrSame, finalizedBlock];
+                  return [...withoutFutureOrSame, validatedCandidateBlock];
                 });
                 const confirmedIds = new Set(finalBlock.transactions.map((t) => t.id));
                 setMempool((prev) => prev.filter((t) => !confirmedIds.has(t.id)));
                 setSelectedTxIds((prev) => prev.filter((id) => !confirmedIds.has(id)));
                 addLog(
-                  'reward',
-                  `💰 Quyết toán phần thưởng: ${finalBlock.minerName} nhận +${finalBlock.rewardBTC.toFixed(4)} BTC (+${config.baseRewardBTC} coinbase + phí giao dịch)`
+                  'validation',
+                  `🛡️ THẨM ĐỊNH ĐỘC LẬP: Toàn bộ ${nodes.length} nút P2P đã kiểm tra 4 điều kiện mật mã và lưu Khối #${validatedCandidateBlock.height} vào đỉnh chuỗi cục bộ (Active Tip).`,
+                  'Khối này là ứng viên tiềm năng (Candidate). Nó chỉ đạt Finality và quyết toán phần thưởng sau khi chuỗi hội tụ theo Nakamoto Consensus.'
                 );
 
                 // Global Next-Step Guidance Trigger for Propagation Completion
                 triggerStepCompleted({
-                  completedSummaryVi: `Toàn bộ ${nodes.length} nút mạng P2P đã xác thực và chấp thuận Khối #${finalizedBlock.height} vào sổ cái`,
-                  completedSummaryEn: `All ${nodes.length} P2P network nodes verified and accepted Block #${finalizedBlock.height} into canonical ledger`,
-                  nextActionVi: forkActive ? 'Giải quyết phân nhánh chuỗi →' : 'Khám phá sổ cái chuỗi chính →',
-                  nextActionEn: forkActive ? 'Resolve Fork & Longest Chain →' : 'Explore Canonical Ledger →',
-                  nextStepId: forkActive ? 'step-6' : 'step-7',
+                  completedSummaryVi: `Toàn bộ ${nodes.length} nút mạng P2P đã độc lập thẩm định Khối #${validatedCandidateBlock.height} (Ứng viên cục bộ, chờ đồng thuận chuỗi)`,
+                  completedSummaryEn: `All ${nodes.length} P2P network nodes independently verified Block #${validatedCandidateBlock.height} (Local candidate, awaiting chain consensus)`,
+                  nextActionVi: forkActive ? 'Giải quyết phân nhánh chuỗi cạnh tranh →' : 'Tiến tới Phân nhánh & Đồng thuận Nakamoto →',
+                  nextActionEn: forkActive ? 'Resolve Competing Fork →' : 'Proceed to Fork & Nakamoto Consensus →',
+                  nextStepId: 'step-6',
                 });
               }}
               onLogEvent={(category, message, details) => {
@@ -1571,34 +1851,17 @@ export const EndToEndConsensusLab: React.FC = () => {
               language={language}
             />
           )}
-
-          {guidedStep === 8 && (
-            <ConsensusEventLog
-              logs={eventLogs}
-              onClearLogs={() => setEventLogs([])}
-              language={language}
-            />
-          )}
         </div>
 
-        {/* Global Real-Time Lab Recorder Timeline */}
-        <LabRecorderTimeline
-          logs={eventLogs}
-          onClearLogs={() => setEventLogs([])}
-          isPaused={isTimelinePaused}
-          onTogglePause={() => setIsTimelinePaused((prev) => !prev)}
-          language={language}
-        />
-
-        {/* Bottom Step Navigation Bar */}
-        <div className="flex items-center justify-between pt-4 border-t border-zinc-800">
-          {/* Back Button */}
+        {/* CONTEXTUAL ACTION BAR (Bottom Primary Controller per Phase/Step) */}
+        <div className="bg-[#0c101c] border border-zinc-800/80 rounded-xl p-3 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-lg">
+          {/* Back Step */}
           <button
             type="button"
             id="btn-nav-prev-step"
             onClick={() => setGuidedStep((prev) => Math.max(1, prev - 1))}
             disabled={guidedStep === 1}
-            className="px-3.5 py-2 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 hover:text-zinc-100 text-xs font-medium transition-colors flex items-center gap-2 disabled:opacity-40 disabled:pointer-events-none cursor-pointer"
+            className="w-full sm:w-auto px-3.5 py-2 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 hover:text-zinc-100 text-xs font-medium transition-colors flex items-center justify-center gap-2 disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>
@@ -1608,23 +1871,192 @@ export const EndToEndConsensusLab: React.FC = () => {
             </span>
           </button>
 
-          {/* Step Indicator with Mode Badge */}
-          <div className="flex items-center gap-2 text-xs font-mono text-zinc-400">
-            <span>{language === 'vi' ? `Bước ${guidedStep} / 8` : `Step ${guidedStep} of 8`}</span>
-            <span className="text-zinc-600">•</span>
-            <span className="text-cyan-400 font-semibold uppercase text-[10px] font-sans">
-              {language === 'vi'
-                ? simulationMode === 'guided'
-                  ? 'CHẾ ĐỘ HƯỚNG DẪN'
-                  : simulationMode === 'free'
-                  ? 'CHẾ ĐỘ TỰ DO'
-                  : 'CHẾ ĐỘ GỠ LỖI'
-                : `${simulationMode.toUpperCase()} MODE`}
-            </span>
+          {/* PHASE-SPECIFIC PRIMARY CONTEXTUAL ACTION */}
+          <div className="flex-1 flex items-center justify-center w-full sm:w-auto">
+            {guidedStep === 1 && (
+              <button
+                type="button"
+                onClick={() => {
+                  const sampleTx: E2ETransaction = {
+                    id: `tx-sample-${Date.now()}`,
+                    sender: 'Alice',
+                    recipient: 'Dave',
+                    amount: 1.25,
+                    feeBTC: 0.0003,
+                    timestamp: formatTimestamp(),
+                    hash: fastSha256Hex(`Alice:Dave:1.25:0.0003:${Date.now()}`),
+                    status: 'mempool',
+                  };
+                  handleCreateTx(sampleTx);
+                }}
+                className="px-4 py-2 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/60 text-cyan-300 text-xs font-semibold flex items-center gap-2 cursor-pointer transition-all active:scale-95"
+              >
+                <Zap className="w-3.5 h-3.5" />
+                <span>{language === 'vi' ? '+ Tạo giao dịch mẫu vào Mempool' : '+ Create Sample Tx to Mempool'}</span>
+              </button>
+            )}
+
+            {guidedStep === 2 && (
+              <button
+                type="button"
+                onClick={() => {
+                  setGuidedStep(3);
+                  triggerStepCompleted({
+                    completedSummaryVi: `Đã chọn ${selectedTxIds.length} giao dịch vào khối`,
+                    completedSummaryEn: `Selected ${selectedTxIds.length} txs for block`,
+                    nextActionVi: 'Kiểm tra Block Header →',
+                    nextActionEn: 'Inspect Block Header →',
+                    nextStepId: 'step-3',
+                  });
+                }}
+                disabled={selectedTxIds.length === 0}
+                className="px-4 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-zinc-950 text-xs font-bold flex items-center gap-2 cursor-pointer transition-all active:scale-95 disabled:opacity-40"
+              >
+                <Layers className="w-3.5 h-3.5" />
+                <span>
+                  {language === 'vi'
+                    ? `Đóng gói ${selectedTxIds.length} giao dịch vào Khối ứng viên →`
+                    : `Pack ${selectedTxIds.length} txs into Candidate Block →`}
+                </span>
+              </button>
+            )}
+
+            {guidedStep === 3 && (
+              <button
+                type="button"
+                onClick={() => {
+                  setGuidedStep(4);
+                  triggerStepCompleted({
+                    completedSummaryVi: 'Đã hoàn tất đóng gói Header',
+                    completedSummaryEn: 'Completed packing Block Header',
+                    nextActionVi: 'Bắt đầu đua đào PoW →',
+                    nextActionEn: 'Start Proof-of-Work Race →',
+                    nextStepId: 'step-4',
+                  });
+                }}
+                className="px-4 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-zinc-950 text-xs font-bold flex items-center gap-2 cursor-pointer transition-all active:scale-95"
+              >
+                <Pickaxe className="w-3.5 h-3.5" />
+                <span>{language === 'vi' ? 'Tiến tới Đua đào PoW →' : 'Proceed to Mining Race →'}</span>
+              </button>
+            )}
+
+            {guidedStep === 4 && (
+              <div className="flex items-center gap-2">
+                {winnerBlock ? (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setGuidedStep(5);
+                    }}
+                    className="guidance-amber-pulse px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-zinc-950 text-xs font-bold flex items-center gap-2 cursor-pointer transition-all active:scale-95 shadow-md"
+                  >
+                    <Radio className="w-3.5 h-3.5" />
+                    <span>{language === 'vi' ? '📡 Tiến tới Lan truyền P2P →' : '📡 Proceed to P2P Broadcast →'}</span>
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={isMining ? handleStopMining : handleStartMining}
+                    className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 cursor-pointer transition-all active:scale-95 shadow-md ${
+                      isMining
+                        ? 'bg-rose-500 hover:bg-rose-400 text-zinc-950'
+                        : 'bg-emerald-500 hover:bg-emerald-400 text-zinc-950'
+                    }`}
+                  >
+                    <Pickaxe className="w-3.5 h-3.5" />
+                    <span>
+                      {isMining
+                        ? language === 'vi' ? '⏹ Dừng đua đào' : '⏹ Stop Mining'
+                        : language === 'vi' ? '⛏ Bắt đầu Đua đào PoW' : '⛏ Start Mining Race'}
+                    </span>
+                  </button>
+                )}
+              </div>
+            )}
+
+            {guidedStep === 5 && (
+              <div className="flex items-center gap-2">
+                {consensusReached ? (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setGuidedStep(6);
+                      startNextStep('step-6');
+                    }}
+                    className="guidance-amber-pulse px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-zinc-950 text-xs font-bold flex items-center gap-2 cursor-pointer transition-all active:scale-95 shadow-md"
+                  >
+                    <GitFork className="w-3.5 h-3.5" />
+                    <span>{language === 'vi' ? '⚡ Tiến tới Phân nhánh & Chuỗi nặng nhất →' : '⚡ Proceed to Fork & Longest Chain →'}</span>
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    id="btn-action-start-gossip"
+                    onClick={() => {
+                      const btn = document.getElementById('btn-start-p2p-propagation');
+                      if (btn) btn.click();
+                    }}
+                    className="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold flex items-center gap-2 cursor-pointer transition-all active:scale-95 shadow-md"
+                  >
+                    <Radio className="w-3.5 h-3.5" />
+                    <span>{language === 'vi' ? '📡 Phát tán khối qua Gossip P2P' : '📡 Broadcast Block via P2P Gossip'}</span>
+                  </button>
+                )}
+              </div>
+            )}
+
+            {guidedStep === 6 && (
+              <div className="flex items-center gap-2">
+                {forkActive ? (
+                  <button
+                    type="button"
+                    onClick={handleAutoResolveFork}
+                    className="guidance-amber-pulse px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-zinc-950 text-xs font-bold flex items-center gap-2 cursor-pointer transition-all active:scale-95 shadow-md"
+                  >
+                    <ShieldCheck className="w-3.5 h-3.5" />
+                    <span>{language === 'vi' ? '🏆 Phân định Nakamoto (Chuỗi nặng nhất)' : '🏆 Resolve via Heaviest Chain'}</span>
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={handleFinalizeCandidateBlock}
+                    className="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-zinc-950 text-xs font-bold flex items-center gap-2 cursor-pointer transition-all active:scale-95 shadow-md"
+                  >
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    <span>{language === 'vi' ? '🏆 Xác nhận Đồng thuận Nakamoto (Chuỗi đơn)' : '🏆 Confirm Nakamoto Consensus'}</span>
+                  </button>
+                )}
+              </div>
+            )}
+
+            {guidedStep === 7 && (
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setIsAuditModalOpen(true)}
+                  className="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-100 text-xs font-medium flex items-center gap-2 cursor-pointer transition-all"
+                >
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>{language === 'vi' ? 'Kiểm toán mật mã chuỗi' : 'Audit Cryptographic Integrity'}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setGuidedStep(1);
+                    startNextStep('step-1');
+                  }}
+                  className="px-4 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-zinc-950 text-xs font-bold flex items-center gap-2 cursor-pointer transition-all"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  <span>{language === 'vi' ? 'Khởi tạo chu kỳ khối tiếp theo ↺' : 'Mine Next Block Cycle ↺'}</span>
+                </button>
+              </div>
+            )}
           </div>
 
-          {/* Next Button with Global Guidance Pulse */}
-          {guidedStep < 8 ? (
+          {/* Next Step */}
+          {guidedStep < 7 ? (
             <button
               type="button"
               id="btn-nav-next-step"
@@ -1637,18 +2069,15 @@ export const EndToEndConsensusLab: React.FC = () => {
                     return;
                   }
                 }
-                setGuidedStep((prev) => Math.min(8, prev + 1));
+                setGuidedStep((prev) => Math.min(7, prev + 1));
                 startNextStep();
               }}
-              className={`text-xs font-semibold transition-all flex items-center gap-2 active:scale-95 cursor-pointer shadow-sm ${
+              className={`w-full sm:w-auto text-xs font-semibold transition-all flex items-center justify-center gap-2 active:scale-95 cursor-pointer shadow-sm ${
                 isReadyForNext
                   ? 'guidance-amber-pulse bg-amber-500 hover:bg-amber-400 text-zinc-950 ring-2 ring-amber-400/80 font-bold px-4 py-2 rounded-xl'
                   : 'bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-sans text-xs font-bold px-4 py-2 rounded-xl'
               }`}
             >
-              {isReadyForNext && (
-                <span className="w-1.5 h-1.5 rounded-full bg-zinc-950" />
-              )}
               <span>
                 {isReadyForNext && nextRecommendedActionVi
                   ? language === 'vi'
@@ -1665,10 +2094,157 @@ export const EndToEndConsensusLab: React.FC = () => {
               type="button"
               id="btn-nav-complete-loop"
               onClick={() => setGuidedStep(1)}
-              className="px-4 py-2 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-text-primary text-xs font-medium transition-colors flex items-center gap-2 cursor-pointer"
+              className="w-full sm:w-auto px-4 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-text-primary text-xs font-medium transition-colors flex items-center justify-center gap-2 cursor-pointer"
             >
-              <span>{language === 'vi' ? 'Xem lại từ đầu ↺' : 'Restart Tour ↺'}</span>
+              <span>{language === 'vi' ? 'Về Bước 1 ↺' : 'Back to Step 1 ↺'}</span>
             </button>
+          )}
+        </div>
+
+        {/* UTILITY TRAY & DRAWER (Collapsible, holds Fault Injection, Consolidated Logs/Timeline, Theory) */}
+        <div className="bg-[#0c101c] border border-zinc-800/80 rounded-xl overflow-hidden transition-all">
+          {/* Drawer Header Tabs */}
+          <div className="flex flex-wrap items-center justify-between p-2 bg-[#090d16]/70 border-b border-zinc-800/60 text-xs">
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <span className="text-[11px] font-mono text-zinc-500 px-2 uppercase tracking-wider">
+                {language === 'vi' ? 'Tiện ích:' : 'Tools:'}
+              </span>
+
+              {/* Tab 1: Fault Injection */}
+              <button
+                type="button"
+                onClick={() => setActiveDrawerTab(activeDrawerTab === 'faults' ? 'none' : 'faults')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors flex items-center gap-1.5 cursor-pointer ${
+                  activeDrawerTab === 'faults'
+                    ? 'bg-rose-950/80 text-rose-200 border border-rose-700/80'
+                    : 'bg-zinc-900/80 hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 border border-zinc-800'
+                }`}
+              >
+                <AlertTriangle className={`w-3.5 h-3.5 ${tamperedBlockHeight !== null ? 'text-rose-400 animate-bounce' : 'text-zinc-400'}`} />
+                <span>{language === 'vi' ? 'Tiêm lỗi & Phân tích nhân quả' : 'Fault Injection & Causality'}</span>
+                {tamperedBlockHeight !== null && (
+                  <span className="px-1.5 py-0.2 rounded-full bg-rose-500 text-zinc-950 font-bold text-[10px]">
+                    1
+                  </span>
+                )}
+              </button>
+
+              {/* Tab 2: Logs & Timeline (Consolidated) */}
+              <button
+                type="button"
+                onClick={() => setActiveDrawerTab(activeDrawerTab === 'logs' ? 'none' : 'logs')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors flex items-center gap-1.5 cursor-pointer ${
+                  activeDrawerTab === 'logs'
+                    ? 'bg-cyan-950/80 text-cyan-200 border border-cyan-700/80'
+                    : 'bg-zinc-900/80 hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 border border-zinc-800'
+                }`}
+              >
+                <Activity className="w-3.5 h-3.5 text-cyan-400" />
+                <span>{language === 'vi' ? 'Nhật ký & Timeline' : 'Logs & Timeline'}</span>
+                <span className="px-1.5 py-0.2 rounded-full bg-zinc-800 text-zinc-400 font-mono text-[10px]">
+                  {eventLogs.length}
+                </span>
+              </button>
+
+              {/* Tab 3: Theory */}
+              <button
+                type="button"
+                onClick={() => setActiveDrawerTab(activeDrawerTab === 'insights' ? 'none' : 'insights')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors flex items-center gap-1.5 cursor-pointer ${
+                  activeDrawerTab === 'insights'
+                    ? 'bg-amber-950/80 text-amber-200 border border-amber-700/80'
+                    : 'bg-zinc-900/80 hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 border border-zinc-800'
+                }`}
+              >
+                <BookOpen className="w-3.5 h-3.5 text-amber-400" />
+                <span>{language === 'vi' ? 'Lý thuyết & Mật mã' : 'Theory & Cryptography'}</span>
+              </button>
+            </div>
+
+            {/* Collapse toggle */}
+            <button
+              type="button"
+              onClick={() => setActiveDrawerTab(activeDrawerTab === 'none' ? 'faults' : 'none')}
+              className="p-1.5 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 transition-colors cursor-pointer flex items-center gap-1 text-[11px]"
+            >
+              <span>{activeDrawerTab === 'none' ? (language === 'vi' ? 'Mở rộng' : 'Expand') : (language === 'vi' ? 'Thu gọn' : 'Collapse')}</span>
+              {activeDrawerTab === 'none' ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronUp className="w-3.5 h-3.5" />}
+            </button>
+          </div>
+
+          {/* Drawer Content Panel (Animated expand) */}
+          {activeDrawerTab !== 'none' && (
+            <div className="p-3 sm:p-4 bg-[#090d16] border-t border-zinc-800/60 animate-in slide-in-from-top-2">
+              {activeDrawerTab === 'faults' && (
+                <FaultInjectionPanel
+                  blockchain={blockchain}
+                  nodes={nodes}
+                  onTamperBlockData={handleTamperBlockData}
+                  onCorruptHash={handleCorruptHash}
+                  onCorruptMerkle={handleCorruptMerkle}
+                  onCorruptPoW={handleCorruptPoW}
+                  onToggleNodeOnline={handleToggleNodeOnline}
+                  onResetFaults={handleResetFaults}
+                  tamperedBlockHeight={tamperedBlockHeight}
+                  language={language}
+                />
+              )}
+
+              {activeDrawerTab === 'logs' && (
+                <div className="space-y-3">
+                  {/* Sub-view switcher for Logs & Timeline: Never show both at once */}
+                  <div className="flex items-center justify-between pb-2 border-b border-zinc-800/60">
+                    <div className="flex items-center gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => setLogViewMode('timeline')}
+                        className={`px-2.5 py-1 rounded-md text-xs font-medium transition-colors cursor-pointer ${
+                          logViewMode === 'timeline'
+                            ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
+                            : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900'
+                        }`}
+                      >
+                        {language === 'vi' ? 'Timeline trực quan' : 'Visual Timeline'}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setLogViewMode('events')}
+                        className={`px-2.5 py-1 rounded-md text-xs font-medium transition-colors cursor-pointer ${
+                          logViewMode === 'events'
+                            ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
+                            : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900'
+                        }`}
+                      >
+                        {language === 'vi' ? 'Sổ nhật ký chi tiết' : 'Detailed Event Table'} ({eventLogs.length})
+                      </button>
+                    </div>
+                  </div>
+
+                  {logViewMode === 'timeline' ? (
+                    <LabRecorderTimeline
+                      logs={eventLogs}
+                      onClearLogs={() => setEventLogs([])}
+                      isPaused={isTimelinePaused}
+                      onTogglePause={() => setIsTimelinePaused((prev) => !prev)}
+                      language={language}
+                    />
+                  ) : (
+                    <ConsensusEventLog
+                      logs={eventLogs}
+                      onClearLogs={() => setEventLogs([])}
+                      language={language}
+                    />
+                  )}
+                </div>
+              )}
+
+              {activeDrawerTab === 'insights' && (
+                <EducationalInsightBanner
+                  currentStep={guidedStep}
+                  language={language}
+                />
+              )}
+            </div>
           )}
         </div>
 

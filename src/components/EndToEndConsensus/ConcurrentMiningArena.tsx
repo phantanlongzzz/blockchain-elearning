@@ -46,13 +46,18 @@ export const ConcurrentMiningArena: React.FC<ConcurrentMiningArenaProps> = ({
       {/* Step Header & Telemetry */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h3 className="text-base sm:text-lg font-semibold text-zinc-100">
-            {language === 'vi' ? 'Đua khai thác song song (Mining Race)' : 'Multi-Miner Mining Race'}
-          </h3>
+          <div className="flex items-center gap-2">
+            <h3 className="text-base sm:text-lg font-semibold text-zinc-100">
+              {language === 'vi' ? 'Đua khai thác song song (Mining Race)' : 'Multi-Miner Mining Race'}
+            </h3>
+            <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-amber-950/60 text-amber-300 border border-amber-800/60">
+              {language === 'vi' ? 'Vai trò: Miner (Thợ đào)' : 'Role: Miner (Proof-of-Work)'}
+            </span>
+          </div>
           <p className="text-xs sm:text-sm text-zinc-400 mt-0.5">
             {language === 'vi'
-              ? 'Các thợ đào chạy đa luồng tính toán song song, thay đổi Nonce để tìm mã băm thỏa mãn độ khó.'
-              : 'Miners iterate through Nonce values concurrently in parallel worker threads to find a valid SHA-256 target hash.'}
+              ? 'Thợ đào (Miner) cạnh tranh sức mạnh tính toán để tìm Nonce thỏa mãn độ khó và đề xuất Khối ứng viên. Lưu ý: Miner KHÔNG quyết định khối có hợp lệ hay không — tính hợp lệ được các Nút thẩm định (Validators) độc lập kiểm tra ở bước P2P tiếp theo.'
+              : 'Miners compete compute power to find a valid Nonce and propose a Candidate Block. Note: Miners do NOT validate blocks — validity is independently enforced by P2P Validators in the next step.'}
           </p>
         </div>
 

@@ -83,11 +83,6 @@ export const TransactionCreateStep: React.FC<TransactionCreateStepProps> = ({
         <h3 className="text-base sm:text-lg font-semibold text-zinc-100">
           {language === 'vi' ? 'Tạo giao dịch mới' : 'Create Transaction'}
         </h3>
-        <p className="text-xs sm:text-sm text-zinc-400 mt-0.5">
-          {language === 'vi'
-            ? 'Ký số và phát hành giao dịch mới vào mạng ngang hàng (P2P).'
-            : 'Sign and broadcast a new cryptographic transaction to the peer-to-peer network.'}
-        </p>
       </div>
 
       {/* Main Form Container */}

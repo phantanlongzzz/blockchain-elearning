@@ -76,11 +76,6 @@ export const MempoolStep: React.FC<MempoolStepProps> = ({
               )}
             </div>
           </div>
-          <p className="text-xs sm:text-sm text-zinc-400 mt-0.5">
-            {language === 'vi'
-              ? 'Tập hợp các giao dịch chưa xác nhận đang chờ được thợ đào chọn lọc đóng gói.'
-              : 'Collection of unconfirmed signed transactions waiting for miner inclusion.'}
-          </p>
         </div>
 
         {/* Flat Inline Telemetry */}

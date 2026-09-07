@@ -1462,11 +1462,14 @@ export const EndToEndConsensusLab: React.FC = () => {
               <h2 className="text-xl sm:text-2xl font-bold text-zinc-100 font-sans tracking-tight">
                 {language === 'vi' ? 'Mô phỏng → Đồng thuận Blockchain' : 'Simulation → Blockchain Consensus'}
               </h2>
+              <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-cyan-950/60 text-cyan-300 border border-cyan-800/60 hidden sm:inline-block">
+                Nakamoto Protocol
+              </span>
             </div>
             <p className="text-xs text-zinc-400 mt-0.5">
               {language === 'vi'
-                ? 'Giao thức Nakamoto: Từ giao dịch, khai thác PoW đến thẩm định P2P và chuỗi nặng nhất'
-                : 'Nakamoto Protocol: Transactions, PoW mining, P2P validation, and heaviest chain consensus'}
+                ? 'Dòng chảy 3 giai đoạn: Đề xuất khối → Thẩm định độc lập P2P → Đồng thuận chuỗi nặng nhất'
+                : '3-Phase Flow: Block Proposal → P2P Independent Validation → Heaviest Chain Consensus'}
             </p>
           </div>
 
@@ -1596,9 +1599,6 @@ export const EndToEndConsensusLab: React.FC = () => {
               </span>
               <span className="text-zinc-100 font-semibold text-sm truncate">
                 {language === 'vi' ? LAB_STEPS[guidedStep - 1]?.nameVi : LAB_STEPS[guidedStep - 1]?.nameEn}
-              </span>
-              <span className="text-zinc-400 text-xs hidden xl:inline truncate">
-                — {getStepSubtitle(guidedStep, language)}
               </span>
             </div>
           </div>

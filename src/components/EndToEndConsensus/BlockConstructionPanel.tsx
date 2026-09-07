@@ -63,11 +63,6 @@ export const BlockConstructionPanel: React.FC<BlockConstructionPanelProps> = ({
           <h3 className="text-base sm:text-lg font-semibold text-zinc-100">
             {language === 'vi' ? 'Đóng gói khối ứng viên' : 'Candidate Block Construction'}
           </h3>
-          <p className="text-xs sm:text-sm text-zinc-400 mt-0.5">
-            {language === 'vi'
-              ? 'Tổng hợp mã băm khối trước, Merkle Root của giao dịch và cấu hình độ khó Proof-of-Work.'
-              : 'Aggregate Previous Hash, Merkle Root of selected transactions, and set target PoW difficulty.'}
-          </p>
         </div>
 
         {/* Compact Difficulty Segmented Control */}

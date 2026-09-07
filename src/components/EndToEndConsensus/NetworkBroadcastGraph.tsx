@@ -536,12 +536,6 @@ export const NetworkBroadcastGraph: React.FC<NetworkBroadcastGraphProps> = ({
               </span>
             )}
           </div>
-
-          <p className="text-xs sm:text-sm text-zinc-400 mt-0.5">
-            {language === 'vi'
-              ? 'Khối ứng viên do thợ đào đề xuất được phát tán qua mạng P2P Gossip. Mỗi nút đầy đủ (Validator) độc lập thẩm định 4 điều kiện mật mã trước khi chấp nhận vào đỉnh chuỗi cục bộ (Active Tip). Khối chỉ đạt Finality sau khi mạng hội tụ theo Nakamoto Consensus.'
-              : 'Candidate block proposed by the miner propagates via P2P Gossip. Each validator node independently validates 4 cryptographic checks before accepting into its local active tip. Finality is only achieved after Nakamoto chain convergence.'}
-          </p>
         </div>
 
         {/* Primary CTA Buttons */}

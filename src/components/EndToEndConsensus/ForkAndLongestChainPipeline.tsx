@@ -121,11 +121,6 @@ export const ForkAndLongestChainPipeline: React.FC<ForkAndLongestChainPipelinePr
               </span>
             )}
           </div>
-          <p className="text-xs sm:text-sm text-zinc-400 mt-0.5">
-            {language === 'vi'
-              ? 'Mô phỏng xung đột hai khối được tìm thấy đồng thời. Mạng giải quyết bằng công việc tích lũy (Cumulative PoW = Σ 16^Difficulty).'
-              : 'Simulate conflicting blocks mined simultaneously. Consensus resolves strictly by Cumulative PoW (Σ 16^Difficulty).'}
-          </p>
         </div>
 
         {/* Action Controls */}

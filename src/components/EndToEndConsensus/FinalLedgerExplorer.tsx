@@ -41,11 +41,6 @@ export const FinalLedgerExplorer: React.FC<FinalLedgerExplorerProps> = ({
               </span>
             )}
           </h3>
-          <p className="text-xs sm:text-sm text-zinc-400 mt-0.5">
-            {language === 'vi'
-              ? 'Chuỗi các khối bất biến đã được mạng P2P hoàn tất đồng thuận và liên kết bằng con trỏ băm (Hash Pointer).'
-              : 'Finalized immutable blocks chained by cryptographic hash pointers.'}
-          </p>
         </div>
 
         <span className="text-xs font-mono text-text-secondary font-medium bg-white/[0.04] px-3 py-1 rounded-lg border border-border-primary self-start sm:self-auto">

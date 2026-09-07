@@ -54,11 +54,6 @@ export const ConcurrentMiningArena: React.FC<ConcurrentMiningArenaProps> = ({
               {language === 'vi' ? 'Vai trò: Miner (Thợ đào)' : 'Role: Miner (Proof-of-Work)'}
             </span>
           </div>
-          <p className="text-xs sm:text-sm text-zinc-400 mt-0.5">
-            {language === 'vi'
-              ? 'Thợ đào (Miner) cạnh tranh sức mạnh tính toán để tìm Nonce thỏa mãn độ khó và đề xuất Khối ứng viên. Lưu ý: Miner KHÔNG quyết định khối có hợp lệ hay không — tính hợp lệ được các Nút thẩm định (Validators) độc lập kiểm tra ở bước P2P tiếp theo.'
-              : 'Miners compete compute power to find a valid Nonce and propose a Candidate Block. Note: Miners do NOT validate blocks — validity is independently enforced by P2P Validators in the next step.'}
-          </p>
         </div>
 
         {/* Inline Telemetry */}

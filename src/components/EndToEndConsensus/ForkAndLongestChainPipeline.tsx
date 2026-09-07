@@ -38,6 +38,7 @@ export const ForkAndLongestChainPipeline: React.FC<ForkAndLongestChainPipelinePr
     if (branchABlocks.length > 1 || branchBBlocks.length > 1) return 4;
     return 1;
   });
+  const [showTheory, setShowTheory] = useState(false);
 
   const isTied = activeMainBranch === 'tied';
   const totalWork = Math.max(1, cumulativeWorkA + cumulativeWorkB);
@@ -307,31 +308,44 @@ export const ForkAndLongestChainPipeline: React.FC<ForkAndLongestChainPipelinePr
 
         {/* Educational Stepper Tabs */}
         <div className="pt-4 border-t border-zinc-800 space-y-3">
-          <span className="text-xs font-medium text-zinc-300 block">
-            {language === 'vi' ? 'Quy trình giải quyết phân nhánh từng bước:' : 'Step-by-step Fork Resolution:'}
-          </span>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
-            {guidedSteps.map((s) => (
-              <button
-                key={s.step}
-                type="button"
-                onClick={() => setActiveGuidedStep(s.step)}
-                className={`p-2.5 rounded-lg border text-left transition-colors cursor-pointer ${
-                  activeGuidedStep === s.step
-                    ? 'bg-zinc-800 border-zinc-600 text-zinc-100'
-                    : 'bg-[#080c16] border-zinc-800 text-zinc-400 hover:text-zinc-200'
-                }`}
-              >
-                <div className="font-semibold text-[11px] truncate text-zinc-200">
-                  {language === 'vi' ? s.titleVi : s.titleEn}
-                </div>
-                <div className="text-[10px] text-zinc-400 line-clamp-2 mt-1 font-sans leading-snug">
-                  {language === 'vi' ? s.descVi : s.descEn}
-                </div>
-              </button>
-            ))}
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-medium text-zinc-300 block">
+              {language === 'vi' ? 'Quy trình giải quyết phân nhánh từng bước:' : 'Step-by-step Fork Resolution:'}
+            </span>
+            <button
+              type="button"
+              onClick={() => setShowTheory(!showTheory)}
+              aria-expanded={showTheory}
+              aria-controls="fork-resolution-theory"
+              className="text-xs text-zinc-400 hover:text-zinc-200 underline decoration-zinc-700 underline-offset-2 transition-colors cursor-pointer"
+            >
+              {language === 'vi' ? (showTheory ? 'Ẩn lý thuyết' : 'Hiển thị lý thuyết') : (showTheory ? 'Hide theory' : 'Show theory')}
+            </button>
           </div>
+
+          {showTheory && (
+            <div id="fork-resolution-theory" className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
+              {guidedSteps.map((s) => (
+                <button
+                  key={s.step}
+                  type="button"
+                  onClick={() => setActiveGuidedStep(s.step)}
+                  className={`p-2.5 rounded-lg border text-left transition-colors cursor-pointer ${
+                    activeGuidedStep === s.step
+                      ? 'bg-zinc-800 border-zinc-600 text-zinc-100'
+                      : 'bg-[#080c16] border-zinc-800 text-zinc-400 hover:text-zinc-200'
+                  }`}
+                >
+                  <div className="font-semibold text-[11px] truncate text-zinc-200">
+                    {language === 'vi' ? s.titleVi : s.titleEn}
+                  </div>
+                  <div className="text-[10px] text-zinc-400 line-clamp-2 mt-1 font-sans leading-snug">
+                    {language === 'vi' ? s.descVi : s.descEn}
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

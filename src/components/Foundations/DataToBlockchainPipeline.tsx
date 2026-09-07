@@ -165,6 +165,9 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [maxUnlockedStep, setMaxUnlockedStep] = useState<number>(1);
   const [showExplanation, setShowExplanation] = useState<boolean>(false);
+  const [showStep3Details, setShowStep3Details] = useState<boolean>(false);
+  const [showStep6Details, setShowStep6Details] = useState<boolean>(false);
+  const [showStep7Details, setShowStep7Details] = useState<boolean>(false);
   const [isCodeModalOpen, setIsCodeModalOpen] = useState<boolean>(false);
 
   // ----------------------------------------------------
@@ -678,7 +681,6 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
             const isCurrent = currentStep === s.step;
             const isUnlocked = s.step <= maxUnlockedStep;
             const isTamper = s.step === 6 && isTampered;
-
             return (
               <button
                 key={s.step}
@@ -703,54 +705,6 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
               </button>
             );
           })}
-        </div>
-
-        {/* Current Step Focus Box (Single Core Takeaway + Expandable Explanation) */}
-        <div className="p-3.5 rounded-xl bg-[#0E1526]/70 border border-white/[0.06] space-y-2">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-            <div className="space-y-0.5">
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] font-sans px-2 py-0.5 rounded font-medium bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 uppercase">
-                  {currentStepDef.badge}
-                </span>
-                <h4 className="text-sm font-semibold text-white font-sans">
-                  {currentStepDef.title}
-                </h4>
-              </div>
-              <p className="text-xs text-slate-300 font-sans">
-                &ldquo;{currentStepDef.coreMessage}&rdquo;
-              </p>
-            </div>
-
-            {/* Deep Explanation Toggle */}
-            <button
-              type="button"
-              onClick={() => setShowExplanation(!showExplanation)}
-              className="self-start sm:self-center px-2.5 py-1 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-white border border-white/[0.08] hover:border-cyan-500/30 text-[11px] font-sans flex items-center gap-1.5 transition-colors cursor-pointer shrink-0"
-            >
-              <Info className="w-3.5 h-3.5 text-cyan-400" />
-              <span>
-                {showExplanation
-                  ? language === 'vi'
-                    ? 'Ẩn giải thích'
-                    : 'Hide details'
-                  : language === 'vi'
-                  ? 'Xem giải thích'
-                  : 'Deep dive'}
-              </span>
-              {showExplanation ? (
-                <ChevronUp className="w-3.5 h-3.5" />
-              ) : (
-                <ChevronDown className="w-3.5 h-3.5" />
-              )}
-            </button>
-          </div>
-
-          {showExplanation && (
-            <div className="p-3 rounded-lg bg-black/40 border border-white/[0.05] text-xs text-slate-300 leading-relaxed font-sans animate-in fade-in">
-              {currentStepDef.explanation}
-            </div>
-          )}
         </div>
       </div>
 
@@ -1039,11 +993,30 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
                   </span>
                 </div>
 
-                <p className="text-xs text-slate-300 leading-relaxed font-sans">
-                  {language === 'vi'
-                    ? 'Block là nơi đóng gói dữ liệu giao dịch trước khi được gắn vào chuỗi. Mỗi Block bao gồm: Số thứ tự Khối, Con trỏ Previous Hash trỏ tới khối trước, Dữ liệu giao dịch, Nonce và Bản băm khối.'
-                    : 'A Block encapsulates transaction payload data before linking into the chain, including Block Index, Previous Hash pointer, Data, Nonce, and Block Hash.'}
-                </p>
+                <div className="flex flex-col gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setShowStep3Details(!showStep3Details)}
+                    aria-expanded={showStep3Details}
+                    aria-controls="step3-details"
+                    className="self-start px-3 py-1.5 rounded-lg bg-teach-1/10 hover:bg-teach-1/20 border border-teach-1/30 text-teach-1 text-[11px] font-mono transition-colors flex items-center gap-1.5"
+                  >
+                    {showStep3Details ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+                    {showStep3Details
+                      ? language === 'vi' ? 'Ẩn Hiểu thêm' : 'Hide details'
+                      : language === 'vi' ? 'Hiểu thêm: Cấu trúc Block' : 'Learn more: Block Structure'
+                    }
+                  </button>
+                  {showStep3Details && (
+                    <div id="step3-details" className="p-3 rounded-lg bg-black/40 border border-slate-800 animate-in fade-in">
+                      <p className="text-xs text-slate-300 leading-relaxed font-sans">
+                        {language === 'vi'
+                          ? 'Block là nơi đóng gói dữ liệu giao dịch trước khi được gắn vào chuỗi. Mỗi Block bao gồm: Số thứ tự Khối, Con trỏ Previous Hash trỏ tới khối trước, Dữ liệu giao dịch, Nonce và Bản băm khối.'
+                          : 'A Block encapsulates transaction payload data before linking into the chain, including Block Index, Previous Hash pointer, Data, Nonce, and Block Hash.'}
+                      </p>
+                    </div>
+                  )}
+                </div>
 
                 <div className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 font-mono text-xs space-y-2">
                   <div className="flex justify-between">
@@ -1618,18 +1591,35 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
 
             {/* Animation Breakdown Card */}
             {isTampered && (
-              <div className="p-4 rounded-xl bg-rose-950/30 border border-rose-500/40 space-y-2 text-xs font-mono animate-in fade-in">
-                <div className="flex items-center gap-2 text-rose-300 font-bold">
-                  <ShieldAlert className="w-4 h-4 text-rose-400" />
-                  <span>
-                    {language === 'vi'
-                      ? 'CƠ CHẾ LAN TRUYỀN HỎNG LIÊN KẾT (CASCADING BREAK):'
-                      : 'CASCADING INVALIDATION BREAKDOWN:'}
-                  </span>
-                </div>
-                <p className="text-slate-300 font-sans text-xs leading-relaxed">
-                  1. Dữ liệu Khối #1 thay đổi &rarr; 2. Mã băm Khối #1 tính lại khác hoàn toàn &rarr; 3. Khối #2 vẫn giữ Previous Hash cũ nên <strong>KHÔNG KHỚP (MISMATCH)</strong> &rarr; 4. Toàn bộ chuỗi phía sau bị vô hiệu hóa!
-                </p>
+              <div className="flex flex-col gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowStep6Details(!showStep6Details)}
+                  aria-expanded={showStep6Details}
+                  aria-controls="step6-details"
+                  className="self-start px-3 py-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-400 text-[11px] font-mono transition-colors flex items-center gap-1.5"
+                >
+                  {showStep6Details ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+                  {showStep6Details
+                    ? language === 'vi' ? 'Ẩn Hiểu thêm' : 'Hide details'
+                    : language === 'vi' ? 'Hiểu thêm: Cơ chế Lan truyền hỏng liên kết' : 'Learn more: Cascading Invalidation'
+                  }
+                </button>
+                {showStep6Details && (
+                  <div id="step6-details" className="p-4 rounded-xl bg-rose-950/30 border border-rose-500/40 space-y-2 text-xs font-mono animate-in fade-in">
+                    <div className="flex items-center gap-2 text-rose-300 font-bold">
+                      <ShieldAlert className="w-4 h-4 text-rose-400" />
+                      <span>
+                        {language === 'vi'
+                          ? 'CƠ CHẾ LAN TRUYỀN HỎNG LIÊN KẾT (CASCADING BREAK):'
+                          : 'CASCADING INVALIDATION BREAKDOWN:'}
+                      </span>
+                    </div>
+                    <p className="text-slate-300 font-sans text-xs leading-relaxed">
+                      1. Dữ liệu Khối #1 thay đổi &rarr; 2. Mã băm Khối #1 tính lại khác hoàn toàn &rarr; 3. Khối #2 vẫn giữ Previous Hash cũ nên <strong>KHÔNG KHỚP (MISMATCH)</strong> &rarr; 4. Toàn bộ chuỗi phía sau bị vô hiệu hóa!
+                    </p>
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -1649,11 +1639,31 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
                         : 'BLOCKCHAIN INTEGRITY VERIFICATION'}
                     </h4>
                   </div>
-                  <p className="text-xs text-slate-400 font-sans mt-1">
-                    {language === 'vi'
-                      ? 'Thuật toán duyệt qua từng khối kiểm tra: 1. Mã băm dữ liệu nội tại & 2. Con trỏ Previous Hash với khối trước.'
-                      : 'Verifies each block: 1. Internal payload digest & 2. Continuity of Previous Hash pointer.'}
-                  </p>
+                  
+                  <div className="flex flex-col gap-2 mt-2">
+                    <button
+                      type="button"
+                      onClick={() => setShowStep7Details(!showStep7Details)}
+                      aria-expanded={showStep7Details}
+                      aria-controls="step7-details"
+                      className="self-start px-3 py-1.5 rounded-lg bg-success/10 hover:bg-success/20 border border-success/30 text-success text-[11px] font-mono transition-colors flex items-center gap-1.5"
+                    >
+                      {showStep7Details ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+                      {showStep7Details
+                        ? language === 'vi' ? 'Ẩn Hiểu thêm' : 'Hide details'
+                        : language === 'vi' ? 'Hiểu thêm: Thuật toán xác minh' : 'Learn more: Verification Algorithm'
+                      }
+                    </button>
+                    {showStep7Details && (
+                      <div id="step7-details" className="p-3 rounded-lg bg-black/40 border border-slate-800 animate-in fade-in">
+                        <p className="text-xs text-slate-400 font-sans">
+                          {language === 'vi'
+                            ? 'Thuật toán duyệt qua từng khối kiểm tra: 1. Mã băm dữ liệu nội tại & 2. Con trỏ Previous Hash với khối trước.'
+                            : 'Verifies each block: 1. Internal payload digest & 2. Continuity of Previous Hash pointer.'}
+                        </p>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 <div className="flex items-center gap-2">
@@ -1745,6 +1755,58 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
             </div>
           </div>
         )}
+
+        {/* ==================================================== */}
+        {/* CURRENT STEP FOCUS BOX (ORIENTATION & EXPLANATION)   */}
+        {/* ==================================================== */}
+        <div className="p-3.5 rounded-xl bg-[#0E1526]/70 border border-white/[0.06] space-y-2">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div className="space-y-0.5">
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-sans px-2 py-0.5 rounded font-medium bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 uppercase">
+                  {currentStepDef.badge}
+                </span>
+                <h4 className="text-sm font-semibold text-white font-sans">
+                  {currentStepDef.title}
+                </h4>
+              </div>
+              <p className="text-xs text-slate-300 font-sans">
+                &ldquo;{currentStepDef.coreMessage}&rdquo;
+              </p>
+            </div>
+
+            {/* Deep Explanation Toggle */}
+            <button
+              type="button"
+              onClick={() => setShowExplanation(!showExplanation)}
+              aria-expanded={showExplanation}
+              aria-controls="step-deep-explanation"
+              className="self-start sm:self-center px-2.5 py-1 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-white border border-white/[0.08] hover:border-cyan-500/30 text-[11px] font-sans flex items-center gap-1.5 transition-colors cursor-pointer shrink-0"
+            >
+              <Info className="w-3.5 h-3.5 text-cyan-400" />
+              <span>
+                {showExplanation
+                  ? language === 'vi'
+                    ? 'Ẩn giải thích'
+                    : 'Hide details'
+                  : language === 'vi'
+                  ? 'Hiểu thêm'
+                  : 'Learn more'}
+              </span>
+              {showExplanation ? (
+                <ChevronUp className="w-3.5 h-3.5" />
+              ) : (
+                <ChevronDown className="w-3.5 h-3.5" />
+              )}
+            </button>
+          </div>
+
+          {showExplanation && (
+            <div id="step-deep-explanation" className="p-3 rounded-lg bg-black/40 border border-white/[0.05] text-xs text-slate-300 leading-relaxed font-sans animate-in fade-in">
+              {currentStepDef.explanation}
+            </div>
+          )}
+        </div>
 
         {/* ==================================================== */}
         {/* STEP CONTROLS FOOTER: [BACK] [ACTION] [CONTINUE] */}

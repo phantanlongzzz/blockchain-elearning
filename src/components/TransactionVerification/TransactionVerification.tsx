@@ -9,7 +9,7 @@ import { TamperModal } from './TamperModal';
 import { NewTransactionModal } from './NewTransactionModal';
 import { computeTransactionDigest, verifyTransactionSignature } from '../../utils/crypto';
 import { MempoolDashboard } from './MempoolDashboard';
-import { TextIntegrityPlayground } from './TextIntegrityPlayground';
+import { TransactionCard } from './TransactionCard';
 
 export const TransactionVerification: React.FC = () => {
   const { strings } = useLanguage();
@@ -181,7 +181,19 @@ export const TransactionVerification: React.FC = () => {
       {activeView === 'mempool' && <MempoolDashboard />}
 
       {/* View 2: Committed Block Transactions Explorer */}
-      {activeView === 'ledger' && <TextIntegrityPlayground />}
+      {activeView === 'ledger' && (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+          {transactions.map((tx) => (
+            <TransactionCard
+              key={tx.id}
+              transaction={tx}
+              onInspect={setSelectedTxForDetail}
+              onTamper={setSelectedTxForTamper}
+              onRestore={handleRestore}
+            />
+          ))}
+        </div>
+      )}
 
       {/* Modals */}
       <TransactionDetailModal

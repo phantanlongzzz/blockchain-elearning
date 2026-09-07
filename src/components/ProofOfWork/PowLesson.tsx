@@ -134,6 +134,7 @@ export const PowLesson: React.FC = () => {
   const [autoFollow, setAutoFollow] = useState<boolean>(true);
   const [isAutoFollowPaused, setIsAutoFollowPaused] = useState<boolean>(false);
   const [showTelemetryDetails, setShowTelemetryDetails] = useState<boolean>(false);
+  const [isExplanationExpanded, setIsExplanationExpanded] = useState<boolean>(false);
   
   const usedNamesRef = useRef<Set<string>>(new Set(['Alice', 'Bob', 'Charlie', 'Dave']));
 
@@ -1140,9 +1141,8 @@ export const PowLesson: React.FC = () => {
               </button>
             </div>
 
-            {/* Winner Ranking and Core Takeaway */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Winner Ranking */}
+            {/* Winner Ranking */}
+            <div className="grid grid-cols-1 gap-4">
               <div className="p-3.5 bg-[#11161D] rounded-xl border border-slate-800 space-y-2">
                 <span className="text-[11px] font-display font-bold text-slate-400 uppercase tracking-wider block">
                   {isVi ? 'Kết Quả Từng Thợ Đào' : 'Miner Results'}
@@ -1172,20 +1172,6 @@ export const PowLesson: React.FC = () => {
                       </div>
                     );
                   })}
-                </div>
-              </div>
-
-              {/* Core Learning Message */}
-              <div className="p-3.5 bg-[#11161D] rounded-xl border border-slate-800 flex flex-col justify-between">
-                <div>
-                  <span className="text-[11px] font-display font-bold text-text-secondary uppercase tracking-wider flex items-center gap-1.5 mb-1.5">
-                    <Info size={14} /> {isVi ? 'Bài Học Cốt Lõi' : 'Core Takeaway'}
-                  </span>
-                  <p className="text-xs text-slate-300 leading-relaxed font-sans">
-                    {isVi 
-                      ? 'Hashrate cao hơn làm tăng xác suất toán học để tìm được Block trước. Tuy nhiên hàm băm SHA-256 có tính xác suất ngẫu nhiên cao, do đó miner có hashrate thấp vẫn có cơ hội giải khối thành công trước miner mạnh hơn.' 
-                      : 'Higher hashrate increases the mathematical probability of finding a block first. However, SHA-256 is strictly probabilistic, allowing lower-hashrate miners a genuine chance to find solutions ahead of more powerful rigs.'}
-                  </p>
                 </div>
               </div>
             </div>
@@ -1479,6 +1465,43 @@ export const PowLesson: React.FC = () => {
           )}
         </div>
 
+        {/* EXPLANATORY DISCLOSURE */}
+        <div className="pt-2">
+          <div className="bg-[#0C0F14] border border-slate-800 rounded-xl overflow-hidden">
+            <button
+              onClick={() => setIsExplanationExpanded(!isExplanationExpanded)}
+              aria-expanded={isExplanationExpanded}
+              className="w-full px-4 py-3 sm:px-5 sm:py-4 flex items-center justify-between text-left hover:bg-white/[0.02] transition-colors cursor-pointer"
+            >
+              <div className="flex items-center gap-2">
+                <Info size={16} className="text-cyan-400" />
+                <span className="font-display font-bold text-slate-200 text-xs sm:text-sm">
+                  {isVi ? 'Hiểu sâu hơn về Proof of Work' : 'Deep Dive: Proof of Work'}
+                </span>
+              </div>
+              <span className="text-slate-500 font-mono text-xl leading-none">
+                {isExplanationExpanded ? '−' : '+'}
+              </span>
+            </button>
+            
+            {isExplanationExpanded && (
+              <div className="px-4 pb-4 sm:px-5 sm:pb-5 pt-2 border-t border-slate-800/50">
+                <div className="p-3.5 sm:p-4 bg-[#11161D] rounded-xl border border-slate-800 flex flex-col justify-between">
+                  <div>
+                    <span className="text-[11px] font-display font-bold text-text-secondary uppercase tracking-wider flex items-center gap-1.5 mb-2">
+                      <Info size={14} /> {isVi ? 'Bài Học Cốt Lõi' : 'Core Takeaway'}
+                    </span>
+                    <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
+                      {isVi 
+                        ? 'Hashrate cao hơn làm tăng xác suất toán học để tìm được Block trước. Tuy nhiên hàm băm SHA-256 có tính xác suất ngẫu nhiên cao, do đó miner có hashrate thấp vẫn có cơ hội giải khối thành công trước miner mạnh hơn.' 
+                        : 'Higher hashrate increases the mathematical probability of finding a block first. However, SHA-256 is strictly probabilistic, allowing lower-hashrate miners a genuine chance to find solutions ahead of more powerful rigs.'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
 
       {/* Selected Block Details Modal */}

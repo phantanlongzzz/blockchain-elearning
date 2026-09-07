@@ -37,6 +37,8 @@ export const AvalancheVisualizer: React.FC = () => {
       name: 'Case Shift ("W" vs "w")',
       a: 'Hello World',
       b: 'Hello world',
+      badgeVi: 'Khác 1 bit ("W" ↔ "w")',
+      badgeEn: '1 bit diff ("W" ↔ "w")',
       noteVi: 'Chỉ khác đúng 1 bit ở ký tự thứ 6 ("W" = 0x57 [01010111] vs "w" = 0x77 [01110111])',
       noteEn: 'Only 1 bit difference in the 6th character ("W" = 0x57 vs "w" = 0x77)',
     },
@@ -45,6 +47,8 @@ export const AvalancheVisualizer: React.FC = () => {
       name: 'Append Period (".")',
       a: 'The quick brown fox jumps over the lazy dog',
       b: 'The quick brown fox jumps over the lazy dog.',
+      badgeVi: 'Thêm 1 ký tự (".")',
+      badgeEn: 'Added 1 char (".")',
       noteVi: 'Thêm duy nhất 1 dấu chấm "." ở cuối chuỗi làm đảo ~50% toàn bộ 256 bit đầu ra',
       noteEn: 'Adding a single period "." flips ~50% of the entire 256-bit output digest',
     },
@@ -53,6 +57,8 @@ export const AvalancheVisualizer: React.FC = () => {
       name: 'Digit Increment ("1" vs "2")',
       a: 'Blockchain0001',
       b: 'Blockchain0002',
+      badgeVi: 'Khác 1 bit ("1" ↔ "2")',
+      badgeEn: '1 bit diff ("1" ↔ "2")',
       noteVi: 'Ký tự cuối cùng tăng từ "1" (0x31) lên "2" (0x32) tạo ra mã băm phân kỳ hoàn toàn',
       noteEn: 'Last character incremented from "1" (0x31) to "2" (0x32) triggers full hash divergence',
     },
@@ -61,6 +67,8 @@ export const AvalancheVisualizer: React.FC = () => {
       name: 'Single Bit ("0" vs "1")',
       a: '0',
       b: '1',
+      badgeVi: 'Khác 1 bit ("0" ↔ "1")',
+      badgeEn: '1 bit diff ("0" ↔ "1")',
       noteVi: 'Biến thiên đầu vào nhỏ nhất có thể: 1 ký tự ASCII cách nhau 1 bit (0x30 vs 0x31)',
       noteEn: 'Minimal possible single-character variance: 1 bit difference (0x30 vs 0x31)',
     },
@@ -88,32 +96,32 @@ export const AvalancheVisualizer: React.FC = () => {
   const avalancheSteps: GuideStep[] = [
     {
       stepNumber: 1,
-      titleVi: 'Bước 1: Quan sát 2 chuỗi đầu vào gần như y hệt',
+      titleVi: 'Bước 1: Chọn 2 đầu vào gần giống nhau',
       titleEn: 'Step 1: Compare near-identical inputs',
-      instructionVi: 'Thử chọn kịch bản mẫu có sẵn hoặc gõ 2 chuỗi chỉ khác nhau đúng 1 ký tự (ví dụ: "Hello World" và "Hello world").',
-      instructionEn: 'Pick a sample preset or type two inputs that differ by only a single character.',
-      targetActionVi: 'Bấm một trong các kịch bản mẫu phía dưới.',
-      targetActionEn: 'Click one of the sample scenario pills below.',
+      instructionVi: 'Chọn 2 đầu vào chỉ khác nhau 1 ký tự hoặc 1 bit.',
+      instructionEn: 'Choose 2 inputs differing by only 1 character or 1 bit.',
+      targetActionVi: 'Chọn một kịch bản bên dưới.',
+      targetActionEn: 'Select a preset scenario below.',
       isCompleted: inputA !== '' && inputB !== '',
     },
     {
       stepNumber: 2,
-      titleVi: 'Bước 2: Đo lường Khoảng cách Hamming (Hamming Distance)',
+      titleVi: 'Bước 2: Đo lường Khoảng cách Hamming',
       titleEn: 'Step 2: Measure Hamming Distance',
-      instructionVi: 'Xem bảng tổng kết tỷ lệ bit thay đổi trong 256 bit đầu ra của hàm băm SHA-256.',
-      instructionEn: 'Inspect the summary metric of flipped output bits out of 256.',
-      targetActionVi: 'Kiểm tra tỷ lệ phần trăm (thường xấp xỉ ~50%).',
-      targetActionEn: 'Observe the percentage (ideally around 50%).',
+      instructionVi: 'Quan sát số bit bị đảo và tỷ lệ phân kỳ giữa 2 mã băm.',
+      instructionEn: 'Observe flipped bits and divergence percentage between the hashes.',
+      targetActionVi: 'Kiểm tra tỷ lệ đảo bit (mục tiêu ~50%).',
+      targetActionEn: 'Check the bit flip ratio (target ~50%).',
       isCompleted: !!diffResult,
     },
     {
       stepNumber: 3,
-      titleVi: 'Bước 3: Soi ma trận 256 bit (Cryptographic Heatmap)',
-      titleEn: 'Step 3: Inspect 256-bit Heatmap Matrix',
-      instructionVi: 'Rê chuột vào các ô sáng màu Cyan (bit bị đảo) và ô tối (bit giữ nguyên) để kiểm tra thông số nhị phân chi tiết.',
-      instructionEn: 'Hover over glowing Cyan (flipped) and dark (unchanged) cells in the 256-bit matrix.',
-      targetActionVi: 'Rê chuột qua lưới Heatmap 256 bit bên dưới.',
-      targetActionEn: 'Hover over the 256-bit heatmap grid below.',
+      titleVi: 'Bước 3: Soi ma trận 256 bit (Heatmap)',
+      titleEn: 'Step 3: Inspect 256-bit Heatmap',
+      instructionVi: 'Ma trận biểu thị trạng thái đảo bit của từng vị trí trong 256 bit.',
+      instructionEn: 'The matrix visualizes the flip status of all 256 bit positions.',
+      targetActionVi: 'Rê chuột qua các ô để kiểm tra chi tiết từng bit.',
+      targetActionEn: 'Hover over cells to inspect individual bits.',
       isCompleted: hoveredBitIndex !== null || guideStepIndex === 2,
     },
   ];
@@ -137,13 +145,18 @@ export const AvalancheVisualizer: React.FC = () => {
     },
     {
       term: 'Hamming Distance (Khoảng cách Hamming)',
-      explanationVi: 'Số lượng vị trí bit khác nhau giữa hai chuỗi nhị phân có cùng độ dài (256 bit đối với SHA-256).',
-      explanationEn: 'The number of bit positions in which two equal-length binary strings differ (256 bits for SHA-256).',
+      explanationVi: 'Số lượng vị trí bit khác nhau giữa hai chuỗi nhị phân có cùng độ dài (256 bit đối với SHA-256), phản ánh mức độ phân kỳ hoàn toàn sau các phép biến đổi.',
+      explanationEn: 'The number of bit positions in which two equal-length binary strings differ (256 bits for SHA-256), reflecting complete divergence after cryptographic transformation.',
     },
     {
       term: 'Diffusion (Tính khuếch tán)',
-      explanationVi: 'Cơ chế phân tán cấu trúc thống kê và sự phụ thuộc của bản rõ ra toàn bộ không gian mã băm đầu ra.',
-      explanationEn: 'The mechanism spreading statistical patterns of the plaintext across the entire output digest space.',
+      explanationVi: 'Cơ chế phân tán cấu trúc thống kê và sự phụ thuộc của bản rõ ra toàn bộ không gian mã băm đầu ra, khiến kẻ tấn công không thể suy đoán ngược.',
+      explanationEn: 'The mechanism spreading statistical patterns of the plaintext across the entire output digest space, preventing reverse deduction.',
+    },
+    {
+      term: 'Cryptographic Heatmap',
+      explanationVi: 'Lưới trực quan hóa 256 bit: ô sáng (Cyan) là bit đảo, ô tối là bit giữ nguyên. Sự phân bố ngẫu nhiên đồng đều khắp ma trận là minh chứng trực quan cho tính khuếch tán.',
+      explanationEn: '256-bit visual matrix: glowing (Cyan) indicates flipped bits, dark indicates unchanged. Uniform random distribution visually confirms strong diffusion.',
     },
   ];
 
@@ -151,16 +164,18 @@ export const AvalancheVisualizer: React.FC = () => {
     <section id="avalanche" className="py-12 relative font-sans">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-6">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teach-1/10 border border-teach-1/25 text-teach-1 text-xs font-mono font-semibold tracking-wider uppercase mb-3">
+        <div className="text-center max-w-3xl mx-auto mb-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teach-1/10 border border-teach-1/25 text-teach-1 text-xs font-mono font-semibold tracking-wider uppercase mb-2">
             <Activity className="w-3.5 h-3.5" />
             <span>{strings.avalanche.badge}</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-bold text-[#F4F4F5] tracking-tight font-sans mb-2">
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#F4F4F5] tracking-tight font-sans mb-1.5">
             {strings.avalanche.title}
           </h2>
           <p className="text-sm text-[#A1A1AA] leading-relaxed font-sans">
-            {strings.avalanche.description}
+            {isVi
+              ? 'Đổi 1 ký tự hoặc 1 bit đầu vào → quan sát khoảng 50% bit hash đầu ra bị đảo.'
+              : 'Change 1 character or 1 bit in the input → observe ~50% of the output hash bits flip.'}
           </p>
         </div>
 
@@ -211,11 +226,14 @@ export const AvalancheVisualizer: React.FC = () => {
             })}
           </div>
 
-          {/* Active Preset Note Banner */}
+          {/* Active Preset Context Badge */}
           {activePreset && (
-            <div className="text-xs font-mono text-[#A1A1AA] bg-[#070A12]/60 border border-white/[0.06] px-4 py-1.5 rounded-full flex items-center gap-2">
-              <Sparkles className="w-3.5 h-3.5 text-teach-1 shrink-0" />
-              <span>{isVi ? activePreset.noteVi : activePreset.noteEn}</span>
+            <div
+              className="text-[11px] font-mono text-teach-1 bg-teach-1/10 border border-teach-1/25 px-3 py-1 rounded-full flex items-center gap-1.5 cursor-help"
+              title={isVi ? activePreset.noteVi : activePreset.noteEn}
+            >
+              <Sparkles className="w-3 h-3 text-teach-1 shrink-0" />
+              <span>{isVi ? activePreset.badgeVi : activePreset.badgeEn}</span>
             </div>
           )}
         </div>
@@ -373,10 +391,10 @@ export const AvalancheVisualizer: React.FC = () => {
 
         {/* Central Bit Difference & Hamming Distance Metrics Banner */}
         {diffResult && (
-          <div className="rounded-2xl bg-[#0B0F19]/60 border border-white/[0.08] p-6 sm:p-7 mb-6 font-sans">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center text-center md:text-left">
+          <div className="rounded-2xl bg-[#0B0F19]/60 border border-white/[0.08] p-5 sm:p-6 mb-6 font-sans">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 items-center text-center md:text-left">
               {/* Metric 1: Hamming Distance */}
-              <div className="border-b md:border-b-0 md:border-r border-white/[0.06] pb-5 md:pb-0 md:pr-6">
+              <div className="border-b md:border-b-0 md:border-r border-white/[0.06] pb-4 md:pb-0 md:pr-6">
                 <span className="text-xs font-mono text-[#A1A1AA] uppercase tracking-wider block mb-1 font-semibold">
                   {strings.avalanche.hammingDistance}
                 </span>
@@ -384,20 +402,20 @@ export const AvalancheVisualizer: React.FC = () => {
                   <span className="text-teach-1">{diffResult.changedBits}</span>{' '}
                   <span className="text-base font-normal text-[#71717A] font-sans">/ 256 bits</span>
                 </div>
-                <p className="text-xs text-[#71717A] mt-1.5 font-mono">
-                  Input diff: <span className="text-teach-1 font-semibold">{inputDiff.changedBits} bit{inputDiff.changedBits === 1 ? '' : 's'}</span> ({inputDiff.percentage.toFixed(1)}%)
+                <p className="text-xs text-[#71717A] mt-1 font-mono">
+                  {isVi ? 'Khác biệt đầu vào:' : 'Input diff:'} <span className="text-teach-1 font-semibold">{inputDiff.changedBits} bit{inputDiff.changedBits === 1 ? '' : 's'}</span>
                 </p>
               </div>
 
               {/* Metric 2: Avalanche Percentage */}
-              <div className="border-b md:border-b-0 md:border-r border-white/[0.06] pb-5 md:pb-0 md:pr-6">
+              <div className="border-b md:border-b-0 md:border-r border-white/[0.06] pb-4 md:pb-0 md:pr-6">
                 <span className="text-xs font-mono text-[#A1A1AA] uppercase tracking-wider block mb-1 font-semibold">
                   {strings.avalanche.avalanchePercentage}
                 </span>
                 <div className="text-3xl sm:text-4xl font-bold font-mono text-teach-1">
                   <span>{diffResult.percentage.toFixed(1)}%</span>
                 </div>
-                <p className="text-xs text-[#A1A1AA] mt-1.5 font-mono">
+                <p className="text-xs text-[#71717A] mt-1 font-mono">
                   {strings.avalanche.targetIdeal}
                 </p>
               </div>
@@ -410,25 +428,30 @@ export const AvalancheVisualizer: React.FC = () => {
                 <div className="flex items-center justify-center md:justify-start gap-2">
                   <CheckCircle2 className="w-5 h-5 text-success flex-shrink-0" />
                   <span className="text-base sm:text-lg font-bold font-sans text-success">
-                    {strings.avalanche.statusConfirmed}
+                    {isVi ? '✓ SAC Đạt' : '✓ SAC Achieved'}
                   </span>
                 </div>
-                <p className="text-xs text-[#71717A] mt-1.5 font-sans leading-relaxed">
-                  {hexDiffStats.changedHexChars}/64 hex ({hexDiffStats.percentHex.toFixed(1)}%) · {strings.avalanche.statusExplanation}
+                <p
+                  className="text-xs text-[#71717A] mt-1 font-mono cursor-help"
+                  title={strings.avalanche.statusExplanation}
+                >
+                  {hexDiffStats.changedHexChars}/64 hex ({hexDiffStats.percentHex.toFixed(1)}%)
                 </p>
               </div>
             </div>
 
             {/* Visual Progress Bar */}
-            <div className="mt-6 pt-6 border-t border-white/[0.06] font-sans">
-              <div className="flex justify-between text-xs text-[#71717A] font-mono mb-2">
-                <span>{strings.avalanche.noChange}</span>
+            <div className="mt-5 pt-5 border-t border-white/[0.06] font-sans">
+              <div className="flex justify-between items-center text-xs text-[#71717A] font-mono mb-2">
+                <span>0%</span>
                 <span className="text-teach-1 font-semibold">
-                  {diffResult.changedBits} / 256 Bits Flipped ({diffResult.percentage.toFixed(1)}%)
+                  {isVi
+                    ? `Bit bị đảo: ${diffResult.changedBits} / 256 · ${diffResult.percentage.toFixed(1)}%`
+                    : `Bits flipped: ${diffResult.changedBits} / 256 · ${diffResult.percentage.toFixed(1)}%`}
                 </span>
-                <span>{strings.avalanche.fullInversion}</span>
+                <span>100%</span>
               </div>
-              <div className="w-full h-3 bg-[#070A12] rounded-full overflow-hidden border border-white/[0.08] p-0.5 relative">
+              <div className="w-full h-2.5 bg-[#070A12] rounded-full overflow-hidden border border-white/[0.08] p-0.5 relative">
                 {/* 50% ideal reference line */}
                 <div
                   className="absolute top-0 bottom-0 left-1/2 w-0.5 bg-white/30 z-10"
@@ -445,29 +468,34 @@ export const AvalancheVisualizer: React.FC = () => {
 
         {/* 256-Bit Cryptographic Heatmap Matrix */}
         {diffResult && (
-          <div className="rounded-2xl bg-[#0B0F19]/60 border border-white/[0.08] p-5 sm:p-7 font-sans">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/[0.06] pb-4 mb-5">
-              <div>
-                <div className="flex items-center gap-2">
-                  <Hash className="w-4 h-4 text-teach-1" />
-                  <span className="text-xs font-mono font-bold text-[#F4F4F5] uppercase tracking-wider">
-                    {strings.avalanche.matrixTitle}
-                  </span>
-                </div>
-                <p className="text-xs text-[#71717A] mt-1 font-sans">
-                  {strings.avalanche.matrixDesc}
-                </p>
+          <div className="rounded-2xl bg-[#0B0F19]/60 border border-white/[0.08] p-5 sm:p-6 font-sans">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/[0.06] pb-3 mb-4">
+              <div
+                className="flex items-center gap-2 cursor-help"
+                title={strings.avalanche.matrixDesc}
+              >
+                <Hash className="w-4 h-4 text-teach-1" />
+                <span className="text-xs font-mono font-bold text-[#F4F4F5] uppercase tracking-wider">
+                  {strings.avalanche.matrixTitle}
+                </span>
               </div>
 
-              {/* Legend */}
-              <div className="flex items-center gap-4 text-xs font-mono">
-                <div className="flex items-center gap-2">
-                  <span className="w-3.5 h-3.5 rounded-[3px] bg-teach-1 inline-block" />
-                  <span className="text-[#F4F4F5]">{strings.avalanche.flippedBit} (<strong className="text-teach-1">{diffResult.changedBits}</strong>)</span>
+              {/* Concise Bit Counts */}
+              <div className="flex items-center gap-3 text-xs font-mono">
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2.5 h-2.5 rounded-[2px] bg-teach-1 inline-block" />
+                  <span className="text-[#F4F4F5]">
+                    {isVi ? 'Bit bị đảo:' : 'Bits flipped:'}{' '}
+                    <strong className="text-teach-1">{diffResult.changedBits}</strong>
+                  </span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="w-3.5 h-3.5 rounded-[3px] bg-white/[0.04] border border-white/[0.08] inline-block" />
-                  <span className="text-[#71717A]">{strings.avalanche.unchangedBit} (<strong className="text-[#A1A1AA]">{256 - diffResult.changedBits}</strong>)</span>
+                <span className="text-[#52525B]">·</span>
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2.5 h-2.5 rounded-[2px] bg-white/[0.04] border border-white/[0.08] inline-block" />
+                  <span className="text-[#71717A]">
+                    {isVi ? 'Bit giữ nguyên:' : 'Bits unchanged:'}{' '}
+                    <strong className="text-[#A1A1AA]">{256 - diffResult.changedBits}</strong>
+                  </span>
                 </div>
               </div>
             </div>
@@ -501,7 +529,7 @@ export const AvalancheVisualizer: React.FC = () => {
             </div>
 
             {/* Interactive Telemetry Inspector Bar */}
-            <div className="mt-4 p-3.5 rounded-xl bg-[#070A12] border border-white/[0.06] text-xs font-mono flex flex-wrap items-center justify-between gap-3 text-[#A1A1AA]">
+            <div className="mt-4 p-3 rounded-xl bg-[#070A12] border border-white/[0.06] text-xs font-mono flex flex-wrap items-center justify-between gap-3 text-[#A1A1AA]">
               {hoveredBitIndex !== null ? (
                 <>
                   <div className="flex items-center gap-2">
@@ -537,9 +565,9 @@ export const AvalancheVisualizer: React.FC = () => {
                   </div>
                 </>
               ) : (
-                <div className="flex items-center gap-2 text-[#71717A]">
+                <div className="flex items-center gap-2 text-[#71717A]" title={strings.avalanche.hoverPrompt}>
                   <Activity className="w-3.5 h-3.5 text-teach-1/60" />
-                  <span>{strings.avalanche.hoverPrompt}</span>
+                  <span>{isVi ? 'Rê chuột lên ô để xem chi tiết bit (0 - 255)' : 'Hover over a cell to inspect bit (0 - 255)'}</span>
                 </div>
               )}
             </div>

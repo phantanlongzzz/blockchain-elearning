@@ -209,6 +209,7 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
   const [step2EditAmount, setStep2EditAmount] = useState<number>(11);
   const [step2ModifiedHash, setStep2ModifiedHash] = useState<string>('');
   const [step2IsRehashed, setStep2IsRehashed] = useState<boolean>(false);
+  const [showAvalancheDemo, setShowAvalancheDemo] = useState<boolean>(false);
 
   const rawTxString = createdTx.rawString;
   const originalTxHash = useMemo(() => {
@@ -254,6 +255,7 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
   // STEP 4 STATE: Hash Pointer & Linked List Bridge
   // ----------------------------------------------------
   const [hoveredPointer, setHoveredPointer] = useState<string | null>(null);
+  const [showConceptBridge, setShowConceptBridge] = useState<boolean>(false);
 
   // ----------------------------------------------------
   // STEP 5 STATE: Expanding Blockchain (Dynamic Chain State)
@@ -656,17 +658,17 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
         </div>
       </div>
 
-      {/* Interactive 8-Step Stepper Bar */}
+      {/* Interactive Pipeline Stepper Bar */}
       <div className="p-4 sm:p-5 rounded-2xl bg-[#0B0F19]/70 border border-white/[0.08] space-y-4">
         <div className="flex items-center justify-between text-xs font-sans">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-cyan-400" />
             <span className="text-slate-200 font-semibold">
-              {language === 'vi' ? 'Lộ trình 8 bước thực nghiệm' : '8-Step Pipeline Workflow'}
+              {language === 'vi' ? `Lộ trình ${PIPELINE_STEPS.length} bước thực nghiệm` : `${PIPELINE_STEPS.length}-Step Pipeline Workflow`}
             </span>
           </div>
           <span className="text-cyan-300 font-mono text-xs px-2.5 py-0.5 rounded-lg bg-cyan-500/10 border border-cyan-500/30">
-            {language === 'vi' ? `Bước ${currentStep} / 8` : `Step ${currentStep} / 8`}
+            {language === 'vi' ? `Bước ${currentStep} / ${PIPELINE_STEPS.length}` : `Step ${currentStep} / ${PIPELINE_STEPS.length}`}
           </span>
         </div>
 
@@ -939,66 +941,83 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
 
               {/* Right: Interactive Re-Hash Avalanche Experiment */}
               <div className="lg:col-span-6 p-5 rounded-2xl bg-[#05070c] border border-slate-800 space-y-4">
-                <div className="flex items-center justify-between pb-3 border-b border-slate-800">
-                  <span className="text-xs font-mono font-bold text-amber-300 uppercase flex items-center gap-2">
-                    <Sliders className="w-4 h-4 text-amber-400" />
-                    <span>{language === 'vi' ? 'Thử Thay Đổi Dữ Liệu & Hash Lại' : 'Interactive Re-Hash'}</span>
-                  </span>
-                  <span className="text-[10px] font-mono text-amber-400 bg-amber-950/30 px-2 py-0.5 rounded border border-amber-500/30">
-                    Avalanche Demo
-                  </span>
-                </div>
-
-                <div className="space-y-3 font-mono text-xs">
-                  <p className="text-slate-400 font-sans text-xs">
-                    {language === 'vi'
-                      ? 'Thử sửa số tiền từ 10 BTC thành 11 BTC và bấm "HASH LẠI" để quan sát sự khác biệt:'
-                      : 'Modify amount from 10 to 11 BTC and click "RE-HASH" to observe hash mutation:'}
-                  </p>
-
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-slate-800">
                   <div className="flex items-center gap-2">
-                    <span className="text-slate-400">{createdTx.sender} &rarr; {createdTx.recipient} :</span>
-                    <input
-                      type="number"
-                      value={step2EditAmount}
-                      onChange={(e) => setStep2EditAmount(parseFloat(e.target.value) || 0)}
-                      className="w-24 px-2.5 py-1.5 rounded bg-slate-900 border border-slate-700 text-amber-300 font-bold focus:outline-none focus:border-amber-400 text-xs font-mono"
-                    />
-                    <span className="text-slate-400">{createdTx.unit}</span>
-
-                    <button
-                      type="button"
-                      onClick={handleRehashStep2}
-                      className="px-4 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-black font-bold font-mono text-xs transition-all cursor-pointer shrink-0"
-                    >
-                      {language === 'vi' ? 'HASH LẠI' : 'RE-HASH'}
-                    </button>
+                    <span className="text-xs font-mono font-bold text-amber-300 uppercase flex items-center gap-2">
+                      <Sliders className="w-4 h-4 text-amber-400" />
+                      <span>{language === 'vi' ? 'Thử Thay Đổi Dữ Liệu & Hash Lại' : 'Interactive Re-Hash'}</span>
+                    </span>
+                    <span className="text-[10px] font-mono text-amber-400 bg-amber-950/30 px-2 py-0.5 rounded border border-amber-500/30">
+                      Avalanche Demo
+                    </span>
                   </div>
-
-                  {step2IsRehashed && (
-                    <div className="space-y-2 pt-2 border-t border-slate-800 animate-in fade-in">
-                      <div className="p-2 rounded bg-slate-900 border border-slate-800">
-                        <span className="text-[10px] text-slate-500 block">Original Hash (10 BTC):</span>
-                        <span className="text-[11px] text-slate-400 break-all">{originalTxHash}</span>
-                      </div>
-
-                      <div className="p-2 rounded bg-amber-950/30 border border-amber-500/40">
-                        <span className="text-[10px] text-amber-400 block font-bold">
-                          New Hash ({step2EditAmount} BTC):
-                        </span>
-                        <span className="text-[11px] text-amber-300 font-bold break-all">
-                          {step2ModifiedHash}
-                        </span>
-                      </div>
-
-                      <div className="p-3 rounded-lg bg-amber-950/20 border border-amber-500/30 text-xs text-amber-200 font-sans">
-                        {language === 'vi'
-                          ? '⚡ Chỉ cần thay đổi một phần rất nhỏ của dữ liệu, kết quả hash thay đổi mạnh. Đây là Avalanche Effect (Hiệu ứng thác đổ).'
-                          : '⚡ Even a minute modification flips the cryptographic digest drastically (Avalanche Effect).'}
-                      </div>
-                    </div>
-                  )}
+                  <button
+                    type="button"
+                    onClick={() => setShowAvalancheDemo(!showAvalancheDemo)}
+                    aria-expanded={showAvalancheDemo}
+                    aria-controls="step2-avalanche-deep-dive"
+                    className="px-3 py-1.5 rounded-lg bg-amber-950/30 hover:bg-amber-900/40 border border-amber-500/30 text-amber-400 text-[11px] font-mono transition-colors flex items-center gap-1.5 whitespace-nowrap"
+                  >
+                    {showAvalancheDemo ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+                    {showAvalancheDemo
+                      ? language === 'vi' ? 'Ẩn Deep Dive: Avalanche Effect' : 'Hide Deep Dive: Avalanche Effect'
+                      : language === 'vi' ? 'Hiển thị Deep Dive: Avalanche Effect' : 'Show Deep Dive: Avalanche Effect'
+                    }
+                  </button>
                 </div>
+
+                {showAvalancheDemo && (
+                  <div id="step2-avalanche-deep-dive" className="space-y-3 font-mono text-xs animate-in slide-in-from-top-2">
+                    <p className="text-slate-400 font-sans text-xs">
+                      {language === 'vi'
+                        ? 'Thử sửa số tiền từ 10 BTC thành 11 BTC và bấm "HASH LẠI" để quan sát sự khác biệt:'
+                        : 'Modify amount from 10 to 11 BTC and click "RE-HASH" to observe hash mutation:'}
+                    </p>
+
+                    <div className="flex items-center gap-2">
+                      <span className="text-slate-400">{createdTx.sender} &rarr; {createdTx.recipient} :</span>
+                      <input
+                        type="number"
+                        value={step2EditAmount}
+                        onChange={(e) => setStep2EditAmount(parseFloat(e.target.value) || 0)}
+                        className="w-24 px-2.5 py-1.5 rounded bg-slate-900 border border-slate-700 text-amber-300 font-bold focus:outline-none focus:border-amber-400 text-xs font-mono"
+                      />
+                      <span className="text-slate-400">{createdTx.unit}</span>
+
+                      <button
+                        type="button"
+                        onClick={handleRehashStep2}
+                        className="px-4 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-black font-bold font-mono text-xs transition-all cursor-pointer shrink-0"
+                      >
+                        {language === 'vi' ? 'HASH LẠI' : 'RE-HASH'}
+                      </button>
+                    </div>
+
+                    {step2IsRehashed && (
+                      <div className="space-y-2 pt-2 border-t border-slate-800 animate-in fade-in">
+                        <div className="p-2 rounded bg-slate-900 border border-slate-800">
+                          <span className="text-[10px] text-slate-500 block">Original Hash (10 BTC):</span>
+                          <span className="text-[11px] text-slate-400 break-all">{originalTxHash}</span>
+                        </div>
+
+                        <div className="p-2 rounded bg-amber-950/30 border border-amber-500/40">
+                          <span className="text-[10px] text-amber-400 block font-bold">
+                            New Hash ({step2EditAmount} BTC):
+                          </span>
+                          <span className="text-[11px] text-amber-300 font-bold break-all">
+                            {step2ModifiedHash}
+                          </span>
+                        </div>
+
+                        <div className="p-3 rounded-lg bg-amber-950/20 border border-amber-500/30 text-xs text-amber-200 font-sans">
+                          {language === 'vi'
+                            ? '⚡ Chỉ cần thay đổi một phần rất nhỏ của dữ liệu, kết quả hash thay đổi mạnh. Đây là Avalanche Effect (Hiệu ứng thác đổ).'
+                            : '⚡ Even a minute modification flips the cryptographic digest drastically (Avalanche Effect).'}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -1259,52 +1278,69 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
 
             {/* Linked List vs Blockchain Conceptual Comparison Bridge */}
             <div className="p-5 rounded-2xl bg-[#0B0E12] border border-border-primary space-y-4">
-              <div className="flex items-center gap-2 text-teach-1 font-bold text-sm font-mono uppercase">
-                <Link2 className="w-4 h-4 text-teach-1" />
-                <span>
-                  {language === 'vi'
-                    ? 'Cầu Nối Khái Niệm: Linked List (Buổi 1) ➔ Blockchain'
-                    : 'Concept Bridge: Linked List ➔ Blockchain'}
-                </span>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-1">
+                <div className="flex items-center gap-2 text-teach-1 font-bold text-sm font-mono uppercase">
+                  <Link2 className="w-4 h-4 text-teach-1" />
+                  <span>
+                    {language === 'vi'
+                      ? 'Cầu Nối Khái Niệm: Linked List (Buổi 1) ➔ Blockchain'
+                      : 'Concept Bridge: Linked List ➔ Blockchain'}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowConceptBridge(!showConceptBridge)}
+                  aria-expanded={showConceptBridge}
+                  aria-controls="step4-concept-bridge"
+                  className="px-3 py-1.5 rounded-lg bg-teach-1/10 hover:bg-teach-1/20 border border-teach-1/30 text-teach-1 text-[11px] font-mono transition-colors flex items-center gap-1.5 whitespace-nowrap"
+                >
+                  {showConceptBridge ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+                  {showConceptBridge
+                    ? language === 'vi' ? 'Ẩn Deep Dive: Linked List vs Blockchain' : 'Hide Deep Dive: Linked List vs Blockchain'
+                    : language === 'vi' ? 'Hiển thị Deep Dive: Linked List vs Blockchain' : 'Show Deep Dive: Linked List vs Blockchain'
+                  }
+                </button>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono text-xs">
-                {/* Linked List */}
-                <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
-                  <div className="flex items-center justify-between text-slate-300 font-bold">
-                    <span>DANH SÁCH LIÊN KẾT</span>
-                    <span className="text-[10px] text-slate-500">RAM Pointer</span>
+              {showConceptBridge && (
+                <div id="step4-concept-bridge" className="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono text-xs animate-in slide-in-from-top-2">
+                  {/* Linked List */}
+                  <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+                    <div className="flex items-center justify-between text-slate-300 font-bold">
+                      <span>DANH SÁCH LIÊN KẾT</span>
+                      <span className="text-[10px] text-slate-500">RAM Pointer</span>
+                    </div>
+                    <div className="p-2.5 rounded bg-slate-900 text-slate-300 space-y-1">
+                      <div>Node A: DATA + <span className="text-teach-1 font-bold">NEXT (0x7ffd98a10)</span></div>
+                      <div className="text-center text-slate-500">&darr; Trỏ ô nhớ RAM</div>
+                      <div>Node B: DATA + <span className="text-teach-1 font-bold">NEXT (0x7ffd98a28)</span></div>
+                    </div>
+                    <p className="text-[11px] text-slate-400 font-sans leading-relaxed">
+                      {language === 'vi'
+                        ? 'Sửa dữ liệu Node A không làm thay đổi địa chỉ ô nhớ RAM của Node B. Không có tính năng phát hiện giả mạo.'
+                        : 'Modifying Node A does not affect RAM address of Node B. No cryptographic tampering detection.'}
+                    </p>
                   </div>
-                  <div className="p-2.5 rounded bg-slate-900 text-slate-300 space-y-1">
-                    <div>Node A: DATA + <span className="text-teach-1 font-bold">NEXT (0x7ffd98a10)</span></div>
-                    <div className="text-center text-slate-500">&darr; Trỏ ô nhớ RAM</div>
-                    <div>Node B: DATA + <span className="text-teach-1 font-bold">NEXT (0x7ffd98a28)</span></div>
-                  </div>
-                  <p className="text-[11px] text-slate-400 font-sans leading-relaxed">
-                    {language === 'vi'
-                      ? 'Sửa dữ liệu Node A không làm thay đổi địa chỉ ô nhớ RAM của Node B. Không có tính năng phát hiện giả mạo.'
-                      : 'Modifying Node A does not affect RAM address of Node B. No cryptographic tampering detection.'}
-                  </p>
-                </div>
 
-                {/* Blockchain */}
-                <div className="p-3.5 rounded-xl bg-teach-1/10 border border-teach-1/40 space-y-2">
-                  <div className="flex items-center justify-between text-teach-1 font-bold">
-                    <span>BLOCKCHAIN</span>
-                    <span className="text-[10px] text-teach-1">Cryptographic Hash Pointer</span>
+                  {/* Blockchain */}
+                  <div className="p-3.5 rounded-xl bg-teach-1/10 border border-teach-1/40 space-y-2">
+                    <div className="flex items-center justify-between text-teach-1 font-bold">
+                      <span>BLOCKCHAIN</span>
+                      <span className="text-[10px] text-teach-1">Cryptographic Hash Pointer</span>
+                    </div>
+                    <div className="p-2.5 rounded bg-black/60 text-slate-300 space-y-1">
+                      <div>Block #0: DATA + <span className="text-teach-1 font-bold">Hash #0 (6a09e667...)</span></div>
+                      <div className="text-center text-teach-1">&darr; Khóa chặt bằng SHA-256</div>
+                      <div>Block #1: <span className="text-teach-1 font-bold">PrevHash = Hash #0</span> + DATA</div>
+                    </div>
+                    <p className="text-[11px] text-slate-300 font-sans leading-relaxed">
+                      {language === 'vi'
+                        ? 'Blockchain kế thừa ý tưởng liên kết chuỗi từ Linked List, nhưng thay con trỏ bộ nhớ bằng liên kết dựa trên Hash không thể làm giả.'
+                        : 'Blockchain inherits sequential chaining from Linked Lists, but substitutes volatile memory pointers with immutable cryptographic hashes.'}
+                    </p>
                   </div>
-                  <div className="p-2.5 rounded bg-black/60 text-slate-300 space-y-1">
-                    <div>Block #0: DATA + <span className="text-teach-1 font-bold">Hash #0 (6a09e667...)</span></div>
-                    <div className="text-center text-teach-1">&darr; Khóa chặt bằng SHA-256</div>
-                    <div>Block #1: <span className="text-teach-1 font-bold">PrevHash = Hash #0</span> + DATA</div>
-                  </div>
-                  <p className="text-[11px] text-slate-300 font-sans leading-relaxed">
-                    {language === 'vi'
-                      ? 'Blockchain kế thừa ý tưởng liên kết chuỗi từ Linked List, nhưng thay con trỏ bộ nhớ bằng liên kết dựa trên Hash không thể làm giả.'
-                      : 'Blockchain inherits sequential chaining from Linked Lists, but substitutes volatile memory pointers with immutable cryptographic hashes.'}
-                  </p>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         )}
@@ -1727,7 +1763,7 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
 
           {/* Step Indicator */}
           <span className="text-xs font-mono text-zinc-500 hidden md:inline-block">
-            {language === 'vi' ? `Bước ${currentStep} / 7: ${currentStepDef.badge}` : `Step ${currentStep} / 7: ${currentStepDef.badge}`}
+            {language === 'vi' ? `Bước ${currentStep} / ${PIPELINE_STEPS.length}: ${currentStepDef.badge}` : `Step ${currentStep} / ${PIPELINE_STEPS.length}: ${currentStepDef.badge}`}
           </span>
 
           {/* Continue Button (Enabled only when prerequisite action is satisfied) */}

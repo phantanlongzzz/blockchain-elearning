@@ -305,11 +305,11 @@ export const MempoolDashboard: React.FC = () => {
     txResult.status = isAllValid ? 'MEMPOOL' : 'REJECTED';
     
     if (!signaturePass) {
-      txResult.rejectionReason = isVi ? 'Chữ ký không hợp lệ: Dữ liệu giao dịch đã bị thay đổi sau khi ký.' : 'Invalid signature: Transaction data was altered after signing.';
+      txResult.rejectionReason = isVi ? 'Chữ ký không hợp lệ: Dữ liệu bị thay đổi sau khi ký' : 'Invalid signature: Data altered post-signing';
     } else if (!balancePass) {
-      txResult.rejectionReason = isVi ? 'Số dư khả dụng không đủ để thực hiện giao dịch.' : 'Insufficient balance: Available funds are not enough.';
+      txResult.rejectionReason = isVi ? 'Số tiền vượt số dư khả dụng' : 'Amount exceeds available balance';
     } else if (!replayPass) {
-      txResult.rejectionReason = isVi ? 'Phát hiện giao dịch trùng lặp: Nonce hoặc chữ ký đã được xử lý trước đó.' : 'Duplicate transaction detected: Nonce or signature already processed.';
+      txResult.rejectionReason = isVi ? 'Nonce đã được sử dụng' : 'Nonce already used';
     }
     
     const finalMempool = isAllValid ? [txResult, ...baseMempool] : [...baseMempool];
@@ -405,10 +405,10 @@ export const MempoolDashboard: React.FC = () => {
 
   const verificationRules = [
     { name: isVi ? 'Định dạng giao dịch' : 'Transaction format', pass: lastVerifiedTx?.verificationChecks.format, desc: isVi ? 'Cấu trúc gói tin chuẩn' : 'Canonical structure' },
-    { name: isVi ? 'Khóa công khai người gửi' : 'Sender public key', pass: lastVerifiedTx?.verificationChecks.publicKey, desc: isVi ? 'Điểm đường cong SECP256K1 hợp lệ' : 'Valid SECP256K1 point' },
-    { name: isVi ? 'Chữ ký ECDSA' : 'ECDSA signature', pass: lastVerifiedTx?.verificationChecks.signature, desc: isVi ? 'Khớp mã băm SHA-256 nội dung' : 'Matches SHA-256 digest' },
-    { name: isVi ? 'Kiểm tra số dư khả dụng' : 'Available funds check', pass: lastVerifiedTx?.verificationChecks.balance, desc: isVi ? 'Số dư người gửi ≥ số tiền chuyển' : 'Balance ≥ amount' },
-    { name: isVi ? 'Chống phát lại (Replay Protection)' : 'Replay Protection', pass: lastVerifiedTx?.verificationChecks.replay, desc: isVi ? 'Tính duy nhất của Nonce / Chữ ký' : 'Unique nonce & sig' },
+    { name: isVi ? 'Khóa công khai' : 'Sender public key', pass: lastVerifiedTx?.verificationChecks.publicKey, desc: isVi ? 'Điểm đường cong SECP256k1 hợp lệ' : 'Valid SECP256k1 point' },
+    { name: isVi ? 'Chữ ký ECDSA' : 'ECDSA signature', pass: lastVerifiedTx?.verificationChecks.signature, desc: isVi ? 'Khớp giá trị băm SHA-256' : 'Matches SHA-256 digest' },
+    { name: isVi ? 'Kiểm tra số dư' : 'Available balance check', pass: lastVerifiedTx?.verificationChecks.balance, desc: isVi ? 'Số dư khả dụng ≥ số tiền chuyển' : 'Balance ≥ amount' },
+    { name: isVi ? 'Chống phát lại' : 'Replay protection', pass: lastVerifiedTx?.verificationChecks.replay, desc: isVi ? 'Nonce hợp lệ và chưa qua sử dụng' : 'Valid and unused nonce' },
     { name: isVi ? 'Trường dữ liệu bắt buộc' : 'Required fields', pass: lastVerifiedTx?.verificationChecks.fields, desc: isVi ? 'Đầy đủ người gửi, người nhận, thời gian' : 'Complete fields' },
   ];
 
@@ -416,59 +416,51 @@ export const MempoolDashboard: React.FC = () => {
     {
       id: 'VALID' as const,
       title: isVi ? 'Giao dịch hợp lệ' : 'Valid Transaction',
-      desc: isVi ? 'Chữ ký số hợp lệ và đủ số dư khả dụng' : 'Valid digital signature and sufficient balance',
+      desc: isVi ? 'Đủ số dư và chữ ký hợp lệ' : 'Valid signature and sufficient balance',
       icon: CheckCircle2,
       accentBorder: 'border-emerald-500/70',
       accentBg: 'bg-emerald-950/20',
       activeText: 'text-emerald-300',
-      badge: isVi ? 'Hợp lệ' : 'Valid',
-      badgeColor: 'bg-emerald-950/60 text-emerald-300 border-emerald-500/30',
       iconColor: 'text-emerald-400',
     },
     {
       id: 'TAMPERED' as const,
-      title: isVi ? 'Sửa dữ liệu sau khi ký' : 'Data Altered Post-Signing',
-      desc: isVi ? 'Số tiền bị sửa đổi sau khi tạo chữ ký' : 'Amount modified after signature creation',
+      title: isVi ? 'Sửa dữ liệu sau khi ký' : 'Altered Post-Signing',
+      desc: isVi ? 'Dữ liệu thay đổi sau khi ký' : 'Payload modified after signature creation',
       icon: FileEdit,
       accentBorder: 'border-rose-500/70',
       accentBg: 'bg-rose-950/20',
       activeText: 'text-rose-300',
-      badge: isVi ? 'Sai chữ ký' : 'Bad Signature',
-      badgeColor: 'bg-rose-950/60 text-rose-300 border-rose-500/30',
       iconColor: 'text-rose-400',
     },
     {
       id: 'INSUFFICIENT' as const,
       title: isVi ? 'Vượt số dư' : 'Insufficient Balance',
-      desc: isVi ? 'Số tiền chuyển vượt quá số dư khả dụng' : 'Transfer amount exceeds available balance',
+      desc: isVi ? 'Số tiền vượt số dư khả dụng' : 'Transfer amount exceeds available balance',
       icon: Coins,
       accentBorder: 'border-amber-500/70',
       accentBg: 'bg-amber-950/20',
       activeText: 'text-amber-300',
-      badge: isVi ? 'Thiếu số dư' : 'Low Balance',
-      badgeColor: 'bg-amber-950/60 text-amber-300 border-amber-500/30',
       iconColor: 'text-amber-400',
     },
     {
       id: 'REPLAY' as const,
       title: isVi ? 'Phát lại giao dịch' : 'Transaction Replay',
-      desc: isVi ? 'Giao dịch gửi lại với Nonce đã qua sử dụng' : 'Resending transaction with already used Nonce',
+      desc: isVi ? 'Nonce đã được sử dụng' : 'Nonce already used in previous transaction',
       icon: Repeat,
       accentBorder: 'border-purple-500/70',
       accentBg: 'bg-purple-950/20',
       activeText: 'text-purple-300',
-      badge: isVi ? 'Trùng Nonce' : 'Replay Nonce',
-      badgeColor: 'bg-purple-950/60 text-purple-300 border-purple-500/30',
       iconColor: 'text-purple-400',
     },
   ];
 
   const steps = [
-    { step: 1, num: '01', title: isVi ? 'Tạo TX' : 'Create TX', sub: 'Transaction', active: activeStep === 1 },
+    { step: 1, num: '01', title: isVi ? 'Tạo giao dịch' : 'Create TX', sub: 'Payload', active: activeStep === 1 },
     { step: 2, num: '02', title: isVi ? 'Ký số' : 'Sign', sub: 'ECDSA', active: activeStep === 2 },
     { step: 3, num: '03', title: isVi ? 'Truyền phát' : 'Broadcast', sub: 'P2P Gossip', active: activeStep === 3 },
-    { step: 4, num: '04', title: isVi ? 'Kiểm định' : 'Node Audit', sub: 'Verify', active: activeStep === 4 },
-    { step: 5, num: '05', title: activeStep === 6 ? (isVi ? 'Từ chối' : 'Rejected') : (isVi ? 'Mempool' : 'Mempool'), sub: activeStep === 6 ? (isVi ? 'Thất bại' : 'Failed') : (isVi ? 'Hàng đợi' : 'Queue'), active: activeStep === 5 || activeStep === 6, failed: activeStep === 6 },
+    { step: 4, num: '04', title: isVi ? 'Kiểm định' : 'Verification', sub: 'Full Node', active: activeStep === 4 },
+    { step: 5, num: '05', title: activeStep === 6 ? (isVi ? 'Bị từ chối' : 'Rejected') : (isVi ? 'Mempool' : 'Mempool'), sub: activeStep === 6 ? (isVi ? 'Không hợp lệ' : 'Invalid') : (isVi ? 'Hàng đợi' : 'Queue'), active: activeStep === 5 || activeStep === 6, failed: activeStep === 6 },
   ];
 
   const progressPercent = activeStep === 0 ? 0 : activeStep === 1 ? 20 : activeStep === 2 ? 40 : activeStep === 3 ? 60 : activeStep === 4 ? 80 : 100;
@@ -479,16 +471,11 @@ export const MempoolDashboard: React.FC = () => {
       {/* 0. Scenario Cards */}
       <div className="p-4 sm:p-5 rounded-xl bg-[#0B0F19]/90 border border-slate-800 space-y-3 shadow-sm">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-300">
-              {isVi ? 'Kịch bản kiểm thử giao dịch' : 'Transaction Test Scenarios'}
-            </span>
-            <span className="text-[10px] font-mono text-slate-500 hidden sm:inline">
-              (4 Scenarios)
-            </span>
-          </div>
+          <span className="text-xs font-semibold uppercase tracking-wider text-slate-300">
+            {isVi ? 'Kịch bản kiểm thử' : 'Test Scenarios'}
+          </span>
           <span className="text-[11px] text-slate-400 font-sans">
-            {isVi ? 'Chọn 1 kịch bản để chạy qua tiến trình xác thực bên dưới' : 'Select a scenario to run through the validation pipeline'}
+            {isVi ? 'Chọn kịch bản để mô phỏng' : 'Select a scenario to simulate'}
           </span>
         </div>
         
@@ -514,14 +501,9 @@ export const MempoolDashboard: React.FC = () => {
                     <div className={`p-1.5 rounded-lg ${isSelected ? 'bg-slate-900/80 border border-slate-700/60' : 'bg-slate-950/60 border border-slate-800'}`}>
                       <Icon className={`w-4 h-4 ${isSelected ? item.iconColor : 'text-slate-400 group-hover:text-slate-300'}`} />
                     </div>
-                    <div className="flex items-center gap-1.5">
-                      <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full border ${item.badgeColor}`}>
-                        {item.badge}
-                      </span>
-                      {isSelected && (
-                        <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0" />
-                      )}
-                    </div>
+                    {isSelected && (
+                      <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0" />
+                    )}
                   </div>
                   <h4 className={`text-xs sm:text-sm font-semibold tracking-tight mb-1 ${isSelected ? 'text-white' : 'text-slate-200 group-hover:text-white'}`}>
                     {item.title}
@@ -543,10 +525,10 @@ export const MempoolDashboard: React.FC = () => {
           <div className="flex items-center justify-between flex-wrap gap-2.5 pb-2.5 border-b border-slate-800/80">
             <div className="flex items-center gap-2">
               <span className="text-xs font-semibold uppercase tracking-wider text-slate-200">
-                {isVi ? 'Tiến trình xác thực giao dịch' : 'Transaction Validation Pipeline'}
+                {isVi ? 'Tiến trình xác thực' : 'Validation Pipeline'}
               </span>
               <span className="text-xs font-mono text-cyan-400 font-medium px-2 py-0.5 rounded bg-slate-950 border border-slate-800">
-                {activeStep > 0 ? `${Math.max(1, Math.min(5, activeStep))}/5 Bước` : '0/5 Bước'}
+                {activeStep > 0 ? `${Math.max(1, Math.min(5, activeStep))}/5` : '0/5'}
               </span>
             </div>
 
@@ -562,10 +544,10 @@ export const MempoolDashboard: React.FC = () => {
                       ? 'bg-cyan-500 hover:bg-cyan-400 text-slate-950 ring-1 ring-cyan-400/40'
                       : 'bg-slate-800/80 text-slate-500 cursor-not-allowed border border-slate-800'
                   }`}
-                  title={!selectedScenario ? (isVi ? 'Vui lòng chọn 1 kịch bản bên trên' : 'Select a scenario above first') : ''}
+                  title={!selectedScenario ? (isVi ? 'Chọn một kịch bản phía trên' : 'Select a scenario above first') : ''}
                 >
                   <Play className="w-3.5 h-3.5 fill-current" />
-                  <span>{isVi ? 'Chạy tiến trình' : 'Run Pipeline'}</span>
+                  <span>{isVi ? 'Bắt đầu' : 'Start'}</span>
                 </button>
               ) : (
                 <>
@@ -643,13 +625,13 @@ export const MempoolDashboard: React.FC = () => {
           <div className="space-y-1.5">
             <div className="flex items-center justify-between text-xs font-mono text-slate-400">
               <span className="flex items-center gap-1.5">
-                {activeStep === 0 && <span className="text-slate-500">{isVi ? 'Trạng thái: Sẵn sàng kiểm thử' : 'Status: Ready'}</span>}
-                {activeStep === 1 && <span className="text-cyan-300">{isVi ? 'Bước 1/5: Tạo dữ liệu giao dịch' : 'Step 1/5: Creating Payload'}</span>}
-                {activeStep === 2 && <span className="text-cyan-300">{isVi ? 'Bước 2/5: Băm SHA-256 & Ký số ECDSA' : 'Step 2/5: Hashing & ECDSA Signing'}</span>}
-                {activeStep === 3 && <span className="text-cyan-300">{isVi ? 'Bước 3/5: Truyền phát mạng ngang hàng P2P' : 'Step 3/5: P2P Network Propagation'}</span>}
-                {activeStep === 4 && <span className="text-amber-300">{isVi ? 'Bước 4/5: Nút mạng kiểm tra 6 tiêu chí' : 'Step 4/5: Node Verification Checks'}</span>}
-                {activeStep === 5 && <span className="text-emerald-300">{isVi ? 'Bước 5/5: Hoàn tất - Chấp nhận vào Mempool' : 'Step 5/5: Accepted into Mempool'}</span>}
-                {activeStep === 6 && <span className="text-rose-400">{isVi ? 'Bước 5/5: Thất bại - Giao dịch bị từ chối' : 'Step 5/5: Transaction Rejected'}</span>}
+                {activeStep === 0 && <span className="text-slate-500">{isVi ? 'Sẵn sàng' : 'Ready'}</span>}
+                {activeStep === 1 && <span className="text-cyan-300">{isVi ? 'Bước 1/5: Tạo giao dịch' : 'Step 1/5: Create transaction'}</span>}
+                {activeStep === 2 && <span className="text-cyan-300">{isVi ? 'Bước 2/5: Ký số ECDSA' : 'Step 2/5: ECDSA signature'}</span>}
+                {activeStep === 3 && <span className="text-cyan-300">{isVi ? 'Bước 3/5: Truyền phát P2P' : 'Step 3/5: P2P broadcast'}</span>}
+                {activeStep === 4 && <span className="text-amber-300">{isVi ? 'Bước 4/5: Kiểm định nút' : 'Step 4/5: Node verification'}</span>}
+                {activeStep === 5 && <span className="text-emerald-300">{isVi ? '5/5 — Hoàn tất' : '5/5 — Complete'}</span>}
+                {activeStep === 6 && <span className="text-rose-400">{isVi ? '5/5 — Bị từ chối' : '5/5 — Rejected'}</span>}
               </span>
               <span className="font-semibold text-slate-300">
                 {progressPercent}%
@@ -735,7 +717,6 @@ export const MempoolDashboard: React.FC = () => {
             <span className="text-xs font-semibold uppercase tracking-wider text-slate-300">
               {vStr.matrixTitle}
             </span>
-            <span className="text-[10px] font-mono text-slate-500 uppercase">Live Metrics</span>
           </div>
           <div className="grid grid-cols-2 gap-2.5">
             {/* Stat 1: Total Submitted */}

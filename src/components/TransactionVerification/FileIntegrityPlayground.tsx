@@ -94,14 +94,14 @@ export const FileIntegrityPlayground: React.FC = () => {
             onClick={() => loadPreset('valid')}
             className="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700/60 text-xs font-mono transition-colors cursor-pointer"
           >
-            {isVi ? 'Mẫu 1: Tệp chuẩn (Khớp băm)' : 'Preset 1: Valid File'}
+            {isVi ? 'Mẫu: Tệp hợp lệ' : 'Preset: Valid File'}
           </button>
           <button
             type="button"
             onClick={() => loadPreset('tampered')}
             className="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700/60 text-xs font-mono transition-colors cursor-pointer"
           >
-            {isVi ? 'Mẫu 2: Tệp bị sửa đổi (Lệch băm)' : 'Preset 2: Tampered File'}
+            {isVi ? 'Mẫu: Tệp bị sửa đổi' : 'Preset: Tampered File'}
           </button>
         </div>
         <button
@@ -193,7 +193,7 @@ export const FileIntegrityPlayground: React.FC = () => {
 
             <div>
               <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
-                {isVi ? 'Mã băm kỳ vọng để đối chiếu (Expected Checksum)' : 'Expected Checksum'}
+                {isVi ? 'Mã băm kỳ vọng' : 'Expected Checksum'}
               </label>
               <input
                 type="text"
@@ -212,7 +212,7 @@ export const FileIntegrityPlayground: React.FC = () => {
                 <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
                 <div>
                   <div className="text-xs font-bold text-emerald-300 uppercase">
-                    {isVi ? 'TÍNH TOÀN VẸN XÁC THỰC: KHỚP 100%' : 'INTEGRITY VERIFIED: EXACT MATCH'}
+                    {isVi ? 'Mã băm trùng khớp — Tệp hợp lệ' : 'Checksum match — Valid file'}
                   </div>
                   <div className="text-[11px] text-emerald-400/80">
                     {isVi ? 'Tệp tin nguyên vẹn, không bị sửa đổi hay suy hao dữ liệu.' : 'File content is pristine and untampered.'}
@@ -226,7 +226,7 @@ export const FileIntegrityPlayground: React.FC = () => {
                 <AlertTriangle className="w-5 h-5 text-rose-400 shrink-0" />
                 <div>
                   <div className="text-xs font-bold text-rose-300 uppercase">
-                    {isVi ? 'CẢNH BÁO: MÃ BĂM KHÔNG KHỚP' : 'WARNING: CHECKSUM MISMATCH'}
+                    {isVi ? 'Mã băm không khớp — Dữ liệu đã bị thay đổi' : 'Checksum mismatch — File altered'}
                   </div>
                   <div className="text-[11px] text-rose-400/80">
                     {isVi ? 'Tệp đã bị can thiệp, sửa đổi hoặc là phiên bản khác.' : 'File has been altered, corrupted, or differs from source.'}

@@ -110,7 +110,7 @@ export const TextIntegrityPlayground: React.FC = () => {
         <div className="bg-slate-900/60 rounded-xl border border-slate-800 p-5 flex flex-col">
           <div className="mb-3 flex items-center justify-between">
             <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-300">
-              {isVi ? 'Văn bản gốc (Original Text)' : 'Original Text'}
+              {isVi ? 'Văn bản gốc' : 'Original Text'}
             </h3>
             <span className="text-[10px] font-mono text-slate-500">{originalText.length} ký tự</span>
           </div>
@@ -134,7 +134,7 @@ export const TextIntegrityPlayground: React.FC = () => {
         <div className={`bg-slate-900/60 rounded-xl border p-5 flex flex-col transition-colors duration-300 ${!isMatch ? 'border-rose-500/40' : 'border-slate-800'}`}>
           <div className="mb-3 flex items-center justify-between">
             <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-300">
-              {isVi ? 'Văn bản kiểm tra (So sánh)' : 'Test Text (Editable)'}
+              {isVi ? 'Văn bản kiểm tra' : 'Test Text'}
             </h3>
             <span className="text-[10px] font-mono text-slate-500">{testText.length} ký tự</span>
           </div>

@@ -177,8 +177,8 @@ export const HashPointerBlockchainLab: React.FC<HashPointerBlockchainLabProps> =
             ? 'Chuỗi chính thống: Mọi khối liên kết mật mã toàn vẹn'
             : 'Canonical Chain: All blocks cryptographically linked',
           subtitle: isVi
-            ? 'Bấm [Bắt đầu xem] để quan sát kịch bản tấn công 4 nhịp (8 giây).'
-            : 'Click [Start] to watch the 4-phase auto simulation (8 seconds).',
+            ? 'Bấm ▶ để quan sát kịch bản mô phỏng 4 nhịp (8 giây).'
+            : 'Click ▶ to watch the 4-phase auto simulation (8 seconds).',
           color: 'cyan',
           icon: <CheckCircle2 className="w-5 h-5 text-cyan-400" />,
         };
@@ -735,43 +735,46 @@ export const HashPointerBlockchainLab: React.FC<HashPointerBlockchainLabProps> =
       {/* 4. MINIMALIST FLOATING DOCK (CENTERED CONTROLS & STEPPER DOTS) */}
       <div className="sticky bottom-4 z-30 flex justify-center px-2">
         <div className="w-full max-w-4xl p-3 sm:p-4 rounded-2xl bg-[#090D16]/95 backdrop-blur-xl border border-white/[0.15] shadow-2xl flex flex-col md:flex-row items-center justify-between gap-4">
-          {/* Main Action Buttons */}
-          <div className="flex items-center gap-2.5 w-full md:w-auto justify-between md:justify-start">
+          {/* Media Controls (International Standard Icon-Only) */}
+          <div className="flex items-center gap-3 w-full md:w-auto justify-center md:justify-start">
+            {/* Play/Pause circular toggle */}
             <button
               type="button"
               onClick={handleTogglePlay}
-              className={`px-5 py-2.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg shrink-0 ${
+              className={`w-12 h-12 rounded-full flex items-center justify-center transition-all cursor-pointer shadow-lg shrink-0 hover:scale-105 active:scale-95 ${
                 isPlaying
-                  ? 'bg-amber-500 hover:bg-amber-400 text-slate-950'
-                  : 'bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white shadow-cyan-500/25'
+                  ? 'bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-[0_0_16px_rgba(245,158,11,0.4)] ring-2 ring-amber-400/40'
+                  : 'bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white shadow-[0_0_16px_rgba(6,182,212,0.4)] ring-2 ring-cyan-400/40'
               }`}
+              title={
+                isPlaying
+                  ? isVi ? 'Tạm dừng (Pause)' : 'Pause'
+                  : currentTime >= 8000
+                  ? isVi ? 'Xem lại từ đầu (Replay)' : 'Replay'
+                  : isVi ? 'Bắt đầu xem (Play)' : 'Play'
+              }
+              aria-label={
+                isPlaying
+                  ? isVi ? 'Tạm dừng' : 'Pause'
+                  : isVi ? 'Phát' : 'Play'
+              }
             >
               {isPlaying ? (
-                <>
-                  <Pause className="w-4 h-4 fill-slate-950" />
-                  <span>{isVi ? 'Tạm dừng' : 'Pause'}</span>
-                </>
-              ) : currentTime >= 8000 ? (
-                <>
-                  <RotateCcw className="w-4 h-4" />
-                  <span>{isVi ? 'Xem lại từ đầu' : 'Replay'}</span>
-                </>
+                <Pause className="w-5 h-5 fill-current" />
               ) : (
-                <>
-                  <Play className="w-4 h-4 fill-white" />
-                  <span>{isVi ? 'Bắt đầu xem' : 'Start Simulation'}</span>
-                </>
+                <Play className="w-5 h-5 fill-current ml-0.5" />
               )}
             </button>
 
+            {/* Replay circular button */}
             <button
               type="button"
               onClick={handleReset}
-              className="px-3.5 py-2.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.1] text-xs font-semibold text-slate-300 hover:text-white transition-all cursor-pointer flex items-center gap-1.5 shrink-0"
-              title={isVi ? 'Khôi phục về trạng thái nguyên bản' : 'Reset to initial state'}
+              className="w-10 h-10 rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.12] hover:border-cyan-400/40 text-slate-300 hover:text-cyan-300 flex items-center justify-center transition-all cursor-pointer shrink-0 hover:scale-105 active:scale-95"
+              title={isVi ? 'Làm lại từ đầu (↺)' : 'Reset to start (↺)'}
+              aria-label={isVi ? 'Làm lại từ đầu' : 'Reset to start'}
             >
-              <RotateCcw className="w-3.5 h-3.5 text-cyan-400" />
-              <span className="hidden sm:inline">{isVi ? 'Làm lại' : 'Reset'}</span>
+              <RotateCcw className="w-4 h-4" />
             </button>
           </div>
 

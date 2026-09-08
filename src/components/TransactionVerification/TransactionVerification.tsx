@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ShieldCheck, Boxes, Layers } from 'lucide-react';
+import { ShieldCheck, Boxes, Layers, Hash } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { TransactionItem } from '../../types';
 import { createInitialTransactions } from '../../data/transactionData';
@@ -134,47 +134,54 @@ export const TransactionVerification: React.FC = () => {
   return (
     <section
       id="verification"
-      className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative scroll-mt-20 font-sans"
+      className="pt-6 pb-16 sm:pt-8 sm:pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative scroll-mt-20 font-sans"
     >
       {/* Section Header */}
-      <div className="text-center max-w-3xl mx-auto mb-8 font-sans">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.04] border border-border-primary text-text-primary text-xs font-medium mb-3">
-          <ShieldCheck className="w-3.5 h-3.5" />
+      <div className="text-center max-w-3xl mx-auto mb-7 font-sans">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900/90 border border-slate-700/60 text-slate-300 text-xs font-mono mb-3 shadow-xs">
+          <ShieldCheck className="w-3.5 h-3.5 text-cyan-400" />
           <span>{strings.verification.badge}</span>
+          <span className="text-slate-600">|</span>
+          <span className="text-slate-400 flex items-center gap-0.5">
+            <Hash className="w-3 h-3 text-cyan-400/80" />
+            SHA-256
+          </span>
         </div>
         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-tight font-display">
           {strings.verification.title}
         </h2>
-        <p className="mt-2.5 text-slate-400 text-sm sm:text-base font-sans max-w-2xl mx-auto leading-relaxed">
+        <p className="mt-2 text-slate-300 text-sm sm:text-base font-sans max-w-2xl mx-auto leading-relaxed">
           {strings.verification.subtitle}
         </p>
       </div>
 
-      {/* Module Mode Selector Tabs */}
-      <div className="flex flex-wrap items-center justify-center gap-2.5 mb-8 font-sans">
-        <button
-          onClick={() => setActiveView('mempool')}
-          className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all duration-200 ease-out flex items-center gap-2 border font-sans cursor-pointer ${
-            activeView === 'mempool'
-              ? 'bg-cyan-500/15 text-cyan-300 border-cyan-500/40'
-              : 'bg-[#0B0F19]/60 text-slate-400 hover:text-white hover:bg-[#0B0F19]/90 border-white/[0.07] hover:border-white/[0.15]'
-          }`}
-        >
-          <Layers className={`w-4 h-4 transition-colors duration-200 ${activeView === 'mempool' ? 'text-cyan-400' : 'text-slate-400'}`} />
-          <span>{strings.verification.tabMempool}</span>
-        </button>
+      {/* Module Mode Selector Tabs (Segmented Control) */}
+      <div className="flex justify-center mb-8 font-sans">
+        <div className="inline-flex p-1 rounded-xl bg-slate-900/90 border border-slate-800 shadow-inner">
+          <button
+            onClick={() => setActiveView('mempool')}
+            className={`px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 flex items-center gap-2 cursor-pointer ${
+              activeView === 'mempool'
+                ? 'bg-slate-800 text-cyan-300 border border-cyan-500/40 shadow-sm'
+                : 'text-slate-400 hover:text-white hover:bg-slate-800/50 border border-transparent'
+            }`}
+          >
+            <Layers className={`w-4 h-4 transition-colors duration-200 ${activeView === 'mempool' ? 'text-cyan-400' : 'text-slate-400'}`} />
+            <span>{strings.verification.tabMempool}</span>
+          </button>
 
-        <button
-          onClick={() => setActiveView('ledger')}
-          className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all duration-200 ease-out flex items-center gap-2 border font-sans cursor-pointer ${
-            activeView === 'ledger'
-              ? 'bg-cyan-500/15 text-cyan-300 border-cyan-500/40'
-              : 'bg-[#0B0F19]/60 text-slate-400 hover:text-white hover:bg-[#0B0F19]/90 border-white/[0.07] hover:border-white/[0.15]'
-          }`}
-        >
-          <Boxes className={`w-4 h-4 transition-colors duration-200 ${activeView === 'ledger' ? 'text-cyan-400' : 'text-slate-400'}`} />
-          <span>{strings.verification.tabLedger}</span>
-        </button>
+          <button
+            onClick={() => setActiveView('ledger')}
+            className={`px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 flex items-center gap-2 cursor-pointer ${
+              activeView === 'ledger'
+                ? 'bg-slate-800 text-cyan-300 border border-cyan-500/40 shadow-sm'
+                : 'text-slate-400 hover:text-white hover:bg-slate-800/50 border border-transparent'
+            }`}
+          >
+            <Boxes className={`w-4 h-4 transition-colors duration-200 ${activeView === 'ledger' ? 'text-cyan-400' : 'text-slate-400'}`} />
+            <span>{strings.verification.tabLedger}</span>
+          </button>
+        </div>
       </div>
 
       {/* View 1: Interactive Mempool & Node Verification Dashboard */}

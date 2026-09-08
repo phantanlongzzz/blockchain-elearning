@@ -18,7 +18,16 @@ import {
   Inbox,
   Layers,
   AlertOctagon,
-  CheckCircle2
+  CheckCircle2,
+  Send,
+  ShieldCheck,
+  FileEdit,
+  Coins,
+  Repeat,
+  Hash,
+  Cpu,
+  AlertTriangle,
+  XCircle,
 } from 'lucide-react';
 import { PassIcon, DenyIcon } from '../common/StatusIcons';
 import { useLanguage } from '../../i18n/LanguageContext';
@@ -403,117 +412,196 @@ export const MempoolDashboard: React.FC = () => {
     { name: isVi ? 'Trường dữ liệu bắt buộc' : 'Required fields', pass: lastVerifiedTx?.verificationChecks.fields, desc: isVi ? 'Đầy đủ người gửi, người nhận, thời gian' : 'Complete fields' },
   ];
 
-  const steps = [
-    { step: 1, title: isVi ? '01. Tạo TX' : '01. Create TX', active: activeStep === 1 },
-    { step: 2, title: isVi ? '02. Ký số' : '02. Sign', active: activeStep === 2 },
-    { step: 3, title: isVi ? '03. Truyền phát' : '03. Broadcast', active: activeStep === 3 },
-    { step: 4, title: isVi ? '04. Kiểm định' : '04. Node Audit', active: activeStep === 4 },
-    { step: 5, title: activeStep === 6 ? (isVi ? '05. Từ chối' : '05. Rejected') : (isVi ? '05. Mempool' : '05. Mempool'), active: activeStep === 5 || activeStep === 6, failed: activeStep === 6 },
+  const scenarioItems = [
+    {
+      id: 'VALID' as const,
+      title: isVi ? 'Giao dịch hợp lệ' : 'Valid Transaction',
+      desc: isVi ? 'Transaction hợp lệ và đủ số dư' : 'Valid signature and sufficient balance',
+      icon: CheckCircle2,
+      accentBorder: 'border-emerald-500/70',
+      accentBg: 'bg-emerald-950/20',
+      activeText: 'text-emerald-300',
+      badge: isVi ? 'Hợp lệ' : 'Valid',
+      badgeColor: 'bg-emerald-950/60 text-emerald-300 border-emerald-500/30',
+      iconColor: 'text-emerald-400',
+    },
+    {
+      id: 'TAMPERED' as const,
+      title: isVi ? 'Sửa số tiền' : 'Tampered Amount',
+      desc: isVi ? 'Dữ liệu bị thay đổi sau khi ký' : 'Data altered post-signature',
+      icon: FileEdit,
+      accentBorder: 'border-rose-500/70',
+      accentBg: 'bg-rose-950/20',
+      activeText: 'text-rose-300',
+      badge: isVi ? 'Sai chữ ký' : 'Bad Sig',
+      badgeColor: 'bg-rose-950/60 text-rose-300 border-rose-500/30',
+      iconColor: 'text-rose-400',
+    },
+    {
+      id: 'INSUFFICIENT' as const,
+      title: isVi ? 'Vượt số dư' : 'Insufficient Funds',
+      desc: isVi ? 'Amount lớn hơn balance' : 'Transfer exceeds balance',
+      icon: Coins,
+      accentBorder: 'border-amber-500/70',
+      accentBg: 'bg-amber-950/20',
+      activeText: 'text-amber-300',
+      badge: isVi ? 'Thiếu số dư' : 'Low Balance',
+      badgeColor: 'bg-amber-950/60 text-amber-300 border-amber-500/30',
+      iconColor: 'text-amber-400',
+    },
+    {
+      id: 'REPLAY' as const,
+      title: isVi ? 'Replay' : 'Replay Attack',
+      desc: isVi ? 'Transaction được gửi lại' : 'Duplicate transaction replay',
+      icon: Repeat,
+      accentBorder: 'border-purple-500/70',
+      accentBg: 'bg-purple-950/20',
+      activeText: 'text-purple-300',
+      badge: isVi ? 'Trùng Nonce' : 'Replay',
+      badgeColor: 'bg-purple-950/60 text-purple-300 border-purple-500/30',
+      iconColor: 'text-purple-400',
+    },
   ];
+
+  const steps = [
+    { step: 1, num: '01', title: isVi ? 'Tạo TX' : 'Create TX', sub: 'Transaction', active: activeStep === 1 },
+    { step: 2, num: '02', title: isVi ? 'Ký số' : 'Sign', sub: 'ECDSA', active: activeStep === 2 },
+    { step: 3, num: '03', title: isVi ? 'Truyền phát' : 'Broadcast', sub: 'P2P Gossip', active: activeStep === 3 },
+    { step: 4, num: '04', title: isVi ? 'Kiểm định' : 'Node Audit', sub: 'Verify', active: activeStep === 4 },
+    { step: 5, num: '05', title: activeStep === 6 ? (isVi ? 'Từ chối' : 'Rejected') : (isVi ? 'Mempool' : 'Mempool'), sub: activeStep === 6 ? (isVi ? 'Thất bại' : 'Failed') : (isVi ? 'Hàng đợi' : 'Queue'), active: activeStep === 5 || activeStep === 6, failed: activeStep === 6 },
+  ];
+
+  const progressPercent = activeStep === 0 ? 0 : activeStep === 1 ? 20 : activeStep === 2 ? 40 : activeStep === 3 ? 60 : activeStep === 4 ? 80 : 100;
 
   return (
     <div id="mempool-lab" className="space-y-6">
       
-      {/* 0. Scenario Tabs & Playback Controls */}
-      <div className="p-4 sm:p-5 rounded-xl bg-bg-secondary border border-border-primary space-y-3.5">
+      {/* 0. Scenario Cards & Playback Controls */}
+      <div className="p-4 sm:p-5 rounded-xl bg-[#0B0F19]/90 border border-slate-800 space-y-4 shadow-sm">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-medium uppercase tracking-wider text-text-muted">
-            {isVi ? 'Kịch bản kiểm thử' : 'Test Scenarios'}
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-semibold uppercase tracking-wider text-slate-300">
+              {isVi ? 'Kịch bản kiểm thử' : 'Test Scenarios'}
+            </span>
+            <span className="text-[10px] font-mono text-slate-500 hidden sm:inline">
+              (4 Scenarios)
+            </span>
+          </div>
+          {selectedScenario && (
+            <span className="text-xs font-mono text-slate-400">
+              {isVi ? 'Đang chọn: ' : 'Active: '}
+              <span className="text-cyan-300 font-semibold">
+                {selectedScenario === 'VALID' && (isVi ? 'Hợp lệ' : 'Valid')}
+                {selectedScenario === 'TAMPERED' && (isVi ? 'Sửa số tiền' : 'Tampered')}
+                {selectedScenario === 'INSUFFICIENT' && (isVi ? 'Vượt số dư' : 'Insufficient')}
+                {selectedScenario === 'REPLAY' && (isVi ? 'Replay' : 'Replay')}
+              </span>
+            </span>
+          )}
         </div>
         
-        {/* Scenario Tabs (Segmented Control) */}
-        <div className="bg-bg-secondary p-1 rounded-lg border border-border-primary grid grid-cols-2 sm:grid-cols-4 gap-1 w-full">
-          <button
-            onClick={() => setSelectedScenario('VALID')}
-            className={`py-2 px-3 rounded-md text-xs font-medium transition-all duration-150 text-center cursor-pointer ${
-              selectedScenario === 'VALID'
-                ? 'bg-bg-elevated text-text-primary border border-border-primary/60 font-medium shadow-sm'
-                : 'text-text-muted hover:text-text-primary transition-colors'
-            }`}
-          >
-            {vStr.attack1Title}
-          </button>
-          <button
-            onClick={() => setSelectedScenario('TAMPERED')}
-            className={`py-2 px-3 rounded-md text-xs font-medium transition-all duration-150 text-center cursor-pointer ${
-              selectedScenario === 'TAMPERED'
-                ? 'bg-bg-elevated text-text-primary border border-border-primary/60 font-medium shadow-sm'
-                : 'text-text-muted hover:text-text-primary transition-colors'
-            }`}
-          >
-            {vStr.attack2Title}
-          </button>
-          <button
-            onClick={() => setSelectedScenario('INSUFFICIENT')}
-            className={`py-2 px-3 rounded-md text-xs font-medium transition-all duration-150 text-center cursor-pointer ${
-              selectedScenario === 'INSUFFICIENT'
-                ? 'bg-bg-elevated text-text-primary border border-border-primary/60 font-medium shadow-sm'
-                : 'text-text-muted hover:text-text-primary transition-colors'
-            }`}
-          >
-            {vStr.attack3Title}
-          </button>
-          <button
-            onClick={() => setSelectedScenario('REPLAY')}
-            className={`py-2 px-3 rounded-md text-xs font-medium transition-all duration-150 text-center cursor-pointer ${
-              selectedScenario === 'REPLAY'
-                ? 'bg-bg-elevated text-text-primary border border-border-primary/60 font-medium shadow-sm'
-                : 'text-text-muted hover:text-text-primary transition-colors'
-            }`}
-          >
-            {vStr.attack4Title}
-          </button>
+        {/* 4 Selectable Scenario Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 w-full">
+          {scenarioItems.map((item) => {
+            const isSelected = selectedScenario === item.id;
+            const Icon = item.icon;
+
+            return (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => setSelectedScenario(item.id)}
+                className={`p-3.5 rounded-xl border text-left transition-all duration-200 cursor-pointer flex flex-col justify-between relative group ${
+                  isSelected
+                    ? `${item.accentBg} ${item.accentBorder} ring-1 ring-cyan-500/30 shadow-md`
+                    : 'bg-slate-900/60 border-slate-800/90 hover:border-slate-700 hover:bg-slate-900/90'
+                }`}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <div className={`p-1.5 rounded-lg ${isSelected ? 'bg-slate-900/80 border border-slate-700/60' : 'bg-slate-950/60 border border-slate-800'}`}>
+                      <Icon className={`w-4 h-4 ${isSelected ? item.iconColor : 'text-slate-400 group-hover:text-slate-300'}`} />
+                    </div>
+                    <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full border ${item.badgeColor}`}>
+                      {item.badge}
+                    </span>
+                  </div>
+                  <h4 className={`text-xs sm:text-sm font-semibold tracking-tight mb-1 ${isSelected ? 'text-white' : 'text-slate-200 group-hover:text-white'}`}>
+                    {item.title}
+                  </h4>
+                  <p className="text-[11px] text-slate-400 line-clamp-1 leading-relaxed">
+                    {item.desc}
+                  </p>
+                </div>
+                <div className="mt-3 pt-2 border-t border-slate-800/60 flex items-center justify-between text-[10px] font-mono">
+                  <span className={isSelected ? 'text-cyan-300 font-medium' : 'text-slate-500'}>
+                    {isSelected ? (isVi ? '✓ Đang kích hoạt' : '✓ Active') : (isVi ? 'Nhấp để chọn' : 'Click to select')}
+                  </span>
+                  <span className={`w-2 h-2 rounded-full ${isSelected ? 'bg-cyan-400 ring-2 ring-cyan-400/20' : 'bg-slate-700'}`} />
+                </div>
+              </button>
+            );
+          })}
         </div>
 
+        {/* Action Controls & Simulation Toolbar */}
         {selectedScenario && (
-          <div className="flex flex-wrap items-center justify-between gap-3 p-2 rounded-lg bg-bg-secondary border border-border-primary">
+          <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-800/80">
             {!trace.length ? (
-              <button
-                onClick={handleStartSimulation}
-                disabled={isGenerating}
-                className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-md bg-bg-elevated hover:bg-bg-hover text-text-primary border border-border-primary font-medium transition-colors cursor-pointer"
-              >
-                <Play className="w-3.5 h-3.5" />
-                {isVi ? 'Bắt đầu mô phỏng' : 'Start Simulation'}
-              </button>
+              <div className="flex items-center gap-3 flex-wrap">
+                <button
+                  onClick={handleStartSimulation}
+                  disabled={isGenerating}
+                  className="flex items-center gap-2 px-4 py-2 text-xs sm:text-sm rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold shadow-sm transition-all cursor-pointer disabled:opacity-50 active:scale-98"
+                >
+                  <Play className="w-4 h-4 fill-slate-950" />
+                  <span>{isVi ? 'Bắt đầu mô phỏng' : 'Start Simulation'}</span>
+                </button>
+                <span className="text-xs text-slate-400 font-sans hidden sm:inline">
+                  {isVi ? 'Mô phỏng 5 bước vòng đời giao dịch' : 'Simulates 5-step transaction lifecycle'}
+                </span>
+              </div>
             ) : (
               <>
                 <div className="flex items-center gap-2 flex-wrap">
                   <button
                     onClick={() => setIsPlaying(!isPlaying)}
-                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-md bg-bg-elevated hover:bg-bg-hover text-text-primary border border-border-primary font-medium transition-colors cursor-pointer"
+                    className={`flex items-center gap-1.5 px-3.5 py-1.5 text-xs rounded-lg font-medium transition-colors cursor-pointer ${
+                      isPlaying
+                        ? 'bg-slate-800 hover:bg-slate-700 text-white border border-slate-700'
+                        : 'bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold'
+                    }`}
                   >
-                    {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
-                    {isPlaying ? (isVi ? 'Tạm dừng' : 'Pause') : (isVi ? 'Tiếp tục' : 'Resume')}
+                    {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5 fill-current" />}
+                    <span>{isPlaying ? (isVi ? 'Tạm dừng' : 'Pause') : (isVi ? 'Tiếp tục' : 'Resume')}</span>
                   </button>
                   <button
                     onClick={handleReset}
-                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-md bg-bg-elevated hover:bg-bg-hover text-text-primary border border-border-primary font-medium transition-colors cursor-pointer"
+                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 border border-slate-700/60 font-medium transition-colors cursor-pointer"
                   >
-                    <RotateCcw className="w-3.5 h-3.5 text-text-muted" />
-                    {isVi ? 'Đặt lại' : 'Reset'}
+                    <RotateCcw className="w-3.5 h-3.5 text-slate-400" />
+                    <span>{isVi ? 'Đặt lại' : 'Reset'}</span>
                   </button>
                 </div>
 
                 <div className="flex items-center gap-3 flex-wrap ml-auto">
                   {/* Stepper controls */}
-                  <div className="flex items-center gap-1 bg-bg-primary border border-border-secondary p-0.5 rounded-md">
+                  <div className="flex items-center gap-1 bg-slate-950 border border-slate-800 p-1 rounded-lg">
                     <button
                       onClick={() => setStepIndex(Math.max(0, stepIndex - 1))}
                       disabled={stepIndex === 0}
-                      className="p-1 rounded hover:bg-bg-hover text-text-muted hover:text-text-primary disabled:opacity-30 transition-colors cursor-pointer"
+                      className="p-1 rounded hover:bg-slate-800 text-slate-400 hover:text-white disabled:opacity-30 transition-colors cursor-pointer"
                       title={isVi ? 'Bước trước' : 'Previous step'}
                     >
                       <SkipBack className="w-3.5 h-3.5" />
                     </button>
-                    <span className="text-xs text-text-muted font-mono min-w-[36px] text-center">
+                    <span className="text-xs text-slate-300 font-mono min-w-[40px] text-center font-semibold">
                       {Math.max(1, Math.min(5, activeStep))}/5
                     </span>
                     <button
                       onClick={() => setStepIndex(Math.min(trace.length - 1, stepIndex + 1))}
                       disabled={stepIndex === trace.length - 1}
-                      className="p-1 rounded hover:bg-bg-hover text-text-muted hover:text-text-primary disabled:opacity-30 transition-colors cursor-pointer"
+                      className="p-1 rounded hover:bg-slate-800 text-slate-400 hover:text-white disabled:opacity-30 transition-colors cursor-pointer"
                       title={isVi ? 'Bước tiếp' : 'Next step'}
                     >
                       <SkipForward className="w-3.5 h-3.5" />
@@ -521,17 +609,17 @@ export const MempoolDashboard: React.FC = () => {
                   </div>
 
                   {/* Speed selector */}
-                  <div className="flex items-center gap-1.5 pl-2 border-l border-border-primary">
-                    <span className="text-xs text-text-muted font-mono hidden sm:inline">Speed:</span>
-                    <div className="bg-bg-primary border border-border-secondary p-0.5 rounded text-[11px] font-mono flex items-center gap-0.5">
+                  <div className="flex items-center gap-1.5 pl-2 border-l border-slate-800">
+                    <span className="text-xs text-slate-400 font-mono hidden sm:inline">Speed:</span>
+                    <div className="bg-slate-950 border border-slate-800 p-0.5 rounded-lg text-[11px] font-mono flex items-center gap-0.5">
                       {[0.5, 1, 2].map((speed) => (
                         <button
                           key={speed}
                           onClick={() => setPlaybackSpeed(speed)}
                           className={`px-2 py-0.5 rounded text-[11px] font-mono transition-colors cursor-pointer ${
                             playbackSpeed === speed
-                              ? 'bg-bg-elevated text-text-primary font-semibold shadow-xs'
-                              : 'text-text-muted hover:text-text-primary'
+                              ? 'bg-slate-800 text-cyan-300 font-semibold shadow-xs'
+                              : 'text-slate-400 hover:text-white'
                           }`}
                         >
                           {speed}×
@@ -548,18 +636,45 @@ export const MempoolDashboard: React.FC = () => {
 
       {/* 1. Lifecycle Pipeline & Statistics Container */}
       <div id="pipeline-viz" className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Segmented Pipeline Bar */}
-        <div className="lg:col-span-2 p-4 sm:p-5 rounded-xl bg-bg-secondary border border-border-primary flex flex-col justify-center space-y-3">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-medium uppercase tracking-wider text-text-muted">
+        {/* Horizontal Verification Pipeline */}
+        <div className="lg:col-span-2 p-4 sm:p-5 rounded-xl bg-[#0B0F19]/90 border border-slate-800 flex flex-col justify-between space-y-4 shadow-sm">
+          <div className="flex items-center justify-between pb-2 border-b border-slate-800/80">
+            <span className="text-xs font-semibold uppercase tracking-wider text-slate-300">
               {isVi ? 'Tiến trình xác thực' : 'Validation Pipeline'}
             </span>
-            <span className="text-xs font-mono text-text-muted">
-              {activeStep > 0 ? `${Math.max(1, Math.min(5, activeStep))}/5` : '0/5'}
+            <span className="text-xs font-mono text-cyan-400 font-medium">
+              {activeStep > 0 ? `${Math.max(1, Math.min(5, activeStep))}/5 Bước` : '0/5 Bước'}
             </span>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-1.5 p-1 bg-bg-primary rounded-lg border border-border-secondary w-full">
+          {/* Progress Bar & Status Line */}
+          <div className="space-y-1.5">
+            <div className="flex items-center justify-between text-xs font-mono text-slate-400">
+              <span className="flex items-center gap-1.5">
+                {activeStep === 0 && <span className="text-slate-500">{isVi ? 'Trạng thái: Chờ bắt đầu' : 'Status: Ready'}</span>}
+                {activeStep === 1 && <span className="text-cyan-300">{isVi ? 'Bước 1/5: Tạo dữ liệu Transaction' : 'Step 1/5: Creating Payload'}</span>}
+                {activeStep === 2 && <span className="text-cyan-300">{isVi ? 'Bước 2/5: Băm SHA-256 & Ký số ECDSA' : 'Step 2/5: Hashing & ECDSA Signing'}</span>}
+                {activeStep === 3 && <span className="text-cyan-300">{isVi ? 'Bước 3/5: Truyền phát mạng ngang hàng P2P' : 'Step 3/5: P2P Network Propagation'}</span>}
+                {activeStep === 4 && <span className="text-amber-300">{isVi ? 'Bước 4/5: Nút mạng kiểm tra 6 tiêu chí' : 'Step 4/5: Node Verification Checks'}</span>}
+                {activeStep === 5 && <span className="text-emerald-300">{isVi ? 'Bước 5/5: Hoàn tất - Chấp nhận vào Mempool' : 'Step 5/5: Accepted into Mempool'}</span>}
+                {activeStep === 6 && <span className="text-rose-400">{isVi ? 'Bước 5/5: Thất bại - Giao dịch bị từ chối' : 'Step 5/5: Transaction Rejected'}</span>}
+              </span>
+              <span className="font-semibold text-slate-300">
+                {progressPercent}%
+              </span>
+            </div>
+            <div className="w-full h-1.5 bg-slate-950/80 rounded-full overflow-hidden border border-slate-800">
+              <div
+                className={`h-full transition-all duration-300 rounded-full ${
+                  activeStep === 6 ? 'bg-rose-500' : 'bg-gradient-to-r from-cyan-500 to-emerald-400'
+                }`}
+                style={{ width: `${progressPercent}%` }}
+              />
+            </div>
+          </div>
+
+          {/* 5 Interconnected Pipeline Nodes */}
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 w-full pt-1">
             {steps.map((s) => {
               const isPast = activeStep > s.step;
               const isCurrent = activeStep === s.step || (s.step === 5 && activeStep === 6);
@@ -568,108 +683,174 @@ export const MempoolDashboard: React.FC = () => {
               return (
                 <div
                   key={s.step}
-                  className={`flex items-center justify-center gap-1.5 py-2 px-2 rounded-md text-[11px] font-mono transition-all duration-150 text-center ${
+                  className={`p-2.5 rounded-lg border transition-all duration-200 flex flex-col justify-between space-y-1.5 ${
                     isCurrent
                       ? isFailed
-                        ? 'bg-error/10 text-error border border-error/30 font-medium shadow-xs'
-                        : 'bg-bg-elevated text-text-primary border border-border-primary font-medium shadow-xs'
-                      : isPast
-                      ? 'bg-bg-elevated/30 text-text-secondary border border-transparent'
-                      : 'bg-bg-elevated/15 text-text-muted border border-transparent'
+                        ? 'bg-rose-950/30 border-rose-500/70 text-rose-200 ring-1 ring-rose-500/40 shadow-sm'
+                        : 'bg-cyan-950/30 border-cyan-500/70 text-cyan-200 ring-1 ring-cyan-500/40 shadow-sm'
+                      : isPast || (s.step === 5 && activeStep === 5)
+                      ? 'bg-emerald-950/20 border-emerald-500/40 text-emerald-300'
+                      : 'bg-slate-900/40 border-slate-800/70 text-slate-400 hover:border-slate-700/60'
                   }`}
                 >
-                  {isPast ? (
-                    <PassIcon className="w-3 h-3 text-success shrink-0" />
-                  ) : isCurrent ? (
-                    isFailed ? (
-                      <DenyIcon className="w-3 h-3 text-error shrink-0" />
-                    ) : (
-                      <span className="w-1.5 h-1.5 rounded-full bg-teach-1 shrink-0" />
-                    )
-                  ) : (
-                    <span className="w-1.5 h-1.5 rounded-full bg-white/10 shrink-0" />
-                  )}
-                  <span className="truncate">{s.title}</span>
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-[11px] font-bold tracking-wider opacity-80">
+                      {s.num}
+                    </span>
+                    <div>
+                      {isPast || (s.step === 5 && activeStep === 5) ? (
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                      ) : isCurrent ? (
+                        isFailed ? (
+                          <XCircle className="w-3.5 h-3.5 text-rose-400 shrink-0" />
+                        ) : (
+                          <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shrink-0" />
+                        )
+                      ) : (
+                        <span className="w-1.5 h-1.5 rounded-full bg-slate-700 shrink-0" />
+                      )}
+                    </div>
+                  </div>
+                  <div>
+                    <div className="text-xs font-semibold tracking-tight text-white truncate">
+                      {s.title}
+                    </div>
+                    <div className="text-[10px] font-mono text-slate-400 truncate">
+                      {s.sub}
+                    </div>
+                  </div>
                 </div>
               );
             })}
           </div>
+
+          {/* Empty-state helper line when not yet simulated */}
+          {trace.length === 0 && (
+            <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-900/60 border border-slate-800 text-xs text-slate-400 font-sans">
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400/80 animate-pulse shrink-0" />
+              <span>
+                {isVi
+                  ? 'Chọn một kịch bản và bắt đầu mô phỏng để quan sát vòng đời giao dịch.'
+                  : 'Select a scenario and click Start Simulation to observe the transaction lifecycle.'}
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Global Network Stats */}
-        <div className="p-4 sm:p-5 rounded-xl bg-bg-secondary border border-border-primary space-y-3">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-medium uppercase tracking-wider text-text-muted">
+        <div className="p-4 sm:p-5 rounded-xl bg-[#0B0F19]/90 border border-slate-800/90 space-y-3.5 shadow-sm">
+          <div className="flex items-center justify-between pb-2 border-b border-slate-800/80">
+            <span className="text-xs font-semibold uppercase tracking-wider text-slate-300">
               {vStr.matrixTitle}
             </span>
+            <span className="text-[10px] font-mono text-slate-500 uppercase">Live Metrics</span>
           </div>
           <div className="grid grid-cols-2 gap-2.5">
-            <div className="p-2.5 rounded-lg bg-bg-primary border border-border-secondary">
-              <div className="text-xs text-text-muted mb-0.5">{vStr.statTotal}</div>
-              <div className="text-lg font-mono tracking-tight text-text-primary">
+            {/* Stat 1: Total Submitted */}
+            <div className="p-3 rounded-lg bg-slate-900/60 border border-slate-800/80 hover:border-slate-700/80 transition-all">
+              <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
+                <span>{vStr.statTotal}</span>
+                <Send className="w-3 h-3 text-cyan-400/70" />
+              </div>
+              <div className="text-2xl font-mono font-bold tracking-tight text-white">
                 {totalSubmitted}
               </div>
             </div>
-            <div className="p-2.5 rounded-lg bg-bg-primary border border-border-secondary">
-              <div className="text-xs text-text-muted mb-0.5">{vStr.successRate}</div>
+
+            {/* Stat 2: Success Rate */}
+            <div className="p-3 rounded-lg bg-slate-900/60 border border-slate-800/80 hover:border-slate-700/80 transition-all">
+              <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
+                <span>{vStr.successRate}</span>
+                <ShieldCheck className="w-3 h-3 text-emerald-400/70" />
+              </div>
               <div
-                className={`text-lg font-mono tracking-tight ${
+                className={`text-2xl font-mono font-bold tracking-tight ${
                   totalSubmitted > 0 && validCount > 0
-                    ? 'text-success'
+                    ? 'text-emerald-400'
                     : totalSubmitted > 0
-                    ? 'text-error'
-                    : 'text-text-muted'
+                    ? 'text-rose-400'
+                    : 'text-slate-400'
                 }`}
               >
                 {totalSubmitted > 0 ? `${successRateValue}%` : '--'}
               </div>
             </div>
-            <div
-              className={`p-2.5 rounded-lg transition-colors duration-150 ${
-                validCount > 0
-                  ? 'bg-success/5 border border-success/30'
-                  : 'bg-bg-primary border border-border-secondary'
-              }`}
-            >
-              <div
-                className={`text-xs mb-0.5 ${
-                  validCount > 0 ? 'text-success/80' : 'text-text-muted'
-                }`}
-              >
-                {vStr.statValid}
+
+            {/* Stat 3: Valid */}
+            <div className={`p-3 rounded-lg transition-all ${
+              validCount > 0
+                ? 'bg-emerald-950/20 border border-emerald-500/40'
+                : 'bg-slate-900/60 border border-slate-800/80 hover:border-slate-700/80'
+            }`}>
+              <div className="flex items-center justify-between text-xs mb-1">
+                <span className={validCount > 0 ? 'text-emerald-300 font-medium' : 'text-slate-400'}>{vStr.statValid}</span>
+                <CheckCircle2 className={`w-3 h-3 ${validCount > 0 ? 'text-emerald-400' : 'text-slate-500'}`} />
               </div>
-              <div
-                className={`text-lg font-mono tracking-tight ${
-                  validCount > 0 ? 'text-success' : 'text-text-muted'
-                }`}
-              >
+              <div className={`text-2xl font-mono font-bold tracking-tight ${validCount > 0 ? 'text-emerald-400' : 'text-slate-400'}`}>
                 {validCount}
               </div>
             </div>
-            <div
-              className={`p-2.5 rounded-lg transition-colors duration-150 ${
-                rejectedCount > 0
-                  ? 'bg-error/10 border border-error/30'
-                  : 'bg-bg-primary border border-border-secondary'
-              }`}
-            >
-              <div
-                className={`text-xs mb-0.5 ${
-                  rejectedCount > 0 ? 'text-error/80' : 'text-text-muted'
-                }`}
-              >
-                {vStr.statInvalid}
+
+            {/* Stat 4: Rejected */}
+            <div className={`p-3 rounded-lg transition-all ${
+              rejectedCount > 0
+                ? 'bg-rose-950/20 border border-rose-500/40'
+                : 'bg-slate-900/60 border border-slate-800/80 hover:border-slate-700/80'
+            }`}>
+              <div className="flex items-center justify-between text-xs mb-1">
+                <span className={rejectedCount > 0 ? 'text-rose-300 font-medium' : 'text-slate-400'}>{vStr.statInvalid}</span>
+                <AlertOctagon className={`w-3 h-3 ${rejectedCount > 0 ? 'text-rose-400' : 'text-slate-500'}`} />
               </div>
-              <div
-                className={`text-lg font-mono tracking-tight ${
-                  rejectedCount > 0 ? 'text-error' : 'text-text-muted'
-                }`}
-              >
+              <div className={`text-2xl font-mono font-bold tracking-tight ${rejectedCount > 0 ? 'text-rose-400' : 'text-slate-400'}`}>
                 {rejectedCount}
               </div>
             </div>
           </div>
         </div>
+
+        {/* Empty State / Ready to Simulate stage card when idle */}
+        {activeStep === 0 && (
+          <div className="lg:col-span-3 p-6 sm:p-8 rounded-xl bg-[#0B0F19]/90 border border-slate-800 shadow-sm flex flex-col items-center justify-center text-center space-y-4">
+            <div className="w-12 h-12 rounded-xl bg-cyan-950/40 border border-cyan-500/30 flex items-center justify-center text-cyan-400 shadow-inner">
+              <Cpu className="w-6 h-6" />
+            </div>
+            <div className="space-y-1.5 max-w-lg">
+              <h3 className="text-base sm:text-lg font-bold text-white font-display">
+                {isVi ? 'Sẵn sàng mô phỏng vòng đời giao dịch' : 'Ready to Simulate'}
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
+                {isVi
+                  ? 'Chọn một kịch bản để bắt đầu kiểm tra transaction.'
+                  : 'Select a test scenario above and start the simulation.'}
+              </p>
+            </div>
+            {selectedScenario ? (
+              <div className="pt-1 flex flex-col sm:flex-row items-center gap-3">
+                <button
+                  onClick={handleStartSimulation}
+                  disabled={isGenerating}
+                  className="px-5 py-2.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold text-xs sm:text-sm shadow-md transition-all flex items-center gap-2 cursor-pointer active:scale-98"
+                >
+                  <Play className="w-4 h-4 fill-slate-950" />
+                  <span>{isVi ? 'Bắt đầu mô phỏng ▶' : 'Start Simulation ▶'}</span>
+                </button>
+                <span className="text-xs text-slate-400 font-mono">
+                  {isVi ? 'Đang chọn: ' : 'Selected: '}
+                  <span className="text-cyan-300 font-semibold">
+                    {selectedScenario === 'VALID' && (isVi ? 'Giao dịch hợp lệ' : 'Valid Transaction')}
+                    {selectedScenario === 'TAMPERED' && (isVi ? 'Sửa số tiền' : 'Tampered Amount')}
+                    {selectedScenario === 'INSUFFICIENT' && (isVi ? 'Vượt số dư' : 'Insufficient Funds')}
+                    {selectedScenario === 'REPLAY' && (isVi ? 'Replay' : 'Replay Attack')}
+                  </span>
+                </span>
+              </div>
+            ) : (
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-400 font-mono">
+                <span>👈 {isVi ? 'Chọn một kịch bản kiểm thử phía trên để tiếp tục' : 'Select a scenario above to proceed'}</span>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Current Transaction Simulation Context & Cryptographic Pipeline */}
         {activeStep >= 1 && (
@@ -1006,10 +1187,10 @@ export const MempoolDashboard: React.FC = () => {
       </div>
 
       {/* 2. Educational Ledger & Account States */}
-      <div className="p-5 rounded-xl bg-[#0B0F19]/60 border border-white/[0.08] space-y-4">
+      <div className="p-4 sm:p-5 rounded-xl bg-[#0B0F19]/90 border border-slate-800 space-y-4 shadow-sm">
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div className="flex items-center gap-3">
-            <span className="text-xs font-medium uppercase tracking-wider text-[#71717A]">
+            <span className="text-xs font-semibold uppercase tracking-wider text-slate-300">
               {vStr.ledgerTitle}
             </span>
             <button
@@ -1017,16 +1198,49 @@ export const MempoolDashboard: React.FC = () => {
               onClick={() => setShowLedger(!showLedger)}
               aria-expanded={showLedger}
               aria-controls="educational-ledger-content"
-              className="px-3 py-1.5 rounded-lg bg-bg-elevated hover:bg-bg-hover border border-border-primary text-text-muted hover:text-text-primary text-xs font-mono transition-colors flex items-center gap-1.5 cursor-pointer"
+              className="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700/60 text-slate-300 hover:text-white text-xs font-mono transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs"
             >
-              {showLedger
-                ? (isVi ? 'Ẩn Sổ cái & Tài khoản' : 'Hide Ledger & Accounts')
-                : (isVi ? 'Hiển thị Sổ cái & Tài khoản' : 'Show Ledger & Accounts')
-              }
+              <span>
+                {showLedger
+                  ? (isVi ? 'Thu gọn Sổ cái' : 'Collapse Ledger')
+                  : (isVi ? 'Hiển thị Sổ cái & Tài khoản' : 'Show Ledger & Accounts')
+                }
+              </span>
+              {showLedger ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
             </button>
           </div>
-          <span className="text-xs text-[#71717A] hidden sm:block">{vStr.ledgerSubtitle}</span>
+          <span className="text-xs text-slate-400 font-sans hidden sm:block">{vStr.ledgerSubtitle}</span>
         </div>
+
+        {/* Collapsed Account Summary Strip */}
+        {!showLedger && (
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1">
+            {accounts.map((acc) => (
+              <div
+                key={acc.name}
+                onClick={() => setShowLedger(true)}
+                className="p-3 rounded-lg bg-slate-900/60 border border-slate-800/80 hover:border-slate-700/80 transition-all cursor-pointer group flex flex-col justify-between"
+              >
+                <div className="flex items-center justify-between text-xs mb-1.5">
+                  <span className="font-semibold text-white group-hover:text-cyan-300 transition-colors">
+                    {acc.name}
+                  </span>
+                  <span className="font-mono text-[10px] text-slate-500">
+                    {truncateAddress(acc.address)}
+                  </span>
+                </div>
+                <div className="flex items-baseline justify-between text-xs font-mono">
+                  <span className="text-emerald-400 font-bold">
+                    {acc.balance.toFixed(2)} BTC
+                  </span>
+                  <span className="text-[10px] text-slate-400">
+                    Nonce: {acc.name === 'Alice' ? (selectedScenario === 'REPLAY' ? '2' : '1') : '0'}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
 
         {showLedger && (
           <div id="educational-ledger-content" className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 animate-in slide-in-from-top-2">

@@ -7,6 +7,7 @@ import {
   Zap,
   Lock,
   ChevronRight,
+  ChevronDown,
   HelpCircle,
   AlertTriangle,
   CheckCircle2,
@@ -84,6 +85,9 @@ export const HashPointerBlockchainLab: React.FC<HashPointerBlockchainLabProps> =
   // 2: Step 2 - Hacker patches Block 2's PrevHash -> Block 2 hash mutates, Link 2->3 broken
   // 3: Step 3 - Hacker re-mines all downstream blocks -> Local hash pointers match, BUT rejected by P2P network (Longest Chain Rule)
   const [dominoStep, setDominoStep] = useState<0 | 1 | 2 | 3>(0);
+
+  // Toggle for consensus explanation in Step 3
+  const [showConsensusDetails, setShowConsensusDetails] = useState<boolean>(false);
 
   // Active tooltip modal/drawer state
   const [activeTooltip, setActiveTooltip] = useState<number | null>(null);
@@ -206,27 +210,27 @@ export const HashPointerBlockchainLab: React.FC<HashPointerBlockchainLabProps> =
     labelEn: string;
   } => {
     if (dominoStep === 0) {
-      return { status: 'valid', labelVi: 'KHỚP 100%', labelEn: 'SEALED 100%' };
+      return { status: 'valid', labelVi: 'Khớp', labelEn: 'Valid' };
     }
 
     if (fromIdx === 0) {
       // 0 -> 1 is always valid
-      return { status: 'valid', labelVi: 'KHỚP GỐC', labelEn: 'ROOT MATCH' };
+      return { status: 'valid', labelVi: 'Khớp', labelEn: 'Valid' };
     }
 
     if (fromIdx === 1) {
       if (dominoStep === 1) {
         return {
           status: 'broken',
-          labelVi: 'GÃY LIÊN KẾT',
-          labelEn: 'BROKEN LINK',
+          labelVi: 'Gãy',
+          labelEn: 'Broken',
         };
       }
       // In Step 2 & 3, Hacker patched PrevHash on his private fork
       return {
         status: 'forked',
-        labelVi: 'VÁ CON TRỎ (NHÁNH RẼ)',
-        labelEn: 'PATCHED (FORK)',
+        labelVi: 'Đã vá',
+        labelEn: 'Patched',
       };
     }
 
@@ -234,26 +238,26 @@ export const HashPointerBlockchainLab: React.FC<HashPointerBlockchainLabProps> =
       if (dominoStep === 1) {
         return {
           status: 'invalidated',
-          labelVi: 'BỊ NGẮT DÂY CHUYỀN',
-          labelEn: 'ORPHANED',
+          labelVi: 'Vô hiệu',
+          labelEn: 'Orphaned',
         };
       }
       if (dominoStep === 2) {
         return {
           status: 'broken',
-          labelVi: 'GÃY TIẾP TỤC',
-          labelEn: 'BROKEN LINK',
+          labelVi: 'Gãy',
+          labelEn: 'Broken',
         };
       }
       // Step 3: Recalculated on fork
       return {
         status: 'forked',
-        labelVi: 'ĐÃ ĐÀO LẠI (NHÁNH RẼ)',
-        labelEn: 'RE-MINED (FORK)',
+        labelVi: 'Đã đào lại',
+        labelEn: 'Re-mined',
       };
     }
 
-    return { status: 'valid', labelVi: 'KHỚP', labelEn: 'MATCH' };
+    return { status: 'valid', labelVi: 'Khớp', labelEn: 'Valid' };
   };
 
   // Block diagnostics: 1 Block = 1 Core State
@@ -273,9 +277,9 @@ export const HashPointerBlockchainLab: React.FC<HashPointerBlockchainLabProps> =
       if (isBlock1Tampered) {
         return {
           variant: 'rose' as const,
-          badge: isVi ? 'DỮ LIỆU BỊ SỬA' : 'DATA TAMPERED',
+          badge: isVi ? 'BỊ SỬA' : 'TAMPERED',
           desc: isVi
-            ? 'Nội dung giao dịch bị can thiệp làm mã băm thực tế SHA-256 thay đổi ngay lập tức (hiệu ứng tuyết lở).'
+            ? 'Nội dung giao dịch bị can thiệp làm mã băm SHA-256 thay đổi ngay lập tức (hiệu ứng tuyết lở).'
             : 'Transaction payload was modified, instantly mutating the SHA-256 hash.',
         };
       }
@@ -290,27 +294,27 @@ export const HashPointerBlockchainLab: React.FC<HashPointerBlockchainLabProps> =
       if (dominoStep === 1) {
         return {
           variant: 'rose' as const,
-          badge: isVi ? 'GÃY CON TRỎ' : 'BROKEN POINTER',
+          badge: isVi ? 'GÃY LIÊN KẾT' : 'BROKEN LINK',
           desc: isVi
-            ? 'PrevHash đang lưu trữ không khớp với Hash mới nổ tung của Khối #1. Liên kết mật mã bị đứt gãy.'
+            ? 'PrevHash đang lưu trữ không khớp với Hash của Khối #1.'
             : 'Stored PrevHash does not match the new hash of Block #1.',
         };
       }
       if (dominoStep === 2) {
         return {
           variant: 'rose' as const,
-          badge: isVi ? 'HASH BỊ BIẾN ĐỔI' : 'HASH MUTATED',
+          badge: isVi ? 'HASH ĐỔI' : 'HASH MUTATED',
           desc: isVi
-            ? 'Hacker cố sửa PrevHash để nối lại với Khối #1, nhưng việc sửa PrevHash làm Hash của chính Khối #2 thay đổi, tiếp tục làm gãy Khối #3.'
+            ? 'Vá PrevHash làm thay đổi Hash của chính Khối #2, tiếp tục làm gãy Khối #3.'
             : 'Patching PrevHash altered Block #2 own hash, breaking the link to Block #3.',
         };
       }
       if (dominoStep === 3) {
         return {
           variant: 'amber' as const,
-          badge: isVi ? 'NHÁNH RẼ (ĐÃ ĐÀO)' : 'FORK (RE-MINED)',
+          badge: isVi ? 'ĐÃ ĐÀO LẠI' : 'RE-MINED',
           desc: isVi
-            ? 'Đã được hacker tính toán lại mã băm trên nhánh giả mạo cá nhân.'
+            ? 'Đã được hacker tính toán lại mã băm trên nhánh rẽ cá nhân.'
             : 'Recalculated on the attacker private fork.',
         };
       }
@@ -325,16 +329,16 @@ export const HashPointerBlockchainLab: React.FC<HashPointerBlockchainLabProps> =
     if (dominoStep === 1 || dominoStep === 2) {
       return {
         variant: 'slate' as const,
-        badge: isVi ? 'VÔ HIỆU HÓA' : 'ORPHANED',
+        badge: isVi ? 'VÔ HIỆU' : 'ORPHANED',
         desc: isVi
-          ? 'Nội dung chưa bị sửa, nhưng vì khối đứng trước đã bị gãy liên kết nên toàn bộ chuỗi phía sau bị vô hiệu hóa.'
-          : 'Data unchanged, but orphaned because preceding link was severed.',
+          ? 'Khối đứng trước bị gãy nên toàn bộ chuỗi phía sau bị vô hiệu hóa.'
+          : 'Orphaned because preceding link was severed.',
       };
     }
     if (dominoStep === 3) {
       return {
         variant: 'amber' as const,
-        badge: isVi ? 'NHÁNH RẼ (ĐÃ ĐÀO)' : 'FORK (RE-MINED)',
+        badge: isVi ? 'ĐÃ ĐÀO LẠI' : 'RE-MINED',
         desc: isVi
           ? 'Hacker đã đào lại toàn bộ để nối con trỏ, nhưng mạng lưới P2P từ chối do thua độ khó tích lũy.'
           : 'Re-mined on attacker fork, but rejected by P2P network under longest chain rule.',
@@ -536,28 +540,37 @@ export const HashPointerBlockchainLab: React.FC<HashPointerBlockchainLabProps> =
             </div>
           </div>
 
-          {/* Deep Insight Banner for Step 3: Explains WHY the network rejects it even though hash pointers match */}
+          {/* Collapsible Accordion for Step 3 */}
           {dominoStep === 3 && (
-            <div className="p-3 rounded-xl bg-amber-950/30 border border-amber-500/40 text-xs font-sans text-amber-100 flex items-start gap-2.5 leading-relaxed animate-in fade-in duration-200">
-              <GitFork className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-              <div>
-                <strong className="text-amber-300 font-semibold">
-                  {isVi ? 'Tại sao mạng P2P từ chối dù các mã băm đã khớp?' : 'Why P2P network rejects matching hashes?'}
-                </strong>{' '}
-                {isVi ? (
-                  <span>
-                    Trong một máy tính cô lập, Hacker có thể tính toán lại toàn bộ con trỏ băm để tạo ra một nhánh chuỗi tự nhất quán.
-                    Tuy nhiên, trên mạng Blockchain phân tán (Proof-of-Work), các node tuân thủ <strong>Quy tắc chuỗi có độ khó tích lũy lớn nhất (Longest Chain Rule)</strong>.
-                    Trong thời gian Hacker đào lại các khối cũ, mạng lưới trung thực đã đào tiếp các khối #4, #5, #6... Nhánh giả mạo của Hacker có độ khó tích lũy thấp hơn nhiều nên lập tức bị các node P2P đào thải và coi là nhánh mồ côi (Orphaned Fork).
-                  </span>
-                ) : (
-                  <span>
-                    In isolation, an attacker can recompute hash pointers to make an internally consistent chain.
-                    However, distributed nodes follow the <strong>Longest Chain / Greatest Cumulative Difficulty Rule</strong>.
-                    While the attacker was re-mining old blocks, the honest network mined blocks #4, #5, #6... The attacker fork has far less cumulative difficulty and is immediately dropped by network peers.
-                  </span>
-                )}
-              </div>
+            <div className="pt-1">
+              <button
+                type="button"
+                onClick={() => setShowConsensusDetails(!showConsensusDetails)}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 text-xs font-sans transition-all cursor-pointer"
+              >
+                <HelpCircle className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                <span>
+                  {isVi
+                    ? 'Vì sao chuỗi này bị từ chối? (Quy tắc chuỗi dài nhất)'
+                    : 'Why is this chain rejected? (Longest chain rule)'}
+                </span>
+                <ChevronDown
+                  className={`w-3.5 h-3.5 text-amber-400 transition-transform duration-200 ${
+                    showConsensusDetails ? 'rotate-180' : ''
+                  }`}
+                />
+              </button>
+
+              {showConsensusDetails && (
+                <div className="mt-2 p-3 rounded-xl bg-amber-950/40 border border-amber-500/40 text-xs font-sans text-amber-100 flex items-start gap-2.5 leading-relaxed animate-in fade-in duration-150">
+                  <GitFork className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                  <p>
+                    {isVi
+                      ? 'Trên mạng P2P phân tán, các node tuân thủ Quy tắc chuỗi có độ khó tích lũy lớn nhất (Longest Chain Rule). Trong thời gian kẻ tấn công đào lại các khối cũ, mạng lưới trung thực đã đào tiếp các khối mới (#4, #5...), khiến nhánh giả mạo bị cô lập vĩnh viễn thành nhánh mồ côi (Orphaned Fork).'
+                      : 'Distributed nodes follow the Longest Chain Rule. While the attacker re-mined past blocks, the honest network continued advancing with new blocks, leaving the attacker fork permanently isolated as an orphan.'}
+                  </p>
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -659,13 +672,8 @@ export const HashPointerBlockchainLab: React.FC<HashPointerBlockchainLabProps> =
 
                   {/* Tầng 2: Data (NO TRUNCATION, FULL TEXT VISIBLE) */}
                   <div className="space-y-1">
-                    <div className="text-[11px] font-sans text-slate-400 flex items-center justify-between">
-                      <span>{isVi ? 'Dữ liệu giao dịch (Data):' : 'Data Payload:'}</span>
-                      {isBlock1 && isBlock1Tampered && (
-                        <span className="text-[10px] font-mono text-rose-300 font-bold bg-rose-500/20 px-1.5 py-0.2 rounded border border-rose-500/40">
-                          {isVi ? 'ĐÃ CAN THIỆP' : 'TAMPERED'}
-                        </span>
-                      )}
+                    <div className="text-[11px] font-sans text-slate-400">
+                      {isVi ? 'Giao dịch:' : 'Transaction:'}
                     </div>
 
                     {isBlock1 ? (
@@ -750,9 +758,7 @@ export const HashPointerBlockchainLab: React.FC<HashPointerBlockchainLabProps> =
                       )}
 
                       <span className="leading-normal">
-                        {isVi
-                          ? `#${idx} ➔ #${idx + 1}: ${connector.labelVi}`
-                          : `#${idx} -> #${idx + 1}: ${connector.labelEn}`}
+                        #{idx} ➔ #{idx + 1}: {isVi ? connector.labelVi : connector.labelEn}
                       </span>
                     </div>
                   </div>
@@ -762,38 +768,24 @@ export const HashPointerBlockchainLab: React.FC<HashPointerBlockchainLabProps> =
           })}
         </div>
 
-        {/* 4. Minimalist Synthesis Footnote & Semantic Color Legend */}
-        <div className="pt-3.5 border-t border-white/[0.08] flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs font-sans text-slate-300">
-          <div className="flex items-start sm:items-center gap-2">
-            <span className="font-semibold text-white shrink-0">
-              {isVi ? 'Bản chất mật mã:' : 'Core takeaway:'}
-            </span>
-            <span className="text-slate-300 leading-relaxed">
-              {isVi
-                ? 'Con trỏ băm (Hash Pointer) liên kết dữ liệu quá khứ. Muốn sửa 1 giao dịch, kẻ tấn công bắt buộc phải đào lại toàn bộ các khối phía sau và phải thắng 51% sức mạnh tính toán của toàn mạng lưới.'
-                : 'Hash pointers make past transactions immutable: altering 1 block requires re-mining all downstream blocks and controlling >51% of network hash rate.'}
-            </span>
-          </div>
-
-          {/* Semantic Legend */}
-          <div className="flex flex-wrap items-center gap-3 shrink-0 text-[11px] font-mono">
-            <span className="inline-flex items-center gap-1.5 text-cyan-300">
-              <span className="w-2 h-2 rounded-full bg-cyan-400" />
-              {isVi ? 'Cyan: Hợp lệ' : 'Cyan: Valid'}
-            </span>
-            <span className="inline-flex items-center gap-1.5 text-rose-300">
-              <span className="w-2 h-2 rounded-full bg-rose-500" />
-              {isVi ? 'Đỏ: Can thiệp / Gãy' : 'Rose: Tampered'}
-            </span>
-            <span className="inline-flex items-center gap-1.5 text-amber-300">
-              <span className="w-2 h-2 rounded-full bg-amber-400" />
-              {isVi ? 'Cam: Nhánh rẽ' : 'Amber: Fork'}
-            </span>
-            <span className="inline-flex items-center gap-1.5 text-slate-300">
-              <span className="w-2 h-2 rounded-full bg-slate-500" />
-              {isVi ? 'Xám: Vô hiệu hóa' : 'Slate: Orphaned'}
-            </span>
-          </div>
+        {/* 4. Semantic Color Legend (Clean & Uncluttered) */}
+        <div className="pt-3 border-t border-white/[0.06] flex flex-wrap items-center justify-center sm:justify-end gap-4 text-[11px] font-mono">
+          <span className="inline-flex items-center gap-1.5 text-cyan-300">
+            <span className="w-2 h-2 rounded-full bg-cyan-400" />
+            {isVi ? 'Hợp lệ' : 'Valid'}
+          </span>
+          <span className="inline-flex items-center gap-1.5 text-rose-300">
+            <span className="w-2 h-2 rounded-full bg-rose-500" />
+            {isVi ? 'Bị sửa / Gãy' : 'Tampered / Broken'}
+          </span>
+          <span className="inline-flex items-center gap-1.5 text-amber-300">
+            <span className="w-2 h-2 rounded-full bg-amber-400" />
+            {isVi ? 'Nhánh rẽ' : 'Fork'}
+          </span>
+          <span className="inline-flex items-center gap-1.5 text-slate-400">
+            <span className="w-2 h-2 rounded-full bg-slate-500" />
+            {isVi ? 'Vô hiệu' : 'Orphaned'}
+          </span>
         </div>
       </div>
 

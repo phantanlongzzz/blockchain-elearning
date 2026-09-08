@@ -416,7 +416,7 @@ export const MempoolDashboard: React.FC = () => {
     {
       id: 'VALID' as const,
       title: isVi ? 'Giao dịch hợp lệ' : 'Valid Transaction',
-      desc: isVi ? 'Transaction hợp lệ và đủ số dư' : 'Valid signature and sufficient balance',
+      desc: isVi ? 'Chữ ký số hợp lệ và đủ số dư khả dụng' : 'Valid digital signature and sufficient balance',
       icon: CheckCircle2,
       accentBorder: 'border-emerald-500/70',
       accentBg: 'bg-emerald-950/20',
@@ -427,20 +427,20 @@ export const MempoolDashboard: React.FC = () => {
     },
     {
       id: 'TAMPERED' as const,
-      title: isVi ? 'Sửa số tiền' : 'Tampered Amount',
-      desc: isVi ? 'Dữ liệu bị thay đổi sau khi ký' : 'Data altered post-signature',
+      title: isVi ? 'Sửa dữ liệu sau khi ký' : 'Data Altered Post-Signing',
+      desc: isVi ? 'Số tiền bị sửa đổi sau khi tạo chữ ký' : 'Amount modified after signature creation',
       icon: FileEdit,
       accentBorder: 'border-rose-500/70',
       accentBg: 'bg-rose-950/20',
       activeText: 'text-rose-300',
-      badge: isVi ? 'Sai chữ ký' : 'Bad Sig',
+      badge: isVi ? 'Sai chữ ký' : 'Bad Signature',
       badgeColor: 'bg-rose-950/60 text-rose-300 border-rose-500/30',
       iconColor: 'text-rose-400',
     },
     {
       id: 'INSUFFICIENT' as const,
-      title: isVi ? 'Vượt số dư' : 'Insufficient Funds',
-      desc: isVi ? 'Amount lớn hơn balance' : 'Transfer exceeds balance',
+      title: isVi ? 'Vượt số dư' : 'Insufficient Balance',
+      desc: isVi ? 'Số tiền chuyển vượt quá số dư khả dụng' : 'Transfer amount exceeds available balance',
       icon: Coins,
       accentBorder: 'border-amber-500/70',
       accentBg: 'bg-amber-950/20',
@@ -451,13 +451,13 @@ export const MempoolDashboard: React.FC = () => {
     },
     {
       id: 'REPLAY' as const,
-      title: isVi ? 'Replay' : 'Replay Attack',
-      desc: isVi ? 'Transaction được gửi lại' : 'Duplicate transaction replay',
+      title: isVi ? 'Phát lại giao dịch' : 'Transaction Replay',
+      desc: isVi ? 'Giao dịch gửi lại với Nonce đã qua sử dụng' : 'Resending transaction with already used Nonce',
       icon: Repeat,
       accentBorder: 'border-purple-500/70',
       accentBg: 'bg-purple-950/20',
       activeText: 'text-purple-300',
-      badge: isVi ? 'Trùng Nonce' : 'Replay',
+      badge: isVi ? 'Trùng Nonce' : 'Replay Nonce',
       badgeColor: 'bg-purple-950/60 text-purple-300 border-purple-500/30',
       iconColor: 'text-purple-400',
     },
@@ -476,28 +476,20 @@ export const MempoolDashboard: React.FC = () => {
   return (
     <div id="mempool-lab" className="space-y-6">
       
-      {/* 0. Scenario Cards & Playback Controls */}
-      <div className="p-4 sm:p-5 rounded-xl bg-[#0B0F19]/90 border border-slate-800 space-y-4 shadow-sm">
+      {/* 0. Scenario Cards */}
+      <div className="p-4 sm:p-5 rounded-xl bg-[#0B0F19]/90 border border-slate-800 space-y-3 shadow-sm">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="text-xs font-semibold uppercase tracking-wider text-slate-300">
-              {isVi ? 'Kịch bản kiểm thử' : 'Test Scenarios'}
+              {isVi ? 'Kịch bản kiểm thử giao dịch' : 'Transaction Test Scenarios'}
             </span>
             <span className="text-[10px] font-mono text-slate-500 hidden sm:inline">
               (4 Scenarios)
             </span>
           </div>
-          {selectedScenario && (
-            <span className="text-xs font-mono text-slate-400">
-              {isVi ? 'Đang chọn: ' : 'Active: '}
-              <span className="text-cyan-300 font-semibold">
-                {selectedScenario === 'VALID' && (isVi ? 'Hợp lệ' : 'Valid')}
-                {selectedScenario === 'TAMPERED' && (isVi ? 'Sửa số tiền' : 'Tampered')}
-                {selectedScenario === 'INSUFFICIENT' && (isVi ? 'Vượt số dư' : 'Insufficient')}
-                {selectedScenario === 'REPLAY' && (isVi ? 'Replay' : 'Replay')}
-              </span>
-            </span>
-          )}
+          <span className="text-[11px] text-slate-400 font-sans">
+            {isVi ? 'Chọn 1 kịch bản để chạy qua tiến trình xác thực bên dưới' : 'Select a scenario to run through the validation pipeline'}
+          </span>
         </div>
         
         {/* 4 Selectable Scenario Cards */}
@@ -513,7 +505,7 @@ export const MempoolDashboard: React.FC = () => {
                 onClick={() => setSelectedScenario(item.id)}
                 className={`p-3.5 rounded-xl border text-left transition-all duration-200 cursor-pointer flex flex-col justify-between relative group ${
                   isSelected
-                    ? `${item.accentBg} ${item.accentBorder} ring-1 ring-cyan-500/30 shadow-md`
+                    ? `${item.accentBg} ${item.accentBorder} ring-1 ring-cyan-500/40 shadow-sm`
                     : 'bg-slate-900/60 border-slate-800/90 hover:border-slate-700 hover:bg-slate-900/90'
                 }`}
               >
@@ -522,49 +514,63 @@ export const MempoolDashboard: React.FC = () => {
                     <div className={`p-1.5 rounded-lg ${isSelected ? 'bg-slate-900/80 border border-slate-700/60' : 'bg-slate-950/60 border border-slate-800'}`}>
                       <Icon className={`w-4 h-4 ${isSelected ? item.iconColor : 'text-slate-400 group-hover:text-slate-300'}`} />
                     </div>
-                    <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full border ${item.badgeColor}`}>
-                      {item.badge}
-                    </span>
+                    <div className="flex items-center gap-1.5">
+                      <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full border ${item.badgeColor}`}>
+                        {item.badge}
+                      </span>
+                      {isSelected && (
+                        <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0" />
+                      )}
+                    </div>
                   </div>
                   <h4 className={`text-xs sm:text-sm font-semibold tracking-tight mb-1 ${isSelected ? 'text-white' : 'text-slate-200 group-hover:text-white'}`}>
                     {item.title}
                   </h4>
-                  <p className="text-[11px] text-slate-400 line-clamp-1 leading-relaxed">
+                  <p className="text-[11px] text-slate-400 line-clamp-2 leading-relaxed">
                     {item.desc}
                   </p>
-                </div>
-                <div className="mt-3 pt-2 border-t border-slate-800/60 flex items-center justify-between text-[10px] font-mono">
-                  <span className={isSelected ? 'text-cyan-300 font-medium' : 'text-slate-500'}>
-                    {isSelected ? (isVi ? '✓ Đang kích hoạt' : '✓ Active') : (isVi ? 'Nhấp để chọn' : 'Click to select')}
-                  </span>
-                  <span className={`w-2 h-2 rounded-full ${isSelected ? 'bg-cyan-400 ring-2 ring-cyan-400/20' : 'bg-slate-700'}`} />
                 </div>
               </button>
             );
           })}
         </div>
+      </div>
 
-        {/* Action Controls & Simulation Toolbar */}
-        {selectedScenario && (
-          <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-800/80">
-            {!trace.length ? (
-              <div className="flex items-center gap-3 flex-wrap">
+      {/* 1. Lifecycle Pipeline & Statistics Container */}
+      <div id="pipeline-viz" className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Horizontal Verification Pipeline with Integrated Playback Controls */}
+        <div className="lg:col-span-2 p-4 sm:p-5 rounded-xl bg-[#0B0F19]/90 border border-slate-800 flex flex-col justify-between space-y-4 shadow-sm">
+          <div className="flex items-center justify-between flex-wrap gap-2.5 pb-2.5 border-b border-slate-800/80">
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-semibold uppercase tracking-wider text-slate-200">
+                {isVi ? 'Tiến trình xác thực giao dịch' : 'Transaction Validation Pipeline'}
+              </span>
+              <span className="text-xs font-mono text-cyan-400 font-medium px-2 py-0.5 rounded bg-slate-950 border border-slate-800">
+                {activeStep > 0 ? `${Math.max(1, Math.min(5, activeStep))}/5 Bước` : '0/5 Bước'}
+              </span>
+            </div>
+
+            {/* Contextual Playback Controls directly inside the Pipeline */}
+            <div className="flex items-center gap-2 flex-wrap">
+              {!trace.length ? (
                 <button
+                  type="button"
                   onClick={handleStartSimulation}
-                  disabled={isGenerating}
-                  className="flex items-center gap-2 px-4 py-2 text-xs sm:text-sm rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold shadow-sm transition-all cursor-pointer disabled:opacity-50 active:scale-98"
+                  disabled={isGenerating || !selectedScenario}
+                  className={`flex items-center gap-1.5 px-3.5 py-1.5 text-xs rounded-lg font-semibold shadow-xs transition-all cursor-pointer active:scale-98 ${
+                    selectedScenario
+                      ? 'bg-cyan-500 hover:bg-cyan-400 text-slate-950 ring-1 ring-cyan-400/40'
+                      : 'bg-slate-800/80 text-slate-500 cursor-not-allowed border border-slate-800'
+                  }`}
+                  title={!selectedScenario ? (isVi ? 'Vui lòng chọn 1 kịch bản bên trên' : 'Select a scenario above first') : ''}
                 >
-                  <Play className="w-4 h-4 fill-slate-950" />
-                  <span>{isVi ? 'Bắt đầu mô phỏng' : 'Start Simulation'}</span>
+                  <Play className="w-3.5 h-3.5 fill-current" />
+                  <span>{isVi ? 'Chạy tiến trình' : 'Run Pipeline'}</span>
                 </button>
-                <span className="text-xs text-slate-400 font-sans hidden sm:inline">
-                  {isVi ? 'Mô phỏng 5 bước vòng đời giao dịch' : 'Simulates 5-step transaction lifecycle'}
-                </span>
-              </div>
-            ) : (
-              <>
-                <div className="flex items-center gap-2 flex-wrap">
+              ) : (
+                <>
                   <button
+                    type="button"
                     onClick={() => setIsPlaying(!isPlaying)}
                     className={`flex items-center gap-1.5 px-3.5 py-1.5 text-xs rounded-lg font-medium transition-colors cursor-pointer ${
                       isPlaying
@@ -575,84 +581,70 @@ export const MempoolDashboard: React.FC = () => {
                     {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5 fill-current" />}
                     <span>{isPlaying ? (isVi ? 'Tạm dừng' : 'Pause') : (isVi ? 'Tiếp tục' : 'Resume')}</span>
                   </button>
+
                   <button
+                    type="button"
                     onClick={handleReset}
-                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 border border-slate-700/60 font-medium transition-colors cursor-pointer"
+                    className="flex items-center gap-1 px-2.5 py-1.5 text-xs rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 border border-slate-700/60 font-medium transition-colors cursor-pointer"
+                    title={isVi ? 'Đặt lại tiến trình' : 'Reset pipeline'}
                   >
                     <RotateCcw className="w-3.5 h-3.5 text-slate-400" />
                     <span>{isVi ? 'Đặt lại' : 'Reset'}</span>
                   </button>
-                </div>
 
-                <div className="flex items-center gap-3 flex-wrap ml-auto">
                   {/* Stepper controls */}
-                  <div className="flex items-center gap-1 bg-slate-950 border border-slate-800 p-1 rounded-lg">
+                  <div className="flex items-center gap-0.5 bg-slate-950 border border-slate-800 p-0.5 rounded-lg">
                     <button
+                      type="button"
                       onClick={() => setStepIndex(Math.max(0, stepIndex - 1))}
                       disabled={stepIndex === 0}
                       className="p-1 rounded hover:bg-slate-800 text-slate-400 hover:text-white disabled:opacity-30 transition-colors cursor-pointer"
                       title={isVi ? 'Bước trước' : 'Previous step'}
                     >
-                      <SkipBack className="w-3.5 h-3.5" />
+                      <SkipBack className="w-3 h-3" />
                     </button>
-                    <span className="text-xs text-slate-300 font-mono min-w-[40px] text-center font-semibold">
+                    <span className="text-[11px] text-slate-300 font-mono px-1.5 text-center font-semibold min-w-[32px]">
                       {Math.max(1, Math.min(5, activeStep))}/5
                     </span>
                     <button
+                      type="button"
                       onClick={() => setStepIndex(Math.min(trace.length - 1, stepIndex + 1))}
                       disabled={stepIndex === trace.length - 1}
                       className="p-1 rounded hover:bg-slate-800 text-slate-400 hover:text-white disabled:opacity-30 transition-colors cursor-pointer"
                       title={isVi ? 'Bước tiếp' : 'Next step'}
                     >
-                      <SkipForward className="w-3.5 h-3.5" />
+                      <SkipForward className="w-3 h-3" />
                     </button>
                   </div>
 
                   {/* Speed selector */}
-                  <div className="flex items-center gap-1.5 pl-2 border-l border-slate-800">
-                    <span className="text-xs text-slate-400 font-mono hidden sm:inline">Speed:</span>
-                    <div className="bg-slate-950 border border-slate-800 p-0.5 rounded-lg text-[11px] font-mono flex items-center gap-0.5">
-                      {[0.5, 1, 2].map((speed) => (
-                        <button
-                          key={speed}
-                          onClick={() => setPlaybackSpeed(speed)}
-                          className={`px-2 py-0.5 rounded text-[11px] font-mono transition-colors cursor-pointer ${
-                            playbackSpeed === speed
-                              ? 'bg-slate-800 text-cyan-300 font-semibold shadow-xs'
-                              : 'text-slate-400 hover:text-white'
-                          }`}
-                        >
-                          {speed}×
-                        </button>
-                      ))}
-                    </div>
+                  <div className="bg-slate-950 border border-slate-800 p-0.5 rounded-lg text-[10px] font-mono flex items-center gap-0.5">
+                    {[0.5, 1, 2].map((speed) => (
+                      <button
+                        key={speed}
+                        type="button"
+                        onClick={() => setPlaybackSpeed(speed)}
+                        className={`px-1.5 py-0.5 rounded text-[10px] font-mono transition-colors cursor-pointer ${
+                          playbackSpeed === speed
+                            ? 'bg-slate-800 text-cyan-300 font-semibold shadow-xs'
+                            : 'text-slate-400 hover:text-white'
+                        }`}
+                      >
+                        {speed}×
+                      </button>
+                    ))}
                   </div>
-                </div>
-              </>
-            )}
-          </div>
-        )}
-      </div>
-
-      {/* 1. Lifecycle Pipeline & Statistics Container */}
-      <div id="pipeline-viz" className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Horizontal Verification Pipeline */}
-        <div className="lg:col-span-2 p-4 sm:p-5 rounded-xl bg-[#0B0F19]/90 border border-slate-800 flex flex-col justify-between space-y-4 shadow-sm">
-          <div className="flex items-center justify-between pb-2 border-b border-slate-800/80">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-300">
-              {isVi ? 'Tiến trình xác thực' : 'Validation Pipeline'}
-            </span>
-            <span className="text-xs font-mono text-cyan-400 font-medium">
-              {activeStep > 0 ? `${Math.max(1, Math.min(5, activeStep))}/5 Bước` : '0/5 Bước'}
-            </span>
+                </>
+              )}
+            </div>
           </div>
 
           {/* Progress Bar & Status Line */}
           <div className="space-y-1.5">
             <div className="flex items-center justify-between text-xs font-mono text-slate-400">
               <span className="flex items-center gap-1.5">
-                {activeStep === 0 && <span className="text-slate-500">{isVi ? 'Trạng thái: Chờ bắt đầu' : 'Status: Ready'}</span>}
-                {activeStep === 1 && <span className="text-cyan-300">{isVi ? 'Bước 1/5: Tạo dữ liệu Transaction' : 'Step 1/5: Creating Payload'}</span>}
+                {activeStep === 0 && <span className="text-slate-500">{isVi ? 'Trạng thái: Sẵn sàng kiểm thử' : 'Status: Ready'}</span>}
+                {activeStep === 1 && <span className="text-cyan-300">{isVi ? 'Bước 1/5: Tạo dữ liệu giao dịch' : 'Step 1/5: Creating Payload'}</span>}
                 {activeStep === 2 && <span className="text-cyan-300">{isVi ? 'Bước 2/5: Băm SHA-256 & Ký số ECDSA' : 'Step 2/5: Hashing & ECDSA Signing'}</span>}
                 {activeStep === 3 && <span className="text-cyan-300">{isVi ? 'Bước 3/5: Truyền phát mạng ngang hàng P2P' : 'Step 3/5: P2P Network Propagation'}</span>}
                 {activeStep === 4 && <span className="text-amber-300">{isVi ? 'Bước 4/5: Nút mạng kiểm tra 6 tiêu chí' : 'Step 4/5: Node Verification Checks'}</span>}
@@ -820,13 +812,14 @@ export const MempoolDashboard: React.FC = () => {
               </h3>
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
                 {isVi
-                  ? 'Chọn một kịch bản để bắt đầu kiểm tra transaction.'
-                  : 'Select a test scenario above and start the simulation.'}
+                  ? 'Chọn một kịch bản kiểm thử bên trên để bắt đầu quy trình xác thực giao dịch.'
+                  : 'Select a test scenario above to begin transaction validation.'}
               </p>
             </div>
             {selectedScenario ? (
               <div className="pt-1 flex flex-col sm:flex-row items-center gap-3">
                 <button
+                  type="button"
                   onClick={handleStartSimulation}
                   disabled={isGenerating}
                   className="px-5 py-2.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold text-xs sm:text-sm shadow-md transition-all flex items-center gap-2 cursor-pointer active:scale-98"
@@ -835,12 +828,12 @@ export const MempoolDashboard: React.FC = () => {
                   <span>{isVi ? 'Bắt đầu mô phỏng ▶' : 'Start Simulation ▶'}</span>
                 </button>
                 <span className="text-xs text-slate-400 font-mono">
-                  {isVi ? 'Đang chọn: ' : 'Selected: '}
+                  {isVi ? 'Kịch bản: ' : 'Scenario: '}
                   <span className="text-cyan-300 font-semibold">
                     {selectedScenario === 'VALID' && (isVi ? 'Giao dịch hợp lệ' : 'Valid Transaction')}
-                    {selectedScenario === 'TAMPERED' && (isVi ? 'Sửa số tiền' : 'Tampered Amount')}
-                    {selectedScenario === 'INSUFFICIENT' && (isVi ? 'Vượt số dư' : 'Insufficient Funds')}
-                    {selectedScenario === 'REPLAY' && (isVi ? 'Replay' : 'Replay Attack')}
+                    {selectedScenario === 'TAMPERED' && (isVi ? 'Sửa dữ liệu sau khi ký' : 'Data Altered Post-Signing')}
+                    {selectedScenario === 'INSUFFICIENT' && (isVi ? 'Vượt số dư' : 'Insufficient Balance')}
+                    {selectedScenario === 'REPLAY' && (isVi ? 'Phát lại giao dịch' : 'Transaction Replay')}
                   </span>
                 </span>
               </div>

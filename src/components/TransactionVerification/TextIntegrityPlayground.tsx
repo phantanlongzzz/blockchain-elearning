@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { hashSha256 } from '../../utils/sha256';
 import { RotateCcw, AlertTriangle, CheckCircle2, Type, Hash } from 'lucide-react';
+import { useLanguage } from '../../i18n/LanguageContext';
 
 export const TextIntegrityPlayground: React.FC = () => {
+  const { language } = useLanguage();
+  const isVi = language === 'vi';
+
   const defaultText = 'Blockchain is secure';
   const [originalText, setOriginalText] = useState(defaultText);
   const [testText, setTestText] = useState(defaultText);
@@ -65,121 +69,132 @@ export const TextIntegrityPlayground: React.FC = () => {
   };
 
   return (
-    <div className="font-sans space-y-6 animate-in fade-in duration-500">
+    <div className="font-sans space-y-6 animate-in fade-in duration-300">
       
       {/* Preset Action Buttons */}
-      <div className="flex flex-wrap items-center gap-3 mb-6">
+      <div className="flex flex-wrap items-center gap-2.5">
         <button
           onClick={handleReset}
-          className="px-3.5 py-2 rounded-xl bg-[#0F1217] hover:bg-[#1A2028] text-[#C5CBD3] hover:text-white border border-[#1B2027] text-xs font-sans flex items-center gap-1.5 transition-all cursor-pointer"
+          className="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700/60 text-xs font-mono flex items-center gap-1.5 transition-colors cursor-pointer"
         >
           <RotateCcw className="w-3.5 h-3.5" />
-          <span>Khôi phục (Reset)</span>
+          <span>{isVi ? 'Khôi phục gốc' : 'Reset'}</span>
         </button>
         <button
           onClick={handleExperiment1}
-          className="px-3.5 py-2 rounded-xl bg-[#0B0E12] hover:bg-[#1A2028] text-text-primary hover:text-white border border-border-primary text-xs font-sans flex items-center gap-1.5 transition-all cursor-pointer"
+          className="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700/60 text-xs font-mono flex items-center gap-1.5 transition-colors cursor-pointer"
         >
-          <Type className="w-3.5 h-3.5" />
-          <span>Sửa 1 ký tự (s → S)</span>
+          <Type className="w-3.5 h-3.5 text-cyan-400" />
+          <span>{isVi ? 'Sửa 1 ký tự (s → S)' : 'Change 1 char (s → S)'}</span>
         </button>
         <button
           onClick={handleExperiment2}
-          className="px-3.5 py-2 rounded-xl bg-[#0B0E12] hover:bg-[#1A2028] text-text-primary hover:text-white border border-border-primary text-xs font-sans flex items-center gap-1.5 transition-all cursor-pointer"
+          className="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700/60 text-xs font-mono flex items-center gap-1.5 transition-colors cursor-pointer"
         >
-          <Type className="w-3.5 h-3.5" />
-          <span>Thêm khoảng trắng</span>
+          <Type className="w-3.5 h-3.5 text-cyan-400" />
+          <span>{isVi ? 'Thêm khoảng trắng cuối' : 'Add trailing space'}</span>
         </button>
         <button
           onClick={handleExperiment3}
-          className="px-3.5 py-2 rounded-xl bg-[#0B0E12] hover:bg-[#1A2028] text-text-primary hover:text-white border border-border-primary text-xs font-sans flex items-center gap-1.5 transition-all cursor-pointer"
+          className="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700/60 text-xs font-mono flex items-center gap-1.5 transition-colors cursor-pointer"
         >
-          <Type className="w-3.5 h-3.5" />
-          <span>Thay đổi 1 từ</span>
+          <Type className="w-3.5 h-3.5 text-cyan-400" />
+          <span>{isVi ? 'Thay đổi 1 từ' : 'Change 1 word'}</span>
         </button>
       </div>
 
       {/* Main Two Columns */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         
         {/* LEFT: Original Text */}
-        <div className="bg-[#0B0E12] rounded-2xl border border-[#1B2027] p-5 flex flex-col">
+        <div className="bg-slate-900/60 rounded-xl border border-slate-800 p-5 flex flex-col">
           <div className="mb-3 flex items-center justify-between">
-            <h3 className="text-sm font-display font-bold text-white uppercase tracking-wide">Văn bản gốc</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-300">
+              {isVi ? 'Văn bản gốc (Original Text)' : 'Original Text'}
+            </h3>
+            <span className="text-[10px] font-mono text-slate-500">{originalText.length} ký tự</span>
           </div>
           <textarea
             readOnly
             value={originalText}
-            className="w-full h-32 bg-[#090C10] border border-[#1B2027] rounded-xl p-3 text-sm text-[#C5CBD3] focus:outline-none resize-none mb-4 font-sans"
+            className="w-full h-28 bg-slate-950 border border-slate-800 rounded-lg p-3 text-sm text-slate-300 focus:outline-none resize-none mb-4 font-sans"
           />
           <div className="mt-auto">
-            <div className="flex items-center gap-2 mb-2 text-xs text-[#68717D] uppercase font-bold">
-              <Hash className="w-3.5 h-3.5" />
-              <span>SHA-256</span>
+            <div className="flex items-center gap-2 mb-2 text-xs text-slate-400 uppercase font-semibold">
+              <Hash className="w-3.5 h-3.5 text-cyan-400" />
+              <span>SHA-256 Digest</span>
             </div>
-            <div className="p-3 rounded-xl bg-[#090C10] border border-[#1B2027] font-mono text-xs text-[#00D084] break-all">
-              {originalHashHex || 'Đang tính toán...'}
+            <div className="p-3 rounded-lg bg-slate-950 border border-slate-800 font-mono text-xs text-emerald-400 break-all">
+              {originalHashHex || (isVi ? 'Đang tính toán...' : 'Computing...')}
             </div>
           </div>
         </div>
 
         {/* RIGHT: Test Text */}
-        <div className={`bg-[#0B0E12] rounded-2xl border p-5 flex flex-col transition-colors duration-300 ${!isMatch ? 'border-rose-500/40' : 'border-[#1B2027]'}`}>
+        <div className={`bg-slate-900/60 rounded-xl border p-5 flex flex-col transition-colors duration-300 ${!isMatch ? 'border-rose-500/40' : 'border-slate-800'}`}>
           <div className="mb-3 flex items-center justify-between">
-            <h3 className="text-sm font-display font-bold text-white uppercase tracking-wide">Văn bản kiểm tra</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-300">
+              {isVi ? 'Văn bản kiểm tra (So sánh)' : 'Test Text (Editable)'}
+            </h3>
+            <span className="text-[10px] font-mono text-slate-500">{testText.length} ký tự</span>
           </div>
           <textarea
             value={testText}
             onChange={(e) => setTestText(e.target.value)}
-            className="w-full h-32 bg-[#090C10] border border-[#1B2027] rounded-xl p-3 text-sm text-white focus:outline-none focus:border-[#00D084]/50 resize-none mb-4 font-sans transition-colors"
+            className="w-full h-28 bg-slate-950 border border-slate-800 rounded-lg p-3 text-sm text-white focus:outline-none focus:border-cyan-500/50 resize-none mb-4 font-sans transition-colors"
           />
           <div className="mt-auto">
-            <div className="flex items-center gap-2 mb-2 text-xs text-[#68717D] uppercase font-bold">
-              <Hash className="w-3.5 h-3.5" />
-              <span>SHA-256</span>
+            <div className="flex items-center gap-2 mb-2 text-xs text-slate-400 uppercase font-semibold">
+              <Hash className="w-3.5 h-3.5 text-cyan-400" />
+              <span>SHA-256 Digest</span>
             </div>
-            <div className={`p-3 rounded-xl bg-[#090C10] border font-mono text-xs break-all transition-colors duration-300 ${!isMatch ? 'border-rose-500/30 text-rose-400' : 'border-[#1B2027] text-[#00D084]'}`}>
-              {testHashHex || 'Đang tính toán...'}
+            <div className={`p-3 rounded-lg bg-slate-950 border font-mono text-xs break-all transition-colors duration-300 ${!isMatch ? 'border-rose-500/30 text-rose-400' : 'border-slate-800 text-emerald-400'}`}>
+              {testHashHex || (isVi ? 'Đang tính toán...' : 'Computing...')}
             </div>
           </div>
         </div>
       </div>
 
       {/* Comparison Result / Avalanche Effect */}
-      <div className={`p-6 rounded-2xl border transition-all duration-500 ${isMatch ? 'bg-[#0B0E12] border-[#00D084]/30' : 'bg-[#0B0E12] border-rose-500/40'}`}>
-        
+      <div className={`p-5 rounded-xl border transition-all duration-300 ${isMatch ? 'bg-emerald-950/20 border-emerald-500/40' : 'bg-rose-950/20 border-rose-500/40'}`}>
         {isMatch ? (
-          <div className="flex items-center justify-center gap-3">
-            <CheckCircle2 className="w-6 h-6 text-[#00D084]" />
+          <div className="flex items-center gap-3">
+            <CheckCircle2 className="w-6 h-6 text-emerald-400 shrink-0" />
             <div>
-              <h4 className="text-[#00D084] font-bold text-sm uppercase">Nội dung toàn vẹn</h4>
-              <p className="text-xs text-[#9AA2AE] mt-0.5">Hai văn bản tạo ra cùng một mã SHA-256.</p>
+              <h4 className="text-emerald-300 font-bold text-xs uppercase tracking-wider">
+                {isVi ? 'Nội dung toàn vẹn - Mã băm khớp hoàn toàn' : 'Integrity Verified - Exact Match'}
+              </h4>
+              <p className="text-xs text-emerald-400/80 mt-0.5">
+                {isVi ? 'Hai văn bản tạo ra cùng một giá trị băm 256-bit không sai lệch.' : 'Both text inputs generate the exact same 256-bit digest.'}
+              </p>
             </div>
           </div>
         ) : (
-          <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <AlertTriangle className="w-6 h-6 text-rose-500" />
-                <div>
-                  <h4 className="text-rose-400 font-bold text-sm uppercase">Nội dung đã thay đổi</h4>
-                  <p className="text-xs text-[#9AA2AE] mt-0.5">Chỉ cần thay đổi một ký tự cũng tạo ra mã SHA-256 hoàn toàn khác.</p>
-                </div>
+          <div className="space-y-4">
+            <div className="flex items-center gap-3">
+              <AlertTriangle className="w-6 h-6 text-rose-400 shrink-0" />
+              <div>
+                <h4 className="text-rose-300 font-bold text-xs uppercase tracking-wider">
+                  {isVi ? 'Dữ liệu đã bị sửa đổi (Mã băm hoàn toàn khác)' : 'Data Altered (Hash Divergence)'}
+                </h4>
+                <p className="text-xs text-rose-400/80 mt-0.5">
+                  {isVi ? 'Hiệu ứng tuyết lở (Avalanche Effect): Thay đổi dù chỉ 1 bit đầu vào cũng làm đảo lộn ~50% các bit mã băm.' : 'Avalanche Effect: Altering even a single bit in the input flips ~50% of the output hash bits.'}
+                </p>
               </div>
             </div>
 
             {/* Avalanche Stats */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 animate-in fade-in slide-in-from-bottom-2">
-              <div className="p-4 rounded-xl bg-[#090C10] border border-[#1B2027]">
-                <div className="text-xs text-[#68717D] mb-1">Changed characters</div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+              <div className="p-3 rounded-lg bg-slate-950/80 border border-slate-800">
+                <div className="text-xs text-slate-400 mb-1">{isVi ? 'Số ký tự khác biệt' : 'Changed characters'}</div>
                 <div className="text-xl font-bold text-white font-mono">{changedChars}</div>
               </div>
-              <div className="p-4 rounded-xl bg-[#090C10] border border-[#1B2027]">
-                <div className="text-xs text-[#68717D] mb-1">Different hash bits</div>
+              <div className="p-3 rounded-lg bg-slate-950/80 border border-slate-800">
+                <div className="text-xs text-slate-400 mb-1">{isVi ? 'Số bit băm bị lệch' : 'Different hash bits'}</div>
                 <div className="text-xl font-bold text-rose-400 font-mono">{differentBits} / 256</div>
               </div>
-              <div className="p-4 rounded-xl bg-[#090C10] border border-rose-500/30">
-                <div className="text-xs text-[#68717D] mb-1">Avalanche Effect</div>
+              <div className="p-3 rounded-lg bg-slate-950/80 border border-rose-500/30">
+                <div className="text-xs text-slate-400 mb-1">{isVi ? 'Tỷ lệ tuyết lở' : 'Avalanche Effect'}</div>
                 <div className="text-xl font-bold text-rose-400 font-mono">{avalanchePercent}%</div>
               </div>
             </div>

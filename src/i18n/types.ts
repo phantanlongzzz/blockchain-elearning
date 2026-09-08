@@ -256,6 +256,12 @@ export interface TranslationSchema {
     tabMempool: string;
     tabLedger: string;
     tabSignFlow: string;
+    txDomain: string;
+    hashDomain: string;
+    hashTitle: string;
+    hashSubtitle: string;
+    tabTextCheck: string;
+    tabFileCheck: string;
     matrixTitle: string;
     totalTxs: string;
     verified: string;

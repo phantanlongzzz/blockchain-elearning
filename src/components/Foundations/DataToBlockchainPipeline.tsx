@@ -533,7 +533,7 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
           : 'Blockchain begins with raw transaction data.',
       explanation:
         language === 'vi'
-          ? 'Mọi giao dịch trong mạng lưới phi tập trung (chuyển tiền, hợp đồng thông minh) đều xuất phát từ một cấu trúc dữ liệu thô gồm Người gửi (Sender), Người nhận (Recipient), Số lượng (Amount) và Timestamp.'
+          ? 'Mọi giao dịch trong mạng lưới phi tập trung (chuyển tiền, hợp đồng thông minh) đều xuất phát từ một cấu trúc dữ liệu thô gồm Người gửi, Người nhận, Số lượng và Timestamp.'
           : 'Every decentralized transaction originates as raw payload data containing Sender, Recipient, Amount, and Timestamp before cryptographic processing.',
     },
     {
@@ -675,31 +675,28 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
           </span>
         </div>
 
-        {/* 8 Step Clickable Buttons */}
-        <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
+        {/* 7 Step Clickable Buttons */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2.5">
           {PIPELINE_STEPS.map((s) => {
             const isCurrent = currentStep === s.step;
-            const isUnlocked = s.step <= maxUnlockedStep;
             const isTamper = s.step === 6 && isTampered;
             return (
               <button
                 key={s.step}
                 type="button"
                 onClick={() => handleStepSelect(s.step)}
-                className={`p-2 rounded-xl border text-center transition-all cursor-pointer flex flex-col items-center justify-center ${
+                className={`p-2.5 rounded-xl border text-center transition-all cursor-pointer flex flex-col items-center justify-center ${
                   isCurrent
                     ? isTamper
-                      ? 'bg-rose-950/40 border-rose-500/60 text-rose-200'
-                      : 'bg-gradient-to-b from-cyan-500/20 via-[#0B1220]/90 to-[#080D1A]/95 text-white border-cyan-500/40'
-                    : isUnlocked
-                    ? 'bg-[#0B101E]/60 hover:bg-[#0E1526] border-white/[0.06] text-slate-300 hover:text-white'
-                    : 'bg-transparent border-white/[0.03] text-slate-600'
+                      ? 'bg-rose-950/60 border-rose-500/80 text-rose-200 ring-1 ring-rose-400/50 shadow-lg shadow-rose-950/40'
+                      : 'bg-cyan-500/20 border-cyan-400 text-cyan-300 ring-1 ring-cyan-400/50 shadow-lg shadow-cyan-950/50'
+                    : 'bg-[#0c1322] hover:bg-[#131d33] border-slate-800 hover:border-slate-700 text-slate-300 hover:text-white'
                 }`}
               >
-                <span className="text-[11px] font-mono font-medium">
+                <span className={`text-xs font-mono font-bold ${isCurrent ? 'text-cyan-300' : 'text-slate-300'}`}>
                   {language === 'vi' ? `BƯỚC ${s.step}` : `STEP ${s.step}`}
                 </span>
-                <span className="text-[9px] font-sans truncate max-w-full block mt-0.5 text-slate-400">
+                <span className={`text-[11px] font-sans truncate max-w-full block mt-1 ${isCurrent ? 'text-cyan-100 font-semibold' : 'text-slate-400'}`}>
                   {s.badge}
                 </span>
               </button>
@@ -709,7 +706,7 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
       </div>
 
       {/* ==================================================== */}
-      {/* ACTIVE STEP WORKBENCH (INTERACTIVE STAGES 1 - 8) */}
+      {/* ACTIVE STEP WORKBENCH (INTERACTIVE STAGES 1 - 7) */}
       {/* ==================================================== */}
       <div className="p-6 rounded-2xl bg-[#0B0F19]/70 border border-white/[0.08] space-y-6">
         {/* STEP 1: ENTER RAW TRANSACTION */}
@@ -717,122 +714,202 @@ export const DataToBlockchainPipeline: React.FC<DataToBlockchainPipelineProps> =
           <div className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               {/* Left: Input Form */}
-              <div className="lg:col-span-6 p-5 rounded-2xl bg-[#05070c] border border-slate-800 space-y-4">
-                <div className="flex items-center justify-between pb-3 border-b border-slate-800">
-                  <span className="text-xs font-mono font-bold text-slate-300 uppercase flex items-center gap-2">
-                    <FileText className="w-4 h-4 text-teach-1" />
-                    <span>{language === 'vi' ? 'Dữ Liệu Giao Dịch Thô' : 'Raw Transaction Payload'}</span>
-                  </span>
-                  <span className="text-[10px] font-mono text-slate-400 bg-slate-900 px-2 py-0.5 rounded border border-slate-800">
-                    Input Stage
-                  </span>
-                </div>
-
-                <div className="space-y-3 font-mono text-xs">
-                  <div>
-                    <label className="text-[11px] text-slate-400 block mb-1">
-                      {language === 'vi' ? 'Người Gửi (Sender):' : 'Sender:'}
-                    </label>
-                    <input
-                      type="text"
-                      value={txSender}
-                      onChange={(e) => setTxSender(e.target.value)}
-                      className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-teach-1 font-bold focus:outline-none focus:border-teach-1"
-                      placeholder="e.g. Alice"
-                    />
+              <div className="lg:col-span-5 p-5 sm:p-6 rounded-2xl bg-[#05070c] border border-slate-800 space-y-5 flex flex-col justify-between">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+                    <span className="text-xs font-mono font-bold text-slate-300 uppercase flex items-center gap-2">
+                      <FileText className="w-4 h-4 text-cyan-400" />
+                      <span>{language === 'vi' ? 'Nhập Giao Dịch' : 'Transaction Input'}</span>
+                    </span>
+                    <span className="text-[11px] font-mono text-cyan-400 bg-cyan-950/60 px-2.5 py-0.5 rounded border border-cyan-800/60">
+                      Step 1 Payload
+                    </span>
                   </div>
 
-                  <div>
-                    <label className="text-[11px] text-slate-400 block mb-1">
-                      {language === 'vi' ? 'Người Nhận (Recipient):' : 'Recipient:'}
-                    </label>
-                    <input
-                      type="text"
-                      value={txRecipient}
-                      onChange={(e) => setTxRecipient(e.target.value)}
-                      className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-amber-300 font-bold focus:outline-none focus:border-amber-400"
-                      placeholder="e.g. Bob"
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="space-y-4">
                     <div>
-                      <label className="text-[11px] text-slate-400 block mb-1">
-                        {language === 'vi' ? 'Số Lượng (Amount):' : 'Amount:'}
-                      </label>
-                      <input
-                        type="number"
-                        value={txAmount}
-                        onChange={(e) => setTxAmount(parseFloat(e.target.value) || 0)}
-                        className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-financial font-bold focus:outline-none focus:border-financial"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-[11px] text-slate-400 block mb-1">
-                        {language === 'vi' ? 'Đơn Vị (Unit):' : 'Unit:'}
+                      <label className="text-sm font-semibold text-slate-200 block mb-1.5">
+                        {language === 'vi' ? 'Người gửi' : 'Sender'}
                       </label>
                       <input
                         type="text"
-                        value={txUnit}
-                        onChange={(e) => setTxUnit(e.target.value)}
-                        className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-200 font-bold focus:outline-none focus:border-slate-500"
+                        value={txSender}
+                        onChange={(e) => setTxSender(e.target.value)}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700/80 text-cyan-300 font-bold text-sm focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400/30 transition-colors"
+                        placeholder="e.g. Alice"
                       />
                     </div>
-                  </div>
 
+                    <div>
+                      <label className="text-sm font-semibold text-slate-200 block mb-1.5">
+                        {language === 'vi' ? 'Người nhận' : 'Recipient'}
+                      </label>
+                      <input
+                        type="text"
+                        value={txRecipient}
+                        onChange={(e) => setTxRecipient(e.target.value)}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700/80 text-amber-300 font-bold text-sm focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400/30 transition-colors"
+                        placeholder="e.g. Bob"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="text-sm font-semibold text-slate-200 block mb-1.5">
+                          {language === 'vi' ? 'Số lượng' : 'Amount'}
+                        </label>
+                        <input
+                          type="number"
+                          value={txAmount}
+                          onChange={(e) => setTxAmount(parseFloat(e.target.value) || 0)}
+                          className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700/80 text-emerald-400 font-bold text-sm focus:outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400/30 transition-colors font-mono"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-sm font-semibold text-slate-200 block mb-1.5">
+                          {language === 'vi' ? 'Đơn vị' : 'Unit'}
+                        </label>
+                        <input
+                          type="text"
+                          value={txUnit}
+                          onChange={(e) => setTxUnit(e.target.value)}
+                          className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700/80 text-slate-200 font-bold text-sm focus:outline-none focus:border-slate-500 focus:ring-1 focus:ring-slate-500/30 transition-colors font-mono"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pt-2">
                   <button
                     type="button"
                     onClick={handleCreateTransaction}
- className="w-full py-3 rounded-xl bg-financial hover:bg-financial/90 text-black font-semibold font-bold font-mono text-xs flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg"
+                    className="w-full py-3.5 px-4 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg shadow-cyan-500/25 active:scale-[0.99]"
                   >
-                    <Plus className="w-4 h-4" />
+                    <Plus className="w-4 h-4 stroke-[2.5]" />
                     <span>{language === 'vi' ? 'TẠO GIAO DỊCH' : 'CREATE TRANSACTION'}</span>
                   </button>
                 </div>
               </div>
 
-              {/* Right: Created Transaction Object Display */}
-              <div className="lg:col-span-6 p-5 rounded-2xl bg-[#05070c] border border-slate-800 flex flex-col justify-between space-y-4">
+              {/* Right: Created Transaction Object Display (Ticket Design) */}
+              <div className="lg:col-span-7 p-5 sm:p-6 rounded-2xl bg-[#05070c] border border-slate-800 flex flex-col justify-between space-y-5">
                 <div className="flex items-center justify-between pb-3 border-b border-slate-800">
                   <span className="text-xs font-mono font-bold text-slate-300 uppercase flex items-center gap-2">
-                    <Layers className="w-4 h-4 text-teach-1" />
-                    <span>{language === 'vi' ? 'Đối Tượng Giao Dịch Được Tạo' : 'Transaction Object'}</span>
+                    <Layers className="w-4 h-4 text-cyan-400" />
+                    <span>{language === 'vi' ? 'Đối Tượng Giao Dịch' : 'Transaction Object'}</span>
                   </span>
-                  <span className="text-[10px] font-mono text-teach-1 bg-teach-1/10 px-2 py-0.5 rounded border border-teach-1/30">
-                    Active Object
+                  <span className="text-xs font-mono font-bold text-cyan-300 bg-cyan-500/10 px-2.5 py-1 rounded-full border border-cyan-500/30 flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+                    <span>Active Object</span>
                   </span>
                 </div>
 
-                <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-3 font-mono text-xs">
-                  <div className="flex items-center justify-between text-slate-400 text-[11px]">
-                    <span>Transaction ID:</span>
-                    <span className="text-teach-1 font-bold">{createdTx.id}</span>
+                {/* Transaction Ticket Card */}
+                <div className="rounded-2xl bg-gradient-to-b from-[#0e1628] via-[#0b1222] to-[#070b15] border border-cyan-500/30 p-5 sm:p-6 shadow-xl shadow-cyan-950/40 space-y-4">
+                  {/* Top Ticket Bar: Header & ID */}
+                  <div className="flex items-center justify-between gap-2 pb-3 border-b border-dashed border-slate-700/80">
+                    <div className="flex items-center gap-2.5">
+                      <div className="p-2 rounded-xl bg-cyan-500/15 border border-cyan-500/30 text-cyan-300">
+                        <FileText className="w-5 h-5 text-cyan-400" />
+                      </div>
+                      <div>
+                        <span className="text-[10px] font-mono uppercase tracking-widest text-slate-400 block">
+                          {language === 'vi' ? 'Thẻ Vé Giao Dịch' : 'Transaction Ticket'}
+                        </span>
+                        <span className="text-sm sm:text-base font-bold text-white font-sans">
+                          {language === 'vi' ? 'Dữ Liệu Thô Đã Đóng Gói' : 'Encapsulated Payload'}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-[10px] font-mono text-slate-400 block uppercase">
+                        Transaction ID
+                      </span>
+                      <span className="text-xs sm:text-sm font-mono font-extrabold text-cyan-400 bg-cyan-500/10 px-2.5 py-1 rounded-lg border border-cyan-500/30 inline-block mt-0.5">
+                        #{createdTx.id.toUpperCase()}
+                      </span>
+                    </div>
                   </div>
 
-                  <div className="p-3 rounded-lg bg-black/60 border border-slate-800 flex items-center justify-between">
-                    <span className="text-teach-1 font-bold">{createdTx.sender}</span>
-                    <ArrowRight className="w-4 h-4 text-slate-500" />
-                    <span className="text-amber-400 font-bold">{createdTx.recipient}</span>
-                    <span className="text-financial font-bold bg-financial/10 px-2 py-0.5 rounded border border-financial/30">
-                      {createdTx.amount} {createdTx.unit}
-                    </span>
+                  {/* Flow: Sender -> Recipient with big bold display */}
+                  <div className="grid grid-cols-1 sm:grid-cols-11 gap-2.5 items-center">
+                    {/* Sender block */}
+                    <div className="sm:col-span-5 p-3.5 rounded-xl bg-slate-900/90 border border-slate-700/80">
+                      <span className="text-[11px] font-mono font-semibold text-slate-400 uppercase tracking-wider block mb-1">
+                        {language === 'vi' ? 'Người gửi' : 'Sender'}
+                      </span>
+                      <span className="text-base sm:text-lg font-bold text-cyan-300 font-sans tracking-tight block">
+                        {createdTx.sender}
+                      </span>
+                    </div>
+
+                    {/* Center Arrow */}
+                    <div className="sm:col-span-1 flex justify-center py-1">
+                      <div className="w-8 h-8 rounded-full bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 shadow-sm">
+                        <ArrowRight className="w-4 h-4 text-cyan-400" />
+                      </div>
+                    </div>
+
+                    {/* Recipient block */}
+                    <div className="sm:col-span-5 p-3.5 rounded-xl bg-slate-900/90 border border-slate-700/80">
+                      <span className="text-[11px] font-mono font-semibold text-slate-400 uppercase tracking-wider block mb-1">
+                        {language === 'vi' ? 'Người nhận' : 'Recipient'}
+                      </span>
+                      <span className="text-base sm:text-lg font-bold text-amber-300 font-sans tracking-tight block">
+                        {createdTx.recipient}
+                      </span>
+                    </div>
                   </div>
 
-                  <div className="flex items-center justify-between text-slate-400 text-[11px]">
-                    <span>Raw String Payload:</span>
-                    <span className="text-slate-200 font-bold">&quot;{createdTx.rawString}&quot;</span>
+                  {/* Amount Highlight Banner */}
+                  <div className="p-3.5 sm:p-4 rounded-xl bg-emerald-950/20 border border-emerald-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                      <span className="text-[11px] font-mono font-semibold text-emerald-400/90 uppercase tracking-wider block">
+                        {language === 'vi' ? 'Số lượng giao dịch' : 'Transfer Amount'}
+                      </span>
+                      <div className="flex items-baseline gap-2 mt-0.5">
+                        <span className="text-2xl sm:text-3xl font-extrabold text-emerald-400 font-mono tracking-tight">
+                          {createdTx.amount}
+                        </span>
+                        <span className="text-base font-bold text-emerald-300 font-mono">
+                          {createdTx.unit}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="sm:text-right">
+                      <span className="text-[10px] font-mono text-slate-400 block">
+                        {language === 'vi' ? 'Thời gian' : 'Timestamp'}
+                      </span>
+                      <span className="text-xs font-mono font-semibold text-slate-300">
+                        {createdTx.timestamp}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Raw String Payload with 15px - 16px high-contrast typography */}
+                  <div className="space-y-1.5 pt-1">
+                    <div className="flex items-center justify-between text-xs font-semibold text-slate-300">
+                      <span className="flex items-center gap-1.5">
+                        <Code2 className="w-3.5 h-3.5 text-cyan-400" />
+                        <span>{language === 'vi' ? 'Chuỗi dữ liệu thô (Raw String Payload):' : 'Raw String Payload:'}</span>
+                      </span>
+                      <span className="text-[10px] font-mono text-slate-400">UTF-8 String</span>
+                    </div>
+                    <div className="p-3.5 sm:p-4 rounded-xl bg-black/90 border border-slate-700/90 text-sm sm:text-[15px] font-mono font-bold text-slate-100 tracking-wide break-all shadow-inner selection:bg-cyan-500 selection:text-black">
+                      &quot;{createdTx.rawString}&quot;
+                    </div>
                   </div>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-bg-elevated border border-border-primary text-xs text-text-secondary font-sans">
-                  <p className="flex items-start gap-2">
-                    <Info className="w-4 h-4 text-info shrink-0 mt-0.5" />
-                    <span>
-                      {language === 'vi'
-                        ? 'Đây là dữ liệu thô trước khi được mã hóa bằng hàm băm. Bấm "Tiếp Tục" để chuyển sang bước băm SHA-256.'
-                        : 'This is the raw data payload before hashing. Click "Continue" to proceed to SHA-256 computation.'}
-                    </span>
-                  </p>
+                {/* Explanatory Note */}
+                <div className="p-3.5 rounded-xl bg-cyan-950/20 border border-cyan-500/20 text-xs text-slate-300 font-sans leading-relaxed flex items-start gap-2.5">
+                  <Info className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
+                  <span>
+                    {language === 'vi'
+                      ? 'Đây là dữ liệu thô trước khi được mã hóa bằng hàm băm SHA-256. Bấm "Tiếp Tục" để sang Bước 2 và quan sát thuật toán trích xuất dấu vân tay số 256-bit.'
+                      : 'This is the raw data payload before hashing. Click "Continue" to proceed to Step 2 for SHA-256 computation.'}
+                  </span>
                 </div>
               </div>
             </div>

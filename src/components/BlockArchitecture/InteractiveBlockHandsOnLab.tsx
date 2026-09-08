@@ -732,8 +732,8 @@ export const InteractiveBlockHandsOnLab: React.FC<{
             <div className="space-y-3.5">
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1.5">
-                  <label className="text-[11px] font-sans text-slate-400">
-                    {isVi ? 'Người gửi (Sender)' : 'Sender'}
+                  <label className="text-xs font-semibold text-slate-200">
+                    {isVi ? 'Người gửi' : 'Sender'}
                   </label>
                   <input
                     type="text"
@@ -758,8 +758,8 @@ export const InteractiveBlockHandsOnLab: React.FC<{
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-[11px] font-sans text-slate-400">
-                    {isVi ? 'Người nhận (Recipient)' : 'Recipient'}
+                  <label className="text-xs font-semibold text-slate-200">
+                    {isVi ? 'Người nhận' : 'Recipient'}
                   </label>
                   <input
                     type="text"

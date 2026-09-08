@@ -1,70 +1,37 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
-  Edit3,
-  ArrowRight,
-  ArrowDown,
+  Play,
+  Pause,
   RotateCcw,
   Zap,
-  Lock,
-  ChevronRight,
-  ChevronDown,
-  HelpCircle,
-  AlertTriangle,
-  CheckCircle2,
+  ArrowRight,
   GitFork,
+  CheckCircle2,
+  XCircle,
+  ChevronRight,
+  ShieldCheck,
+  Flame,
 } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
-import { fastSha256Hex } from '../../utils/sha256';
 
 interface HashPointerBlockchainLabProps {
   onInteracted?: () => void;
   onNextStage?: () => void;
 }
 
-// 4-Block Baseline with canonical Vietnamese transaction data
-const BASELINE_BLOCKS: { index: number; data: string }[] = [
-  { index: 0, data: 'Khối Khởi tạo · DLU Genesis Block' },
-  { index: 1, data: 'Alice chuyển 10 DLU COIN cho Bob' },
-  { index: 2, data: 'Bob chuyển 5 DLU COIN cho Charlie' },
-  { index: 3, data: 'Charlie chuyển 2 DLU COIN cho Dave' },
-];
-
-const GENESIS_PREV_HASH = '0000000000000000000000000000000000000000000000000000000000000000';
-
-interface MintedBlock {
-  index: number;
-  data: string;
-  previousHash: string;
-  hash: string;
-}
-
-// Compute a canonical block hash: SHA256(index | previousHash | data)
-function computeBlockHash(index: number, previousHash: string, data: string): string {
-  try {
-    return fastSha256Hex(`${index}|${previousHash}|${data}`);
-  } catch {
-    return 'error';
-  }
-}
-
-// Compute an entire clean chain
-function mintCleanChain(datas: string[]): MintedBlock[] {
-  const result: MintedBlock[] = [];
-  let prev = GENESIS_PREV_HASH;
-
-  datas.forEach((data, idx) => {
-    const hash = computeBlockHash(idx, prev, data);
-    result.push({
-      index: idx,
-      data,
-      previousHash: prev,
-      hash,
-    });
-    prev = hash;
-  });
-
-  return result;
-}
+// Canonical hashes (first 6 characters)
+const HASHES = {
+  genesisPrev: '000000',
+  block0: 'e3b0c4',
+  block1Clean: 'b43b92',
+  block1Tampered: 'a8d29f',
+  block2Clean: '7f8a1c',
+  block2Remined: 'f173b8',
+  block3Clean: 'c29e4d',
+  block3Remined: '94e015',
+  block4: '5a8b1f',
+  block5: '9e3d7a',
+};
 
 export const HashPointerBlockchainLab: React.FC<HashPointerBlockchainLabProps> = ({
   onInteracted,
@@ -73,740 +40,798 @@ export const HashPointerBlockchainLab: React.FC<HashPointerBlockchainLabProps> =
   const { language } = useLanguage();
   const isVi = language === 'vi';
 
-  // Minted original baseline chain (immutable reference for honest network)
-  const originalChain = useMemo(
-    () => mintCleanChain(BASELINE_BLOCKS.map((b) => b.data)),
-    []
-  );
+  // 8.0s timeline state (0ms to 8000ms)
+  const [currentTime, setCurrentTime] = useState<number>(0);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const animationFrameRef = useRef<number | null>(null);
+  const lastTimeRef = useRef<number | null>(null);
 
-  // Stepper state:
-  // 0: Clean baseline (Honest Canonical Chain)
-  // 1: Step 1 - Tamper Block 1 data -> Block 1 actual hash mutates, Link 1->2 broken
-  // 2: Step 2 - Hacker patches Block 2's PrevHash -> Block 2 hash mutates, Link 2->3 broken
-  // 3: Step 3 - Hacker re-mines all downstream blocks -> Local hash pointers match, BUT rejected by P2P network (Longest Chain Rule)
-  const [dominoStep, setDominoStep] = useState<0 | 1 | 2 | 3>(0);
+  // Determine current active phase:
+  // 0: Baseline (0s)
+  // 1: 0ms - 2000ms: Khối #1 bị sửa (Dữ liệu đổi -> Hash nổ tung)
+  // 2: 2000ms - 4000ms: Đứt gãy liên kết (Khối #2 từ chối: Sai mã liên kết)
+  // 3: 4000ms - 6500ms: Hacker cố đào lại (Tính lại toàn bộ chuỗi giả mạo)
+  // 4: 6500ms - 8000ms: Mạng lưới đào thải (Mạng lưới chỉ tin chuỗi dài nhất)
+  const currentPhase: 0 | 1 | 2 | 3 | 4 = (() => {
+    if (currentTime <= 0) return 0;
+    if (currentTime <= 2000) return 1;
+    if (currentTime <= 4000) return 2;
+    if (currentTime <= 6500) return 3;
+    return 4;
+  })();
 
-  // Toggle for consensus explanation in Step 3
-  const [showConsensusDetails, setShowConsensusDetails] = useState<boolean>(false);
+  // 60fps animation timer
+  useEffect(() => {
+    if (!isPlaying) {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+      lastTimeRef.current = null;
+      return;
+    }
 
-  // Active tooltip modal/drawer state
-  const [activeTooltip, setActiveTooltip] = useState<number | null>(null);
+    const tick = (timestamp: number) => {
+      if (lastTimeRef.current === null) {
+        lastTimeRef.current = timestamp;
+      }
+      const delta = timestamp - lastTimeRef.current;
+      lastTimeRef.current = timestamp;
 
-  // Editable Block 1 data
-  const [block1Data, setBlock1Data] = useState<string>(BASELINE_BLOCKS[1].data);
-
-  // Stored Previous Hashes in each block's header
-  const [storedPrevHashes, setStoredPrevHashes] = useState<string[]>([
-    originalChain[0].previousHash,
-    originalChain[1].previousHash,
-    originalChain[2].previousHash,
-    originalChain[3].previousHash,
-  ]);
-
-  const isBlock1Tampered = block1Data !== BASELINE_BLOCKS[1].data;
-
-  // Real-time computed actual hashes of each block in current local view
-  const computedActualBlocks = useMemo(() => {
-    const datas = [
-      BASELINE_BLOCKS[0].data,
-      block1Data,
-      BASELINE_BLOCKS[2].data,
-      BASELINE_BLOCKS[3].data,
-    ];
-
-    const currentBlocks: {
-      index: number;
-      data: string;
-      storedPrevHash: string;
-      actualHash: string;
-    }[] = [];
-
-    datas.forEach((data, idx) => {
-      const prev = storedPrevHashes[idx] || GENESIS_PREV_HASH;
-      const actualHash = computeBlockHash(idx, prev, data);
-
-      currentBlocks.push({
-        index: idx,
-        data,
-        storedPrevHash: prev,
-        actualHash,
+      setCurrentTime((prev) => {
+        const next = prev + delta;
+        if (next >= 8000) {
+          setIsPlaying(false);
+          return 8000;
+        }
+        return next;
       });
-    });
 
-    return currentBlocks;
-  }, [block1Data, storedPrevHashes]);
+      animationFrameRef.current = requestAnimationFrame(tick);
+    };
 
-  // Stepper transitions
-  const applyStep1 = () => {
-    const tampered = 'Alice chuyển 999 DLU COIN cho Hacker';
-    setBlock1Data(tampered);
-    setDominoStep(1);
-    setStoredPrevHashes([
-      originalChain[0].previousHash,
-      originalChain[1].previousHash,
-      originalChain[2].previousHash,
-      originalChain[3].previousHash,
-    ]);
-    onInteracted?.();
-  };
+    animationFrameRef.current = requestAnimationFrame(tick);
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
+  }, [isPlaying]);
 
-  const applyStep2 = () => {
-    const h1 = computeBlockHash(1, originalChain[1].previousHash, block1Data);
-    setStoredPrevHashes([
-      originalChain[0].previousHash,
-      originalChain[1].previousHash,
-      h1,
-      originalChain[3].previousHash,
-    ]);
-    setDominoStep(2);
-    onInteracted?.();
-  };
-
-  const applyStep3 = () => {
-    const h1 = computeBlockHash(1, originalChain[1].previousHash, block1Data);
-    const h2 = computeBlockHash(2, h1, BASELINE_BLOCKS[2].data);
-    setStoredPrevHashes([
-      originalChain[0].previousHash,
-      originalChain[1].previousHash,
-      h1,
-      h2,
-    ]);
-    setDominoStep(3);
-    onInteracted?.();
+  // Controls
+  const handleTogglePlay = () => {
+    if (isPlaying) {
+      setIsPlaying(false);
+    } else {
+      if (currentTime >= 8000) {
+        setCurrentTime(0);
+      }
+      setIsPlaying(true);
+      onInteracted?.();
+    }
   };
 
   const handleReset = () => {
-    setBlock1Data(BASELINE_BLOCKS[1].data);
-    setStoredPrevHashes([
-      originalChain[0].previousHash,
-      originalChain[1].previousHash,
-      originalChain[2].previousHash,
-      originalChain[3].previousHash,
-    ]);
-    setDominoStep(0);
-    setActiveTooltip(null);
+    setIsPlaying(false);
+    setCurrentTime(0);
   };
 
-  const handleBlock1Change = (val: string) => {
-    setBlock1Data(val);
-    if (val === BASELINE_BLOCKS[1].data) {
-      handleReset();
-    } else {
-      setDominoStep(1);
-      setStoredPrevHashes([
-        originalChain[0].previousHash,
-        originalChain[1].previousHash,
-        originalChain[2].previousHash,
-        originalChain[3].previousHash,
-      ]);
-    }
+  const handleJumpToPhase = (phase: 1 | 2 | 3 | 4) => {
     onInteracted?.();
+    if (phase === 1) setCurrentTime(500);
+    if (phase === 2) setCurrentTime(2500);
+    if (phase === 3) setCurrentTime(4500);
+    if (phase === 4) setCurrentTime(7000);
+    setIsPlaying(true);
   };
 
-  // Connector status computation: 'valid' | 'broken' | 'forked' | 'invalidated'
-  const getConnectorState = (fromIdx: number): {
-    status: 'valid' | 'broken' | 'forked' | 'invalidated';
-    labelVi: string;
-    labelEn: string;
-  } => {
-    if (dominoStep === 0) {
-      return { status: 'valid', labelVi: 'Khớp', labelEn: 'Valid' };
-    }
-
-    if (fromIdx === 0) {
-      // 0 -> 1 is always valid
-      return { status: 'valid', labelVi: 'Khớp', labelEn: 'Valid' };
-    }
-
-    if (fromIdx === 1) {
-      if (dominoStep === 1) {
+  // Status message configuration for the single prominent central frame
+  const getStatusMessage = () => {
+    switch (currentPhase) {
+      case 1:
         return {
-          status: 'broken',
-          labelVi: 'Gãy',
-          labelEn: 'Broken',
+          title: isVi
+            ? 'Dữ liệu đổi ➔ Mã băm Khối #1 nổ tung'
+            : 'Data changed ➔ Block #1 hash mutates instantly',
+          subtitle: isVi
+            ? '10 COIN bị sửa thành 999 COIN. Tính chất tuyết lở SHA-256 làm mã băm lập tức đổi màu đỏ.'
+            : '10 COIN tampered to 999 COIN. SHA-256 avalanche effect alters block hash immediately.',
+          color: 'rose',
+          icon: <Flame className="w-5 h-5 text-rose-400 animate-pulse" />,
         };
-      }
-      // In Step 2 & 3, Hacker patched PrevHash on his private fork
-      return {
-        status: 'forked',
-        labelVi: 'Đã vá',
-        labelEn: 'Patched',
-      };
-    }
-
-    if (fromIdx === 2) {
-      if (dominoStep === 1) {
+      case 2:
         return {
-          status: 'invalidated',
-          labelVi: 'Vô hiệu',
-          labelEn: 'Orphaned',
+          title: isVi
+            ? 'Khối #2 từ chối: Sai mã liên kết'
+            : 'Block #2 rejects: Broken hash pointer',
+          subtitle: isVi
+            ? 'PrevHash ở Khối #2 vẫn nhớ mã băm cũ. Mũi tên liên kết bị gãy vỡ đứt đoạn.'
+            : 'PrevHash stored in Block #2 still remembers the old hash. The link fractures.',
+          color: 'rose',
+          icon: <Zap className="w-5 h-5 text-rose-400" />,
         };
-      }
-      if (dominoStep === 2) {
+      case 3:
         return {
-          status: 'broken',
-          labelVi: 'Gãy',
-          labelEn: 'Broken',
+          title: isVi
+            ? 'Hacker tính lại toàn bộ chuỗi giả mạo'
+            : 'Attacker recomputes entire fake chain',
+          subtitle: isVi
+            ? 'Kẻ tấn công vá PrevHash của Khối #2 và #3, tạo thành một nhánh rẽ độc lập màu vàng cam.'
+            : 'Attacker patches PrevHash of Block #2 and #3, forming an isolated amber fork.',
+          color: 'amber',
+          icon: <GitFork className="w-5 h-5 text-amber-400 animate-spin" style={{ animationDuration: '3s' }} />,
         };
-      }
-      // Step 3: Recalculated on fork
-      return {
-        status: 'forked',
-        labelVi: 'Đã đào lại',
-        labelEn: 'Re-mined',
-      };
+      case 4:
+        return {
+          title: isVi
+            ? 'Thất bại: Mạng lưới chỉ tin chuỗi dài nhất'
+            : 'Rejected: Network only trusts the longest chain',
+          subtitle: isVi
+            ? 'Trong khi hacker loay hoay đào lại, mạng P2P trung thực đã tiến đến Khối #5. Nhánh cam bị đào thải.'
+            : 'While the attacker was re-mining, the honest network reached Block #5. Attacker fork is orphaned.',
+          color: 'cyan',
+          icon: <ShieldCheck className="w-5 h-5 text-cyan-400" />,
+        };
+      default:
+        return {
+          title: isVi
+            ? 'Chuỗi chính thống: Mọi khối liên kết mật mã toàn vẹn'
+            : 'Canonical Chain: All blocks cryptographically linked',
+          subtitle: isVi
+            ? 'Bấm [Bắt đầu xem] để quan sát kịch bản tấn công 4 nhịp (8 giây).'
+            : 'Click [Start] to watch the 4-phase auto simulation (8 seconds).',
+          color: 'cyan',
+          icon: <CheckCircle2 className="w-5 h-5 text-cyan-400" />,
+        };
     }
-
-    return { status: 'valid', labelVi: 'Khớp', labelEn: 'Valid' };
   };
 
-  // Block diagnostics: 1 Block = 1 Core State
-  // Variants: 'cyan' (Valid/Canonical), 'rose' (Tampered/Broken), 'amber' (Forked/Re-mined on attacker branch), 'slate' (Unreachable/Downstream severed)
-  const getBlockState = (idx: number) => {
-    if (idx === 0) {
-      return {
-        variant: 'cyan' as const,
-        badge: isVi ? 'HỢP LỆ' : 'VALID',
-        desc: isVi
-          ? 'Khối Genesis khởi nguyên, điểm neo bất biến của toàn hệ thống.'
-          : 'Genesis block, immutable root anchor of the blockchain.',
-      };
-    }
-
-    if (idx === 1) {
-      if (isBlock1Tampered) {
-        return {
-          variant: 'rose' as const,
-          badge: isVi ? 'BỊ SỬA' : 'TAMPERED',
-          desc: isVi
-            ? 'Nội dung giao dịch bị can thiệp làm mã băm SHA-256 thay đổi ngay lập tức (hiệu ứng tuyết lở).'
-            : 'Transaction payload was modified, instantly mutating the SHA-256 hash.',
-        };
-      }
-      return {
-        variant: 'cyan' as const,
-        badge: isVi ? 'HỢP LỆ' : 'VALID',
-        desc: isVi ? 'Dữ liệu và mã băm toàn vẹn.' : 'Cryptographically intact and valid.',
-      };
-    }
-
-    if (idx === 2) {
-      if (dominoStep === 1) {
-        return {
-          variant: 'rose' as const,
-          badge: isVi ? 'GÃY LIÊN KẾT' : 'BROKEN LINK',
-          desc: isVi
-            ? 'PrevHash đang lưu trữ không khớp với Hash của Khối #1.'
-            : 'Stored PrevHash does not match the new hash of Block #1.',
-        };
-      }
-      if (dominoStep === 2) {
-        return {
-          variant: 'rose' as const,
-          badge: isVi ? 'HASH ĐỔI' : 'HASH MUTATED',
-          desc: isVi
-            ? 'Vá PrevHash làm thay đổi Hash của chính Khối #2, tiếp tục làm gãy Khối #3.'
-            : 'Patching PrevHash altered Block #2 own hash, breaking the link to Block #3.',
-        };
-      }
-      if (dominoStep === 3) {
-        return {
-          variant: 'amber' as const,
-          badge: isVi ? 'ĐÃ ĐÀO LẠI' : 'RE-MINED',
-          desc: isVi
-            ? 'Đã được hacker tính toán lại mã băm trên nhánh rẽ cá nhân.'
-            : 'Recalculated on the attacker private fork.',
-        };
-      }
-      return {
-        variant: 'cyan' as const,
-        badge: isVi ? 'HỢP LỆ' : 'VALID',
-        desc: isVi ? 'Mã băm và con trỏ toàn vẹn.' : 'Cryptographically intact and valid.',
-      };
-    }
-
-    // idx === 3
-    if (dominoStep === 1 || dominoStep === 2) {
-      return {
-        variant: 'slate' as const,
-        badge: isVi ? 'VÔ HIỆU' : 'ORPHANED',
-        desc: isVi
-          ? 'Khối đứng trước bị gãy nên toàn bộ chuỗi phía sau bị vô hiệu hóa.'
-          : 'Orphaned because preceding link was severed.',
-      };
-    }
-    if (dominoStep === 3) {
-      return {
-        variant: 'amber' as const,
-        badge: isVi ? 'ĐÃ ĐÀO LẠI' : 'RE-MINED',
-        desc: isVi
-          ? 'Hacker đã đào lại toàn bộ để nối con trỏ, nhưng mạng lưới P2P từ chối do thua độ khó tích lũy.'
-          : 'Re-mined on attacker fork, but rejected by P2P network under longest chain rule.',
-      };
-    }
-    return {
-      variant: 'cyan' as const,
-      badge: isVi ? 'HỢP LỆ' : 'VALID',
-      desc: isVi ? 'Mã băm và con trỏ toàn vẹn.' : 'Cryptographically intact and valid.',
-    };
-  };
+  const status = getStatusMessage();
 
   return (
-    <div className="space-y-5 animate-in fade-in duration-200">
+    <div className="space-y-6 font-sans select-none animate-in fade-in duration-200">
       {/* 1. Header Bar */}
-      <div className="p-4 sm:p-5 rounded-2xl bg-[#0B0F19]/80 border border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-white/[0.08]">
         <div>
-          <div className="text-xs font-mono text-cyan-400 uppercase tracking-wider mb-1">
+          <span className="text-xs font-semibold text-cyan-400 uppercase tracking-wider">
             {isVi ? 'Giai đoạn 04 · Kháng giả mạo' : 'Stage 04 · Tamper Resistance'}
-          </div>
-          <h3 className="text-base sm:text-lg font-bold text-white font-sans">
+          </span>
+          <h2 className="text-lg sm:text-xl font-bold text-white tracking-tight">
             {isVi
-              ? 'Cơ Chế Con Trỏ Băm & Tại Sao Không Thể Làm Giả Quá Khứ'
-              : 'Hash Pointers & Why Blockchain History Is Immutable'}
-          </h3>
+              ? 'Mô Phỏng Trực Quan: Tại Sao Không Thể Sửa Đổi Blockchain?'
+              : 'Visual Simulation: Why Blockchain History Is Immutable?'}
+          </h2>
         </div>
 
-        {/* Quick Actions */}
-        <div className="flex items-center gap-2 shrink-0">
-          <button
-            type="button"
-            onClick={applyStep1}
-            disabled={isBlock1Tampered && dominoStep === 1}
-            className="px-3.5 py-2 rounded-lg bg-rose-500/15 hover:bg-rose-500/25 disabled:opacity-40 text-rose-300 hover:text-rose-200 border border-rose-500/40 text-xs font-sans font-medium flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap"
-          >
-            <Edit3 className="w-3.5 h-3.5" />
-            <span>{isVi ? 'Sửa Khối #1 (10 → 999)' : 'Tamper Block #1'}</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={handleReset}
-            className="px-3 py-2 rounded-lg text-slate-300 hover:text-white bg-white/[0.05] border border-white/[0.1] hover:border-cyan-500/40 transition-all cursor-pointer text-xs font-sans flex items-center gap-1.5"
-            title={isVi ? 'Khôi phục về chuỗi hợp lệ ban đầu' : 'Reset to clean canonical state'}
-          >
-            <RotateCcw className="w-3.5 h-3.5 text-cyan-400" />
-            <span className="hidden sm:inline">{isVi ? 'Khôi phục gốc' : 'Reset'}</span>
-          </button>
+        {/* Total timer indicator */}
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.1] text-xs font-mono text-slate-300 self-start sm:self-auto">
+          <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+          <span>{(currentTime / 1000).toFixed(1)}s / 8.0s</span>
         </div>
       </div>
 
-      {/* 2. Stepper 3 Bước Tinh Gọn Ở Đầu Trang */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-        {/* Bước 1 */}
-        <button
-          type="button"
-          onClick={applyStep1}
-          className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
-            dominoStep === 1
-              ? 'bg-rose-950/40 border-rose-500 shadow-[0_0_15px_rgba(244,63,94,0.2)] ring-1 ring-rose-500/50'
-              : 'bg-[#0B0F19]/60 border-white/[0.08] hover:border-white/[0.2]'
+      {/* 2. THE SINGLE PROMINENT CENTRAL STATUS FRAME (No Wall of Text) */}
+      <div
+        className={`p-5 sm:p-6 rounded-2xl border transition-all duration-300 relative overflow-hidden ${
+          status.color === 'rose'
+            ? 'bg-[#180A12] border-rose-500/80 shadow-[0_0_25px_rgba(244,63,94,0.25)] ring-1 ring-rose-500/40'
+            : status.color === 'amber'
+            ? 'bg-[#1C1307] border-amber-500/80 shadow-[0_0_25px_rgba(245,158,11,0.25)] ring-1 ring-amber-500/40'
+            : 'bg-[#07131F] border-cyan-500/60 shadow-[0_0_25px_rgba(6,182,212,0.2)] ring-1 ring-cyan-500/30'
+        }`}
+      >
+        {/* Progress scanline along top border */}
+        <div
+          className={`absolute top-0 left-0 h-1 transition-all duration-75 ${
+            status.color === 'rose'
+              ? 'bg-rose-500'
+              : status.color === 'amber'
+              ? 'bg-amber-400'
+              : 'bg-cyan-400'
           }`}
-        >
-          <div className="flex items-center justify-between mb-1.5">
-            <span
-              className={`text-xs font-mono font-bold leading-normal ${
-                dominoStep === 1 ? 'text-rose-300' : 'text-slate-300'
-              }`}
-            >
-              {isVi ? 'Bước 1: Sửa dữ liệu tại #1' : 'Step 1: Tamper data at #1'}
-            </span>
-            {dominoStep === 1 && (
-              <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse shrink-0" />
-            )}
-          </div>
-          <p className="text-xs font-sans text-slate-400 leading-relaxed">
-            {isVi
-              ? 'Hash #1 nổ sang giá trị mới ngay lập tức. Con trỏ tại #2 bị lệch (Gãy liên kết #1 → #2).'
-              : 'Hash #1 mutates instantly. Link to #2 is broken.'}
-          </p>
-        </button>
+          style={{ width: `${(currentTime / 8000) * 100}%` }}
+        />
 
-        {/* Bước 2 */}
-        <button
-          type="button"
-          onClick={applyStep2}
-          disabled={!isBlock1Tampered}
-          className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between disabled:opacity-40 disabled:cursor-not-allowed ${
-            dominoStep === 2
-              ? 'bg-rose-950/40 border-rose-500 shadow-[0_0_15px_rgba(244,63,94,0.2)] ring-1 ring-rose-500/50'
-              : 'bg-[#0B0F19]/60 border-white/[0.08] hover:border-white/[0.2]'
-          }`}
-        >
-          <div className="flex items-center justify-between mb-1.5">
-            <span
-              className={`text-xs font-mono font-bold leading-normal ${
-                dominoStep === 2 ? 'text-rose-300' : 'text-slate-300'
-              }`}
-            >
-              {isVi ? 'Bước 2: Sửa PrevHash tại #2' : 'Step 2: Patch PrevHash at #2'}
-            </span>
-            {dominoStep === 2 && (
-              <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse shrink-0" />
-            )}
+        <div className="flex items-start sm:items-center gap-3.5">
+          <div
+            className={`p-2.5 rounded-xl shrink-0 border ${
+              status.color === 'rose'
+                ? 'bg-rose-500/20 border-rose-500/40 text-rose-300'
+                : status.color === 'amber'
+                ? 'bg-amber-500/20 border-amber-500/40 text-amber-300'
+                : 'bg-cyan-500/20 border-cyan-500/40 text-cyan-300'
+            }`}
+          >
+            {status.icon}
           </div>
-          <p className="text-xs font-sans text-slate-400 leading-relaxed">
-            {isVi
-              ? 'Khối #2 vá lại với #1, nhưng làm Hash của chính #2 đổi theo, tiếp tục gãy liên kết sang #3.'
-              : 'Patching #2 mutates Hash #2, continuing to break link with #3.'}
-          </p>
-        </button>
 
-        {/* Bước 3 */}
-        <button
-          type="button"
-          onClick={applyStep3}
-          disabled={!isBlock1Tampered}
-          className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between disabled:opacity-40 disabled:cursor-not-allowed ${
-            dominoStep === 3
-              ? 'bg-amber-950/40 border-amber-500 shadow-[0_0_15px_rgba(245,158,11,0.2)] ring-1 ring-amber-500/50'
-              : 'bg-[#0B0F19]/60 border-white/[0.08] hover:border-white/[0.2]'
-          }`}
-        >
-          <div className="flex items-center justify-between mb-1.5">
-            <span
-              className={`text-xs font-mono font-bold leading-normal ${
-                dominoStep === 3 ? 'text-amber-300' : 'text-slate-300'
+          <div className="space-y-1">
+            <h3
+              className={`text-lg sm:text-2xl font-bold tracking-tight leading-tight ${
+                status.color === 'rose'
+                  ? 'text-rose-300'
+                  : status.color === 'amber'
+                  ? 'text-amber-300'
+                  : 'text-cyan-300'
               }`}
             >
-              {isVi ? 'Bước 3: Đào lại toàn bộ chuỗi' : 'Step 3: Re-mine downstream'}
-            </span>
-            {dominoStep === 3 && (
-              <span className="w-2 h-2 rounded-full bg-amber-400 shrink-0" />
-            )}
+              {status.title}
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-3xl">
+              {status.subtitle}
+            </p>
           </div>
-          <p className="text-xs font-sans text-slate-400 leading-relaxed">
-            {isVi
-              ? 'Hacker tính toán lại toàn bộ con trỏ. Các khối khớp toán học, nhưng bị mạng P2P từ chối vì thua độ khó tích lũy.'
-              : 'Internal pointers match, but P2P network rejects it under the Longest Chain Rule.'}
-          </p>
-        </button>
+        </div>
       </div>
 
-      {/* 3. Main Chain Display */}
-      <div className="p-5 rounded-2xl bg-[#0B0F19]/90 border border-white/[0.08] space-y-4">
-        {/* Status Line: Clear distinction between Internal Structural Linkage & Network Consensus */}
-        <div className="pb-3 border-b border-white/[0.06] space-y-2">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-2">
-            {/* Primary Status */}
-            <div className="flex items-center gap-2.5">
-              <span
-                className={`w-2.5 h-2.5 rounded-full shrink-0 ${
-                  dominoStep === 0
-                    ? 'bg-cyan-400 shadow-[0_0_8px_#06b6d4]'
-                    : dominoStep === 3
-                    ? 'bg-amber-400 shadow-[0_0_8px_#f59e0b]'
-                    : 'bg-rose-500 shadow-[0_0_8px_#f43f5e] animate-pulse'
-                }`}
-              />
-              <span
-                className={`text-xs font-mono font-bold tracking-wide uppercase ${
-                  dominoStep === 0
-                    ? 'text-cyan-300'
-                    : dominoStep === 3
-                    ? 'text-amber-300'
-                    : 'text-rose-300'
-                }`}
-              >
-                {dominoStep === 0 &&
-                  (isVi
-                    ? 'TRẠNG THÁI: CHUỖI CHÍNH THỨC (CANONICAL) · HỢP LỆ TOÀN VẸN'
-                    : 'STATUS: CANONICAL CHAIN · FULLY VALID')}
-                {dominoStep === 1 &&
-                  (isVi
-                    ? 'TRẠNG THÁI: GÃY LIÊN KẾT MẬT MÃ (KHỐI #1 BỊ SỬA ➔ #2 TỪ CHỐI)'
-                    : 'STATUS: CRYPTOGRAPHIC LINK BROKEN (BLOCK #1 TAMPERED)')}
-                {dominoStep === 2 &&
-                  (isVi
-                    ? 'TRẠNG THÁI: HIỆU ỨNG DOMINO (VÁ #2 LÀM HASH #2 ĐỔI ➔ GÃY SANG #3)'
-                    : 'STATUS: DOMINO EFFECT (PATCHING #2 BREAKS LINK TO #3)')}
-                {dominoStep === 3 &&
-                  (isVi
-                    ? 'TRẠNG THÁI: CON TRỎ NỘI BỘ ĐÃ NỐI · MẠNG P2P TỪ CHỐI (QUY TẮC ĐỘ KHÓ TÍCH LŨY)'
-                    : 'STATUS: POINTERS SEALED · REJECTED BY P2P CONSENSUS (LONGEST CHAIN RULE)')}
+      {/* 3. VISUAL STAGE: BLOCKS & CHAIN RENDERING */}
+      {currentPhase === 4 ? (
+        /* PHASE 4 SPECIAL VIEW: HONEST CHAIN EXTENSION (TOP) VS FORK ORPHANED (BOTTOM) */
+        <div className="space-y-6 animate-in fade-in zoom-in-95 duration-300">
+          {/* Track 1: Honest Canonical Chain (#0 -> #1 -> #2 -> #3 -> #4 -> #5) */}
+          <div className="p-4 sm:p-5 rounded-2xl bg-[#06121E] border-2 border-cyan-500/60 shadow-[0_0_20px_rgba(6,182,212,0.15)] space-y-3">
+            <div className="flex flex-wrap items-center justify-between gap-2 pb-2.5 border-b border-cyan-500/20">
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_8px_#06b6d4]" />
+                <span className="text-xs sm:text-sm font-bold text-cyan-300 uppercase tracking-wide">
+                  {isVi
+                    ? 'Chuỗi Chính Thống (Mạng P2P) · Độ Khó Tích Lũy Lớn Nhất'
+                    : 'Canonical Chain (P2P Network) · Greatest Cumulative Difficulty'}
+                </span>
+              </div>
+              <span className="px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-200 border border-cyan-500/40 text-[11px] font-bold">
+                {isVi ? 'HỢP LỆ 100% · DÀI HƠN' : '100% VALID · LONGER'}
               </span>
             </div>
 
-            {/* Sub-tag indication */}
-            <div className="flex items-center gap-2 text-[11px] font-mono">
-              {dominoStep === 3 ? (
-                <span className="px-2 py-0.5 rounded bg-amber-500/15 border border-amber-500/30 text-amber-300 font-medium">
-                  {isVi ? 'Nhánh rẽ mồ côi (Orphan Fork)' : 'Orphaned Fork'}
+            {/* Blocks Row */}
+            <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3">
+              {[
+                { idx: 0, data: 'Genesis DLU', prev: HASHES.genesisPrev, hash: HASHES.block0 },
+                { idx: 1, data: 'Alice ➔ 10 Bob', prev: HASHES.block0, hash: HASHES.block1Clean },
+                { idx: 2, data: 'Bob ➔ 5 Charlie', prev: HASHES.block1Clean, hash: HASHES.block2Clean },
+                { idx: 3, data: 'Charlie ➔ 2 Dave', prev: HASHES.block2Clean, hash: HASHES.block3Clean },
+                { idx: 4, data: 'Dave ➔ 1 Eve', prev: HASHES.block3Clean, hash: HASHES.block4, isNew: true },
+                { idx: 5, data: 'Eve ➔ 0.5 Frank', prev: HASHES.block4, hash: HASHES.block5, isNew: true },
+              ].map((b) => (
+                <div
+                  key={b.idx}
+                  className={`p-3 rounded-xl border flex flex-col justify-between space-y-2 bg-[#0A1829] ${
+                    b.isNew
+                      ? 'border-cyan-400 ring-1 ring-cyan-400/50 shadow-[0_0_12px_rgba(6,182,212,0.3)]'
+                      : 'border-cyan-500/30'
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-cyan-300">#{b.idx}</span>
+                    {b.isNew && (
+                      <span className="text-[10px] font-bold text-cyan-300 px-1.5 py-0.2 bg-cyan-500/20 rounded">
+                        NEW
+                      </span>
+                    )}
+                  </div>
+                  <div className="text-[11px] text-slate-300 font-medium truncate" title={b.data}>
+                    {b.data}
+                  </div>
+                  <div className="text-[11px] font-mono text-cyan-400/90 pt-1 border-t border-cyan-500/20 truncate">
+                    Hash: {b.hash}...
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Track 2: Attacker's Orphaned Fork (Mờ 35% + Nhãn Đào Thải Lớn) */}
+          <div className="p-4 sm:p-5 rounded-2xl bg-[#140D07] border border-amber-500/30 relative overflow-hidden transition-all duration-300 opacity-35 hover:opacity-75">
+            {/* Big Rejection Stamped Banner */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+              <div className="px-6 py-2.5 rounded-xl bg-rose-950/90 border-2 border-rose-500 text-rose-200 text-sm sm:text-base font-bold tracking-wider uppercase shadow-2xl flex items-center gap-2 transform -rotate-2">
+                <XCircle className="w-5 h-5 text-rose-400" />
+                <span>
+                  {isVi
+                    ? 'ĐÃ BỊ ĐÀO THẢI · NHÁNH MỒ CÔI (ORPHANED)'
+                    : 'REJECTED · ORPHANED FORK'}
                 </span>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between pb-2.5 border-b border-white/[0.08]">
+              <div className="flex items-center gap-2 text-amber-400 text-xs font-bold">
+                <GitFork className="w-4 h-4" />
+                <span>{isVi ? 'Nhánh Giả Mạo Của Hacker (Chỉ Dài 4 Khối)' : 'Attacker Fork (Only 4 Blocks)'}</span>
+              </div>
+              <span className="text-[11px] font-mono text-rose-400">
+                {isVi ? 'Thua sức mạnh tính toán 51%' : 'Lacks 51% network hashpower'}
+              </span>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-3">
+              {[
+                { idx: 0, data: 'Genesis DLU', hash: HASHES.block0 },
+                { idx: 1, data: 'Alice ➔ 999 Hacker', hash: HASHES.block1Tampered, tampered: true },
+                { idx: 2, data: 'Bob ➔ 5 Charlie', hash: HASHES.block2Remined, remined: true },
+                { idx: 3, data: 'Charlie ➔ 2 Dave', hash: HASHES.block3Remined, remined: true },
+              ].map((b) => (
+                <div
+                  key={b.idx}
+                  className={`p-3 rounded-xl border flex flex-col justify-between space-y-2 bg-[#1C1208] ${
+                    b.tampered
+                      ? 'border-rose-500/60 text-rose-200'
+                      : 'border-amber-500/50 text-amber-200'
+                  }`}
+                >
+                  <span className="text-xs font-bold">#{b.idx} (Fork)</span>
+                  <div className="text-[11px] font-medium truncate">{b.data}</div>
+                  <div className="text-[11px] font-mono opacity-80 truncate">Hash: {b.hash}...</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      ) : (
+        /* PHASES 0, 1, 2, 3: THE 4 CORE BLOCKS WITH FOCUSED MUTATION & FRACTURE */
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 items-stretch">
+          {/* BLOCK #0: GENESIS */}
+          <div className="p-4 sm:p-5 rounded-2xl bg-[#081424] border border-cyan-500/40 flex flex-col justify-between space-y-4 shadow-sm">
+            <div className="flex items-center justify-between pb-2 border-b border-cyan-500/20">
+              <span className="text-xs font-bold text-white tracking-wide">
+                {isVi ? 'KHỐI #0' : 'BLOCK #0'}
+              </span>
+              <span className="px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 text-[10px] font-bold uppercase">
+                {isVi ? 'Gốc Hợp Lệ' : 'Root Valid'}
+              </span>
+            </div>
+
+            <div className="space-y-3 text-xs">
+              <div>
+                <span className="text-[11px] text-slate-400 block mb-1">PrevHash:</span>
+                <div className="p-2 rounded-lg bg-black/40 border border-white/[0.08] font-mono text-cyan-300">
+                  {HASHES.genesisPrev}...
+                </div>
+              </div>
+
+              <div>
+                <span className="text-[11px] text-slate-400 block mb-1">
+                  {isVi ? 'Giao dịch:' : 'Transaction:'}
+                </span>
+                <div className="p-2.5 rounded-lg bg-black/40 border border-white/[0.08] text-slate-200 font-medium">
+                  {isVi ? 'Khởi tạo DLU Genesis' : 'DLU Genesis Anchor'}
+                </div>
+              </div>
+
+              <div>
+                <span className="text-[11px] text-slate-400 block mb-1">BlockHash:</span>
+                <div className="p-2 rounded-lg bg-black/40 border border-cyan-500/30 font-mono text-cyan-300 font-bold">
+                  {HASHES.block0}...
+                </div>
+              </div>
+            </div>
+
+            <div className="p-2 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs text-center font-medium flex items-center justify-center gap-1.5">
+              <ArrowRight className="w-3.5 h-3.5" />
+              <span>#0 ➔ #1: {isVi ? 'Khớp 100%' : 'Sealed'}</span>
+            </div>
+          </div>
+
+          {/* BLOCK #1: THE ATTACK POINT */}
+          <div
+            className={`p-4 sm:p-5 rounded-2xl border transition-all duration-300 flex flex-col justify-between space-y-4 ${
+              currentPhase >= 1
+                ? 'bg-[#1C0913] border-rose-500 shadow-[0_0_20px_rgba(244,63,94,0.3)] ring-1 ring-rose-500/50'
+                : 'bg-[#081424] border-cyan-500/40'
+            }`}
+          >
+            <div
+              className={`flex items-center justify-between pb-2 border-b ${
+                currentPhase >= 1 ? 'border-rose-500/30' : 'border-cyan-500/20'
+              }`}
+            >
+              <span
+                className={`text-xs font-bold tracking-wide ${
+                  currentPhase >= 1 ? 'text-rose-200' : 'text-white'
+                }`}
+              >
+                {isVi ? 'KHỐI #1' : 'BLOCK #1'}
+              </span>
+              <span
+                className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase transition-all ${
+                  currentPhase >= 1
+                    ? 'bg-rose-500/30 text-rose-200 border border-rose-500 animate-pulse'
+                    : 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
+                }`}
+              >
+                {currentPhase >= 1
+                  ? isVi
+                    ? 'DỮ LIỆU BỊ SỬA'
+                    : 'DATA TAMPERED'
+                  : isVi
+                  ? 'HỢP LỆ'
+                  : 'VALID'}
+              </span>
+            </div>
+
+            <div className="space-y-3 text-xs">
+              <div>
+                <span className="text-[11px] text-slate-400 block mb-1">PrevHash:</span>
+                <div className="p-2 rounded-lg bg-black/40 border border-white/[0.08] font-mono text-cyan-300">
+                  {HASHES.block0}...
+                </div>
+              </div>
+
+              <div>
+                <span className="text-[11px] text-slate-400 block mb-1">
+                  {isVi ? 'Giao dịch:' : 'Transaction:'}
+                </span>
+                <div
+                  className={`p-2.5 rounded-lg font-medium transition-all duration-300 ${
+                    currentPhase >= 1
+                      ? 'bg-rose-950/80 border-2 border-rose-500 text-rose-100 font-bold shadow-inner'
+                      : 'bg-black/40 border border-white/[0.08] text-slate-200'
+                  }`}
+                >
+                  {currentPhase >= 1 ? (
+                    <span className="text-rose-200 flex items-center justify-between">
+                      <span>Alice ➔ 999 COIN ➔ Hacker</span>
+                      <Flame className="w-4 h-4 text-rose-400 animate-bounce" />
+                    </span>
+                  ) : (
+                    <span>Alice ➔ 10 COIN ➔ Bob</span>
+                  )}
+                </div>
+              </div>
+
+              <div>
+                <span className="text-[11px] text-slate-400 block mb-1">BlockHash:</span>
+                <div
+                  className={`p-2 rounded-lg font-mono font-bold transition-all duration-300 ${
+                    currentPhase >= 1
+                      ? 'bg-rose-950/60 border border-rose-500 text-rose-300 shadow-[0_0_10px_rgba(244,63,94,0.3)] animate-pulse'
+                      : 'bg-black/40 border border-cyan-500/30 text-cyan-300'
+                  }`}
+                >
+                  {currentPhase >= 1 ? `${HASHES.block1Tampered}...` : `${HASHES.block1Clean}...`}
+                </div>
+              </div>
+            </div>
+
+            {/* CONNECTOR TO #2 */}
+            <div
+              className={`p-2 rounded-xl text-xs text-center font-bold flex items-center justify-center gap-1.5 transition-all duration-300 ${
+                currentPhase === 1 || currentPhase === 2
+                  ? 'bg-rose-500/20 border-2 border-rose-500 text-rose-200 shadow-[0_0_15px_rgba(244,63,94,0.4)] animate-pulse'
+                  : currentPhase === 3
+                  ? 'bg-amber-500/20 border border-amber-500 text-amber-200'
+                  : 'bg-cyan-500/10 border border-cyan-500/30 text-cyan-300'
+              }`}
+            >
+              {currentPhase === 1 || currentPhase === 2 ? (
+                <>
+                  <Zap className="w-4 h-4 text-rose-400 fill-rose-500" />
+                  <span>#1 ➔ #2: {isVi ? 'ĐỨT GÃY LIÊN KẾT!' : 'BROKEN LINK!'}</span>
+                </>
+              ) : currentPhase === 3 ? (
+                <>
+                  <GitFork className="w-4 h-4 text-amber-400" />
+                  <span>#1 ➔ #2: {isVi ? 'Đã vá (Nhánh rẽ)' : 'Patched (Fork)'}</span>
+                </>
               ) : (
-                <span className="text-slate-400 font-sans text-xs">
-                  {isVi ? 'Quy tắc: Hash(N) = PrevHash(N+1)' : 'Rule: Hash(N) = PrevHash(N+1)'}
-                </span>
+                <>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                  <span>#1 ➔ #2: {isVi ? 'Khớp 100%' : 'Sealed'}</span>
+                </>
               )}
             </div>
           </div>
 
-          {/* Collapsible Accordion for Step 3 */}
-          {dominoStep === 3 && (
-            <div className="pt-1">
-              <button
-                type="button"
-                onClick={() => setShowConsensusDetails(!showConsensusDetails)}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 text-xs font-sans transition-all cursor-pointer"
+          {/* BLOCK #2: THE REACTION / RE-MINING POINT */}
+          <div
+            className={`p-4 sm:p-5 rounded-2xl border transition-all duration-300 flex flex-col justify-between space-y-4 relative overflow-hidden ${
+              currentPhase === 1 || currentPhase === 2
+                ? 'bg-[#160B12] border-rose-500/80 shadow-[0_0_15px_rgba(244,63,94,0.2)]'
+                : currentPhase === 3
+                ? 'bg-[#1C1207] border-amber-500 shadow-[0_0_20px_rgba(245,158,11,0.25)] ring-1 ring-amber-500/50'
+                : 'bg-[#081424] border-cyan-500/40'
+            }`}
+          >
+            {/* Mining beam in Phase 3 */}
+            {currentPhase === 3 && (
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-amber-400/15 to-transparent animate-pulse pointer-events-none" />
+            )}
+
+            <div
+              className={`flex items-center justify-between pb-2 border-b ${
+                currentPhase === 1 || currentPhase === 2
+                  ? 'border-rose-500/30'
+                  : currentPhase === 3
+                  ? 'border-amber-500/30'
+                  : 'border-cyan-500/20'
+              }`}
+            >
+              <span
+                className={`text-xs font-bold tracking-wide ${
+                  currentPhase === 3 ? 'text-amber-200' : 'text-white'
+                }`}
               >
-                <HelpCircle className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                <span>
-                  {isVi
-                    ? 'Vì sao chuỗi này bị từ chối? (Quy tắc chuỗi dài nhất)'
-                    : 'Why is this chain rejected? (Longest chain rule)'}
-                </span>
-                <ChevronDown
-                  className={`w-3.5 h-3.5 text-amber-400 transition-transform duration-200 ${
-                    showConsensusDetails ? 'rotate-180' : ''
-                  }`}
-                />
-              </button>
-
-              {showConsensusDetails && (
-                <div className="mt-2 p-3 rounded-xl bg-amber-950/40 border border-amber-500/40 text-xs font-sans text-amber-100 flex items-start gap-2.5 leading-relaxed animate-in fade-in duration-150">
-                  <GitFork className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-                  <p>
-                    {isVi
-                      ? 'Trên mạng P2P phân tán, các node tuân thủ Quy tắc chuỗi có độ khó tích lũy lớn nhất (Longest Chain Rule). Trong thời gian kẻ tấn công đào lại các khối cũ, mạng lưới trung thực đã đào tiếp các khối mới (#4, #5...), khiến nhánh giả mạo bị cô lập vĩnh viễn thành nhánh mồ côi (Orphaned Fork).'
-                      : 'Distributed nodes follow the Longest Chain Rule. While the attacker re-mined past blocks, the honest network continued advancing with new blocks, leaving the attacker fork permanently isolated as an orphan.'}
-                  </p>
-                </div>
-              )}
+                {isVi ? 'KHỐI #2' : 'BLOCK #2'}
+              </span>
+              <span
+                className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${
+                  currentPhase === 1 || currentPhase === 2
+                    ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40'
+                    : currentPhase === 3
+                    ? 'bg-amber-500/25 text-amber-200 border border-amber-500'
+                    : 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
+                }`}
+              >
+                {currentPhase === 1 || currentPhase === 2
+                  ? isVi
+                    ? 'TỪ CHỐI'
+                    : 'REJECTED'
+                  : currentPhase === 3
+                  ? isVi
+                    ? 'ĐÃ ĐÀO LẠI'
+                    : 'RE-MINED'
+                  : isVi
+                  ? 'HỢP LỆ'
+                  : 'VALID'}
+              </span>
             </div>
-          )}
-        </div>
 
-        {/* 4 Blocks Display with Inline Connectors */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-4 gap-4 items-stretch">
-          {computedActualBlocks.map((block, idx) => {
-            const blockState = getBlockState(idx);
-            const isBlock1 = idx === 1;
-            const connector = idx < 3 ? getConnectorState(idx) : null;
-
-            return (
-              <div key={block.index} className="flex flex-col justify-between space-y-3">
-                {/* 1 Block Card */}
+            <div className="space-y-3 text-xs">
+              <div>
+                <span className="text-[11px] text-slate-400 block mb-1">PrevHash:</span>
                 <div
-                  className={`p-4 rounded-xl border transition-all duration-200 flex flex-col justify-between space-y-3 ${
-                    blockState.variant === 'rose'
-                      ? 'bg-[#190D14] border-rose-500 shadow-[0_0_15px_rgba(244,63,94,0.15)]'
-                      : blockState.variant === 'amber'
-                      ? 'bg-[#1C1409] border-amber-500/80 shadow-[0_0_15px_rgba(245,158,11,0.15)]'
-                      : blockState.variant === 'slate'
-                      ? 'bg-[#0F172A] border-slate-700/90'
-                      : 'bg-[#0B1528] border-cyan-500/40 hover:border-cyan-500/60'
+                  className={`p-2 rounded-lg font-mono font-bold transition-all ${
+                    currentPhase === 1 || currentPhase === 2
+                      ? 'bg-rose-950/80 border-2 border-rose-500 text-rose-200 animate-pulse'
+                      : currentPhase === 3
+                      ? 'bg-amber-950/60 border border-amber-500/60 text-amber-200'
+                      : 'bg-black/40 border border-white/[0.08] text-cyan-300'
                   }`}
                 >
-                  {/* Header: Block Title + Status Badge */}
-                  <div className="flex items-center justify-between pb-2.5 border-b border-white/[0.08]">
-                    <div className="flex items-center">
-                      <span
-                        className={`text-xs font-sans font-bold tracking-tight leading-normal ${
-                          blockState.variant === 'rose'
-                            ? 'text-rose-200'
-                            : blockState.variant === 'amber'
-                            ? 'text-amber-200'
-                            : blockState.variant === 'slate'
-                            ? 'text-slate-300'
-                            : 'text-white'
-                        }`}
-                      >
-                        {isVi ? `KHỐI #${block.index}` : `BLOCK #${block.index}`}
-                      </span>
-
-                      {/* Tooltip trigger button */}
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setActiveTooltip(activeTooltip === block.index ? null : block.index)
-                        }
-                        className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-white/[0.08] hover:bg-white/[0.18] text-slate-300 hover:text-white text-[10px] font-mono leading-none align-middle ml-1.5 transition-colors cursor-pointer"
-                        title={blockState.desc}
-                      >
-                        ?
-                      </button>
-                    </div>
-
-                    {/* Status Badge */}
-                    <span
-                      className={`px-2.5 py-1 rounded-full text-[10px] font-mono font-semibold uppercase tracking-wider leading-none whitespace-nowrap ${
-                        blockState.variant === 'rose'
-                          ? 'bg-rose-500/20 text-rose-200 border border-rose-500/50'
-                          : blockState.variant === 'amber'
-                          ? 'bg-amber-500/20 text-amber-200 border border-amber-500/50'
-                          : blockState.variant === 'slate'
-                          ? 'bg-slate-800 text-slate-300 border border-slate-600/70'
-                          : 'bg-cyan-500/15 text-cyan-200 border border-cyan-500/40'
-                      }`}
-                    >
-                      {blockState.badge}
-                    </span>
-                  </div>
-
-                  {/* Tooltip drawer if active */}
-                  {activeTooltip === block.index && (
-                    <div className="p-2.5 rounded-lg bg-black/60 border border-white/[0.12] text-[11px] font-sans text-slate-200 leading-relaxed animate-in fade-in duration-150">
-                      {blockState.desc}
-                    </div>
-                  )}
-
-                  {/* Tầng 1: PrevHash */}
-                  <div className="space-y-1">
-                    <div className="text-[11px] font-sans text-slate-400">
-                      PrevHash:
-                    </div>
-                    <div
-                      className={`p-2.5 rounded-lg font-mono text-xs truncate transition-all ${
-                        blockState.variant === 'rose'
-                          ? 'bg-black/50 border border-rose-500/30 text-rose-200'
-                          : blockState.variant === 'amber'
-                          ? 'bg-black/50 border border-amber-500/30 text-amber-200'
-                          : blockState.variant === 'slate'
-                          ? 'bg-black/40 border border-slate-700/60 text-slate-300'
-                          : 'bg-black/50 border border-cyan-500/20 text-cyan-200'
-                      }`}
-                      title={block.storedPrevHash}
-                    >
-                      {block.storedPrevHash.slice(0, 18)}...
-                    </div>
-                  </div>
-
-                  {/* Tầng 2: Data (NO TRUNCATION, FULL TEXT VISIBLE) */}
-                  <div className="space-y-1">
-                    <div className="text-[11px] font-sans text-slate-400">
-                      {isVi ? 'Giao dịch:' : 'Transaction:'}
-                    </div>
-
-                    {isBlock1 ? (
-                      <div className="space-y-1">
-                        <textarea
-                          rows={2}
-                          value={block1Data}
-                          onChange={(e) => handleBlock1Change(e.target.value)}
-                          className={`w-full p-2.5 rounded-lg text-xs font-sans leading-relaxed resize-none outline-none transition-all ${
-                            isBlock1Tampered
-                              ? 'bg-rose-950/60 border-2 border-rose-500 text-rose-100 font-medium placeholder-rose-400/60'
-                              : 'bg-black/50 border border-white/[0.12] text-slate-200 focus:border-cyan-500'
-                          }`}
-                          placeholder={isVi ? 'Nội dung giao dịch...' : 'Transaction payload...'}
-                        />
-                      </div>
-                    ) : (
-                      <div
-                        className={`p-2.5 rounded-lg text-xs font-sans leading-relaxed min-h-[52px] flex items-center break-words ${
-                          blockState.variant === 'rose'
-                            ? 'bg-black/50 border border-rose-500/30 text-rose-100 font-medium'
-                            : blockState.variant === 'amber'
-                            ? 'bg-black/50 border border-amber-500/30 text-amber-100 font-medium'
-                            : blockState.variant === 'slate'
-                            ? 'bg-black/40 border border-slate-700/60 text-slate-200'
-                            : 'bg-black/50 border border-white/[0.08] text-slate-100'
-                        }`}
-                      >
-                        {block.data}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Tầng 3: BlockHash (SHA-256) */}
-                  <div className="space-y-1 pt-2 border-t border-white/[0.08]">
-                    <div className="text-[11px] font-sans text-slate-400 flex items-center justify-between">
-                      <span>BlockHash:</span>
-                      <span className="text-[10px] font-mono text-slate-400">SHA-256</span>
-                    </div>
-                    <div
-                      className={`p-2.5 rounded-lg font-mono text-xs truncate font-semibold transition-all ${
-                        blockState.variant === 'rose'
-                          ? 'bg-rose-950/40 border border-rose-500/50 text-rose-300'
-                          : blockState.variant === 'amber'
-                          ? 'bg-amber-950/40 border border-amber-500/50 text-amber-300'
-                          : blockState.variant === 'slate'
-                          ? 'bg-black/40 border border-slate-700/60 text-slate-300'
-                          : 'bg-black/50 border border-cyan-500/30 text-cyan-300'
-                      }`}
-                      title={block.actualHash}
-                    >
-                      {block.actualHash.slice(0, 18)}...
-                    </div>
-                  </div>
+                  {currentPhase === 3
+                    ? `${HASHES.block1Tampered}...`
+                    : `${HASHES.block1Clean}...`}
                 </div>
-
-                {/* Inline Chain Connector to Next Block */}
-                {connector && (
-                  <div className="flex items-center justify-center p-2 rounded-xl bg-black/40 border border-white/[0.06]">
-                    <div
-                      className={`w-full py-1.5 px-3 rounded-lg text-[11px] font-mono font-medium flex items-center justify-center gap-2 border transition-all ${
-                        connector.status === 'valid'
-                          ? 'text-cyan-200 bg-cyan-500/10 border-cyan-500/40'
-                          : connector.status === 'broken'
-                          ? 'text-rose-200 bg-rose-500/20 border-rose-500/60 font-bold shadow-[0_0_10px_rgba(244,63,94,0.2)]'
-                          : connector.status === 'forked'
-                          ? 'text-amber-200 bg-amber-500/20 border-amber-500/50 font-bold'
-                          : 'text-slate-300 bg-slate-800/80 border-slate-700'
-                      }`}
-                    >
-                      {connector.status === 'valid' && (
-                        <ArrowRight className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
-                      )}
-                      {connector.status === 'broken' && (
-                        <Zap className="w-3.5 h-3.5 text-rose-400 fill-rose-500/30 shrink-0" />
-                      )}
-                      {connector.status === 'forked' && (
-                        <GitFork className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                      )}
-                      {connector.status === 'invalidated' && (
-                        <Lock className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                      )}
-
-                      <span className="leading-normal">
-                        #{idx} ➔ #{idx + 1}: {isVi ? connector.labelVi : connector.labelEn}
-                      </span>
-                    </div>
-                  </div>
-                )}
               </div>
-            );
-          })}
-        </div>
 
-        {/* 4. Semantic Color Legend (Clean & Uncluttered) */}
-        <div className="pt-3 border-t border-white/[0.06] flex flex-wrap items-center justify-center sm:justify-end gap-4 text-[11px] font-mono">
-          <span className="inline-flex items-center gap-1.5 text-cyan-300">
-            <span className="w-2 h-2 rounded-full bg-cyan-400" />
-            {isVi ? 'Hợp lệ' : 'Valid'}
-          </span>
-          <span className="inline-flex items-center gap-1.5 text-rose-300">
-            <span className="w-2 h-2 rounded-full bg-rose-500" />
-            {isVi ? 'Bị sửa / Gãy' : 'Tampered / Broken'}
-          </span>
-          <span className="inline-flex items-center gap-1.5 text-amber-300">
-            <span className="w-2 h-2 rounded-full bg-amber-400" />
-            {isVi ? 'Nhánh rẽ' : 'Fork'}
-          </span>
-          <span className="inline-flex items-center gap-1.5 text-slate-400">
-            <span className="w-2 h-2 rounded-full bg-slate-500" />
-            {isVi ? 'Vô hiệu' : 'Orphaned'}
-          </span>
+              <div>
+                <span className="text-[11px] text-slate-400 block mb-1">
+                  {isVi ? 'Giao dịch:' : 'Transaction:'}
+                </span>
+                <div className="p-2.5 rounded-lg bg-black/40 border border-white/[0.08] text-slate-200 font-medium">
+                  Bob ➔ 5 COIN ➔ Charlie
+                </div>
+              </div>
+
+              <div>
+                <span className="text-[11px] text-slate-400 block mb-1">BlockHash:</span>
+                <div
+                  className={`p-2 rounded-lg font-mono font-bold ${
+                    currentPhase === 3
+                      ? 'bg-amber-950/60 border border-amber-500 text-amber-300'
+                      : 'bg-black/40 border border-cyan-500/30 text-cyan-300'
+                  }`}
+                >
+                  {currentPhase === 3 ? `${HASHES.block2Remined}...` : `${HASHES.block2Clean}...`}
+                </div>
+              </div>
+            </div>
+
+            {/* CONNECTOR TO #3 */}
+            <div
+              className={`p-2 rounded-xl text-xs text-center font-bold flex items-center justify-center gap-1.5 transition-all duration-300 ${
+                currentPhase === 3
+                  ? 'bg-amber-500/20 border border-amber-500 text-amber-200'
+                  : currentPhase >= 1
+                  ? 'bg-slate-800 text-slate-400 border border-slate-700'
+                  : 'bg-cyan-500/10 border border-cyan-500/30 text-cyan-300'
+              }`}
+            >
+              {currentPhase === 3 ? (
+                <>
+                  <GitFork className="w-3.5 h-3.5 text-amber-400" />
+                  <span>#2 ➔ #3: {isVi ? 'Đã đào lại' : 'Re-mined'}</span>
+                </>
+              ) : currentPhase >= 1 ? (
+                <span>#2 ➔ #3: {isVi ? 'Vô hiệu hóa' : 'Orphaned'}</span>
+              ) : (
+                <>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                  <span>#2 ➔ #3: {isVi ? 'Khớp 100%' : 'Sealed'}</span>
+                </>
+              )}
+            </div>
+          </div>
+
+          {/* BLOCK #3: DOWNSTREAM ORPHANED / RE-MINED */}
+          <div
+            className={`p-4 sm:p-5 rounded-2xl border transition-all duration-300 flex flex-col justify-between space-y-4 ${
+              currentPhase === 3
+                ? 'bg-[#1C1207] border-amber-500 shadow-[0_0_20px_rgba(245,158,11,0.25)] ring-1 ring-amber-500/50'
+                : currentPhase >= 1
+                ? 'bg-[#0F1420] border-slate-700/80 opacity-70'
+                : 'bg-[#081424] border-cyan-500/40'
+            }`}
+          >
+            <div className="flex items-center justify-between pb-2 border-b border-white/[0.08]">
+              <span className="text-xs font-bold text-white tracking-wide">
+                {isVi ? 'KHỐI #3' : 'BLOCK #3'}
+              </span>
+              <span
+                className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${
+                  currentPhase === 3
+                    ? 'bg-amber-500/25 text-amber-200 border border-amber-500'
+                    : currentPhase >= 1
+                    ? 'bg-slate-800 text-slate-300 border border-slate-600'
+                    : 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
+                }`}
+              >
+                {currentPhase === 3
+                  ? isVi
+                    ? 'ĐÃ ĐÀO LẠI'
+                    : 'RE-MINED'
+                  : currentPhase >= 1
+                  ? isVi
+                    ? 'VÔ HIỆU'
+                    : 'ORPHANED'
+                  : isVi
+                  ? 'HỢP LỆ'
+                  : 'VALID'}
+              </span>
+            </div>
+
+            <div className="space-y-3 text-xs">
+              <div>
+                <span className="text-[11px] text-slate-400 block mb-1">PrevHash:</span>
+                <div className="p-2 rounded-lg bg-black/40 border border-white/[0.08] font-mono text-slate-300">
+                  {currentPhase === 3
+                    ? `${HASHES.block2Remined}...`
+                    : `${HASHES.block2Clean}...`}
+                </div>
+              </div>
+
+              <div>
+                <span className="text-[11px] text-slate-400 block mb-1">
+                  {isVi ? 'Giao dịch:' : 'Transaction:'}
+                </span>
+                <div className="p-2.5 rounded-lg bg-black/40 border border-white/[0.08] text-slate-200 font-medium">
+                  Charlie ➔ 2 COIN ➔ Dave
+                </div>
+              </div>
+
+              <div>
+                <span className="text-[11px] text-slate-400 block mb-1">BlockHash:</span>
+                <div
+                  className={`p-2 rounded-lg font-mono font-bold ${
+                    currentPhase === 3
+                      ? 'bg-amber-950/60 border border-amber-500 text-amber-300'
+                      : 'bg-black/40 border border-cyan-500/30 text-cyan-300'
+                  }`}
+                >
+                  {currentPhase === 3 ? `${HASHES.block3Remined}...` : `${HASHES.block3Clean}...`}
+                </div>
+              </div>
+            </div>
+
+            <div
+              className={`p-2 rounded-xl text-xs text-center font-medium ${
+                currentPhase === 3
+                  ? 'bg-amber-500/10 border border-amber-500/30 text-amber-300'
+                  : 'bg-black/30 border border-white/[0.06] text-slate-400'
+              }`}
+            >
+              {currentPhase === 3
+                ? isVi
+                  ? 'Khớp toán học trên nhánh rẽ'
+                  : 'Mathematically sealed on fork'
+                : isVi
+                ? 'Đỉnh chuỗi hiện tại'
+                : 'Current tip'}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 4. MINIMALIST FLOATING DOCK (CENTERED CONTROLS & STEPPER DOTS) */}
+      <div className="sticky bottom-4 z-30 flex justify-center px-2">
+        <div className="w-full max-w-4xl p-3 sm:p-4 rounded-2xl bg-[#090D16]/95 backdrop-blur-xl border border-white/[0.15] shadow-2xl flex flex-col md:flex-row items-center justify-between gap-4">
+          {/* Main Action Buttons */}
+          <div className="flex items-center gap-2.5 w-full md:w-auto justify-between md:justify-start">
+            <button
+              type="button"
+              onClick={handleTogglePlay}
+              className={`px-5 py-2.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg shrink-0 ${
+                isPlaying
+                  ? 'bg-amber-500 hover:bg-amber-400 text-slate-950'
+                  : 'bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white shadow-cyan-500/25'
+              }`}
+            >
+              {isPlaying ? (
+                <>
+                  <Pause className="w-4 h-4 fill-slate-950" />
+                  <span>{isVi ? 'Tạm dừng' : 'Pause'}</span>
+                </>
+              ) : currentTime >= 8000 ? (
+                <>
+                  <RotateCcw className="w-4 h-4" />
+                  <span>{isVi ? 'Xem lại từ đầu' : 'Replay'}</span>
+                </>
+              ) : (
+                <>
+                  <Play className="w-4 h-4 fill-white" />
+                  <span>{isVi ? 'Bắt đầu xem' : 'Start Simulation'}</span>
+                </>
+              )}
+            </button>
+
+            <button
+              type="button"
+              onClick={handleReset}
+              className="px-3.5 py-2.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.1] text-xs font-semibold text-slate-300 hover:text-white transition-all cursor-pointer flex items-center gap-1.5 shrink-0"
+              title={isVi ? 'Khôi phục về trạng thái nguyên bản' : 'Reset to initial state'}
+            >
+              <RotateCcw className="w-3.5 h-3.5 text-cyan-400" />
+              <span className="hidden sm:inline">{isVi ? 'Làm lại' : 'Reset'}</span>
+            </button>
+          </div>
+
+          {/* 4 Stepper Dots with Direct Phase Jump */}
+          <div className="flex items-center justify-center gap-1.5 sm:gap-2 w-full md:w-auto overflow-x-auto py-1">
+            {[
+              { phase: 1 as const, vi: '1. Sửa đổi', en: '1. Tamper', time: '0-2s' },
+              { phase: 2 as const, vi: '2. Gãy chuỗi', en: '2. Fracture', time: '2-4s' },
+              { phase: 3 as const, vi: '3. Đào lại', en: '3. Re-mine', time: '4-6.5s' },
+              { phase: 4 as const, vi: '4. Đào thải', en: '4. Reject', time: '6.5-8s' },
+            ].map((step) => {
+              const isActive = currentPhase === step.phase;
+              return (
+                <button
+                  key={step.phase}
+                  type="button"
+                  onClick={() => handleJumpToPhase(step.phase)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap ${
+                    isActive
+                      ? step.phase === 4
+                        ? 'bg-cyan-500/25 text-cyan-200 border border-cyan-400 shadow-[0_0_10px_rgba(6,182,212,0.3)]'
+                        : step.phase === 3
+                        ? 'bg-amber-500/25 text-amber-200 border border-amber-400 shadow-[0_0_10px_rgba(245,158,11,0.3)]'
+                        : 'bg-rose-500/25 text-rose-200 border border-rose-400 shadow-[0_0_10px_rgba(244,63,94,0.3)]'
+                      : 'bg-white/[0.04] text-slate-400 hover:text-slate-200 border border-white/[0.06] hover:border-white/[0.15]'
+                  }`}
+                >
+                  <span
+                    className={`w-2 h-2 rounded-full shrink-0 ${
+                      isActive
+                        ? step.phase === 4
+                          ? 'bg-cyan-400 animate-ping'
+                          : step.phase === 3
+                          ? 'bg-amber-400 animate-ping'
+                          : 'bg-rose-400 animate-ping'
+                        : 'bg-slate-600'
+                    }`}
+                  />
+                  <span>{isVi ? step.vi : step.en}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
-      {/* 5. Navigation Footer */}
-      <div className="flex flex-col sm:flex-row items-center justify-between pt-4 border-t border-white/[0.06] gap-3">
-        <span className="text-xs font-sans text-slate-400">
+      {/* 5. Navigation Link to next section */}
+      <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-white/[0.06] text-xs text-slate-400">
+        <span>
           {isVi
-            ? 'Tiếp theo: Khám phá 4 khái niệm Mật Mã Học Nền Tảng'
-            : 'Next: Explore fundamental Cryptography concepts'}
+            ? 'Tiếp theo: Tìm hiểu 4 trụ cột Mật Mã Học Nền Tảng (Hash, Asymmetric, Signature, Zero-Knowledge)'
+            : 'Next: Explore fundamental Cryptography concepts (Hash, Asymmetric, Signature, ZK)'}
         </span>
 
         <button
           type="button"
           onClick={onNextStage}
-          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-xs font-sans font-medium text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 transition-all cursor-pointer"
+          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.1] text-cyan-300 hover:text-cyan-200 font-medium transition-all cursor-pointer"
         >
-          <span>
-            {isVi
-              ? 'Tiếp tục sang Mật Mã Học Nền Tảng →'
-              : 'Continue to Cryptography →'}
-          </span>
+          <span>{isVi ? 'Sang Mật Mã Học Nền Tảng' : 'Continue to Cryptography'}</span>
           <ChevronRight className="w-3.5 h-3.5" />
         </button>
       </div>

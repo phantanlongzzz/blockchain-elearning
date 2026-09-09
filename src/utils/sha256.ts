@@ -140,37 +140,63 @@ export function computeDetailedSha256(input: string | Uint8Array): DetailedSha25
 
     // 64 compression rounds
     for (let t = 0; t < 64; t++) {
-      const S1 = sigma1(e);
-      const CH = ch(e, f, g);
-      const temp1 = (h + S1 + CH + K[t] + W[t]) >>> 0;
-      const S0 = sigma0(a);
-      const MAJ = maj(a, b, c);
+      const prevA = a;
+      const prevB = b;
+      const prevC = c;
+      const prevD = d;
+      const prevE = e;
+      const prevF = f;
+      const prevG = g;
+      const prevH = h;
+
+      const S1 = sigma1(prevE);
+      const CH = ch(prevE, prevF, prevG);
+      const temp1 = (prevH + S1 + CH + K[t] + W[t]) >>> 0;
+      const S0 = sigma0(prevA);
+      const MAJ = maj(prevA, prevB, prevC);
       const temp2 = (S0 + MAJ) >>> 0;
+
+      const nextA = (temp1 + temp2) >>> 0;
+      const nextB = prevA;
+      const nextC = prevB;
+      const nextD = prevC;
+      const nextE = (prevD + temp1) >>> 0;
+      const nextF = prevE;
+      const nextG = prevF;
+      const nextH = prevG;
 
       rounds.push({
         round: t,
-        a,
-        b,
-        c,
-        d,
-        e,
-        f,
-        g,
-        h,
+        a: nextA,
+        b: nextB,
+        c: nextC,
+        d: nextD,
+        e: nextE,
+        f: nextF,
+        g: nextG,
+        h: nextH,
+        prevA,
+        prevB,
+        prevC,
+        prevD,
+        prevE,
+        prevF,
+        prevG,
+        prevH,
         w: W[t],
         k: K[t],
         t1: temp1,
         t2: temp2,
       });
 
-      h = g;
-      g = f;
-      f = e;
-      e = (d + temp1) >>> 0;
-      d = c;
-      c = b;
-      b = a;
-      a = (temp1 + temp2) >>> 0;
+      a = nextA;
+      b = nextB;
+      c = nextC;
+      d = nextD;
+      e = nextE;
+      f = nextF;
+      g = nextG;
+      h = nextH;
     }
 
     // Intermediate block hash addition

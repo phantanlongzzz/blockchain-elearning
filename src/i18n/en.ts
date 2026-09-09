@@ -154,9 +154,9 @@ export const enTranslations: TranslationSchema = {
     sacDefinition: 'Strict Avalanche Criterion (SAC, Webster & Tavares 1985) requires rigorous statistical testing across thousands of input pairs for every bit position; an individual sample (~50%) visually demonstrates empirical diffusion but does not constitute a full statistical SAC proof.',
   },
   pipeline: {
-    badge: 'NIST FIPS 180-4 Architecture',
-    title: 'SHA-256 INTERNAL ENGINE & PIPELINE',
-    description: 'Step through the 5-stage transformation pipeline: from message preprocessing and 512-bit block parsing to the 64-round compression loop and final 256-bit digest synthesis.',
+    badge: 'NIST FIPS 180-4 Standard',
+    title: 'SHA-256 64-Round Compression Pipeline',
+    description: '4 transformation stages: message padding, 512-bit schedule expansion, 64 compression rounds, and 256-bit digest synthesis.',
     stage1Label: '1. Message Padding',
     stage1Desc: '512-bit Alignment',
     stage2Label: '2. Message Schedule',

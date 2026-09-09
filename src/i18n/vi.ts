@@ -154,9 +154,9 @@ export const viTranslations: TranslationSchema = {
     "sacDefinition": "Tiêu chuẩn Thác đổ Nghiêm ngặt (Strict Avalanche Criterion - SAC, Webster & Tavares 1985) đòi hỏi kiểm định thống kê trên hàng ngàn cặp đầu vào với từng vị trí bit được lật; một mẫu thử đơn lẻ (~50%) phản ánh trực quan tính chất khuếch tán thực nghiệm, không thay thế cho bài kiểm định SAC thống kê toàn diện."
   },
   "pipeline": {
-    "badge": "Kiến Trúc Chuẩn NIST FIPS 180-4",
-    "title": "ĐỘNG CƠ NỘI BỘ & QUY TRÌNH XỬ LÝ SHA-256",
-    "description": "Trực quan hóa quy trình chuyển đổi qua 4 giai đoạn: từ đệm dữ liệu, phân chia khối 512 bit đến 64 vòng nén và tổng hợp mã băm 256 bit.",
+    "badge": "Chuẩn NIST FIPS 180-4",
+    "title": "Quy trình nội bộ 64 vòng băm SHA-256",
+    "description": "4 giai đoạn chuyển đổi: đệm dữ liệu, phân chia 512 bit, 64 vòng nén và tổng hợp mã băm 256 bit.",
     "stage1Label": "1. Đệm Dữ Liệu",
     "stage1Desc": "Căn chỉnh khối 512 bit",
     "stage2Label": "2. Mở Rộng Thông Điệp",

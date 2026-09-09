@@ -18,6 +18,14 @@ export interface RoundState {
   f: number;
   g: number;
   h: number;
+  prevA?: number;
+  prevB?: number;
+  prevC?: number;
+  prevD?: number;
+  prevE?: number;
+  prevF?: number;
+  prevG?: number;
+  prevH?: number;
   w: number;
   k: number;
   t1: number;

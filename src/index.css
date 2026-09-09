@@ -719,3 +719,64 @@ html body,
 @utility text-money {
   color: var(--color-money);
 }
+
+@keyframes flowDash {
+  to {
+    stroke-dashoffset: -20;
+  }
+}
+
+.animate-flow-dash {
+  stroke-dasharray: 6 4;
+  animation: flowDash 1.2s linear infinite;
+}
+
+@keyframes slideShift {
+  from {
+    transform: translateX(-8px);
+    opacity: 0.6;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-shift {
+  animation: slideShift 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes flashCyan150 {
+  0% {
+    background-color: rgba(6, 182, 212, 0.35);
+    border-color: #06b6d4;
+    box-shadow: 0 0 16px rgba(6, 182, 212, 0.5);
+  }
+  100% {
+    background-color: #090d16;
+    border-color: #06b6d4;
+    box-shadow: none;
+  }
+}
+
+.animate-flash-cyan-150 {
+  animation: flashCyan150 150ms ease-out;
+}
+
+@keyframes flashEmerald150 {
+  0% {
+    background-color: rgba(16, 185, 129, 0.35);
+    border-color: #10b981;
+    box-shadow: 0 0 16px rgba(16, 185, 129, 0.5);
+  }
+  100% {
+    background-color: #090d16;
+    border-color: #10b981;
+    box-shadow: none;
+  }
+}
+
+.animate-flash-emerald-150 {
+  animation: flashEmerald150 150ms ease-out;
+}
+

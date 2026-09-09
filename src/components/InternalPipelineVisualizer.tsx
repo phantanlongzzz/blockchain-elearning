@@ -1,5 +1,4 @@
 import React, { useState, useMemo } from 'react';
-import { ChevronLeft, ChevronRight, Binary, Layers, LayoutGrid, Network, Key, Cpu, CheckCircle2 } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 import { computeDetailedSha256 } from '../utils/sha256';
 import { Step1BinaryConversion } from './pipeline/Step1BinaryConversion';
@@ -19,11 +18,26 @@ export type PipelineStepId =
   | 'compression'
   | 'output';
 
+interface StepDef {
+  id: PipelineStepId;
+  labelVi: string;
+  labelEn: string;
+}
+
+const STEPS: StepDef[] = [
+  { id: 'binary', labelVi: '1. Nhị phân', labelEn: '1. Binary' },
+  { id: 'padding', labelVi: '2. Đệm bit', labelEn: '2. Padding' },
+  { id: 'words16', labelVi: '3. 16 Word', labelEn: '3. 16 Words' },
+  { id: 'schedule', labelVi: '4. Mở rộng', labelEn: '4. Schedule' },
+  { id: 'constants', labelVi: '5. Hằng số', labelEn: '5. Constants' },
+  { id: 'compression', labelVi: '6. 64 Vòng nén', labelEn: '6. 64 Rounds' },
+  { id: 'output', labelVi: '7. Xuất Hex', labelEn: '7. Hex Output' },
+];
+
 export const InternalPipelineVisualizer: React.FC = () => {
   const { language } = useLanguage();
   const isVi = language === 'vi';
 
-  // Default to "ABCD" as highlighted in the video source
   const [pipelineInput, setPipelineInput] = useState<string>('ABCD');
   const [activeStep, setActiveStep] = useState<PipelineStepId>('binary');
 
@@ -37,120 +51,40 @@ export const InternalPipelineVisualizer: React.FC = () => {
   }, [pipelineInput]);
 
   const block0 = breakdown.blocks[0];
-
-  // 7 Logical Steps Definition
-  const steps: {
-    id: PipelineStepId;
-    num: number;
-    titleVi: string;
-    titleEn: string;
-    shortVi: string;
-    shortEn: string;
-    icon: React.ComponentType<{ className?: string }>;
-  }[] = [
-    {
-      id: 'binary',
-      num: 1,
-      titleVi: '1. Chuyển sang Nhị phân',
-      titleEn: '1. Binary Conversion',
-      shortVi: 'Mã ASCII 8-bit',
-      shortEn: '8-bit ASCII',
-      icon: Binary,
-    },
-    {
-      id: 'padding',
-      num: 2,
-      titleVi: '2. Đệm Bit & Độ dài',
-      titleEn: '2. Bit Padding',
-      shortVi: 'Khối 512-bit',
-      shortEn: '512-bit block',
-      icon: Layers,
-    },
-    {
-      id: 'words16',
-      num: 3,
-      titleVi: '3. Chia 16 Word (32-bit)',
-      titleEn: '3. 16 Words Split',
-      shortVi: 'W[0] … W[15]',
-      shortEn: 'W[0] … W[15]',
-      icon: LayoutGrid,
-    },
-    {
-      id: 'schedule',
-      num: 4,
-      titleVi: '4. Mở rộng 64 Word',
-      titleEn: '4. Schedule Expansion',
-      shortVi: 'W[16] … W[63]',
-      shortEn: 'W[16] … W[63]',
-      icon: Network,
-    },
-    {
-      id: 'constants',
-      num: 5,
-      titleVi: '5. Hằng số H & K',
-      titleEn: '5. Constants & State',
-      shortVi: 'Biến A…H',
-      shortEn: 'A…H state',
-      icon: Key,
-    },
-    {
-      id: 'compression',
-      num: 6,
-      titleVi: '6. 64 Vòng Nén',
-      titleEn: '6. Compression Loop',
-      shortVi: 'Dịch • Trộn • Cập nhật',
-      shortEn: 'Shift • Mix • Update',
-      icon: Cpu,
-    },
-    {
-      id: 'output',
-      num: 7,
-      titleVi: '7. Xuất Mã Băm Hex',
-      titleEn: '7. Feed-Forward & Hex',
-      shortVi: 'Chuỗi 64 ký tự Hex',
-      shortEn: '64-hex 256-bit',
-      icon: CheckCircle2,
-    },
-  ];
-
-  const currentStepIndex = steps.findIndex((s) => s.id === activeStep);
+  const currentStepIndex = STEPS.findIndex((s) => s.id === activeStep);
 
   const handlePrevStep = () => {
     if (currentStepIndex > 0) {
-      setActiveStep(steps[currentStepIndex - 1].id);
+      setActiveStep(STEPS[currentStepIndex - 1].id);
     }
   };
 
   const handleNextStep = () => {
-    if (currentStepIndex < steps.length - 1) {
-      setActiveStep(steps[currentStepIndex + 1].id);
+    if (currentStepIndex < STEPS.length - 1) {
+      setActiveStep(STEPS[currentStepIndex + 1].id);
     }
   };
 
   return (
-    <section id="pipeline" className="py-12 relative font-sans">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-8 font-sans">
-          <div className="flex items-center justify-center gap-2 text-sky-400 text-xs tracking-wider uppercase mb-2.5 font-semibold font-sans">
-            <span className="w-2 h-2 rounded-full bg-sky-400" />
-            <span>{isVi ? 'Kiến trúc Mật mã học Chuẩn FIPS 180-4' : 'NIST FIPS 180-4 Standard Architecture'}</span>
-          </div>
-          <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight font-sans mb-3">
-            {isVi ? '7 BƯỚC LOGIC CỐT LÕI CỦA THUẬT TOÁN SHA-256' : 'THE 7 CORE LOGICAL STEPS OF SHA-256'}
+    <section id="pipeline" className="py-8 font-sans">
+      <div className="max-w-5xl mx-auto space-y-6">
+        {/* Header - Clean, zero marketing fluff */}
+        <div className="space-y-1">
+          <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+            {isVi ? 'Quy trình 7 bước của SHA-256' : 'The 7 Steps of SHA-256'}
           </h2>
-          <p className="text-sm sm:text-base text-slate-300 leading-relaxed font-sans">
+          <p className="text-sm text-slate-400">
             {isVi
-              ? 'Khám phá trực quan toàn bộ hành trình chuyển hóa thông điệp qua 7 bước: từ nhị phân thô, đệm khối 512 bit, mở rộng 64 từ, 64 vòng lặp nén đến mã băm 256-bit hoàn chỉnh.'
-              : 'Inspect the full cryptographic journey across 7 logical steps: from raw binary conversion, 512-bit padding, message expansion, 64 compression rounds to the final 256-bit digest.'}
+              ? 'Mô phỏng từng bước từ chuỗi văn bản đầu vào đến giá trị băm 256-bit cuối cùng.'
+              : 'Step-by-step visual simulation from raw text input to final 256-bit hash digest.'}
           </p>
         </div>
 
-        {/* Universal Input & Presets Bar */}
-        <div className="rounded-2xl bg-slate-900/90 border border-slate-800 p-4 mb-6 flex flex-col lg:flex-row lg:items-center justify-between gap-4 text-sm font-sans shadow-xs">
-          <div className="flex flex-wrap items-center gap-3">
-            <span className="text-slate-200 font-semibold font-sans whitespace-nowrap text-sm">
-              {isVi ? 'Thông điệp đầu vào:' : 'Input Message:'}
+        {/* Input & Presets Bar */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 rounded-xl bg-slate-900 border border-slate-800 text-sm">
+          <div className="flex items-center gap-3 flex-wrap">
+            <span className="text-slate-300 font-medium">
+              {isVi ? 'Đầu vào thử nghiệm:' : 'Test input:'}
             </span>
             <input
               type="text"
@@ -158,7 +92,7 @@ export const InternalPipelineVisualizer: React.FC = () => {
               value={pipelineInput}
               onChange={(e) => setPipelineInput(e.target.value)}
               placeholder="ABCD"
-              className="bg-slate-950 border border-slate-700 rounded-lg px-3.5 py-1.5 text-white placeholder-slate-500 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 w-44 font-mono text-sm font-bold"
+              className="bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-white font-mono text-sm focus:outline-none focus:border-sky-500 w-36"
             />
             <div className="flex items-center gap-1">
               {['ABCD', 'abc', 'hello'].map((preset) => (
@@ -166,9 +100,9 @@ export const InternalPipelineVisualizer: React.FC = () => {
                   key={preset}
                   type="button"
                   onClick={() => setPipelineInput(preset)}
-                  className={`text-xs px-2.5 py-1 rounded-md border font-mono transition-all cursor-pointer ${
+                  className={`text-xs px-2 py-1 rounded border font-mono cursor-pointer transition-colors ${
                     pipelineInput === preset
-                      ? 'bg-sky-500/20 border-sky-500 text-sky-300 font-bold'
+                      ? 'bg-slate-800 border-slate-600 text-white font-bold'
                       : 'bg-slate-950 border-slate-800 text-slate-400 hover:text-white'
                   }`}
                 >
@@ -177,56 +111,39 @@ export const InternalPipelineVisualizer: React.FC = () => {
               ))}
             </div>
           </div>
-
-          <div className="text-slate-300 flex flex-wrap items-center gap-4 sm:gap-6 font-sans text-xs sm:text-sm">
-            <span>
-              {isVi ? 'Độ dài gốc:' : 'Original Length:'}{' '}
-              <strong className="text-white font-mono font-bold ml-1">{breakdown.originalBitsLength} bit</strong>
-            </span>
-            <span>
-              {isVi ? 'Độ dài sau đệm:' : 'Padded Length:'}{' '}
-              <strong className="text-emerald-400 font-mono font-bold ml-1">{breakdown.paddedBitsLength} bit</strong>
-            </span>
-            <span>
-              {isVi ? 'Phân đoạn khối:' : 'Blocks:'}{' '}
-              <strong className="text-sky-400 font-mono font-bold ml-1">{breakdown.blockCount} × 512 bit</strong>
-            </span>
+          <div className="text-xs text-slate-500 font-mono">
+            {breakdown.originalBitsLength} bits &rarr; {breakdown.paddedBitsLength} bits
           </div>
         </div>
 
-        {/* 7-Step Navigation Bar (Responsive Stepper) */}
-        <div className="mb-6 space-y-2">
-          <div className="flex items-center justify-between px-1">
-            <span className="text-xs uppercase tracking-wider font-semibold text-slate-400">
-              {isVi ? 'Quy trình 7 bước (Chọn bước hoặc bấm Trước / Tiếp):' : '7-Step Pipeline (Click step or use Prev / Next):'}
-            </span>
+        {/* 7-Step Navigation Bar - Clean, flat segmented tabs */}
+        <div className="space-y-2">
+          <div className="flex items-center justify-between text-xs text-slate-400">
+            <span>{isVi ? 'Tiến trình thực hiện:' : 'Algorithm progression:'}</span>
             <div className="flex items-center gap-2">
               <button
                 type="button"
                 onClick={handlePrevStep}
                 disabled={currentStepIndex === 0}
-                className="flex items-center gap-1 text-xs px-3 py-1 rounded-lg border border-slate-800 bg-slate-950 text-slate-300 hover:text-white hover:border-slate-700 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-colors"
+                className="px-2.5 py-1 rounded border border-slate-800 bg-slate-900 text-slate-300 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
               >
-                <ChevronLeft className="w-3.5 h-3.5" />
-                <span>{isVi ? 'Trước' : 'Prev'}</span>
+                {isVi ? '← Trước' : '← Prev'}
               </button>
               <button
                 type="button"
                 onClick={handleNextStep}
-                disabled={currentStepIndex === steps.length - 1}
-                className="flex items-center gap-1 text-xs px-3 py-1 rounded-lg border border-sky-500/50 bg-sky-950/60 text-sky-300 hover:bg-sky-900/60 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-colors font-semibold"
+                disabled={currentStepIndex === STEPS.length - 1}
+                className="px-2.5 py-1 rounded border border-slate-700 bg-slate-800 text-white font-medium hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
               >
-                <span>{isVi ? 'Tiếp' : 'Next'}</span>
-                <ChevronRight className="w-3.5 h-3.5" />
+                {isVi ? 'Tiếp theo →' : 'Next →'}
               </button>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2">
-            {steps.map((step, idx) => {
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-1.5">
+            {STEPS.map((step, idx) => {
               const isActive = activeStep === step.id;
               const isPast = idx < currentStepIndex;
-              const StepIcon = step.icon;
 
               return (
                 <button
@@ -234,37 +151,16 @@ export const InternalPipelineVisualizer: React.FC = () => {
                   id={`btn-step-${step.id}`}
                   type="button"
                   onClick={() => setActiveStep(step.id)}
-                  className={`p-3 rounded-xl border text-left transition-all cursor-pointer relative overflow-hidden font-sans ${
+                  className={`py-2 px-2.5 rounded-lg border text-center text-xs font-medium cursor-pointer transition-colors ${
                     isActive
-                      ? 'bg-slate-900 border-sky-500 ring-2 ring-sky-500/30 text-white shadow-md'
+                      ? 'bg-slate-800 border-sky-500 text-white font-bold'
                       : isPast
-                        ? 'bg-slate-950/90 border-slate-800/80 text-slate-300 hover:border-slate-700 hover:text-white'
-                        : 'bg-slate-950/50 border-slate-900 text-slate-400 hover:border-slate-800 hover:text-slate-300'
+                        ? 'bg-slate-950 border-slate-800/80 text-slate-300 hover:border-slate-700'
+                        : 'bg-slate-950/40 border-slate-900 text-slate-500 hover:text-slate-300'
                   }`}
                 >
-                  <div className="flex items-center justify-between mb-1">
-                    <span
-                      className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold font-mono ${
-                        isActive
-                          ? 'bg-sky-500 text-white'
-                          : isPast
-                            ? 'bg-emerald-900/60 text-emerald-300 border border-emerald-600/50'
-                            : 'bg-slate-800 text-slate-400'
-                      }`}
-                    >
-                      {step.num}
-                    </span>
-                    <StepIcon
-                      className={`w-3.5 h-3.5 ${
-                        isActive ? 'text-sky-400' : isPast ? 'text-emerald-400' : 'text-slate-600'
-                      }`}
-                    />
-                  </div>
-                  <span className="font-bold text-xs block truncate text-white">
-                    {isVi ? step.titleVi : step.titleEn}
-                  </span>
-                  <span className="text-[10px] text-slate-400 block truncate mt-0.5">
-                    {isVi ? step.shortVi : step.shortEn}
+                  <span className="block truncate">
+                    {isVi ? step.labelVi : step.labelEn}
                   </span>
                 </button>
               );
@@ -272,7 +168,7 @@ export const InternalPipelineVisualizer: React.FC = () => {
           </div>
         </div>
 
-        {/* ACTIVE STEP CONTAINER */}
+        {/* ACTIVE STEP CONTENT */}
         <div>
           {/* STEP 1: BINARY CONVERSION */}
           {activeStep === 'binary' && (
@@ -319,19 +215,15 @@ export const InternalPipelineVisualizer: React.FC = () => {
 
           {/* STEP 6: 64 COMPRESSION ROUNDS */}
           {activeStep === 'compression' && block0?.rounds && (
-            <div className="space-y-4 font-sans">
-              <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 text-xs sm:text-sm text-slate-300 space-y-1.5">
-                <div className="flex items-center gap-2 text-sky-400 text-xs uppercase font-bold tracking-wider mb-1">
-                  <span className="w-2 h-2 rounded-full bg-sky-400" />
-                  <span>{isVi ? 'Bước 6 / 7 trong thuật toán' : 'Step 6 / 7 in Algorithm'}</span>
-                </div>
-                <h3 className="text-sm sm:text-base font-bold text-white">
-                  {isVi ? 'Bước 6: Vòng lặp nén 64 bước (Compression Loop)' : 'Step 6: 64 Compression Rounds Loop'}
+            <div className="space-y-4">
+              <div className="rounded-xl bg-slate-900 border border-slate-800 p-5 space-y-1">
+                <h3 className="text-lg font-bold text-white">
+                  {isVi ? 'Bước 6: Vòng lặp nén 64 bước (Compression Loop)' : 'Step 6: 64-Round Compression Loop'}
                 </h3>
-                <p className="leading-relaxed">
+                <p className="text-sm text-slate-300">
                   {isVi
-                    ? 'Mỗi vòng thực hiện đúng 3 bước trực quan: 1. Dịch → 2. Trộn → 3. Tạo trạng thái mới. Nhấn "Xem chi tiết" để khám phá toàn bộ công thức T₁, T₂, Σ, Ch, Maj.'
-                    : 'Each round executes 3 visual steps: 1. Shift → 2. Mix → 3. New State. Click "View Details" to explore formulas for T₁, T₂, Σ, Ch, Maj.'}
+                    ? 'Mỗi vòng nén diễn ra qua đúng 3 bước: 1. Dịch → 2. Trộn → 3. Tạo trạng thái mới. Sử dụng nút "Xem chi tiết" để xem công thức toán học nếu cần.'
+                    : 'Each round operates in 3 steps: 1. Shift → 2. Mix → 3. New State. Use "View Details" for the mathematical formulas.'}
                 </p>
               </div>
 
@@ -354,38 +246,23 @@ export const InternalPipelineVisualizer: React.FC = () => {
           )}
         </div>
 
-        {/* Bottom Next/Prev Action Buttons */}
-        <div className="flex items-center justify-between mt-6 pt-4 border-t border-slate-800/80 text-xs sm:text-sm">
+        {/* Footer Navigation */}
+        <div className="flex items-center justify-between pt-4 border-t border-slate-800 text-xs">
           <button
             type="button"
             onClick={handlePrevStep}
             disabled={currentStepIndex === 0}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-800 bg-slate-950 text-slate-300 hover:text-white hover:border-slate-700 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-all font-medium"
+            className="text-slate-400 hover:text-white disabled:opacity-20 disabled:cursor-not-allowed cursor-pointer"
           >
-            <ChevronLeft className="w-4 h-4" />
-            <span>
-              {currentStepIndex > 0
-                ? `${isVi ? 'Quay lại' : 'Back to'} ${isVi ? steps[currentStepIndex - 1].titleVi : steps[currentStepIndex - 1].titleEn}`
-                : isVi
-                  ? 'Bước đầu tiên'
-                  : 'First Step'}
-            </span>
+            {isVi ? '← Bước trước' : '← Previous step'}
           </button>
-
           <button
             type="button"
             onClick={handleNextStep}
-            disabled={currentStepIndex === steps.length - 1}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl border border-sky-500/50 bg-sky-950/70 text-sky-300 hover:bg-sky-900/80 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-all font-bold"
+            disabled={currentStepIndex === STEPS.length - 1}
+            className="text-sky-400 hover:text-sky-300 font-medium disabled:opacity-20 disabled:cursor-not-allowed cursor-pointer"
           >
-            <span>
-              {currentStepIndex < steps.length - 1
-                ? `${isVi ? 'Tiếp tục' : 'Continue to'} ${isVi ? steps[currentStepIndex + 1].titleVi : steps[currentStepIndex + 1].titleEn}`
-                : isVi
-                  ? 'Đã hoàn thành'
-                  : 'Completed'}
-            </span>
-            <ChevronRight className="w-4 h-4" />
+            {isVi ? 'Bước tiếp theo →' : 'Next step →'}
           </button>
         </div>
       </div>

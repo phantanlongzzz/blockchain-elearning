@@ -347,9 +347,8 @@ export const Sha256RoundSimulator: React.FC<Sha256RoundSimulatorProps> = ({
       {/* 3. HÀNG 8 BIẾN TRẠNG THÁI 32-BIT (GỌN GÀNG, KHÔNG CARD LỚN, KHÔNG TEXT THỪA) */}
       <div className="p-3 sm:p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2 font-sans">
         <div className="flex items-center justify-between text-xs text-slate-400">
-          <span className="font-semibold text-slate-300 flex items-center gap-1.5 uppercase tracking-wide">
-            <Cpu className="w-3.5 h-3.5 text-sky-400" />
-            <span>{isVi ? '8 Biến trạng thái 32-bit' : '8 Working Variables'}</span>
+          <span className="font-semibold text-slate-300">
+            {isVi ? '8 Biến trạng thái (a … h):' : '8 Working Variables (a … h):'}
           </span>
           <span className="font-mono text-[11px] text-slate-400">
             {simulationStep === 'shift' && (isVi ? '1. Dịch trạng thái' : '1. Shift state')}
@@ -702,8 +701,8 @@ export const Sha256RoundSimulator: React.FC<Sha256RoundSimulatorProps> = ({
       <div className="p-3 sm:p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-3 font-sans">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="text-xs sm:text-sm font-bold text-white uppercase tracking-wider font-mono">
-              BỘ TRỘN
+            <span className="text-xs sm:text-sm font-semibold text-white">
+              {isVi ? 'Khối trộn:' : 'Mixer:'}
             </span>
             <span className="text-[11px] text-slate-400">
               K[{selectedRound}] & W[{selectedRound}] → T₁, T₂

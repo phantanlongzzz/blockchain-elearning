@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { CheckCircle2, Copy, Check, ArrowLeft, ShieldCheck } from 'lucide-react';
 import { uint32ToHex } from '../../utils/binary';
 import { INITIAL_H } from '../../utils/sha256';
 import { RoundState } from '../../types';
@@ -40,76 +39,46 @@ export const Step7FeedForwardDigest: React.FC<Step7FeedForwardDigestProps> = ({
     : [];
 
   return (
-    <div className="rounded-2xl bg-slate-900/90 border border-slate-800 p-6 sm:p-7 shadow-sm space-y-6 font-sans">
-      {/* Step Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-800 gap-3">
-        <div>
-          <div className="flex items-center gap-2 text-sky-400 text-xs uppercase font-bold tracking-wider mb-1">
-            <span className="w-2 h-2 rounded-full bg-sky-400" />
-            <span>{isVi ? 'Bước 7 / 7 trong thuật toán' : 'Step 7 / 7 in Algorithm'}</span>
-          </div>
-          <h3 className="text-lg sm:text-xl font-bold text-white">
-            {isVi
-              ? 'Bước 7: Cộng tích lũy Feed-Forward & Xuất kết quả Hexadecimal'
-              : 'Step 7: Feed-Forward Addition & Final Hex Output'}
-          </h3>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="text-xs px-3 py-1.5 rounded-lg bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 font-mono font-bold flex items-center gap-1.5">
-            <CheckCircle2 className="w-3.5 h-3.5" />
-            256-bit Digest Ready
-          </span>
-        </div>
+    <div className="rounded-xl bg-slate-900 border border-slate-800 p-5 sm:p-6 space-y-6 font-sans">
+      {/* Title & Concept */}
+      <div className="space-y-1">
+        <h3 className="text-lg font-bold text-white">
+          {isVi ? 'Bước 7: Cộng tích lũy và xuất mã băm' : 'Step 7: Feed-forward addition & hex digest'}
+        </h3>
+        <p className="text-sm text-slate-300">
+          {isVi
+            ? 'Sau 64 vòng nén, 8 biến làm việc (A…H) được cộng theo modulo 2³² vào 8 giá trị băm ban đầu (H₀…H₇). Kết quả sau đó được ghép thành chuỗi 64 ký tự Hex (256 bit).'
+            : 'After 64 rounds, the 8 working variables (A..H) are added modulo 2³² to the initial hash values (H₀..H₇), producing the final 64-hex (256-bit) digest.'}
+        </p>
       </div>
 
-      {/* Mathematical Principle */}
-      <div className="p-4 sm:p-5 rounded-xl bg-slate-950/80 border border-slate-800 text-sm text-slate-300 leading-relaxed space-y-3 font-sans">
-        <p>
-          <strong className="text-white">{isVi ? 'Nguyên lý cộng tích lũy (Feed-Forward / Davis-Meyer):' : 'Feed-Forward Principle (Davies-Meyer):'}</strong>{' '}
-          {isVi
-            ? 'Sau khi hoàn thành 64 vòng lặp nén, 8 biến làm việc cuối cùng (A, B, C, D, E, F, G, H ở vòng 63) được cộng tích lũy theo modulo 2³² vào 8 giá trị băm ban đầu H₀…H₇. Thao tác này biến hàm nén thành một chiều (không thể giải mã ngược lại):'
-            : 'After 64 compression rounds, the 8 final working variables (A..H at round 63) are added modulo 2³² to the initial hash values H₀..H₇. This feed-forward ensures strict one-wayness:'}
-        </p>
-        <div className="p-3.5 bg-slate-900 rounded-xl border border-slate-800 text-sky-300 font-sans overflow-x-auto text-center">
-          <InlineMath math="H_0' = (H_0 + A) \pmod{2^{32}}, \quad \dots, \quad H_7' = (H_7 + H) \pmod{2^{32}}" />
-        </div>
+      {/* Formula */}
+      <div className="p-3 bg-slate-950 rounded-lg border border-slate-800 text-center text-sm font-mono text-sky-300">
+        <InlineMath math="H_0' = (H_0 + A) \pmod{2^{32}}, \quad \dots, \quad H_7' = (H_7 + H) \pmod{2^{32}}" />
       </div>
 
       {/* 8 Additions Breakdown Table */}
-      <div className="p-5 rounded-2xl bg-slate-950 border border-slate-800 space-y-3 font-sans">
-        <div className="flex items-center justify-between pb-2 border-b border-slate-800">
-          <span className="text-xs sm:text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-            <span>{isVi ? 'Chi tiết phép cộng tích lũy từng Word (Modulo 2³²):' : 'Word-by-Word Feed-Forward Modulo 2³² Addition:'}</span>
-          </span>
-          <span className="text-xs text-slate-400 font-mono">
-            H[0..7] + A..H = H&apos;[0..7]
-          </span>
+      <div className="space-y-2">
+        <div className="text-xs text-slate-400">
+          {isVi ? 'Phép cộng từng Word (H_ban_đầu + Biến_vòng_63 = H_mới):' : 'Word-by-word addition (H_init + Var_round63 = H_final):'}
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-mono">
           {varList.map((v, idx) => {
             const initH = INITIAL_H[idx];
             const finalWord = ((initH + v.val) >>> 0);
 
             return (
-              <div key={idx} className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1.5 font-sans">
-                <div className="flex items-center justify-between text-xs text-slate-300 font-semibold">
-                  <span>H[{idx}]</span>
-                  <span className="text-sky-400 font-mono">Biến {v.name}</span>
+              <div key={idx} className="p-2.5 rounded bg-slate-950 border border-slate-800 space-y-1">
+                <div className="flex justify-between text-slate-400 text-[11px] font-sans">
+                  <span>H[{idx}] + {v.name}</span>
                 </div>
-                <div className="text-[11px] font-mono text-slate-400 space-y-0.5 pt-1 border-t border-slate-800/80">
-                  <div className="flex justify-between">
-                    <span>H_init:</span>
-                    <span className="text-slate-300 font-bold">0x{uint32ToHex(initH)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>+{v.name}_final:</span>
-                    <span className="text-sky-300 font-bold">0x{uint32ToHex(v.val)}</span>
-                  </div>
+                <div className="text-slate-400 text-[11px] flex justify-between">
+                  <span>0x{uint32ToHex(initH)}</span>
+                  <span>+ 0x{uint32ToHex(v.val)}</span>
                 </div>
-                <div className="pt-1.5 border-t border-slate-800/80 flex items-center justify-between text-xs font-mono font-bold">
-                  <span className="text-emerald-400">= H&apos;[{idx}]:</span>
+                <div className="pt-1 border-t border-slate-800 text-emerald-400 font-bold flex justify-between text-xs">
+                  <span>H&apos;[{idx}]:</span>
                   <span className="text-white select-all">0x{uint32ToHex(finalWord)}</span>
                 </div>
               </div>
@@ -118,48 +87,32 @@ export const Step7FeedForwardDigest: React.FC<Step7FeedForwardDigestProps> = ({
         </div>
       </div>
 
-      {/* Synthesized 64-Hex Digest Output (Highlighting in vibrant green as requested) */}
-      <div className="p-5 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
-        <div className="flex items-center justify-between">
-          <span className="text-xs sm:text-sm font-sans text-slate-200 uppercase font-bold tracking-wider">
-            {isVi ? 'Kết quả băm SHA-256 (Hexadecimal 64 ký tự = 256 bits):' : 'Final SHA-256 Hash Digest (64 Hex Characters = 256 bits):'}
+      {/* Final Hex Digest Output Box */}
+      <div className="p-4 bg-slate-950 rounded-lg border border-slate-800 space-y-3">
+        <div className="flex items-center justify-between text-xs">
+          <span className="text-slate-300 font-medium">
+            {isVi ? 'Giá trị băm SHA-256 hoàn chỉnh (64 ký tự Hex = 256 bits):' : 'Complete SHA-256 Digest (64 Hex characters = 256 bits):'}
           </span>
           <button
             type="button"
             onClick={handleCopy}
-            className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 hover:text-white hover:border-slate-600 transition-colors cursor-pointer"
+            className="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-sans cursor-pointer transition-colors"
           >
-            {copied ? (
-              <>
-                <Check className="w-3.5 h-3.5 text-emerald-400" />
-                <span className="text-emerald-400 font-semibold">{isVi ? 'Đã sao chép!' : 'Copied!'}</span>
-              </>
-            ) : (
-              <>
-                <Copy className="w-3.5 h-3.5" />
-                <span>{isVi ? 'Sao chép mã băm' : 'Copy Digest'}</span>
-              </>
-            )}
+            {copied ? (isVi ? 'Đã sao chép!' : 'Copied!') : (isVi ? 'Sao chép' : 'Copy')}
           </button>
         </div>
 
-        {/* 64-char Hex Output Box */}
-        <div className="font-mono text-base sm:text-xl font-bold text-emerald-400 break-all select-all tracking-wider bg-slate-900/90 p-4 sm:p-5 rounded-xl border border-emerald-500/40 shadow-inner">
+        <div className="font-mono text-sm sm:text-base font-bold text-emerald-400 break-all select-all tracking-wider bg-slate-900 p-3.5 rounded border border-emerald-500/30">
           {finalHashHex}
         </div>
 
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between pt-2 gap-2 text-xs text-slate-400 font-sans">
-          <div className="flex items-center gap-2">
-            <ShieldCheck className="w-4 h-4 text-emerald-400" />
-            <span>{isVi ? 'Đạt chuẩn bảo mật NIST FIPS 180-4 quốc tế' : 'NIST FIPS 180-4 Standard Verification Passed'}</span>
-          </div>
+        <div className="text-right">
           <button
             type="button"
             onClick={onReviewRounds}
-            className="flex items-center gap-1 text-sky-400 hover:text-sky-300 underline underline-offset-4 cursor-pointer"
+            className="text-xs text-slate-400 hover:text-white underline cursor-pointer"
           >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>{isVi ? 'Xem lại 64 vòng lặp nén' : 'Review 64 compression rounds'}</span>
+            {isVi ? '← Quay lại xem 64 vòng nén' : '← Back to 64 compression rounds'}
           </button>
         </div>
       </div>
